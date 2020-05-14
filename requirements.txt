@@ -1,0 +1,9 @@
+asgiref==3.2.3
+Django==3.0.3
+django-crispy-forms==1.8.1
+django-multiselectfield==0.1.12
+Pillow==7.0.0
+psycopg2-binary==2.8.4
+pytz==2019.3
+six==1.14.0
+sqlparse==0.3.0
