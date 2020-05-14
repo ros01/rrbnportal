@@ -1,0 +1,14 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block branding %}
+<h1 id="head">
+    <img src="{% static 'img/site_logo.png' %}" alt="RRBN Monitoring" height="55" width="208" class=brand_img">Site
+    Admin Area
+</h1>
+
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+{% endblock %}
+
+{% endblock %}

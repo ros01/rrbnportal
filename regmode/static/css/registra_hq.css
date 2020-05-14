@@ -1,0 +1,316 @@
+main{
+   margin: 3rem 0;
+}
+
+.magin-right{
+  margin-right: -60px;
+}
+
+.footer_nav{
+    margin: 3rem 0;
+}
+
+.footer_nav button{
+    margin-right: .5rem;
+}
+
+.dropdown-item{
+    color: #000;
+}
+
+.dropdown-item:hover{
+    background: #fff;
+    color: green;
+}
+
+.dropdown-menu{
+    margin-top: 8px;
+    border-top: none;
+    border-radius: 1px;
+}
+
+.nav-link{
+    padding-right: 8rem !important;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.nav-link:hover {
+    color: rgb(141, 245, 131) !important;
+  }
+
+ body{
+    overflow-x: hidden; 
+ }
+
+ /* UTILITY CLASSES */
+
+ .size24{
+   font-size: 24px;
+ }
+
+ .small-text{
+   font-size: 12px;
+   font-weight: bold;
+ }
+
+ .card-style{
+  width: 17.8rem;
+ }
+ 
+ .card-style-2{
+  width: 22.5rem;
+  height: 15rem;
+  margin-left: -10px;
+  border: none;
+ }
+ .card-style-2:hover{
+  border: 1px solid #e1e1e1;
+  background: rgb(253, 251, 251);
+ }
+
+ .m-up{
+   margin-top: -10px;
+ }
+
+ .tcolor{
+    background: #32776B;
+ }
+
+ .ft{
+    font-size: 16px;
+    line-height: 1;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+ }
+
+ .ml{
+    margin-left: 120px;
+ }
+
+  .fa{
+    font-size: 13px;
+  }
+
+  .big{
+    font-size: 40px;
+  }
+
+  .card-body{
+      padding: 15px;
+  }
+
+  .cml{
+    margin-left: 30px;
+  }
+
+  .bg-success-2{
+    background: rgb(48, 190, 48);
+  }
+
+  /* END OF UTILITY CLASSES */
+
+  /* FOOTER CSS */
+
+footer{
+    border-top: 2px solid rgb(75, 201, 75);
+    padding-top: 5px;
+}
+
+.flink:hover{
+    color: rgb(32, 189, 45) !important;
+ }
+
+ .copyright{
+    width: 100%;
+    background-color: #000;
+    height: 50px;
+    clear: both;
+    overflow: hidden;
+  }
+  .copyright .copyright-container{
+    width: 80%; 
+    margin: 0 auto; 
+  }
+  
+  .copyright .copyright-container p{
+    color: #fff; 
+    padding-top: 10px;
+  }
+
+  /*MEDIA QUERIES*/
+  @media screen and (max-width: 768px) {
+    .logo{
+    width: 70%;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    }
+
+.big{
+    font-size: 22px;
+    }
+
+.size24{
+    font-size: 16px !important;
+    }
+
+.negative-left{
+    margin-left: -25px;
+    }
+
+.card-style{
+  width: 47rem;
+  margin-left: -32px;
+  margin-bottom: 5px;
+  }
+
+  .card-style-2{
+  width: 47rem !important;
+  height: 18rem !important;
+  margin-left: -33px !important;
+  margin-bottom: 10px;
+  background: rgb(253, 251, 251);
+  border: 1px solid #e1e1e1;
+  }
+
+  .mobile-top{
+    margin-top: -45px;
+  }
+
+  .mobile-top2{
+  margin-top: 5px !important;
+}
+
+  .mobile-bottom{
+  margin-bottom: -55px;
+}
+}
+
+  @media screen and (max-width: 414px) {
+
+    .logo{
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+    .push-left{
+        margin-left: 20px;
+    }
+
+    .negative-left{
+       margin-left: 5px !important;
+    }
+
+    .text-left{
+        margin-left: 20px;
+    }
+    .mt-360{
+        margin-top: -20px !important;
+    }
+    
+  .card-style{
+    width: 25.4rem;
+    margin-left: -11px;
+    margin-bottom: 5px;
+    }
+
+    .card-style-2{
+    width: 25.4rem !important;
+    height: 18rem !important;
+    margin-left: -11px !important;
+    margin-bottom: 10px;
+    background: rgb(253, 251, 251);
+    border: 1px solid #e1e1e1;
+    }
+
+    .mobile-top{
+      margin-top: -45px;
+    }
+
+    .mobile-top2{
+    margin-top: 5px !important;
+  }
+
+    .mobile-bottom{
+    margin-bottom: -55px;
+  } 
+}
+
+@media screen and (max-width: 360px) {
+  .magin-right{
+    margin-right: 0;
+  }
+
+  .card-style{
+    width: 22rem;
+    margin-left: -11px;
+    margin-bottom: 5px;
+    }
+
+    .card-style-2{
+    width: 22rem !important;
+    height: 18rem !important;
+    margin-left: -11px !important;
+    margin-bottom: 10px;
+    background: rgb(253, 251, 251);
+    border: 1px solid #e1e1e1;
+    }
+
+    .mobile-top{
+      margin-top: -45px;
+    }
+
+    .mobile-top2{
+    margin-top: 5px !important;
+  }
+
+    .mobile-bottom{
+    margin-bottom: -55px;
+  }
+}
+
+  @media screen and (max-width: 320px) {
+
+    .logo{
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+    .card-style{
+      width: 19.4rem !important;
+      margin-left: -10px;
+      margin-bottom: 5px;
+     }
+
+     .card-style-2{
+      width: 19.5rem !important;
+      height: 18rem !important;
+      margin-left: -11px !important;
+      margin-bottom: 10px;
+      background: rgb(253, 251, 251);
+      border: 1px solid #e1e1e1;
+     }
+
+     .mobile-top{
+       margin-top: -45px;
+     }
+
+     .mobile-top2{
+      margin-top: 5px !important;
+    }
+
+     .mobile-bottom{
+      margin-bottom: -55px;
+    }
+
+}
+
+@media screen and (max-width: 640px) {
+
+.logo{
+    width: 100%;
+    margin-left: 0;
+    margin-bottom: 10px;
+    }
+}

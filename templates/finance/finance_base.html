@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'fontawesome-free-5.8.2-web/css/all.css' %}" rel="stylesheet">
+<!--  <link href="{% static 'css/main.css' %}" rel="stylesheet"> -->
+    {% block styles %} {% endblock %}
+
+
+
+    <title>RRBN Monitoring Portal</title>
+</head>
+<body>
+  <div class="container">
+      <div class="header">
+        <div class="logo-box">
+          <a class="logo" href="#"
+            ><img src="{% static 'img/rrbn-logo.png' %}" alt="rrbn logo"
+          /></a>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <nav>
+        <div class="nav-container">
+          <div class="section-1">
+            <i class="fa fa-cogs"></i><span class="push-down white">{{ user.profile.module_name }}</span>
+          </div>
+          <div class="section-1">
+              <i class="fa fa-user-cog"></i><span class="push-down white">{{ user.first_name}} {{user.last_name}}</span>
+          </div>
+          <div class="section-1">
+            <div class="dropdown">
+              <select name="dropdown" id="dropdown">
+                <option value="nothing" selected="selected">Go To</option>
+                <option value="">Dashboard</option>
+                <option value="">List Payment Entries</option>
+                <option value="">Process Payments</option>
+                <option value="#">View Online Payments</option>
+                <option value="#">View Bank Payments</option>
+                <option value="{% url 'hospitals:hospitals_lookup' %}">Hospitals/Centers Lookup</option>
+                <option value="{% url 'hospitals:licenses_lookup' %}">Radiography License Lookup</option>
+                <option value="{% url 'rrbn_offices' %}">List of RRBN Zonal Offices</option>
+                <option value="">License Categories & Fees</option>
+                <option value="">Document Verification Service</option>
+                <option value="">BI Reports</option>
+                <option value="">My User Account</option>
+              </select>
+            </div>
+            <button class="btn-orage"><a href="javascript:{document.getElementById('logout').submit()}" onclick="">Logout</a>
+              <form id="logout" method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <input type="hidden" />
+              </form>
+              <i class="fa fa-power-off"></i>
+            </button>
+          </div>
+        </div>
+      </nav>
+
+  {% block content%} {%endblock%}
+
+  <div class="footer">
+      <div class="footer-container">
+        <div class="footer-box">
+            <p class="fp">RRBN</p>
+            <p class="fp2">
+              RRBN's key mandate is to regulate the practice of radiography in Nigeria.
+            </p><br>
+            <p class="fp2">
+              RRBN Monitoring and Emforcement portal Automates all processes in RRBN M&E processes.
+            </p>
+        </div>
+
+        <div class="footer-box">
+            <p class="fp">Home Links</p>
+            <a href="index.html">Home</a><br />
+            <a href="about-us.html">About</a><br />
+            <a href="services.html">Services</a><br />
+            <a href="help.html">Help</a><br />
+        </div>
+        <div class="footer-box">
+          <p class="fp">External Links</p>
+          <a href="#">RRBN</a><br />
+          <a href="#">ARN</a><br />
+          <a href="#">NJIRT</a><br />
+          <a href="#">MINISTRY OF HEALTH</a>
+        </div>
+        <div class="footer-box">
+          <p class="fp">Contact Us</p>
+          <p class="fp2">
+            Federal Secretariat Complex, Phase 1 Annex III, 4th Floor,
+            <br>Central Area - Abuja, Nigeria.
+          </p>
+          <p class="fp2">+234 092914928, 08039472126, 08097995066</p>
+          <p class="fp2">info@rrbn.gov.ng, monitoring@rrbn.gov.ng</p>
+          <p class="fp2">www.rrbn.gov.ng</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+        let urlMenu = document.getElementById('dropdown');
+        urlMenu.onchange = function(){
+          let userOption = this.options[this.selectedIndex];
+          if(userOption.value != "nothing"){
+            window.open(userOption.value, "_self", "");
+          }
+        }
+      </script>
+  </body>
+  </html>

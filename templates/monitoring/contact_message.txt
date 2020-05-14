@@ -1,0 +1,28 @@
+Dear {{object.hospital_name|upper }},
+
+This is to confirm that your registration and payment details have been successfully verified by RRBN.  .
+
+See brief details below:
+
+Application Number: {{object.id}}
+
+Hospital Name: {{object.hospital_name}}
+
+Mobile Number: {{object.phone}}
+
+Email Address: {{object.email}}
+
+Submission Time: {{object.reg_date}}
+
+
+You will subsequently be notified when on the scheduled date for the inspection of your facility.
+
+Congratulations!
+
+
+
+Sincerely,
+
+Radiographers Registration Board of Nigeria (RRBN)
+
+monitoring.rrbn.gov.ng

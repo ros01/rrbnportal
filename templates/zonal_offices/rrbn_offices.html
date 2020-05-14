@@ -1,0 +1,100 @@
+{% extends 'registrars_office/registrar_base.html'%}
+
+
+{% load static %}
+{% block title%}| Hospitals Look Up {% endblock %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/mehq-module.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/zonal_office.css' %}" />
+{% endblock %}
+
+
+{% block content %}
+<!--body-->
+      <div class="z-container">
+        <div class="z-box">
+          <img src="{% static 'img/house-icon.png' %}" alt="house icon">
+          <p>
+            <strong>LAGOS ZONAL OFFICE</strong><br>
+            Murtala Muhammed Way,<br>
+            Central Medical Library Compound, Yaba, Lagos.<br>
+            Tel: 08097995068 Email: lagosoffice@rrbn.gov.ng
+          </p>
+        </div>
+        <div class="z-box">
+          <img src="{% static 'img/house-icon.png' %}" alt="house icon">
+          <p>
+            <strong>ENUGU ZONAL OFFICE</strong><br>
+              No. 5 Ridgeway Street, Off Opara Avenue, GRA, Enugu.<br>
+              Tel: 08097995077 Email: enuguoffice@rrbn.gov.ng
+            </p>
+          </div>
+          <div class="z-box">
+            <img src="{% static 'img/house-icon.png' %}" alt="house icon">
+            <p>
+              <strong>KANO ZONAL OFFICE</strong><br>
+              Fed Secretariat Complex, No. 1 Murtala<br> Muhammed Way off Katsina Road, Kano.<br>
+              Tel: 08097995078 Email: kanooffice@rrbn.gov.ng
+            </p>
+            </div>
+            <div class="z-box">
+                <img src="{% static 'img/house-icon.png' %}" alt="house icon">
+                <p>
+                  <strong>SOKOTO ZONAL OFFICE</strong><br>
+                  184-186 Federal Secretariat Complex,<br>
+                  CKaduna Road, Sokoto, Sokoto State.<br>
+                  Tel: 08097995072 Email: sokotooffice@rrbn.gov.ng
+                </p>
+              </div>
+              <div class="z-box">
+                <img src="{% static 'img/house-icon.png' %}" alt="house icon">
+                <p>
+                  <strong>PORT HARCOUT ZONAL OFFICE</strong><br>
+                    Federal Secretariat Complex, Room 501,<br>
+                    5th Floor, Aba Road, Port Harcourt, Rivers State.<br>
+                    Tel: 08097995079 Email: portharcourtoffice@rrbn.gov.ng
+                  </p>
+                </div>
+                <div class="z-box">
+                  <img src="{% static 'img/house-icon.png' %}" alt="house icon">
+                  <p>
+                    <strong>ASABA ZONAL OFFICE</strong><br>
+                    Room 424, Federal Secretariat, beside<br>
+                    delta Broadcasting Service, Okpanam Road Asaba.<br>
+                    Tel: 08097995069 Email: asabaoffice@rrbn.gov.ng
+                  </p>
+                </div>
+                <div class="z-box">
+                    <img src="{% static 'img/house-icon.png' %}" alt="house icon">
+                    <p>
+                      <strong>CALABAR ZONAL OFFICE</strong><br>
+                      Rm B13-16 Federal Secretariat Complex,<br>
+                      Calabar.<br>
+                      Tel: 09090014523
+                    </p>
+                  </div>
+                  <div class="z-box">
+                      <img src="{% static 'img/house-icon.png' %}" alt="house icon">
+                      <p>
+                        <strong>NNEWI LIAISON ZONAL OFFICE</strong><br>
+                        Nnewi-North LGA Headquarters,<br>
+                        Umudim Nnewi<br>
+                        Tel: 08062464540
+                      </p>
+                    </div>
+      </div>
+
+      <!--body ends-->
+
+      <script>
+          let urlMenu = document.getElementById('dropdown');
+          urlMenu.onchange = function(){
+            let userOption = this.options[this.selectedIndex];
+            if(userOption.value != "nothing"){
+              window.open(userOption.value, "_self", "");
+            }
+          }
+        </script>
+
+
+{% endblock %}

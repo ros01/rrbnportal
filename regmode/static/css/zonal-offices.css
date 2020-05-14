@@ -1,0 +1,73 @@
+/*Body*/
+
+.z-container{
+  width: 90%;
+  height: 550px;
+  margin: 0 auto;
+}
+
+.z-box{
+  width: 33%;
+  height: 100px;
+  float: left;
+  margin: 30px 2px 90px ;
+}
+
+.z-box img{
+  width: 95px;
+  height: 110px;
+  margin-right: 10px;
+  float: left;
+
+}
+
+.z-box p{
+  font-size: 11.5px;
+}
+
+
+/*Body ends*/
+
+/*MEDIA QUERIES*/
+
+@media screen and (max-width: 768px) {
+.logo-box {
+  float: none;
+  text-align: center;
+}
+
+.header-links {
+  text-align: center;
+  margin-top: -40px;
+  float: none;
+  display: none;
+}
+
+.nav {
+  height: auto;
+}
+
+.nav ul li {
+  float: none;
+}
+
+.nav ul li a:hover {
+  background: rgb(206, 55, 55);
+  color: #fff;
+}
+
+/*mobile Body*/
+.z-box{
+  width: 100%;
+  height: 100px;
+  margin: 30px auto;
+}
+.z-box p{
+    font-size: 10.5px;
+}
+
+
+/*mobile Body ends*/
+
+
+}

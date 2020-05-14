@@ -1,0 +1,66 @@
+{% extends 'base-reg.html'%}
+{% load static %}
+{% block title%}| Centres for Internship {% endblock %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/internship_centers.css' %}" />
+{% endblock %}
+
+
+{% block content %}
+
+
+
+   <main class="container">
+           <div class="row">
+               <div class="col-md-4 col-sm-12 mb-4">
+                   <div class="card resize">
+                       <img class="card-img-top" style="width: 100%; height: 350px;" src="{% static 'img/xray-room.jpg' %}" alt="Card image cap">
+                   </div>
+               </div>
+               <div class="col-md-4 col-sm-12 mb-4">
+                   <div class="card resize">
+                       <div class="card-body">
+                         <h5 class="card-title">HOSPITALS/CENTERS ACCREDITED FOR INTERNSHIP TRAINING</h5>
+                         <h6 class="card-subtitle mb-2 text-muted">Click the link below to view list of Hospitals/Centers accredited for internship Training</h6>
+                         <a class="unstyled shrink" href="#"><i class="fa fa-list-ol text-success"></i> VIEW LIST OF ACCREDITED CENTERS</a>
+                       </div>
+                   </div>
+                   <p class="mt-2">NEED YOUR CENTER ACCREDITED FOR INTERNSHIP?</p>
+                   <p class="muted">
+                       Click the link below to start your accreditation process
+                   </p>
+                   <a href="#" class="btn btn-success">REGISTER HERE</a>
+               </div>
+               <div class="col-md-4 col-sm-12">
+                   <div class="card resize">
+                       <ul class="list-group list-group-flush">
+                           <li class="list-group-item"><a class="unstyled" href="{% url 'zonal_offices' %}">LOCATE OUR ZONAL OFFICE</a></li>
+                           <li class="list-group-item"><a class="unstyled" href="#">REGISTER RADIOGRAPGY PRACTICE</a></li>
+                           <li class="list-group-item"><a class="unstyled" href="#">VALIDATE REGISTRATION STATUS</a></li>
+                           <li class="list-group-item"><a class="unstyled" href="{% url 'contact' %}">CONTACT US</a></li>
+                       </ul>
+                   </div>
+               </div>
+           </div>
+           <div class="row bg-light pt-5 pb-5 push pull-up">
+               <div class="col-md-12 mb-5">
+                   <h5>Still Have a Question?</h5>
+               </div>
+               <div class="col-md-4 down">
+                   <p>Click the link below to visit:</p>
+                   <p>frequently Asked Questions</p>
+                   <a href="#" class="btn btn-warning down">GO TO FAQ <i class="fa fa-caret-right text-white"></i></a>
+               </div>
+               <div class="col-md-4 down">
+                   <p>Reach out to us on:</p>
+                   <p>(+234) 909 879 5917</p>
+               </div>
+               <div class="col-md-4">
+                   <p>Email: send an email to:</p>
+                   <p>monitoring@rrbn.gov.ng</p>
+               </div>
+           </div>
+       </main>
+   <!--BODY ENDS-->
+
+   {% endblock %}

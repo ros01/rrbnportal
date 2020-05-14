@@ -1,0 +1,141 @@
+{% extends 'hospitals/hospital_base.html'%}
+{% load static %}
+{% block title%}| Payment Processing {% endblock %}
+{% block styles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'fontawesome-free-5.8.2-web/css/allt.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/dataTables.bootstrap4.min.css' %}" >
+<link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css" >
+
+
+{% endblock %}
+
+
+{% block content %}
+
+<main class="container">
+       <div class="row">
+           <div class="col col-lg-12">
+            <h3>My Payment Table</h3>
+            <div class="table-responsive-lg">
+                <table class="table table-striped table-bordered table-hover" id="mydata">
+                    <thead>
+                     <tr style="background: #44756B;">
+                       <td style="color: #fff;" class="small-text">S/N</td>
+                       <td style="color: #fff;" class="small-text">Application No</td>
+                       <td style="color: #fff;" class="small-text">Registration Type</td>
+                       <td style="color: #fff;" class="small-text">Registration Category</td>
+                       <td style="color: #fff;" class="small-text">Submitted On</td>
+                       <td style="color: #fff;" class="small-text">Stage</td>
+                       <td style="color: #fff;" class="small-text">Action</td>
+                     </tr>
+                    </thead>
+                      <tfoot>
+                       <tr style="background: #44756B">
+                        <td style="color: #fff;" class="small-text">S/N</td>
+                       <td style="color: #fff;" class="small-text">Application No</td>
+                       <td style="color: #fff;" class="small-text">Registration Type</td>
+                       <td style="color: #fff;" class="small-text">Registration Category</td>
+                       <td style="color: #fff;" class="small-text">Submitted On</td>
+                       <td style="color: #fff;" class="small-text">Stage</td>
+                       <td style="color: #fff;" class="small-text">Action</td>
+                       </tr>
+                      </tfoot>
+                     <tbody>
+
+                      {% if object_list %}
+                       {% for object_list in object_list %}
+                         <tr>
+                          <td>{{ forloop.counter }}</td>
+                           <td>{{object_list.id}}</td>
+                           <td>{{user.hospital_type}}</td>
+                           <td>New</td>
+                           <td>{{user.reg_date_pretty}}</td>
+                           <td>Payment Processing</td>
+                       
+              
+                           <td><a href= "{% url 'hospitals:payment_processing' id=object_list.id %}" class="btn btn-outline-success btn-sm">Continue <i class="fa fa-play text-success"></i></a></td>
+                         </tr>
+                       {% endfor %}
+                         {% else %}
+                       <div class="col-md-12">
+                         <p>No Payments Available</p>
+                       </div>
+                     {% endif %}
+                     
+                     </tbody>
+
+
+                  </table>
+              </div>
+             </div>
+         </div>
+      </main>
+
+
+
+
+
+
+
+
+  <!--Jquery plugin-->
+
+
+  <!--other javascript plugins-->
+  <script>
+  let urlMenu = document.getElementById('dropdown');
+  urlMenu.onchange = function(){
+    let userOption = this.options[this.selectedIndex];
+    if(userOption.value != "nothing"){
+      window.open(userOption.value, "_self", "");
+    }
+  }
+  </script>
+
+  <script>
+     // Example starter JavaScript for disabling form submissions if there are invalid fields
+     (function () {
+         'use strict';
+         window.addEventListener('load', function () {
+             // Fetch all the forms we want to apply custom Bootstrap validation styles to
+             var forms = document.getElementsByClassName('needs-validation');
+             // Loop over them and prevent submission
+             var validation = Array.prototype.filter.call(forms, function (form) {
+                 form.addEventListener('submit', function (event) {
+                     if (form.checkValidity() === false) {
+                         event.preventDefault();
+                         event.stopPropagation();
+                     }
+                     form.classList.add('was-validated');
+                 }, false);
+             });
+         }, false);
+     })();
+ </script>
+ <script>
+     let urlMenu = document.getElementById('dropdown');
+     urlMenu.onchange = function(){
+       let userOption = this.options[this.selectedIndex];
+       if(userOption.value != "nothing"){
+         window.open(userOption.value, "_self", "");
+       }
+     }
+   </script>
+
+
+   <!--Jquery plugin-->
+     <script src="{% static 'js/jquery.js' %}"></script>
+     <script src="{% static 'js/poppert.min.js' %}"></script>
+
+     <script src="{% static 'js/dataTables.bootstrap4.min.js' %}"></script>
+     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
+
+    <script>
+      $('#mydata').dataTable();
+    </script>
+
+
+
+{% endblock %}

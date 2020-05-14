@@ -1,0 +1,29 @@
+Dear {{object.hospital_name|upper }},
+
+Your registration details have been submitted successfully to RRBN.
+See brief details below:
+
+Application Number: {{object.id}}
+
+Hospital Name: {{object.hospital_name}}
+
+Mobile Number: {{object.phone}}
+
+Email Address: {{object.email}}
+
+Submission Time: {{object.reg_date}}
+
+Please kindly note your Application Number as it may be needed to track your
+application.
+
+We will review your submission and revert accordingly.
+
+Thank You!
+
+
+
+Sincerely,
+
+Radiographers Registration Board of Nigeria (RRBN)
+
+monitoring.rrbn.gov.ng

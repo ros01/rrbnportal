@@ -1,0 +1,98 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/*main  Styling*/
+
+html,
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.7em;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3 {
+  padding-bottom: 20px;
+}
+p {
+  margin: 10px 0;
+}
+
+.wrapper{
+  width: 100%;
+}
+
+.body{
+  width:100%;
+  height: auto;
+}
+
+.body .error{
+  width: 65%;
+  height: auto;
+  margin: 70px auto;
+  overflow: hidden;
+}
+
+.error img{
+  width: 150px;
+  height: auto;
+  float: left;
+  margin-left: 55px;
+}
+
+.error .message{
+  float: left;
+  margin-top: 55px;
+  margin-left: 50px;
+}
+
+.error .message .first{
+  font-size: 36px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 500;
+}
+
+.error .message .second{
+  font-size: 36px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 600;
+  color: rgb(109, 106, 106);
+  margin-bottom: -15px;
+}
+
+.error .message span{
+  color:orangered;
+  font-size: 38px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 600;
+}
+
+.error .message p{
+  color: rgb(109, 106, 106);
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+.error .message a{
+  color: rgb(48, 143, 180);
+  font-size: 18px;
+}
+
+
+.fa{
+  color: rgb(48, 143, 180);
+  font-size: 24px;
+}
+
+.clear{
+  clear: both;
+}

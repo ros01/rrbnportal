@@ -1,0 +1,150 @@
+{% extends 'hospitals/hospital_base.html'%}
+{% load static %}
+{% block title%}| Hospitals Dashboard {% endblock %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/hospital_dashboard.css' %}">
+{% endblock %}
+
+
+{% block content %}
+   <!--main containere-->
+
+       <main class="container">
+           <div class="row">
+               <div class="col-md-12 d-flex justify-content-between">
+                   <h2 class="text-muted text-small">Dashboard</h2>
+                   <h5 class="mt-2 mt-360 text-muted text-small">Hospital Code: NOT YET ASSIGNED</h5>
+               </div>
+               <div class="underline ml-4"></div>
+           </div>
+
+           <div class="row green pt-3 pb-3 d-flex ">
+               <i class="fa fa-info icon text-white"></i>
+               <div class="col-md-11 m-auto text-white">
+                   Welcome to RRBN Monitoring and Enforcement Portal.</br>
+                   The portal enables you the hospital admin to perform several Radiography Practice License Application processing
+                   operations online from the comfort of your hospital.
+               </div>
+           </div>
+           <div class="row d-flex">
+               <div class="negative-left col-md-8 col-sm-12">
+                   <h4 class="text-md-center mt-3 text-left">Online self service center</h4>
+
+                   <div class="col-md-12 text-center btmMargin">
+                       <div class="row mb-2">
+                           <div class="col-lg-3 col-md-12 col-sm-12">
+                               <div class="card yellow">
+                                   <div class="card-body">
+                                    
+                                       <i class="fa fa-play big text-white ss-icon"></i><br>
+                                       
+                                       <a href="{% url 'hospitals:status' %}" class="text-white">Continue New Application</a>
+
+                                   
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div class="col-lg-3 col-md-12 col-sm-12">
+                               <div class="card green">
+                                   <div class="card-body">
+                                       <i class="fa fa-edit big text-white ss-icon"></i><br>
+                                       <a href="#" class="text-white">My Application History</a>
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div class="col-lg-3 col-md-12 col-sm-12">
+                               <div class="card danger">
+                                   <div class="card-body">
+                                       <i class="fa fa-book big text-white ss-icon"></i><br>
+                                       <a href="#" class="text-white">Renew Practice License</a>
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div class="col-lg-3 col-md-12 col-sm-12">
+                               <div class="card blue">
+                                   <div class="card-body">
+                                       <i class="fa fa-credit-card big text-white ss-icon"></i><br>
+                                       <a href="#" class="text-white">My e-Payment History </a>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+
+                       <!-- Next Row -->
+
+                       <div class="row">
+                           <div class="col-lg-3 col-md-12 col-sm-12">
+                               <div class="card">
+                                   <div class="card-body">
+                                       <i class="fa fa-edit big text-success ss-icon"></i><br>
+                                       <a href="#" class="text-dark">License Types & Fees</a>
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div class="col-lg-3 col-md-12 col-sm-12">
+                               <div class="card">
+                                   <div class="card-body">
+                                       <i class="fa fa-book big text-dark ss-icon"></i><br>
+                                       <a href="#" class="text-dark">My Portal Account</a>
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div class="col-lg-3 col-md-12 col-sm-12">
+                               <div class="card">
+                                   <div class="card-body">
+                                       <i class="fa fa-file-pdf big text-danger ss-icon"></i><br>
+                                       <a href="#" class="text-dark">Application Guidelines</a>
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div class="col-lg-3 col-md-12 col-sm-12">
+                               <div class="card">
+                                   <div class="card-body">
+                                       <i class="fa fa-file-pdf big text-danger ss-icon"></i><br>
+                                       <a href="#" class="text-dark">Download User Guide (PDF)</a>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+
+               <div class="col-md-4">
+                   <h4 class="text-dark text-center mt-3">Important Metrics</h4>
+                   <table class="table border shadow-sm table-hover table-center table-md">
+                       <tbody>
+                           <tr>
+                               <td>Hospital Code:</td>
+                               <td>NOT YET ASSIGNED</td>
+                           </tr>
+                           <tr>
+                               <td>Valid Licenses:</td>
+                               <td>0</td>
+                           </tr>
+                           <tr>
+                               <td>1st Application Date:</td>
+                               <td>11/10/2019</td>
+                           </tr>
+                           <tr>
+                               <td>Pending Applications:</td>
+                               <td>0</td>
+                           </tr>
+                           <tr class="border-bottom">
+                               <td>Upcoming Renewals:</td>
+                               <td>0</td>
+                           </tr>
+                       </tbody>
+                   </table>
+               </div>
+           </div>
+       </main>
+       <!--main container ends-->
+
+
+{% endblock %}

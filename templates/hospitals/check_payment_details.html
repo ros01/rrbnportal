@@ -1,0 +1,100 @@
+{% extends 'hospitals/hospital_base.html'%}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title%}| Welcome {% endblock %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/hospital_dashboard.css' %}">
+{% endblock %}
+{% block content %}
+<main class="container">
+
+    <div class="row mt-3">
+     <div class="col-lg-10 col-md-12 col-sm-12 m-auto">
+      <ul class="prog-ul d-flex list-unstyled">
+        <li class="prog "><small>SUBMIT HOSPITAL REGISTRATION DETAILS</small></li>
+        <li class="prog active"><small>ADD PAYMENT DETAILS</small></li>
+        <li class="prog "><small>FACILITY INSPECTION</small></li>
+      </ul>
+    </div>
+   </div>
+
+    <div class="row bg-success rounded">
+        <div class="col-md-6 m-auto">
+            <p class="text-center text-white pt-2">Upload Payment Receipt</p>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md-5 mt-3">
+            <div class="col-md-12">
+
+                <div class="row">
+                    <span class="col-5">Application No:</span>
+                    <span class="col-6"><strong>{{object.application_no}}</strong></span>
+                </div>
+                <div class="row">
+                    <span class="col-5">Hospital Name:</span>
+                    <span class="col-6"><strong>{{object.hospital_name}}</strong></span>
+                </div>
+                <div class="row">
+                    <span class="col-5">License Category:</span>
+                    <span class="col-6"><strong>{{object.license_category}}</strong></span>
+                </div>
+                <div class="row">
+                    <span class="col-5">RRR Number:</span>
+                    <span class="col-6"><strong>{{object.rrr_number}}</strong></span>
+                </div>
+                <div class="row">
+                    <span class="col-5">Receipt Number:</span>
+                    <span class="col-6"><strong>{{object.receipt_number}}</strong></span>
+                </div>
+                <div class="row">
+                    <span class="col-5">Payment Amount:</span>
+                    <span class="col-6"><strong>{{object.payment_amount}}</strong></span>
+                </div>
+                <div class="row">
+                    <span class="col-5">Payment Method:</span>
+                    <span class="col-6"><strong>{{object.payment_method}}</strong></span>
+                </div>
+
+                <div class="row">
+                    <span class="col-5">Payment Date:</span>
+                    <span class="col-6"><strong>{{object.payment_date_pretty}}</strong></span>
+                </div>
+
+
+
+            </div>
+        </div>
+        <div class="col-md-7 mt-3">
+            <form method="POST" action="." enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+
+                <div class="col-md-7 mt-1 ml-1">
+                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                    <label class="form-check-label" for="invalidCheck">
+                        I agree that all my details are correct!
+                    </label>
+                    <div class="invalid-feedback">
+                        You must agree before submitting.
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-10 m-auto">
+                             <a href="#" class="btn btn-outline-dark"><i class="fa fa-times"></i> Cancel</a>
+                             <a href="#" class="btn btn-warning text-white"><i class="fa fa-times"></i> Go Back</a>
+                    
+                            <button type="submit" class="btn btn-success">Proceed &#x21E8;</button>
+                        </div>
+                    </div>
+
+            </form>
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,28 @@
+Dear {{object.hospital_name|upper }},
+
+This is to confirm that verification of your registration and payment details was not successful. 
+
+See brief details of your submission:
+
+Application Number: {{object.id}}
+
+Hospital Name: {{object.hospital_name}}
+
+Mobile Number: {{object.phone}}
+
+Email Address: {{object.email}}
+
+Submission Time: {{object.reg_date}}
+
+
+Kindly re-apply again with the correct details.
+
+Once your details are successfully verified, you will now be scheduled for facility inspection.
+
+
+
+Sincerely,
+
+Radiographers Registration Board of Nigeria (RRBN)
+
+monitoring.rrbn.gov.ng

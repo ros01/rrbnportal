@@ -1,0 +1,61 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" type="text/css" href="{% static 'fontawesome-free-5.8.2-web/css/all.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
+    <title>RRBN Monitoring Portal {% block title %}{% endblock %}</title>
+
+
+    {% include 'partials/_topbar.html' %}
+
+    <!-- Nav Bar -->
+    {% include 'partials/_navbar.html' %}
+
+</head>
+
+
+<body>
+  {% block styles %} {% endblock %}
+
+  {% block content%}
+
+  {%endblock%}
+
+</body>
+
+
+<!-- Top Bar -->
+
+
+
+<!-- Main Content -->
+
+
+
+
+
+
+  <!-- Footer -->
+  {% include 'partials/_footer.html' %}
+  <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
+  <script>
+    var menu = false;
+    $(".menu").click(function(){
+      if(menu == false){
+        $("nav").fadeIn();
+          menu = true;
+      }else{
+        $("nav").fadeOut();
+          menu = false;
+      }
+    })
+  </script>
+
+
+</html>

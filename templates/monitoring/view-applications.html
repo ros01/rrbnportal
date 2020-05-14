@@ -1,0 +1,175 @@
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+{% block title%}| Vet Registration Applications {% endblock %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles-vet.css' %}" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+{% endblock %}
+
+
+{% block content %}
+
+<main class="container">
+        <div class="row">
+            <div class="col-md-6">
+               <h2 class="text-left ml-2 text-muted">Vet New Hospital Registration</h2>
+            </div>
+            <div class="underline ml-4"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 mt-3">
+                <div class="col-md-12">
+                    <div class="row">
+                      <span class="col-5">Hospital Name:</span>
+                      <span class="col-6"><strong>{{registration.hospital_name}}</strong></span>
+                  </div>
+                  <div class="row">
+                      <span class="col-5">RC Number:</span>
+                      <span class="col-6 "><strong>{{registration.rc_number}}</strong></span>
+                  </div>
+                  <div class="row">
+                      <span class="col-5">Category:</span>
+                      <span class="col-6"><strong>New Registration</strong></span>
+                  </div>
+                  <div class="row">
+                      <span class="col-5">Telephone:</span>
+                      <span class="col-6"><strong>{{registration.phone}}</strong></span>
+                  </div>
+                  <div class="row">
+                      <span class="col-5">Email:</span>
+                      <span class="col-6"><strong>{{registration.email}}</strong></span>
+                  </div>
+                  <div class="row">
+                      <span class="col-5">Contact Address:</span>
+                      <span class="col-6"><strong>{{registration.address}}</strong></span>
+                  </div>
+                  <div class="row">
+                      <span class="col-5">City:</span>
+                      <span class="col-6"><strong>{{registration.city}}</strong></span>
+                  </div>
+                  <div class="row">
+                      <span class="col-5">State of Location:</span>
+                      <span class="col-6"><strong>{{registration.state}}</strong></span>
+                    </div>
+
+                     <div class="row">
+                      <span class="col-5">Payment Amount:</span>
+                      <span class="col-6"><strong>{{registration.practice_manager.payment.license_category }}</strong>
+                      </span>
+                    </div>
+                    <div class="row">
+                      <span class="col-5">Payment Amount:</span>
+                      <span class="col-6"><strong>{{registration.practice_manager.payment.payment_amount}}</strong>
+                      </span>
+                    </div>
+                    <div class="row">
+                      <span class="col-5">RRR Number:</span>
+                      <span class="col-6"><strong>{{registration.practice_manager.payment.rrr_number}}</strong>
+                      </span>
+                    </div>
+                    <div class="row">
+                      <span class="col-5">Payment Date:</span>
+                      <span class="col-6"><strong>{{registration.practice_manager.payment.payment_date_pretty}}</strong>
+                      </span>
+                    </div>
+                    <div class="row">
+                      <span class="col-5">Hospital Admin:</span>
+                      <span class="col-6"><strong>{{registration.practice_manager.first_name}} {{registration.practice_manager.last_name}}</strong></span>
+                    </div>
+
+
+                </div>
+            </div>
+            <!--Right col starts here -->
+            <div class="col-md-5 offset-md-2 mt-3">
+                <div class="col-md-12">
+                    <p class="text-success">Uploaded Documents</p>
+                    <div class="row">
+                        <span class="col-5">CAC Document:</span>
+                        <span class="col-6"><i class="fa fa-eye text-dark"></i>
+                        <a class="text-danger" href="{{registration.cac_certificate.url}}"
+                        target="_blank"> View CAC Documents</a></span>
+                    </div>
+                    <div class="row">
+                        <span class="col-5">Practicing Licence:</span>
+                        <span class="col-6"><i class="fa fa-eye text-dark"></i>
+                        <a class="text-danger" href="{{registration.practice_license.url}}" target="_blank"> View Practicing Licence</a></span>
+                    </div>
+                    <div class="row">
+                        <span class="col-5">Prayment Details:</span>
+                        <span class="col-6"><i class="fa fa-eye text-dark"></i>
+                        <a class="text-danger"  href="{{registration.practice_manager.payment.payment_receipt.url}}"  target="_blank">View Payment Receipt</a>
+                    </div>
+
+
+
+
+                    </div>
+                    <div class="col-md-12 mt-3">
+                        <p class="text-success">Control Details</p>
+                        <div class="row">
+                            <span class="col-5">Submitted on: </span>
+                            <span class="col-6"><strong>{{registration.reg_date}}</strong></span>
+                        </div>
+                        <div class="row">
+                            <span class="col-5">Vetted on: </span>
+                            <span class="col-6 "><strong>{{registration.reg_date}}</strong></span>
+                        </div>
+                        <div class="row">
+                            <span class="col-5">Vetted by: </span>
+                            <span class="col-6 "><strong>{{ user.first_name }} {{ user.last_name }}</strong></span>
+                        </div>
+                    </div>
+                </div>
+        </main>
+        <div class="row">
+            <hr style="border: 1px solid rgba(87, 84, 84, 0.055); width: 80%;">
+            <div class="col-md-9 offset-md-3 mb-3">
+            
+           
+            <a href="javascript:{document.getElementById('approve{{registration.id }}').submit()}"><button class="btn btn-success"> Approve for Inspection</button></a>
+            <a href="javascript:{document.getElementById('reject{{registration.id }}').submit()}"><button class="btn btn-danger"> Reject Submission </button></a>
+            <button type="button" class="btn btn-info text-white"><i class="fa fa-eye"></i> Schedule for Inspection</button>
+            <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-dark"><i class="fa fa-times"></i> close</a>
+        </div>
+        </div>
+<!--end Copy here-->
+
+<form id="approve{{registration.id }}" method="POST" action="{% url 'monitoring:approve' registration.id %}">
+  {% csrf_token%}
+  <input type="hidden">
+</form>
+
+<form id="reject{{registration.id }}" method="POST" action="{% url 'monitoring:reject' registration.id %}">
+  {% csrf_token%}
+  <input type="hidden">
+</form>
+
+
+
+
+
+
+
+<!--Jquery plugin-->
+  <script src="{% static 'js/jquery.js' %}"></script>
+
+<!--other javascript plugins-->
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'js/dataTables.bootstrap.min.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+  $('#mydata').dataTable();
+
+  let urlMenu = document.getElementById('dropdown');
+  urlMenu.onchange = function(){
+    let userOption = this.options[this.selectedIndex];
+    if(userOption.value != "nothing"){
+      window.open(userOption.value, "_self", "");
+    }
+  }
+  </script>
+
+
+{% endblock %}

@@ -1,0 +1,189 @@
+main{
+    margin: 1rem 0;
+}
+.footer_nav{
+    margin: 3rem 0;
+}
+.footer_nav button{
+    margin-right: .5rem;
+
+}
+.dropdown-item{
+    color: #000;
+}
+
+.dropdown-item:hover{
+    background: #fff;
+    color: green;
+}
+
+.dropdown-menu{
+    margin-top: 8px;
+    border-top: none;
+    border-radius: 1px;
+}
+
+.nav-link{
+    padding-right: 8rem!important;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+.nav-link:hover {
+    color: rgb(141, 245, 131) !important;
+  }
+
+ body{
+     overflow-x: hidden;
+ }
+
+ .tcolor{
+     background: #32776B;
+ }
+
+ /*faq only css*/
+
+ .buttom-border{
+    border-bottom: 1px solid #d3cfcf;
+}
+
+ .push-2{
+    padding-top: 10px;
+ }
+
+ .card-title{
+     font-size: 1rem;
+     font-weight: 500;
+ }
+
+.card-subtitle{
+    font-size: 15px;
+}
+/*faq only css ends*/
+
+/*Accordion css starts*/
+
+.accordion .card-header:after {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f068";
+    float: right;
+    color: #DB2A25;
+}
+
+.accordion .card-header.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\f067";
+}
+
+.card-header:hover{
+    background: #28A745;
+    color: #fff;
+}
+
+/*Accordion css ends*/
+
+ .ft{
+     font-size: 16px;
+     line-height: 1;
+     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+ }
+
+ .frbg{
+     background: #000;
+ }
+
+ .ml{
+     margin-left: 120px;
+ }
+
+ .flink:hover{
+    color: rgb(32, 189, 45) !important;
+ }
+
+ .copyright{
+    width: 100%;
+    background-color: #000;
+    height: 50px;
+    clear: both;
+    overflow: hidden;
+  }
+  .copyright .copyright-container{
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  .copyright .copyright-container p{
+    color: #fff;
+    padding-top: 10px;
+  }
+
+footer{
+    border-top: 2px solid rgb(75, 201, 75);
+    padding-top: 5px;
+}
+
+@media screen and (max-width: 768px) {
+
+    .logo{
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+}
+
+@media screen and (max-width: 640px) {
+
+    .logo{
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+}
+
+ @media screen and (max-width: 414px) {
+
+    .logo{
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+    .push{
+        margin-top: 20px;
+    }
+
+
+}
+
+@media screen and (max-width: 375px) {
+
+    .logo{
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+}
+
+@media screen and (max-width: 360px) {
+
+    .logo{
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+}
+
+@media screen and (max-width: 320px) {
+
+    .logo{
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+}

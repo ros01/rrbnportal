@@ -1,0 +1,135 @@
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+{% block title%}| M&E Dashboard {% endblock %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/registra_hq.css' %}" />
+{% endblock %}
+
+
+{% block content %}
+
+
+<!--main containere-->
+
+            <main class="container">
+                <div class="row mobile-top">
+                        <div class="col-md-12 col-lg-3">
+                            <div class="card card-style">
+                                <div class="card-body">
+                                    <p class="card-title text-center"><i class="fa fa-hourglass-half text-warning"></i> Awaiting Registra's Approval</p>
+                                    <h3 class="mt-3 text-center">1</h3>
+                                    <p class="mt-3 text-center small-text">0 Registra's Approval [Yr 2019]&nbsp;&nbsp;&nbsp;</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-3">
+                            <div class="card card-style">
+                                <div class="card-body">
+                                    <p class="card-title text-center"><i class="fa fa-money-bill text-warning"></i> Awaiting Isue</p>
+                                    <h3 class="mt-3 text-center">2</h3>
+                                    <p class="mt-3 text-center small-text">0 Issued Licence [Yr 2019]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-3">
+                            <div class="card card-style">
+                                <div class="card-body">
+                                    <p class="card-title text-center"><i class="fa fa-clock text-warning"></i> Total Active Licence</p>
+                                    <h3 class="mt-3 text-center">0</h3>
+                                    <p class="mt-3 text-center small-text">&nbsp;&nbsp;&nbsp;0 Expired Licences [Yr 2019]</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-3">
+                            <div class="card card-style">
+                                <div class="card-body">
+                                    <p class="card-title text-center"><i class="fa fa-lightbulb text-warning"></i> Expired Licences</p>
+                                    <h3 class="mt-3 text-center">0</h3>
+                                    <p class="mt-3 text-center small-text">0 Expiring in 3 months</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--utility items-->
+                    <div class="row mt-5 mobile-top2">
+                        <div class="col-md-12 col-lg-4">
+                            <div class="card card-style-2">
+                                <div class="card-body">
+                                    <i class="fa fa-shield-alt" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
+                                    <h5 class="pb-2" style="margin: -45px 0 0 60px; font-weight: bold;">Licence Approval</h5>
+                                    <ul class="list-unstyled d-flex">
+                                        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> Licence Waiting Approval</a></li>
+                                    </ul>
+                                     <ul class="list-unstyled d-flex m-up">
+                                        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> List of Issued Licences</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-4">
+                            <div class="card card-style-2">
+                                <div class="card-body">
+                                    <i class="fa fa-lightbulb" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
+                                    <h5 class="pb-2" style="margin: -45px 0 0 60px; font-weight: bold;">Reports and Analytics</h5>
+                                    <ul class="list-unstyled d-flex">
+                                        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> BI Reports</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-4">
+                            <div class="card card-style-2">
+                                <div class="card-body">
+                                    <i class="fa fa-wrench" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
+                                    <h5 class="pb-2" style="margin: -50px 0 0 60px; font-weight: bold;">Utilities</h5>
+                                    <ul class="list-unstyled d-flex">
+                                    <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'hospitals:hospitals_lookup' %}"> Hospital/Center Lookup</a></li>
+                                    </ul>
+                                        <ul class="list-unstyled d-flex m-up">
+                                        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'hospitals:licenses_lookup' %}"> Hospitals Practice License Lookup</a></li>
+                                    </ul>
+                                    <ul class="list-unstyled d-flex m-up">
+                                        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'utilities:offices' %}"> List of RRBN Zonal Offices</a></li>
+                                    </ul>
+
+                                        <ul class="list-unstyled d-flex m-up">
+                                        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> License Categories & Processing Fees</a></li>
+                                    </ul>
+                                    <ul class="list-unstyled d-flex m-up">
+                                        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> Document Verification Service</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="row mt-1 m-top mobile-bottom">
+                    <div class="col-md-12 col-lg-4">
+                        <div class="card card-style-2">
+                            <div class="card-body">
+                                <i class="fa fa-user-tie" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
+                                <h5 class="pb-2" style="margin: -45px 0 0 60px; font-weight: bold;">My Portal Account</h5>
+                                <ul class="list-unstyled d-flex">
+                                    <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> My User Account</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--utility items ends-->
+            </main>
+            <!--main container ends-->
+
+
+
+<!--BODY ENDS-->
+<script>
+    let urlMenu = document.getElementById('dropdown');
+    urlMenu.onchange = function(){
+      let userOption = this.options[this.selectedIndex];
+      if(userOption.value != "nothing"){
+        window.open(userOption.value, "_self", "");
+      }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,191 @@
+{% extends 'base-reg.html'%}
+{% load static %}
+{% block title%}| Frequently Asked Questions {% endblock %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/faq.css' %}" />
+{% endblock %}
+
+
+{% block content %}
+<main class="container border">
+        <div class="row">
+            <div class="col-md-3 bg-success text-center pt-2 pb-1">
+                <p class="text-white">Frequently Asked Questions</p>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-12 pb-5">
+                <div class="container">
+                    <div id="accordion" class="accordion buttom-border">
+                        <div class="card mb-0">
+                            <div class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
+                                <a class="card-title">
+                                    How can I change my password after successful login?
+                                </a>
+                            </div>
+                            <div id="collapseOne" class="card-body collapse" data-parent="#accordion" >
+                                <ol>
+                                    <li class="push-2">Login into the Portal</li>
+                                    <li class="push-2">Click on the drop-down arrow beside your name at the top right of your screen.</li>
+                                    <li class="push-2">Select Account Setting</li>
+                                    <li class="push-2">On the Account screen, click on the Change Password button.</li>
+                                    <li class="push-2"> In the Change Password dialog box which appears, type your new password in the New Password box, and again in the Confirm Password box.</li>
+                                    <li class="push-2">Click the Change button. </li>
+                                </ol>
+                            </div>
+                            <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                <a class="card-title">
+                                    What is the RRBN Monitoring Portal?
+                                </a>
+                            </div>
+                            <div id="collapseTwo" class="card-body collapse" data-parent="#accordion" >
+                                <p>The RRBN Monitoring and Enforcement Portal is an Electronic Platform for Data Consolidation of all major activities carried out by the Monitoring and Enforcement Department of the RRBN in its bid to uphold the mandate of the Board to regulate the Practice of Radiography in Nigeria.
+                                </p>
+                                <p>RRBN Monitoring and Enforcement Portal provides a repository of easily retrievable data of all hospitals dispensing ionizing radation, their addresses, list of equipment, radiographers covering the hospital,practice registration/compliance status, registration and renewal module for ease of registrations/renewals as well as an inspections module for inspections scheduling and real time upload of inspection observations/reports.</p>
+                            </div>
+                            <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                <a class="card-title">
+                                    Who Can Register on the portal?
+                                </a>
+                            </div>
+                            <div id="collapseThree" class="collapse" data-parent="#accordion" >
+                                <div class="card-body">
+                                    <p>Categories of those who can Register on the RRBN Monitoring Portalinclude:</p>
+                                    <ol>
+                                        <li class="push-2">Diagnostic Centre Administrators</li>
+                                        <li class="push-2">Hospital Administrators</li>
+                                        <li class="push-2">Radiography Training Institutions</li>
+                                        <li class="push-2">Research Institutions </li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                                <a class="card-title">
+                                    I forgot my password?
+                                </a>
+                            </div>
+                            <div id="collapseFour" class="collapse" data-parent="#accordion" >
+                                <div class="card-body">
+                                    <ol>
+                                        <li class="push-2">Go to the Login Page, click on the link 'forgot password'.</li>
+                                        <li class="push-2">Type the email address which you used to create the account.</li>
+                                        <li class="push-2">Click 'Send New Password'</li>
+                                        <li class="push-2">A New Password will be sent to your email address.</li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+                                <a class="card-title">
+                                    Is there any financial involvement in registering one's practice on the RRBN Monitoring and Enforcement portal?
+                                </a>
+                            </div>
+                            <div id="collapseFive" class="collapse" data-parent="#accordion" >
+                                <div class="card-body">
+                                    <p>Yes. A mandatory registration/renewal fee of N50,000 is required. Renewal is on an annual basis. </p>
+                                </div>
+                            </div>
+                            <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">
+                                <a class="card-title">
+                                    What are the necessary Requirements for Registration of Radiography Practice with RRBN.
+                                </a>
+                            </div>
+                            <div id="collapseSix" class="collapse" data-parent="#accordion">
+                                <div class="card-body">
+                                    <ol>
+                                        <li class="push-2">Application letter register your practice addressed to the Registrar of RRBN.</li>
+                                        <li class="push-2">Certificate of incorporation of the company (evidence of registration of business name is also acceptable).</li>
+                                        <li class="push-2"> Payment of prescribed fee of N50,000. </li>
+                                        <li class="push-2">Form C07 showing names and particulars of director(s) and radiographer(s).</li>
+                                        <li class="push-2">Letter of undertaking by the managing director of the company to the effect that all matters pertaining to Radiography and Radiography business shall be under the direct management of the Radiographer in-charge.</li>
+                                        <li class="push-2"> Staff Requirements: a. Current Radiography practisinglicence/evidence of payment from Radiographer in-charge (and other radiographers if applicable) b. Letter of resignation from previous employment (from the Radiographer in-charge, if applicable) c. NYSC discharge or exemption certificate (from Radiographer in-charge).</li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven">
+                                <a class="card-title">
+                                    When would one expect email from RRBN scheduling them for inspection after completion of basic registration processes?
+                                </a>
+                            </div>
+                            <div id="collapseSeven" class="collapse" data-parent="#accordion" >
+                                <div class="card-body">
+                                    <p>RRBN undertakes to process all registration processes as soon as possible, typically within 2 weeks of submission of request for registration/renewal of practice.</p>
+                                </div>
+                            </div>
+                            <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEight">
+                                <a class="card-title">
+                                    How can I update a registration done in error?
+                                </a>
+                            </div>
+                            <div id="collapseEight" class="collapse" data-parent="#accordion" >
+                                <div class="card-body">
+                                    <p>To correct a registration done in error, click on the edit change button to update your information.</p>
+                                </div>
+                            </div>
+                            <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseNine">
+                                <a class="card-title">
+                                    What are the means of notification/updates from RRBN on scheduled inspections?
+                                </a>
+                            </div>
+                            <div id="collapseNine" class="collapse" data-parent="#accordion" >
+                                <div class="card-body">
+                                    <p>updated the RRBN Monitoring Portal to ensure notifications are sent to the right address.</p>
+                                </div>
+                            </div>
+                            <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTen">
+                                <a class="card-title">
+                                    Please I just finished uploading my documents on your website. What is the next thing to do?
+                                </a>
+                            </div>
+                            <div id="collapseTen" class="collapse" data-parent="#accordion" >
+                                <div class="card-body">
+                                    <p>Ensure your Contact details are up to date as further information, will be conveyed through your Contact details,especially your email.</p>
+                                </div>
+                            </div>
+                            <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEleven">
+                                <a class="card-title">
+                                  Where is the Head Office of RRBN located?
+                                </a>
+                            </div>
+                            <div id="collapseEleven" class="collapse" data-parent="#accordion" >
+                                <div class="card-body">
+                                    <p>Plot 6, Block 7, IshayaShekari Crescent Off Wole Soyinka Road, 2nd Avenue, Setraco Gwarimpa Estate, Abuja.</p>
+                                </div>
+                            </div>
+                            <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwelve">
+                                <a class="card-title">
+                                    What Payment options are available for Registration/Renewals?
+                                </a>
+                            </div>
+                            <div id="collapseTwelve" class="collapse" data-parent="#accordion" >
+                                <div class="card-body">
+                                    <p>All payments are made through the payments link on the portal or through the Remita platform ./p>
+                                </div>
+                            </div>
+                            <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThirteen">
+                                <a class="card-title">
+                                    How do I start the registration process on the portal?
+                                </a>
+                            </div>
+                            <div id="collapseThirteen" class="collapse" data-parent="#accordion" >
+                                <div class="card-body">
+                                    <p>Click the sign up or register now button on the slider or the â€œCreate an Accountâ€ button under the Accounts menu.</p>
+                                </div>
+                            </div>
+                            <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFourteen">
+                                <a class="card-title">
+                                    Where are RRBN Zonal Offices Located?
+                                </a>
+                            </div>
+                            <div id="collapseFourteen" class="collapse" data-parent="#accordion" >
+                                <div class="card-body">
+                                    <p>RRBN has zonal offices in Lagos, Enugu, Port Harcourt, Kano, Sokoto, Asaba, Calabar and Nnewi. Enquiries and complaints can also be sent as email attachments to monitoring@rrbn.gov.ng.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

@@ -1,0 +1,523 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/*main  Styling*/
+
+html,
+body {
+  line-height: 1.7em;
+}
+
+.container{
+  width: 100%;
+}
+
+/*BODY STARTS*/
+
+.reg-container{
+  width: 80%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.reg-container .progress{
+  width: 80%;
+  height: auto;
+  margin: 0 auto;
+  padding: 10px 0;
+}
+
+.reg-container .progress p{
+  text-align: center;
+  font-size: 17px;
+  margin: 5px 0;
+  color: #111111;
+}
+
+.reg-container .notice{
+  background: rgb(195, 231, 245);
+  width: 100%;
+  height: auto;
+  margin: 5px auto;
+  border-left: 5px solid #DB2925;
+  padding: 2px;
+}
+
+.reg-container .notice .img{
+  float: left;
+  width: 50px;
+  height: 100px;
+  margin: 10px 10px 0 20px;
+}
+
+.reg-container .notice img{
+  width: 50px;
+}
+
+.reg-container .notice .text p{
+  text-align: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 14px;
+}
+
+.reg-container .text2{
+  width: 75%;
+  height: auto;
+  margin: 10px 100px;
+  padding: 1px;
+}
+
+.push-text{
+  padding-left: 10px;
+}
+
+.reg-container .text2 .info{
+  margin-left: 100px;
+  font-size: 16px;
+  color: rgb(49, 46, 46)
+}
+
+.reg-container .text2 p{
+  margin-left: 100px;
+  text-align: left;
+  line-height: 1.2;
+}
+
+.reg-container .text2 p .span1{
+  background: green;
+  padding: 3px 7px;
+  border-radius: 50%;
+  color: #fff;
+  font-family: 'Times New Roman', Times, serif;
+  margin-right: 5px;
+}
+
+.reg-container .text2 p .span2{
+  margin-left: 27px;
+}
+
+.reg-container .button-group{
+  width: 400px;
+  height: auto;
+  margin: 20px auto;
+}
+
+.btn-1{
+  padding: 7px 20px;
+  background: #fff;
+  border: 1px solid black;
+  border-radius: 5px;
+  font-size: 17px;
+  cursor: pointer;
+ }
+
+.btn-2{
+  padding: 7px 20px;
+  background: rgb(248, 246, 127);
+  border: 2px solid rgb(248, 246, 127);
+  border-radius: 5px;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+/*BODY ENDS*/
+
+
+/*MEDIA QUERIES*/
+
+@media screen and (max-width: 768px) {
+.logo-box {
+  float: none;
+  text-align: center;
+}
+
+.logo-box .logo {
+  margin-left: 0px;
+}
+
+
+nav{
+  width: 100%;
+  height: auto;
+}
+
+nav ul{
+  margin-left: 0;
+}
+
+ul li{
+  width: 100%;
+  float: none;
+  text-align: left;
+}
+
+
+ul li a{
+  width: 100%;
+  display: block;
+  padding-left: 25px;
+}
+
+ul li ul{
+  position: static;
+}
+
+ul li ul li a{
+  background: #fff;
+  color: #000;
+}
+
+ul li ul li a:hover{
+  background: #01a372;
+  color: #fff !important;
+}
+
+/* MOBILE BODY tablet CSS STARTS HERE  */
+.reg-container{
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.reg-container .progress{
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+
+.reg-container .progress p{
+  text-align: center;
+  font-size: 17px;
+  margin: 20px 0;
+  color: #111111;
+}
+
+.reg-container .notice{
+  background: rgb(195, 231, 245);
+  width: 90%;
+  height: auto;
+  margin: 10px auto;
+  border-left: 5px solid #DB2925;
+  padding: 2px;
+}
+
+.reg-container .notice .img{
+  float: left;
+  width: 50px;
+  height: 100px;
+  margin: 10px 20px 0 20px;
+}
+
+.reg-container .notice img{
+  width: 50px;
+}
+
+.reg-container .notice .text p{
+  text-align: justify;
+  padding-right: 10px;
+  font-size: 14px;
+}
+
+.reg-container .text2{
+  width: 90%;
+  height: auto;
+  margin: 10px 0px;
+  padding: 1px;
+}
+
+.push-text{
+  padding-left: 10px;
+}
+
+.reg-container .text2 .info{
+  margin-left: 100px;
+  font-size: 16px;
+  color: rgb(49, 46, 46)
+}
+
+.reg-container .text2 p{
+  margin-left: 80px;
+  text-align: left;
+  line-height: 2.1;
+}
+
+.reg-container .text2 p .span1{
+  background: green;
+  padding: 3px 7px;
+  border-radius: 50%;
+  color: #fff;
+  font-family: 'Times New Roman', Times, serif;
+  margin-right: 5px;
+}
+
+.reg-container .text2 p .span2{
+  margin-left: 0px;
+}
+
+.reg-container .button-group{
+  width: 50%;
+  height: auto;
+  margin: 20px auto;
+}
+
+.btn-1{
+  padding: 7px 20px;
+  background: #fff;
+  border: 1px solid black;
+  border-radius: 5px;
+  font-size: 17px;
+ }
+
+.btn-2{
+  padding: 7px 20px;
+  background: rgb(248, 246, 127);
+  border: 2px solid rgb(248, 246, 127);
+  border-radius: 5px;
+  font-size: 17px;
+}
+
+
+/* MOBILE BODY Iphone 6/7/8 plus 414px CSS STARTS HERE */
+@media screen and (max-width: 414px) {
+
+  .reg-container{
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .reg-container .progress{
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .reg-container .progress img{
+    width: 99%;
+    height: auto;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+
+  .reg-container .progress p{
+    text-align: center;
+    font-size: 16px;
+    margin: 20px 0;
+    color: #111111;
+  }
+
+  .reg-container .notice{
+    background: rgb(195, 231, 245);
+    width: 95%;
+    height: auto;
+    margin: 10px auto;
+    border-left: 5px solid #DB2925;
+    padding: 2px;
+  }
+
+  .reg-container .notice .img{
+    float: none;
+    width: 90px;
+    height: 100px;
+    margin: 10px auto -20px auto;
+  }
+
+  .reg-container .notice img{
+    width: 50px;
+  }
+
+  .reg-container .notice .text p{
+    text-align: none;
+    padding-right: 10px;
+    font-size: 14px;
+  }
+
+  .reg-container .text2{
+    width: 100%;
+    height: auto;
+    margin: 10px 0px;
+    padding: 1px;
+  }
+
+  .push-text{
+    padding-left: 10px;
+  }
+
+  .reg-container .text2 .info{
+    margin-left: 10px;
+  }
+
+  .reg-container .text2 p{
+    margin-left: 10px;
+    text-align: left;
+    line-height: 2.1;
+    font-size: 12px;
+  }
+
+  .reg-container .text2 p .span1{
+    background: green;
+    padding: 3px 7px;
+    border-radius: 50%;
+    color: #fff;
+    font-family: 'Times New Roman', Times, serif;
+    margin-right: 5px;
+    font-size: 12px;
+  }
+
+  .reg-container .text2 p .span2{
+    margin-left: 0px;
+    font-size: 12px;
+  }
+
+  .reg-container .button-group{
+    width: 85%;
+    height: auto;
+    margin: 20px auto;
+  }
+
+  .btn-1{
+    padding: 7px 20px;
+    background: #fff;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-size: 17px;
+   }
+
+  .btn-2{
+    padding: 7px 20px;
+    background: rgb(248, 246, 127);
+    border: 2px solid rgb(248, 246, 127);
+    border-radius: 5px;
+    font-size: 17px;
+  }
+
+}
+
+/* MOBILE BODY Iphone 6/7/8 plus 414px CSS ENDS HERE */
+
+/* MOBILE BODY Galaxy s9 360px CSS STARTS HERE */
+
+@media screen and (max-width: 360px) {
+
+.reg-container{
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.reg-container .progress{
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.reg-container .progress img{
+  width: 99%;
+  height: auto;
+  margin: 0 auto;
+  padding: 0;
+}
+
+
+.reg-container .progress p{
+  text-align: center;
+  font-size: 16px;
+  margin: 20px 0;
+  color: #111111;
+}
+
+.reg-container .notice{
+  background: rgb(195, 231, 245);
+  width: 95%;
+  height: auto;
+  margin: 10px auto;
+  border-left: 5px solid #DB2925;
+  padding: 2px;
+}
+
+.reg-container .notice .img{
+  float: none;
+  width: 90px;
+  height: 100px;
+  margin: 10px auto -20px auto;
+}
+
+.reg-container .notice img{
+  width: 50px;
+}
+
+.reg-container .notice .text p{
+  text-align: none;
+  padding-right: 10px;
+  font-size: 14px;
+}
+
+.reg-container .text2{
+  width: 100%;
+  height: auto;
+  margin: 10px 0px;
+  padding: 1px;
+}
+
+.push-text{
+  padding-left: 10px;
+}
+
+.reg-container .text2 .info{
+  margin-left: 10px;
+}
+
+.reg-container .text2 p{
+  margin-left: 10px;
+  text-align: left;
+  line-height: 2.1;
+  font-size: 12px;
+}
+
+.reg-container .text2 p .span1{
+  background: green;
+  padding: 3px 7px;
+  border-radius: 50%;
+  color: #fff;
+  font-family: 'Times New Roman', Times, serif;
+  margin-right: 5px;
+  font-size: 12px;
+}
+
+.reg-container .text2 p .span2{
+  margin-left: 0px;
+  font-size: 12px;
+}
+
+.reg-container .button-group{
+  width: 85%;
+  height: auto;
+  margin: 20px auto;
+}
+
+.btn-1{
+  padding: 7px 20px;
+  background: #fff;
+  border: 1px solid black;
+  border-radius: 5px;
+  font-size: 17px;
+ }
+
+.btn-2{
+  padding: 7px 20px;
+  background: rgb(248, 246, 127);
+  border: 2px solid rgb(248, 246, 127);
+  border-radius: 5px;
+  font-size: 17px;
+}
+}
+/* MOBILE BODY Galaxy s9 360px CSS ENDS HERE */

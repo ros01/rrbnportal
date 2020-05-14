@@ -1,0 +1,53 @@
+{% extends 'base-reg.html'%}
+{% load static %}
+{% block title%}| Contact Us {% endblock %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/contact.css' %}" />
+{% endblock %}
+
+{% block content %}
+
+<main class="container">
+     <div class="row bg-light p-3">
+         <div class="col-md-6">
+             <h6 class="pb-4 text-bold">SEND US A MESSAGE TODAY</h6>
+             <form>
+                 <div class="form-group">
+                     <label for="name">Full Name (Required)</label>
+                     <input type="text" class="form-control" id="name" placeholder="Enter Full Name" required>
+                 </div>
+                 <div class="form-group">
+                     <label for="email">Email address (Required)</label>
+                     <input type="email" class="form-control" id="email" placeholder="Enter Email" required>
+                 </div>
+                 <div class="form-group">
+                     <label for="subject">Subject (Required)</label>
+                     <input type="text" class="form-control" id="subject" placeholder="Enter Subject" required>
+                 </div>
+                  <div class="form-group">
+                     <label for="message">Message  (Required)</label>
+                     <textarea class="form-control" id="message" rows="9" placeholder="Enter Message" required></textarea>
+                 </div>
+                 <button type="submit" class="btn btn-success">Submit</button>
+             </form>
+         </div>
+
+         <div class="col-md-6 push">
+             <h6 class="pb-4 text-bold">OFFICE ADDRESS</h6>
+             <p><span class="phone-email">Phone</span><br>
+             09098795917
+             </p>
+             <hr style="margin-left:-5px; width: 180px; background: #e1e1e1;">
+             <p><span class="phone-email">Email</span><br>
+             monitoring@rrbn.gov.ng
+             </p>
+             <hr style="margin-left:-5px; width: 180px; background: #e1e1e1;">
+             <br>
+
+             <iframe class="frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.0061871017956!2d7.495911421440912!3d9.063199063599567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x104e0bba0d1893b3%3A0x444a6bd9c9d7da7a!2sFederal%20Secretariat%20Abuja!5e0!3m2!1sen!2sng!4v1571347454864!5m2!1sen!2sng" frameborder="0" style="border:0;" allowfullscreen="">
+             </iframe>
+         </div>
+     </div>
+ </main>
+
+{% endblock %}

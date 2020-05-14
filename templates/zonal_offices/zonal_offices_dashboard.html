@@ -1,0 +1,135 @@
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+{% block title%}| Zonal Offices Dashboard {% endblock %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/zonal_officehq.css' %}" />
+{% endblock %}
+
+
+{% block content %}
+
+
+<!--BODY STARTS-->
+
+<main class="container">
+
+    <div class="row mb-3">
+        <div class="col col-lg-12 p-3 adjust" style="background: rgb(182, 227, 245);">
+            <i class="fa fa-info-circle text-white size40"></i>
+            <p class="text-primary">DEAR RRBN {{user.module_name|upper }} USER;<br>
+            Welcome to the Zonal Office Console.<br>
+            Here, you can easily manage inspection schedules, upload inspection reports, access numerous opperational reports, etc.
+            </p>
+        </div>
+    </div>
+
+    <!--utility items-->
+    <div class="row mt-4 mobile-top2">
+        <div class="col-lg-4 col-md-12 push-down grow" style="background:#e1e1e1;">
+                <div class="list-group mt-3">
+                    <button type="button" class="list-group-item list-group-item-action bg-warning d-flex normalize" style="height: 3rem !important;">
+                        <i class="fa fa-tv text-white font-weight-bold mt-2 size14"></i><p class="text-white font-weight-bold size14-mobile mt-mobile"> &nbsp; Centers/Hospital Inspection Statistics</p>
+                    </button>
+                </div>
+                <ul class="list-group mt-2">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Total Pending Inspections
+                        <span class="badge badge-primary badge-pill">0</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Total Complited Inspections
+                        <span class="badge badge-danger badge-pill">2</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Total Ellasped Dealines
+                        <span class="badge badge-success badge-pill">1</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Inspections Scheduled for Today
+                        <span class="badge badge-warning badge-pill text-white">1</span>
+                    </li>
+                </ul>
+                <div class="list-group mt-2">
+                    <a type="button" class="list-group-item list-group-item-action d-flex" style="height: 3rem !important; background: rgb(182, 227, 245);" href="#">
+                        <i class="fa fa-download text-white mt-1 mr-2 size15"></i><p class="text-white size14-mobile mt-mobile2">Download Inspections Template</p>
+                    </a>
+                </div>
+                <ul class="list-group mt-2">
+                    <li class="list-group-item d-flex">
+                        <i class="fa fa-file-word text-warning size24 pr-2 mt-1"></i><P class="mt-1 size14-mobile pt-mobile3"><a style="text-decoration: none; color: #000;" href="#">Hospitals/Centers Inspection Template</a></P>
+                    </li>
+                </ul>
+        </div>
+        <div class="col-lg-8 col-md-12">
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <div class="card card-style-2">
+                        <div class="card-body">
+                            <i class="fa fa-lightbulb" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
+                            <h5 class="pb-2" style="margin: -45px 0 0 60px; font-weight: bold;">Inspections</h5>
+                            <ul class="list-unstyled d-flex">
+                                <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> Schedule Inspections</a></li>
+                            </ul>
+                                <ul class="list-unstyled d-flex m-up">
+                                <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> Inspection Schedules List</a></li>
+                            </ul>
+                            <ul class="list-unstyled d-flex m-up">
+                                <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> Inspection Reports</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                        <div class="card card-style-2">
+                            <div class="card-body">
+                                <i class="fa fa-wrench" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
+                                <h5 class="pb-2" style="margin: -50px 0 0 60px; font-weight: bold;">Utilities</h5>
+                                <ul class="list-unstyled d-flex">
+                                    <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'hospitals:hospitals_lookup' %}"> Hospital/Center Lookup</a></li>
+                                </ul>
+                                    <ul class="list-unstyled d-flex m-up">
+                                    <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> Hospitals Practice License Lookup</a></li>
+                                </ul>
+                                <ul class="list-unstyled d-flex m-up">
+                                    <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'utilities:offices' %}"> List of RRBN Zonal Offices</a></li>
+                                </ul>
+
+                                    <ul class="list-unstyled d-flex m-up">
+                                    <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> License Categories & Processing Fees</a></li>
+                                </ul>
+                                <ul class="list-unstyled d-flex m-up">
+                                    <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> Document Verification Service</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        <div class="card card-style-2">
+                            <div class="card-body">
+                                <i class="fa fa-chart-bar" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
+                                <h5 class="pb-2" style="margin: -45px 0 0 60px; font-weight: bold;"> Reports and Analytics</h5>
+                                <ul class="list-unstyled d-flex">
+                                    <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> BI Reports</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 mobile-bottom">
+                        <div class="card card-style-2">
+                            <div class="card-body">
+                                <i class="fa fa-user-tie" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
+                                <h5 class="pb-2" style="margin: -45px 0 0 60px; font-weight: bold;">My Portal Account</h5>
+                                <ul class="list-unstyled d-flex">
+                                    <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> My User Account</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    <!--utility items ends-->
+</main>
+<!--main container ends-->
+
+
+{% endblock %}

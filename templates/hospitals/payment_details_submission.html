@@ -1,0 +1,98 @@
+{% extends 'hospitals/hospital_base.html'%}
+{% load static %}
+{% block title%}| Welcome {% endblock %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/hospital_dashboard.css' %}">
+{% endblock %}
+{% block content %}
+<main class="container">
+
+    <div class="row mt-3">
+         <div class="col-lg-10 col-md-12 col-sm-12 m-auto">
+      <ul class="prog-ul d-flex list-unstyled">
+        <li class="prog "><small>SUBMIT HOSPITAL REGISTRATION DETAILS</small></li>
+        <li class="prog "><small>ADD PAYMENT DETAILS</small></li>
+        <li class="prog active"><small>FACILITY INSPECTION</small></li>
+      </ul>
+    </div>
+      </div>
+
+        <div class="row bg-success rounded col-md-8 m-auto">
+           
+               
+                <p class="text-white text-justify pt-2">Your payment details has been submitted successfully to RRBN.  Your Application Number is {{object.id}}.  <br>
+                Brief details of your payment are as follows:</p>
+            
+        </div>
+
+
+         <div class="row justify-content-center">
+         <div class="col-lg-8 col-md-8 col-sm-10">
+        
+            <table class="table table-striped"> 
+            <tbody>
+            <tr class="" style="background:white; border-top:2px solid #ecd863">
+            <td width="40%">Application No:</td> 
+            <td width="60%" class="text-left"><b>{{object.application_no}}</b></td> 
+            </tr> 
+            <tr class="" style="background:white; border-top:2px solid #ecd863"> 
+            <td width="40%">Hospital Name:</td> 
+            <td width="60%" class="text-left"><b>{{object.hospital_name}}</b></td> 
+            </tr> 
+            <tr class="" style="background:white; border-top:2px solid #ecd863"> 
+            <td width="40%">License Category:</td> 
+            <td width="60%" class="text-left"><b>{{object.license_category}}</b></td> 
+            </tr>
+            <tr class="" style="background:white; border-top:2px solid #ecd863"> 
+            <td width="40%">RRR Number:</td> 
+            <td width="60%" class="text-left"><b>{{object.rrr_number}}</b></td> 
+            </tr> 
+            <tr class="" style="background:white; border-top:2px solid #ecd863"> 
+            <td width="40%">Receipt Number:</td> 
+            <td width="60%" class="text-left"><b>{{object.receipt_number}}</b></td> 
+            </tr> 
+            </tr>
+            <tr class="" style="background:white; border-top:2px solid #ecd863"> 
+            <td width="40%">Payment Amount:</td> 
+            <td width="60%" class="text-left"><b>{{object.payment_amount}}</b></td> 
+            </tr>
+            <tr class="" style="background:white; border-top:2px solid #ecd863"> 
+            <td width="40%">Payment Method:</td> 
+            <td width="60%" class="text-left"><b>{{object.payment_method}}</b></td> 
+            </tr>
+            <tr class="" style="background:white; border-top:2px solid #ecd863; border-bottom:2px solid #ecd863"> 
+            <td width="40%">Payment Date:</td> 
+            <td width="60%" class="text-left"><b>{{object.payment_date_pretty}}</b></td> 
+            </tr>
+            </tbody>
+            </table> 
+        </div>
+        </div>
+
+          <!-- banner -->
+         <section>
+             
+                 <div class="row justify-content-center">
+                    <div class="col-lg-8 col-md-8 col-sm-10">
+                   
+                        <p>Next step is Facility Inspection. <br>
+                        Once your payment details are validated you will be notified when the physical inspection of your facility has been scheduled for.
+                        </p>
+
+                        
+                        <div class="row justify-content-center align-items-center">
+                        <a href="{% url 'index' %}" class="btn btn-outline-secondary px-4 mx-4"><i class="fa fa-times"></i> Close </a>
+                        
+
+                        </div>
+                   
+                 </div>
+             </div>
+         </section>
+         <!-- end of banner -->  
+
+
+
+
+    </main>
+{% endblock %}

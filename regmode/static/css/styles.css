@@ -1,0 +1,199 @@
+main{
+    margin: 3rem 0;
+}
+.footer_nav{
+    margin: 3rem 0;
+}
+.footer_nav button{
+    margin-right: .5rem;
+
+}
+.dropdown-item{
+    color: #000;
+}
+
+.dropdown-item:hover{
+    background: #fff;
+    color: #01A372;
+}
+
+.dropdown-menu{
+    margin-top: 8px;
+    border-top: none;
+    border-radius: 1px;
+
+}
+
+.nav-link{
+    padding-right: 8rem!important;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+.nav-link:hover {
+    color: rgb(141, 245, 131) !important;
+  }
+
+ body{
+     overflow-x: hidden;
+ }
+
+ .progress{
+     width: 100%;
+     height: auto;
+ }
+
+ .tcolor{
+     background: #32776B;
+ }
+
+ .ft{
+     font-size: 16px;
+     line-height: 1;
+     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+ }
+
+ .frbg{
+     background: #000;
+ }
+
+ .ml{
+     margin-left: 120px;
+ }
+
+ .flink:hover{
+    color: rgb(32, 189, 45) !important;
+ }
+
+ .copyright{
+    width: 100%;
+    background-color: #000;
+    height: 50px;
+    clear: both;
+    overflow: hidden;
+  }
+  .copyright .copyright-container{
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  .copyright .copyright-container p{
+    color: #fff;
+    padding-top: 10px;
+  }
+
+
+footer{
+    border-top: 2px solid rgb(75, 201, 75);
+    padding-top: 5px;
+}
+
+.prog-ul{
+  align-items: center;
+  justify-content: space-between;
+  counter-reset: step;
+}
+
+
+.prog{
+  display: inline-block;
+  position: relative;
+  width: 33.33%;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.prog:before{
+  display: block;
+  height: 50px;
+  width: 50px;
+  border-radius: 20%;
+  background: #e2dfdf;
+  line-height: 50px;
+  text-align: center;
+  content: counter(step);
+  counter-increment: step;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  font-size: 20px;
+}
+
+.prog.active{
+  color:green;
+  font-weight: bolder;
+}
+
+.prog:after{
+  content: "";
+  width: 100%;
+  height: 3px;
+  position: absolute;
+  background: #e2dfdf;
+  top: 25px;
+  left: -50%;
+  z-index: 1;
+}
+
+.prog:first-child:after{
+  content: none;
+}
+
+.prog.active + .prog:after{
+  background: green;
+}
+
+.prog.active:before{
+  background: green;
+  color: #fff;
+}
+
+
+
+
+
+@media screen and (max-width: 768px) {
+
+    .progress{
+        width: 120%;
+        height: auto;
+        margin-left: -50px;
+    }
+
+    .logo{
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+}
+
+@media screen and (max-width: 640px) {
+
+    .logo{
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+    .progress{
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+}
+
+ @media screen and (max-width: 414px) {
+
+    .logo{
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+    .progress{
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+}

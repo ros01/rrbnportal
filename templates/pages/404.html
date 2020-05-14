@@ -1,0 +1,28 @@
+{% extends 'base-reg.html' %}
+{% load static %}
+{% block title %}| Page not found {% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/error404.css' %}" />
+{% endblock %}
+
+
+{% block content %}
+
+
+
+<div class="body">
+     <div class="error">
+         <img src="{% static 'img/robort.jpg' %}" alt="Error 404">
+         <div class="message">
+           <h1 class="first">OH NO!</h1>
+           <h1 class="second">PAGE <span>404 </span>FOUND</h1>
+           <p>This is probably not what you are looking for........</p>
+              <i class="fa fa-caret-right"></i> <a href="{% url 'index' %}">Return to Homepage</a>
+         </div>
+     </div>
+   </div>
+   <div class="clear"></div>
+
+
+  {% endblock %}

@@ -1,0 +1,75 @@
+/*Body*/
+
+.z-container{
+  width: 90%;
+  height: 380px;
+  margin: 0 auto;
+}
+
+.z-box{
+  width: 32%;
+  height: 100px;
+  float: left;
+  margin: 20px 5px 20px 5px;
+  }
+
+.z-box img{
+  width: 70px;
+  height: 85px;
+  margin-right: 10px;
+  float: left;
+
+}
+
+.z-box p{
+  font-family: helvetica;
+  font-size: 11.5px;
+  line-height: 1.8;
+}
+
+
+/*Body ends*/
+
+/*MEDIA QUERIES*/
+
+@media screen and (max-width: 768px) {
+.logo-box {
+  float: none;
+  text-align: center;
+}
+
+.header-links {
+  text-align: center;
+  margin-top: -40px;
+  float: none;
+  display: none;
+}
+
+.nav {
+  height: auto;
+}
+
+.nav ul li {
+  float: none;
+}
+
+.nav ul li a:hover {
+  background: rgb(206, 55, 55);
+  color: #fff;
+}
+
+/*mobile Body*/
+.z-box{
+  width: 100%;
+  height: 100px;
+  margin: 30px auto;
+}
+.z-box p{
+    font-size: 10.5px;
+}
+
+
+/*mobile Body ends*/
+
+
+}

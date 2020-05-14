@@ -1,0 +1,9 @@
+{% autoescape off %}
+Hi {{ user.hospital_name }},
+
+Please click the following link to confirm your email and continue your registration:
+
+http://{{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}
+{% endautoescape %}
+
+

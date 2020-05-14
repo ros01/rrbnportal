@@ -1,0 +1,30 @@
+Dear {{object.hospital_name|upper }},
+
+Your payment details have been submitted successfully to RRBN.
+See brief details below:
+
+Application Number: {{object.id}}
+
+Hospital Name: {{object.hospital_name}}
+
+RRR Number: {{object.rrr_number}}
+
+Receipt Number: {{object.receipt_number}}
+
+Payment Amount: {{object.payment_amount}}
+
+Payment Time: {{object.payment_date}}
+
+
+
+We will review your submission and revert accordingly.
+
+Thank You!
+
+
+
+Sincerely,
+
+Radiographers Registration Board of Nigeria (RRBN)
+
+monitoring.rrbn.gov.ng

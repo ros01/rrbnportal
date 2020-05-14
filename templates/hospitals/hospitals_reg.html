@@ -1,0 +1,107 @@
+{% extends 'base-reg.html'%}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title%}| Welcome {% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}" />
+{% endblock %}
+
+
+{% block content %}
+
+<main class="container">
+  <h1 class="text-center">Register Your Centre Here</h1>
+        <div class="row">
+            <div class="col-md-8 m-auto">
+                <img class="logo" src="{% static 'img/progress_bar.jpg' %}" alt="progress bar">
+            </div>
+        </div>
+        <div class="row bg-success rounded">
+            <div class="col-md-6 m-auto">
+                <p class="text-center text-white pt-2">Fill the Form below. All fields in asterisk (*) are required.</p>
+            </div>
+        </div>
+
+
+
+        <div class="row mt-5">
+            <div class="col-md-12 m-auto">
+
+            <form method="POST" action= "." enctype="multipart/form-data">
+
+                {% csrf_token %}
+                   <div class="form-row">
+                                       <div class="form-group col-md-4 mb-0">
+                                         {{ form.hospital_name|as_crispy_field }}
+                                       </div>
+                                       <div class="form-group col-md-4 mb-0">
+                                         {{ form.rc_number|as_crispy_field }}
+                                       </div>
+                                       <div class="form-group col-md-4 mb-0">
+                                         {{ form.phone|as_crispy_field }}
+                                       </div>
+                                     </div>
+                                     <div class="form-row">
+                                       <div class="form-group col-md-4 mb-0">
+                                         {{ form.email|as_crispy_field }}
+                                       </div>
+                                       <div class="form-group col-md-4 mb-0">
+                                         {{ form.city|as_crispy_field }}
+                                       </div>
+                                       <div class="form-group col-md-4 mb-0">
+                                         {{ form.state|as_crispy_field }}
+                                       </div>
+                                     </div>
+
+                                      {{ form.address|as_crispy_field }}
+                                  
+                                     <div class="form-group col-md-4 mb-0">
+                                       <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                                         <label class="form-check-label" for="invalidCheck">
+                                           I agree that all my details are correct!
+                                         </label>
+                                             <div class="invalid-feedback">
+                                               You must agree before submitting.
+                                              </div>
+                                     </div>
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-12 m-auto">
+                                    <button type="button" class="btn btn-outline-dark">&times; Cancel</button>
+                                   <a href="{% url 'hospitals:start-reg' %}" <button type="button" class="btn btn-danger">&#8678; Go Back</button></a>
+                                <button type="submit" class="btn btn-success">Proceed &#x21E8;</button>
+                                </div>
+                    </div>
+
+              </form>
+          </div>
+        </div>
+    </main>
+
+    <script src="./js/jquery-3.3.1.slim.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/app.js"></script>
+    <script>
+            // Example starter JavaScript for disabling form submissions if there are invalid fields
+            (function() {
+              'use strict';
+              window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                  form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                      event.preventDefault();
+                      event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                  }, false);
+                });
+              }, false);
+            })();
+            </script>
+{% endblock %}

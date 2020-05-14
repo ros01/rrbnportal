@@ -1,0 +1,65 @@
+{% extends 'base-reg.html'%}
+{% load static %}
+
+{% block title%}| Portal Benefits {% endblock %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/benefits.css' %}" />
+{% endblock %}
+
+
+{% block content %}
+<main class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5 class="font-weight-bold pt-2 pb-2 pl-3">Who We Are</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 p-5">
+                        <div class="row bg-light p-3">
+                            <div class="col-lg-5 col-md-12 col-sm-12 curved bg-white pt-4 pb-4 down">
+                                <center><i class="fa fa-user-tie icon mb-2"></i></center>
+                                <center><a class="link-warning" href="{% url 'about' %}">About RRBN Inspection & Monitoring Portal</a></center>
+                            </div>
+                            <div class="col-lg-5 offset-lg-2 col-md-12 curved bg-white pt-4 pb-4">
+                                <center><i class="fa fa-building icon mb-2"></i></center>
+                                <center><a class="link-warning" href="{% url 'mission' %}">Our Mission</a></center>
+                            </div>
+                        </div>
+                        <div class="row bg-light p-3">
+                            <div class="col-lg-5 col-md-12 col-sm-12 curved bg-white pt-4 pb-4 down">
+                                <center><i class="fa fa-globe icon mb-2"></i></center>
+                                <center><a class="link-warning" href="{% url 'mandate' %}">The Inspection & Monitoring Mandate</a></center>
+                            </div>
+                            <div class="col-lg-5 offset-lg-2 col-md-12 curved bg-white pt-4 pb-4">
+                                <center><i class="fa fa-suitcase icon mb-2"></i></center>
+                                <center><a class="link-warning" href="{% url 'benefits' %}">Benefits</a></center>
+                            </div>
+                            <div class="col-md-12 text-center pt-3">Have a question?</div>
+                            <div class="col-md-12 text-center pt-3"><a class="link-warning" href="{% url 'faq' %}">Click here to visit our Faq section</a></div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <br>
+                        <img class="mt-4 mb-1" src="{% static 'img/logo.jpg' %}" alt="logo">
+                        <h5 class="orangeish font-weight-bold">Benefits of the RRBN M&E Portal</h5>
+                        <p>The RRBN Monitoring and Enforcement Portal completely automates all core processes involved in the application and renewal of Radiography Practice in Nigeria within the Radiographers Registration Board of Nigeria. With the Portal in place, Hospitals, Institutions and Diagnostic centre Administrators can register or renew the practices from the comfort of the hospitals or centres. Listed below is a summary of benefits of the portal:
+                        </p>
+                        <ul style="list-style: none;">
+                            <li class="left-text"><i class="fa fa-arrow-circle-right mb-3 orangeish"></i> &nbsp;Convenient and Easy to Use </li>
+                            <li class="left-text"><i class="fa fa-arrow-circle-right mb-3 orangeish"></i> &nbsp;&nbsp;High System Security</li>
+                            <li class="left-text"><i class="fa fa-arrow-circle-right mb-3 orangeish"></i> &nbsp;&nbsp;e-Payment</li>
+                            <li class="left-text"><i class="fa fa-arrow-circle-right mb-3 orangeish"></i> &nbsp;&nbsp;Electronic Data Storage and Processing</li>
+                            <li class="left-text"><i class="fa fa-arrow-circle-right mb-3 orangeish"></i> &nbsp;&nbsp;Paperless, Flexible and Robust</li>
+                            <li class="left-text"><i class="fa fa-arrow-circle-right mb-3 orangeish"></i> &nbsp;Real time Notifications and Alerts</li>
+                            <li class="left-text"><i class="fa fa-arrow-circle-right mb-3 orangeish"></i> &nbsp;Numerous Reports for Administrative Purposes</li>
+                            <li class="left-text"><i class="fa fa-arrow-circle-right orangeish"></i> &nbsp;A Digital Experience Platform</li>
+                        </ul>
+                    </div>
+                </div>
+            </main>
+
+
+
+
+{% endblock %}
