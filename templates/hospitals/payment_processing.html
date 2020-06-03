@@ -10,151 +10,141 @@
 
 {% block content %}
 
-<main class="container">
-    <h1 class="text-center">Please add your payment details</h1>
+<div class="container">
+    <section class="px-2 pt-3">
+   
+    <div class="row mt-2 ">
+    <div class="col text-center mb-1">
+    <p class="text-secondary display-4 paragraph2">Radiography Practice License Application - Enter Payment Details</p>
+    <hr>
+    </div>
+    </div>
+
+    </section>
+
+
     
-        
-
-
     <div class="col-lg-10 col-md-12 col-sm-12 m-auto">
       <ul class="prog-ul d-flex list-unstyled">
-        <li class="prog "><small>SUBMIT HOSPITAL REGISTRATION DETAILS</small></li>
-        <li class="prog active"><small>ADD PAYMENT DETAILS</small></li>
-        <li class="prog "><small>FACILITY INSPECTION</small></li>
+        <li class="prog "><small>HOSPITAL INFO SUBMISSION</small></li>
+             <li class="prog active"><small>PAYMENT INFORMATION UPLOAD</small></li>
+             <li class="prog "><small>FACILITY INSPECTION</small></li>
+             <li class="prog "><small>LICENSE ISSUANCE</small></li>
       </ul>
     </div>
+    
 
 
-
-
-
-
-
-
-    <div class="row bg-success rounded">
-        <div class="col-md-6 m-auto">
-            <p class="text-center text-white pt-2">Fill the Form below. All fields in asterisk (*) are required.</p>
+<section>
+    <div class="container-fluid">
+        <div class="row rounded py-1 justify-content-center align-items-center" style="background-color: #bfe3f8;">
+           <div class="row">
+               <i class="fas fa-info-circle fa-2x py-1" style="color: #05567b;"></i>      
+                <p class="lead ml-3 py-auto my-auto" style="color: #05567b;">
+                Enter payment details below. All fields are required. </p>
         </div>
     </div>
+</div>
+</section>
 
-
-
-    <div class="row mt-5">
-        <div class="col-md-12 m-auto">
-
-            
-                <form method="POST" action="." enctype="multipart/form-data">
-                {% csrf_token %}
-
-                <input type="hidden" name="practice_manager" {% if user.is_authenticated %} value="{{ request.user.id }}" {% endif %} required id="id_practice_manager">
-
-
-
-                
-                <div class="form-row">
-                 <div class="form-group ol col-lg-6 m-auto">
-                {{ form.application_no|as_crispy_field }}
-                </div>
-                </div>
-
-
-
-
-
-               <div class="form-row"> 
-                <div class="form-group ol col-lg-6 m-auto">
-
-                <div id="div_id_hospital_name" class="form-group">
-               <label for="id_hospital_name" class=" requiredField">
-                Hospital name<span class="asteriskField">*</span>
-                </label>
-                <div class="">
-                <input type="text" name="hospital_name" maxlength="200" class="textinput textInput form-control" {% if user.is_authenticated %} value="{{ user.hospital_name }}" {% endif %} required id="id_hospital_name" readonly>
-                </div>
-               </div>
-               </div>
-               </div>
-
-               <div class="form-row"> 
-                <div class="form-group ol col-lg-6 m-auto">
-                
-                <div id="div_id_license_category" class="form-group">
-               <label for="id_license_category" class=" requiredField">
-                License Category<span class="asteriskField">*</span>
-                </label>
-                <div class="">
-                 <input type="text" name="license_category" maxlength="200" class="textinput textInput form-control" 
-                {% if user.is_authenticated %} value="{{ user.hospital_type }}" {% endif %}
-                required id="id_license_category" readonly>
-                </div>
-                </div>
-
-                </div>
-                 </div>
-
-                <div class="form-row">
-                 <div class="form-group ol col-lg-6 m-auto">
-                {{ form.rrr_number|as_crispy_field }}
-                </div>
-                </div>
-
-
-                <div class="form-row">
-                 <div class="form-group ol col-lg-6 m-auto">
-                {{ form.receipt_number|as_crispy_field }}
-                </div>
-                </div>
-
-
-                <div class="form-row">
-                <div class="form-group ol col-lg-6 m-auto">
-               {{ form.payment_amount|as_crispy_field }}
-               </div>
-               </div>
-
-
-                <div class="form-row">
-                 <div class="form-group ol col-lg-6 m-auto">
-                {{ form.payment_method|as_crispy_field }}
-                </div>
-                </div>
-
+   
 
                
+<section class="px-3">
+<div class="container-fluid">
+
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8 col-sm-10 bg-light mx-4 my-2 p-3" >
+    <form method="POST" action="." enctype="multipart/form-data" class="text-muted">
+    {% csrf_token %}
+       <input type="hidden" name="practice_manager" {% if user.is_authenticated %} value="{{ request.user.id }}" {% endif %} required id="id_practice_manager">
 
 
-               
-                
-              
-               
+       <input type="hidden" name="phone"  value="{{ object.phone }}"  required id="id_phone">
 
-                <div class="form-row">
-                <div class="form-group ol col-lg-6 m-auto">
-                <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
-                <label class="form-check-label" for="invalidCheck">
-                I agree that all my details are correct!
-                </label>
-                <div class="invalid-feedback">
-                You must agree before submitting.
-                </div>
-                </div>
-                </div>
+       <input type="hidden" name="email"  value="{{ object.email }}"  required id="id_email">
+
+       <input type="hidden" name="state"  value="{{ object.state }}"  required id="id_state">
+
+       <input type="hidden" name="city"  value="{{ object.city }}"  required id="id_city">
+
+       <input type="hidden" name="address"  value="{{ object.address }}"  required id="id_address">
+
+       <input type="hidden" name="services"  value="{{ object.services }}"  required id="id_services">
+
+       <input type="hidden" name="equipment"  value="{{ object.equipment }}"  required id="id_equipment">
+
+       <input type="hidden" name="radiographers"  value="{{ object.radiographers }}"  required id="id_radiographers">
 
 
-                <div class="row justify-content-center align-items-center">
-                       
-                <button type="button" class="btn btn-outline-secondary px-4 mx-4">&times; Cancel</button>
-                           
-                <a href="{% url 'hospitals:status' %}" class="btn btn-dark text-white px-4 mx-4"><i class="fa fa-times"></i> Go Back</a>
-                <button type="submit" class="btn btn-success px-4 mx-4" name="_save">Proceed &#x21E8;</button>
-                 </div>
-              
-                    
 
+
+            <div class="form-group">
+            <label for="id_application_no" class=" requiredField">
+            Application no<span class="asteriskField">*</span></label>
+            <input type="text" name="application_no" class="form-control"  {% if user.is_authenticated %}   value="{{ object.id }}" {% endif %}  required id="id_application_no"  id="div_id_application_no" readonly>
+            </div>
+
+           
+
+
+            <div class="form-group">
+            <label for="id_hospital_name" class=" requiredField">
+            Hospital name<span class="asteriskField">*</span></label>
+            <input type="text" name="hospital_name" class="form-control" {% if user.is_authenticated %} value="{{ user.hospital_name }}" {% endif %} required id="id_hospital_name"  id="div_id_hospital_name" readonly>
+            </div>
+
+
+            <div class="form-group">
+            <label for="id_license_category" class=" requiredField">
+            License Category<span class="asteriskField">*</span></label>
+            <input type="text" name="license_category" class="form-control" {% if user.is_authenticated %} value="{{ user.hospital_type }}" {% endif %} required id="id_license_category"  id="div_id_license_category" readonly>
+            </div>
+
+            <div class="form-group">  
+            {{ form.rrr_number|as_crispy_field }} 
+            </div>
+
+            <div class="form-group">  
+            {{ form.receipt_number|as_crispy_field }} 
+            </div>
+
+            <div class="form-group">  
+            {{ form.payment_amount|as_crispy_field }}
+            </div>
+
+            <div class="form-group">  
+           {{ form.payment_method|as_crispy_field }} 
+            </div>
+
+
+            <div class="form-group">  
+            {{ form.payment_receipt|as_crispy_field }} 
+             </div>
+
+            <div class="row ml-4">
+            <div class="form-group">
+            <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+            <label class="form-check-label" for="invalidCheck">
+            I agree that all my details are correct!
+            </label>
+            <div class="invalid-feedback">
+            You must agree before submitting.
+            </div>
+            </div>
+            </div>
+            <div class="row justify-content-center align-items-center">
+            <a href="{% url 'hospitals:hospitals_dashboard' %}"class="btn btn-outline-secondary px-2 mx-2 py-1"><i class="fa fa-times"></i> Cancel</a>                     
+            <a href="{% url 'hospitals:payment_table' %}" class="btn btn-outline-warning px-2 mx-2 py-1"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Go Back</a>
+            <button type="submit" class="btn btn-success px-2 mx-2 py-1" name="_save">Proceed &#x21E8;</button>
+            </div>
             </form>
-        </div>
-    </div>
-</main>
+            </div>
+            </div>
+
+            </div>
+            </section>
+</div>
 
 
 

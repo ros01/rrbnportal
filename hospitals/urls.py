@@ -6,7 +6,9 @@ from .views import (
     HospitalUpdateView,
     PaymentListView,
     PaymentCreateView,
-    PaymentUpdateView
+    PaymentUpdateView,
+    InspectionListView,
+    InspectionView,
 
 )
 
@@ -24,12 +26,14 @@ urlpatterns = [
 
     #path('<int:id>/', views.payment_table, name='payment_table'),
     #path('payment_table', views.payment_table, name='payment_table'),
-
+    path('inspection_table/', InspectionListView.as_view(), name='inspection_table'),
     path('payment_table/', PaymentListView.as_view(), name='payment_table'),
-    path('inspection_table', views.inspection_table, name='inspection_table'),
+    #path('inspection_table', views.inspection_table, name='inspection_table'),
     path('license_table', views.license_table, name='license_table'),
     path('register/', HospitalCreateView.as_view(), name='hospitals_register'),
     path('<int:id>/payment_processing/', PaymentCreateView.as_view(), name='payment_processing'),
+    path('<int:id>/inspection_processing/', InspectionView.as_view(), name='inspection_processing'),
+    #path('<int:id>', views.registration, name='registration'),
     
     #path('payment_details', views.payment_details, name='payment_details'),
     path('<int:id>/payment_update/', PaymentUpdateView.as_view(), name='payment_update'),

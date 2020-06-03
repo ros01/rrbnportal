@@ -5,94 +5,123 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/hospital_dashboard.css' %}">
 {% endblock %}
 {% block content %}
-<main class="container">
-
-    <div class="row mt-3">
-         <div class="col-lg-10 col-md-12 col-sm-12 m-auto">
-      <ul class="prog-ul d-flex list-unstyled">
-        <li class="prog "><small>SUBMIT HOSPITAL REGISTRATION DETAILS</small></li>
-        <li class="prog "><small>ADD PAYMENT DETAILS</small></li>
-        <li class="prog active"><small>FACILITY INSPECTION</small></li>
-      </ul>
+    <div class="container">
+    <section class="p-2">
+   
+    <div class="row mt-2 ">
+    <div class="col text-center mb-3">
+    <p class="text-secondary display-4 paragraph2">Radiography Practice License Application - Payment Submission Confirmation</p>
+    <hr>
     </div>
-      </div>
+    </div>
 
-        <div class="row bg-success rounded col-md-8 m-auto">
-           
-               
-                <p class="text-white text-justify pt-2">Your payment details has been submitted successfully to RRBN.  Your Application Number is {{object.id}}.  <br>
-                Brief details of your payment are as follows:</p>
-            
-        </div>
+    </section>
 
 
-         <div class="row justify-content-center">
-         <div class="col-lg-8 col-md-8 col-sm-10">
+
+    <div class="row mt-0 mb-3">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+    <ul class="prog-ul d-flex list-unstyled">
+    <li class="prog "><small>HOSPITAL INFO SUBMISSION</small></li>
+    <li class="prog active"><small>PAYMENT INFORMATION UPLOAD</small></li>
+    <li class="prog "><small>FACILITY INSPECTION</small></li>
+    <li class="prog "><small>LICENSE ISSUANCE</small></li>
+    </ul>
+    </div>
+    </div>
+
+
+    <section>
+    <div class="container mx-auto">
+    <div class="row rounded pl-3 justify-content-center align-items-center" style="background-color: #bfe3f8;">
+    <div class="col-md-1 col-lg-1 col-sm-2 pl-1 pt-sm-2 py-auto my-auto">
+    <i class="fas fa-info-circle fa-2x" style="color: #05567b;"></i>       
+    </div>
+    <div class="col-md-11 col-lg-11 col-sm-10 mt-1 pt-1 pl-1">
+    <p class="lead" style="color: #05567b;">
+    Your payment details has been submitted successfully to RRBN. Brief details of your payment are as follows:</p>           
+    </div>
+    </div>
+    </div>
+    </section>
+
+
+        <section>
+        <div class="row justify-content-center align-items-center">
+        <div class="col-md-6 mt-3">
+            <div class="col-md-12">
+
+                <div class="row">
+                    <p class="col-5 lead">Application Number:</p>
+                    <p class="col-6 lead"><strong>{{object.id}}</strong></p>
+                </div>
+
+                 <div class="row">
+                    <p class="col-5 lead">Hospital Name:</p>
+                    <p class="col-6 lead"><strong>{{object.hospital_name}}</strong></p>
+                </div>
+
+                <div class="row">
+                    <p class="col-5 lead">License Category:</p>
+                    <p class="col-6 lead"><strong>{{object.license_category}}</strong></p>
+                </div>
+
+                <div class="row">
+                    <p class="col-5 lead">RRR Number:</p>
+                    <p class="col-6 lead"><strong>{{object.practice_manager.payment.rrr_number}}</strong></p>
+                
+                </div>
+
+                <div class="row">
+                    <p class="col-5 lead">Receipt Number:</p>
+                    <p class="col-6 lead"><strong>{{object.practice_manager.payment.receipt_number}}</strong></p>
+                </div>
+
+                <div class="row">
+                    <p class="col-5 lead">Payment Amount:</p>
+                    <p class="col-6 lead"><strong>{{object.practice_manager.payment.payment_amount}}</strong></p>
+                </div>
+
+                <div class="row">
+                    <p class="col-5 lead">Payment Method:</p>
+                    <p class="col-6 lead"><strong>{{object.practice_manager.payment.payment_method}}</strong></p>
+                </div>
+                <div class="row">
+                    <p class="col-5 lead">Payment Date:</p>
+                    <p class="col-6 lead"><strong>{{object.practice_manager.payment.payment_date_pretty}}</strong></p>
+                </div>
         
-            <table class="table table-striped"> 
-            <tbody>
-            <tr class="" style="background:white; border-top:2px solid #ecd863">
-            <td width="40%">Application No:</td> 
-            <td width="60%" class="text-left"><b>{{object.application_no}}</b></td> 
-            </tr> 
-            <tr class="" style="background:white; border-top:2px solid #ecd863"> 
-            <td width="40%">Hospital Name:</td> 
-            <td width="60%" class="text-left"><b>{{object.hospital_name}}</b></td> 
-            </tr> 
-            <tr class="" style="background:white; border-top:2px solid #ecd863"> 
-            <td width="40%">License Category:</td> 
-            <td width="60%" class="text-left"><b>{{object.license_category}}</b></td> 
-            </tr>
-            <tr class="" style="background:white; border-top:2px solid #ecd863"> 
-            <td width="40%">RRR Number:</td> 
-            <td width="60%" class="text-left"><b>{{object.rrr_number}}</b></td> 
-            </tr> 
-            <tr class="" style="background:white; border-top:2px solid #ecd863"> 
-            <td width="40%">Receipt Number:</td> 
-            <td width="60%" class="text-left"><b>{{object.receipt_number}}</b></td> 
-            </tr> 
-            </tr>
-            <tr class="" style="background:white; border-top:2px solid #ecd863"> 
-            <td width="40%">Payment Amount:</td> 
-            <td width="60%" class="text-left"><b>{{object.payment_amount}}</b></td> 
-            </tr>
-            <tr class="" style="background:white; border-top:2px solid #ecd863"> 
-            <td width="40%">Payment Method:</td> 
-            <td width="60%" class="text-left"><b>{{object.payment_method}}</b></td> 
-            </tr>
-            <tr class="" style="background:white; border-top:2px solid #ecd863; border-bottom:2px solid #ecd863"> 
-            <td width="40%">Payment Date:</td> 
-            <td width="60%" class="text-left"><b>{{object.payment_date_pretty}}</b></td> 
-            </tr>
-            </tbody>
-            </table> 
-        </div>
-        </div>
+    </div>
+    </div>
+    </div>    
+</section>
+
+
+
+
 
           <!-- banner -->
          <section>
+
+
+                <div class="row mt-2">
+                <div class="col-lg-6 col-md-6 m-auto">
+                <p class="lead text-uppercase" style="color: #05567b;"><strong>Next step is facility inspection</strong></p>
+                <p class="lead" style="color: #05567b;"><strong>Once your payment details are validated you will be notified when the physical inspection of your facility has been scheduled for.</strong></p>
+                
+                </div>
+                </div>
              
-                 <div class="row justify-content-center">
-                    <div class="col-lg-8 col-md-8 col-sm-10">
-                   
-                        <p>Next step is Facility Inspection. <br>
-                        Once your payment details are validated you will be notified when the physical inspection of your facility has been scheduled for.
-                        </p>
+                <hr>
 
-                        
-                        <div class="row justify-content-center align-items-center">
-                        <a href="{% url 'index' %}" class="btn btn-outline-secondary px-4 mx-4"><i class="fa fa-times"></i> Close </a>
-                        
-
-                        </div>
-                   
+                <div class="d-flex justify-content-center">   
+                <a href="{% url 'hospitals:hospitals_dashboard' %}" class="text-dark py-1 mr-3 mt-6 btn btn-outline-info"><i class="fas fa-times"></i> Close</a>   
+                </div>
+                <br>
                  </div>
              </div>
          </section>
          <!-- end of banner -->  
 
-
-
-
-    </main>
+</div>
 {% endblock %}

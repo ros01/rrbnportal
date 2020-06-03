@@ -1,6 +1,9 @@
 main{
     margin: 3rem 0;
 }
+
+
+
 .footer_nav{
     margin: 3rem 0;
 }
@@ -47,6 +50,10 @@ main{
 
  .tcolor{
      background: #32776B;
+ }
+
+ .gcolor{
+     background: #41963f;
  }
 
  .ft{

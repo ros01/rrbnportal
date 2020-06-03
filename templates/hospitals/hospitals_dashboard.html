@@ -1,4 +1,4 @@
-{% extends 'hospitals/hospital_base.html'%}
+{% extends 'hospitals/hospitals_base.html'%}
 {% load static %}
 {% block title%}| Hospitals Dashboard {% endblock %}
 {% block styles %}
@@ -9,21 +9,25 @@
 {% block content %}
    <!--main containere-->
 
-       <main class="container">
+       <div class="container">
            <div class="row">
                <div class="col-md-12 d-flex justify-content-between">
-                   <h2 class="text-muted text-small">Dashboard</h2>
-                   <h5 class="mt-2 mt-360 text-muted text-small">Hospital Code: NOT YET ASSIGNED</h5>
+                  <p class="text-secondary display-4 paragraph mt-2">Dashboard</p>
+                   <h5 class="mt-4 text-muted text-small">Hospital Code: NOT YET ASSIGNED</h5>
                </div>
                <div class="underline ml-4"></div>
            </div>
 
-           <div class="row green pt-3 pb-3 d-flex ">
+
+            <div class="row rounded pl-3 justify-content-center align-items-center" style="background-color: #bfe3f8;">
+            <div class="col-md-1 mt-0 pt-0">
                <i class="fa fa-info icon text-white"></i>
-               <div class="col-md-11 m-auto text-white">
-                   Welcome to RRBN Monitoring and Enforcement Portal.</br>
-                   The portal enables you the hospital admin to perform several Radiography Practice License Application processing
-                   operations online from the comfort of your hospital.
+                </div>
+
+               <div class="col-md-11 mt-2 pt-2">
+                <p class="lead" style="color: #05567b;">Welcome to RRBN Monitoring and Enforcement Portal.<br>
+                   The portal enables you the hospital admin to perform several Radiography Practice License Application processing operations online from the comfort of your hospital.</p>
+
                </div>
            </div>
            <div class="row d-flex">
@@ -143,7 +147,7 @@
                    </table>
                </div>
            </div>
-       </main>
+       </div>
        <!--main container ends-->
 
 

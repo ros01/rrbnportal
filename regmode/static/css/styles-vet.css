@@ -1,6 +1,31 @@
 main{
     margin: 3rem 0;
 }
+
+p {
+  font-family: "Helvetica Neue";
+
+}
+
+.paragraph {
+  font-size: 2.5rem;
+
+}
+.paragraph2 {
+  font-size: 2.0rem;
+
+}
+.paragraph3 {
+  font-size: 1.0rem;
+
+}
+
+h1 {
+  font-family: "Helvetica Neue";
+}
+h3 {
+  font-family: "Helvetica Neue";
+}
 .footer_nav{
     margin: 3rem 0;
 }

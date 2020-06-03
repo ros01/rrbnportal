@@ -16,132 +16,115 @@
 
 <body>
     <header>
-        <div class="row">
-            <div class="col-lg-5 m-2">
-                <img class="logo ml" src="{% static 'img/rrbn-logo.png' %}" alt="">
-            </div>
+        <div class="container-fluid">
+        <div class="col-md-6 mt-2 py-2">
+        <img class="logo ml" src="{% static 'img/rrbn-logo.png' %}" alt="">
         </div>
-        <div class="row bg-success-2 mt-2">
-            <div class="container pt-4 pb-4">
-                <div class="row">
-                    <div class="col-md-3 col-sm-12 mb-2 ml-3"><i class="fa fa-cogs text-white big"></i><span
-                            class=" ml-3 text-white font-weight-bold size23">{{ user.module_name }}</span></div>
-                    <div class="col-md-4 col-sm-12 mb-2 push-left offset-md-1"><i
-                            class="fa fa-user text-white big"></i><span
-                            class=" ml-3 text-white font-weight-bold size23">{{ user.first_name }}
-                            {{ user.last_name }}</span></div>
-                    <div class="col-md-3 col-sm-12 mr-3">
-                        <div class="row">
-                            <div class="dropdown">
-                                {% if user.role == "Monitoring" %}
-                                <a class="text-white mr-1 btn btn-warning dropdown-toggle" href="#" role="button"
-                                    id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
-                                    Go to
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="{% url 'monitoring:monitoring_dashboard' %}">Dashboard</a>
-                                    <a class="dropdown-item" href="{% url 'monitoring:registration_list' %}">Vet Registration Applications</a>
-                                    <a class="dropdown-item" href="#">Schedule Inspections</a>
-                                    <a class="dropdown-item" href="#">Inspection Schedules list</a>
-                                    <a class="dropdown-item" href="#">Inspection Reports</a>
-                                    <a class="dropdown-item"
-                                        href="{% url 'hospitals:hospitals_lookup' %}">Hospitals/Centers Lookup</a>
-                                    <a class="dropdown-item" href="#">Radiography
-                                        License Lookup</a>
-                                    <a class="dropdown-item" href="{% url 'utilities:offices' %}">List of RRBN Zonal
-                                        Offices</a>
-                                    <a class="dropdown-item" href="#">License Fees</a>
-                                    <a class="dropdown-item" href="#">BI Reports</a>
-                                    <a class="dropdown-item" href="#">My User Account</a>
-                                </div>
+        </div>
+        
+        <div class="row gcolor mt-2">
+        <div class="container pt-2 pb-2">
+        <div class="row justify-content-center align-items-center">
+        <div class="col-md-3 col-sm-12 mb-2 ml-2">
+        <i class="fas fa-cogs fa-2x text-white my-1"></i>
+        <span class=" ml-3 text-white font-weight-bold size23">{{ user.module_name}}</span>
+        </div>
+        <div class="col-md-4 col-sm-12 mb-2 push-left offset-md-1">
+        <i class="fas fa-user fa-2x text-white my-1"></i>
+        <span class=" ml-3 text-white font-weight-bold size23">{{ user.first_name }} {{ user.last_name }}</span>
+        </div>
+        
+        <div class="col-md-3 mr-md-0 col-sm-12 mx-auto px-0">
+        <div class="d-flex justify-content-end">
+        <div class="dropdown">
+        {% if user.role == "Monitoring" %}
+        <a class="text-white mr-3 pb-1 px-4 btn btn-warning dropdown-toggle" href="#" role="button"
+        id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Go to</a><div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" href="{% url 'monitoring:monitoring_dashboard' %}">Dashboard</a>
+        <a class="dropdown-item" href="{% url 'monitoring:registration_list' %}">Vet Registration Applications</a>
+        <a class="dropdown-item" href="#">Schedule Inspections</a>
+        <a class="dropdown-item" href="#">Inspection Schedules list</a>
+        <a class="dropdown-item" href="#">Inspection Reports</a>
+        <a class="dropdown-item" href="{% url 'hospitals:hospitals_lookup' %}">Hospitals/Centers Lookup</a>
+        <a class="dropdown-item" href="#">Radiography License Lookup</a>
+        <a class="dropdown-item" href="{% url 'utilities:offices' %}">List of RRBN Zonal Offices</a>
+        <a class="dropdown-item" href="#">License Fees</a>
+        <a class="dropdown-item" href="#">BI Reports</a>
+        <a class="dropdown-item" href="#">My User Account</a>
+        </div>
 
 
-                                {% elif user.role == "Registrar" %}
+        {% elif user.role == "Registrar" %}
 
-                                <a class="text-white mr-1 btn btn-warning dropdown-toggle" href="#" role="button"
-                                    id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
-                                    Go to
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="{% url 'registrars_office:registrar_dashboard' %}">Dashboard</a>
-                                    <a class="dropdown-item" href="#">Licences Awaiting Aproval</a>
-                                    <a class="dropdown-item" href="#">List of Issued Licences</a>
-                                    <a class="dropdown-item" href="#">Reports & Analytics</a>
-                                    <a class="dropdown-item" href="#">My User Account</a>
-                                    <a class="dropdown-item"
-                                        href="{% url 'hospitals:hospitals_lookup' %}">Hospitals/Centers Lookup</a>
-                                    <a class="dropdown-item" href="#">Radiography
-                                        License Lookup</a>
-                                    <a class="dropdown-item" href="{% url 'utilities:offices' %}">List of RRBN Zonal
-                                        Offices</a>
-                                    <a class="dropdown-item" href="#">License Categories & Fees</a>
-                                    <a class="dropdown-item" href="#">Document Verification Service</a>
-                                </div>
+        <a class="text-white mr-1 btn btn-warning dropdown-toggle" href="#" role="button"
+        id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Go to </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" href="{% url 'registrars_office:registrar_dashboard' %}">Dashboard</a>
+        <a class="dropdown-item" href="#">Licences Awaiting Aproval</a>
+        <a class="dropdown-item" href="#">List of Issued Licences</a>
+        <a class="dropdown-item" href="#">Reports & Analytics</a>
+        <a class="dropdown-item" href="#">My User Account</a>
+        <a class="dropdown-item" href="{% url 'hospitals:hospitals_lookup' %}">Hospitals/Centers Lookup</a>
+        <a class="dropdown-item" href="#">Radiography License Lookup</a>
+        <a class="dropdown-item" href="{% url 'utilities:offices' %}">List of RRBN Zonal Offices</a>
+        <a class="dropdown-item" href="#">License Categories & Fees</a>
+        <a class="dropdown-item" href="#">Document Verification Service</a>
+        </div>
 
-                                {% elif user.role == "Finance" %}
+        {% elif user.role == "Finance" %}
 
-                                <a class="text-white mr-1 btn btn-warning dropdown-toggle" href="#" role="button"
-                                    id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
-                                    Go to
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="{% url 'finance:finance_dashboard' %}">Dashboard</a>
-                                    <a class="dropdown-item" href="#">List Payment Entries</a>
-                                    <a class="dropdown-item" href="#">Process Payments</a>
-                                    <a class="dropdown-item" href="#">View Online Payments</a>
-                                    <a class="dropdown-item" href="#">View Bank Payments</a>
-                                    <a class="dropdown-item"
-                                        href="{% url 'hospitals:hospitals_lookup' %}">Hospitals/Centers Lookup</a>
-                                    <a class="dropdown-item" href="#">Radiography
-                                        License Lookup</a>
-                                    <a class="dropdown-item" href="{% url 'utilities:offices' %}">List of RRBN Zonal
-                                        Offices</a>
-                                    <a class="dropdown-item" href="#">License Categories & Fees</a>
-                                    <a class="dropdown-item" href="#">Document Verification Service</a>
-                                    <a class="dropdown-item" href="#">BI Reports</a>
-                                    <a class="dropdown-item" href="#">My User Account</a>
-                                </div>
+        <a class="text-white mr-1 btn btn-warning dropdown-toggle" href="#" role="button"
+        id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Go to
+        </a>
 
-                                {% else %}
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" href="{% url 'finance:finance_dashboard' %}">Dashboard</a>
+        <a class="dropdown-item" href="#">List Payment Entries</a>
+        <a class="dropdown-item" href="#">Process Payments</a>
+        <a class="dropdown-item" href="#">View Online Payments</a>
+        <a class="dropdown-item" href="#">View Bank Payments</a>
+        <a class="dropdown-item" href="{% url 'hospitals:hospitals_lookup' %}">Hospitals/Centers Lookup</a>
+        <a class="dropdown-item" href="#">Radiography License Lookup</a>
+        <a class="dropdown-item" href="{% url 'utilities:offices' %}">List of RRBN Zonal Offices</a>
+        <a class="dropdown-item" href="#">License Categories & Fees</a>
+        <a class="dropdown-item" href="#">Document Verification Service</a>
+        <a class="dropdown-item" href="#">BI Reports</a>
+        <a class="dropdown-item" href="#">My User Account</a>
+        </div>
 
-                                <a class="text-white mr-1 btn btn-warning dropdown-toggle" href="#" role="button"
-                                    id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
-                                    Go to
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="{% url 'zonal_offices:zonal_offices_dashboard' %}">Dashboard</a>
-                                    <a class="dropdown-item" href="#">Schedule Inspections</a>
-                                    <a class="dropdown-item" href="#">Inspections Schedule list</a>
-                                    <a class="dropdown-item" href="#">Inspection Reports</a>
-                                    <a class="dropdown-item"
-                                        href="{% url 'hospitals:hospitals_lookup' %}">Hospitals/Centers Lookup</a>
-                                    <a class="dropdown-item" href="#">Radiography
-                                        License Lookup</a>
-                                    <a class="dropdown-item" href="{% url 'utilities:offices' %}">List of RRBN Zonal
-                                        Offices</a>
-                                    <a class="dropdown-item" href="#">License Categories & Fees</a>
-                                    <a class="dropdown-item" href="#">Document Verification Service</a>
-                                    <a class="dropdown-item" href="#">BI Reports</a>
-                                    <a class="dropdown-item" href="#">My User Account</a>
-                                </div>
+        {% else %}
 
-                                {% endif %}
-                            </div>
-                            <a href="javascript:{document.getElementById('logout').submit()}" onclick=""
-                                class="btn btn-danger">
-                                <form id="logout" method="POST" action="{% url 'accounts:logout' %}">
-                                    {% csrf_token %}
-                                    <input type="hidden" />
-                                </form><i class="fa fa-power-off"> </i>Logout
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <a class="text-white mr-1 btn btn-warning dropdown-toggle" href="#" role="button"
+        id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Go to </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" href="{% url 'zonal_offices:zonal_offices_dashboard' %}">Dashboard</a>
+        <a class="dropdown-item" href="#">Schedule Inspections</a>
+        <a class="dropdown-item" href="#">Inspections Schedule list</a>
+        <a class="dropdown-item" href="#">Inspection Reports</a>
+        <a class="dropdown-item" href="{% url 'hospitals:hospitals_lookup' %}">Hospitals/Centers Lookup</a>
+        <a class="dropdown-item" href="#">Radiography License Lookup</a>
+        <a class="dropdown-item" href="{% url 'utilities:offices' %}">List of RRBN Zonal Offices</a>
+        <a class="dropdown-item" href="#">License Categories & Fees</a>
+        <a class="dropdown-item" href="#">Document Verification Service</a>
+        <a class="dropdown-item" href="#">BI Reports</a>
+        <a class="dropdown-item" href="#">My User Account</a>
+        </div>
+
+        {% endif %}
+        </div>
+        <a href="javascript:{document.getElementById('logout').submit()}" onclick=""class="btn btn-danger py-1 px-3">
+        <form id="logout" method="POST" action="{% url 'accounts:logout' %}">
+        {% csrf_token %}
+        <input type="hidden"/>
+        </form><i class="fa fa-power-off"> </i>Logout</a>
+        </div>
+        </div>
+        </div>
+        </div>
         </div>
      <!-- Alerts -->
     {% include 'partials/_alerts.html' %}
@@ -166,7 +149,7 @@
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
     </script>
-    <footer class="tcolor">
+    <footer class="gcolor">
         <div class="container">
             <div class="row">
                 <div class="col-md-3 col-sm-12">

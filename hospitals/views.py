@@ -69,15 +69,43 @@ def status(request, *args, **kwargs):
 def reg_table(request):
      return render(request, 'hospitals/reg_table.html')
 
-@login_required
-def inspection_table(request):
-     return render(request, 'hospitals/inspection_table.html')
+#@login_required
+#def inspection_table(request):
+  #   return render(request, 'hospitals/inspection_table.html')
 
 
 @login_required
 def license_table(request):
      return render(request, 'hospitals/license_table.html')
 
+class InspectionObjectMixin(object):
+    model = Registration
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+
+class InspectionView(InspectionObjectMixin, View):
+    template_name = "hospitals/inspection_detail.html" # DetailView
+    def get(self, request, id=None, *args, **kwargs):
+        # GET method
+        context = {'object': self.get_object()}
+        return render(request, self.template_name, context)
+
+
+class InspectionListView(View):
+    template_name = "hospitals/inspection_table.html"
+    queryset = Payment.objects.all()
+
+    def get_queryset(self):
+        return self.queryset.filter(practice_manager=self.request.user)
+
+    def get(self, request, *args, **kwargs):
+        context = {'object_list': self.get_queryset()}
+        return render(request, self.template_name, context)
 
 
 class PaymentListView(View):
@@ -90,22 +118,71 @@ class PaymentListView(View):
     def get(self, request, *args, **kwargs):
         context = {'object_list': self.get_queryset()}
         return render(request, self.template_name, context)
+        
+
+class PaymentObjectMixin(object):
+    model = Registration
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+
+class PaymentCreateView(PaymentObjectMixin, View):
+    template_name = "hospitals/payment_processing.html"
+    template_name1 = 'hospitals/payment_details_submission.html'
+    def get(self, request,  *args, **kwargs):
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = PaymentDetailsModelForm(instance=obj)
+            context['object'] = obj
+            context['form'] = form
+
+        return render(request, self.template_name, context)
+
+    #def get_initial(self, *args, **kwargs):
+        #initial = super(PaymentCreateView, self).get_initial(**kwargs)
+        #initial['application_no'] = get_object_or_404(Registration, id = self.kwargs.get('id'))
+        #return initial
+
+    def post(self, request,  *args, **kwargs):
+         
+
+        form = PaymentDetailsModelForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+          
+           context['object'] = obj
+           context['form'] = form
+
+           subject = 'Receipt of Registration Fee Payment Details'
+           from_email = settings.DEFAULT_FROM_EMAIL
+           to_email = [request.user.email]
+
+           context['form'] = form
+           contact_message = get_template(
+               'hospitals/payment_message.txt').render(context)
+
+           send_mail(subject, contact_message, from_email,
+                     to_email, fail_silently=False)
+        
+        
+        return render(request, self.template_name1, context)
 
 
 
-class  PaymentCreateView(CreateView):
-    template_name = "hospitals/payment_processing.html" 
-    form_class = PaymentDetailsModelForm
 
-  
- 
-    def get_initial(self, *args, **kwargs):
-        initial = super(PaymentCreateView, self).get_initial(**kwargs)
-        initial['application_no'] = get_object_or_404(Registration, id = self.kwargs.get('id'))
 
-        return initial
-    
-    
+
+
+
 
 class PaymentUpdateView(View):
 
@@ -135,8 +212,7 @@ class PaymentUpdateView(View):
         context = {}
         obj = self.get_object()
         if obj is not None:
-           form = ReceiptUploadModelForm(
-               request.POST, request.FILES, instance=obj)
+           form = ReceiptUploadModelForm(request.POST, request.FILES, instance=obj)
            if form.is_valid():
               form.save()
            context['object'] = obj
@@ -160,7 +236,8 @@ class HospitalCreateView(CreateView):
     template_name = 'hospitals/hospitals_register.html'
     form_class = BasicDetailModelForm
     queryset = Registration.objects.all()
-
+    #success_url = '/thanks/'
+     #return redirect('/monitoring/'+str(registration.id))
 
 class HospitalUpdateView(View):
 

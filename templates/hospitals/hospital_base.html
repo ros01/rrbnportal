@@ -15,12 +15,6 @@
 
 
 
-
-
-
-
-
-
             {% block styles %} {% endblock %}
             <title>RRBN Monitoring Portal {% block title %}{% endblock %}</title>
           </head>
@@ -28,24 +22,24 @@
 
         <body>
             <header>
-                <div class="row">
-                    <div class="col-md-5 m-3">
+                <div class="container-fluid">
+                    <div class="col-md-6 mt-2 py-2">
                         <img class="logo ml" src="{% static 'img/rrbn-logo.png' %}" alt="">
                     </div>
                 </div>
-                <div class="row bg-success-2 mt-2">
-                    <div class="container pt-4 pb-4">
-                        <div class="row">
-                            <div class="col-md-3 col-sm-12 mb-2 ml-3"><i class="fa fa-hospital-alt text-white big"></i><span
+                <div class="row gcolor mt-2">
+                    <div class="container pt-2 pb-2">
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col-md-3 col-sm-12 mb-2 ml-2"><i class="fas fa-hospital fa-2x text-white my-1"></i><span
                                     class=" ml-3 text-white font-weight-bold size22">{{ user.hospital_name }}</span></div>
                             <div class="col-md-3 col-sm-12 mb-2 push-left offset-md-2"><i
-                                    class="fa fa-laptop text-white big"></i><span
+                        class="fas fa-laptop fa-2x text-white my-1"></i><span
                                     class=" ml-3 text-white font-weight-bold size22">{{ user.hospital_type }}</span></div>
-                            <div class="col-md-3 col-sm-12 cml">
-                                <div class="row">
-                                    <a href="{% url 'hospitals:hospitals_dashboard' %}" class="text-white mr-1 btn btn-warning"><i class="fas fa-tachometer-alt"></i></i> Dashboard</a>
+                            <div class="col-md-3 mr-md-2 col-sm-12 mx-auto px-0">
+                  <div class="d-flex justify-content-end">
+                                    <a href="{% url 'hospitals:hospitals_dashboard' %}" class="btn btn-warning text-white mr-3 py-1"><i class="fas fa-tachometer-alt"></i></i> Dashboard</a>
 
-                                    <a href="javascript:{document.getElementById('logout').submit()}" onclick="" class="btn btn-danger">
+                                    <a href="javascript:{document.getElementById('logout').submit()}" onclick="" class="btn btn-danger py-1">
                                       <form id="logout" method="POST" action="{% url 'accounts:logout' %}">
                                         {% csrf_token %}
                                         <input type="hidden" />
@@ -68,7 +62,7 @@
      <script src="{% static 'js/popper.min.js' %}"></script>
      <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 
-       <footer class="tcolor">
+       <footer class="gcolor">
            <div class="container">
                <div class="row">
                    <div class="col-md-3 col-sm-12">

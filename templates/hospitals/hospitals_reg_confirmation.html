@@ -10,97 +10,121 @@
 {% block content %}
 <main class="container">
 
-    <div class="row mt-3">
-        <div class="col-lg-10 col-md-12 col-sm-12 m-auto">
+
+<!-- Banner -->
+<section>
+    <div class="container">
+        <div class="row mt-0">
+             <div class="col text-center p-0 m-0">
+                <p class="text-secondary display-4 paragraph2">HOSPITAL INFO SUBMISSION CONFIRMATION</p>
+                <hr>
+                
+   <div class="row mt-0 mb-3">
+        <div class="col-lg-12 col-md-12 col-sm-12">
           <ul class="prog-ul d-flex list-unstyled">
-            <li class="prog "><small>SUBMIT BASIC HOSPTIAL DETAILS</small></li>
-            <li class="prog "><small>CONFIRM YOUR SUBMISSION</small></li>
-             <li class="prog active"><small>REGISTERATION REQUEST SUBMITTED</small></li>
+           <li class="prog active"><small>HOSPITAL INFO SUBMISSION</small></li>
+             <li class="prog "><small>PAYMENT INFORMATION UPLOAD</small></li>
+             <li class="prog "><small>FACILITY INSPECTION</small></li>
+             <li class="prog "><small>LICENSE ISSUANCE</small></li>
+
           </ul>
         </div>
       </div>
 
-        <div class="row bg-success rounded col-md-8 m-auto">
-           
-               
-                <p class="text-white text-justify pt-2">Your registration details has been submitted successfully to RRBN.  Your Application Number is {{object.id}}.  <br>
-                Brief details of your registration are as follows:</p>
-            
+    </div>
+    </div>
+    </div>
+
+
+</section>
+
+<!-- End of Banner -->
+
+<section>
+    <div class="container">
+        <div class="row mx-2  mx-sm-0 pl-md-5 pr-md-3 px-sm-2 rounded " style="background-color: #bfe3f8;">
+            <div class="mb-3 pt-3">
+                <p class="lead" style="color: #05567b;">Dear <strong>{{object.hospital_name}}</strong> your hospital information has been submitted successfully to RRBN.  Your Application Number is <strong>{{object.id}}</strong>. Brief details of your registration are as follows:</p>    
         </div>
+     </div>
+    </div>
+
+</section>
 
 
-         <div class="row justify-content-center">
-         <div class="col-lg-8 col-md-8 col-sm-10">
+<!-- Skills -->
+
+
+  
+
+<section>
+<div class="row justify-content-center align-items-center">
+        <div class="col-md-6 mt-3">
+            <div class="col-md-12">
+
+                <div class="row">
+                    <p class="col-5 lead">Application Number:</p>
+                    <p class="col-6 lead"><strong>{{object.id}}</strong></p>
+                </div>
+
+                 <div class="row">
+                    <p class="col-5 lead">Hospital Name:</p>
+                    <p class="col-6 lead"><strong>{{object.hospital_name}}</strong></p>
+                </div>
+
+                <div class="row">
+                    <p class="col-5 lead">RC Number:</p>
+                    <p class="col-6 lead"><strong>{{object.rc_number}}</strong></p>
+                </div>
+
+                <div class="row">
+                    <p class="col-5 lead">Phone:</p>
+                    <p class="col-6 lead"><strong>{{object.phone}}</strong></p>
+                </div>
+
+                <div class="row">
+                    <p class="col-5 lead">Email:</p>
+                    <p class="col-6 lead"><strong>{{object.email}}</strong></p>
+                </div>
+
+                <div class="row">
+                    <p class="col-5 lead">City:</p>
+                    <p class="col-6 lead"><strong>{{object.city}}</strong></p>
+                </div>
+
+                <div class="row">
+                    <p class="col-5 lead">Address:</p>
+                    <p class="col-6 lead"><strong>{{object.address}}</strong></p>
+                </div>
         
-            <table class="table table-striped"> 
-            <tbody>
-            <tr class="" style="background:white; border-top:2px solid #ecd863">
-            <td width="30%">Application No:</td> 
-            <td width="70%" class="text-left"><b>{{object.id}}</b></td> 
-            </tr> 
-            <tr class="" style="background:white; border-top:2px solid #ecd863"> 
-            <td width="30%">Hospital Name:</td> 
-            <td width="70%" class="text-left"><b>{{object.hospital_name}}</b></td> 
-            </tr> 
-            <tr class="" style="background:white; border-top:2px solid #ecd863"> 
-            <td width="30%">RC Number:</td> 
-            <td width="70%" class="text-left"><b>{{object.rc_number}}</b></td> 
-            </tr>
-            <tr class="" style="background:white; border-top:2px solid #ecd863"> 
-            <td width="30%">Phone:</td> 
-            <td width="70%" class="text-left"><b>{{object.phone}}</b></td> 
-            </tr> 
-            <tr class="" style="background:white; border-top:2px solid #ecd863"> 
-            <td width="30%">Email:</td> 
-            <td width="70%" class="text-left"><b>{{object.email}}</b></td> 
-            </tr> 
-            </tr>
-            <tr class="" style="background:white; border-top:2px solid #ecd863"> 
-            <td width="30%">City:</td> 
-            <td width="70%" class="text-left"><b>{{object.city}}</b></td> 
-            </tr>
-            <tr class="" style="background:white; border-top:2px solid #ecd863; border-bottom:2px solid #ecd863"> 
-            <td width="30%">Address:</td> 
-            <td width="70%" class="text-left"><b>{{object.address}}</b></td> 
-            </tr>
-            </tbody>
-            </table> 
-        </div>
-        </div>
+    </div>
+    </div>
+    </div>    
+</section>
 
-          <!-- banner -->
-         <section>
-             
-                 <div class="row justify-content-center">
-                    <div class="col-lg-8 col-md-8 col-sm-10">
-                   
-                        <p>Next step is Payment of N50,000 registration fee. <br>
-                        Kindly have ready your Remitta Payment Receipt as you will need to input the details and upload a pdf copy of it in the next section. <br>
-                        To pay and obtain your receipt, kindly follow the instructions below:<br>
-                        1. Logon to remita.net <br>
-                        2. <br>
-                        3. <br>
-                        4. <br>
-                        5. <br>
-                        </p>
+ <div class="row mt-2">
+            <div class="col-lg-10 m-auto">
+
+                <p class="lead text-uppercase" style="color: #05567b;"><strong>Next step is Payment of N50,000 registration fee</strong></p>
+                <p class="lead" style="color: #05567b;"><strong>To pay and obtain your receipt, kindly follow the instructions below:</strong></p>
+                
+                <p class="lead"><strong>STEP 1:</strong> Logon to remita.net </p>
+                <p class="lead"><strong>STEP 2:</strong> </p>
+                <p class="lead"><strong>STEP 3:</strong> </p>
+                <p class="lead"><strong>STEP 4:</strong> </p>
+                <p class="lead"><strong>STEP 5:</strong> Click proceed to payment to upload your scanned receipt from the bank</p>
+                
+            </div>
+        </div>
 
                         
                         <div class="row justify-content-center align-items-center">
-                        <a href="{% url 'index' %}" class="btn btn-outline-secondary px-4 mx-4"><i class="fa fa-times"></i> Close & Continue Later</a>
+                        <a href="{% url 'hospitals:hospitals_dashboard' %}"class="btn btn-outline-secondary px-3 mx-4 py-1"><i class="fa fa-times"></i> Continue Later</a>
 
-                        
-                         
                        
-              
-                           <td><a href= "{% url 'hospitals:payment_processing' id=object.id %}" class="btn btn-outline-success px-4 mx-4">Proceed to Payment  <i class="fa fa-play text-success"></i></a>
-                         
-                      
-
+                         <a href= "{% url 'hospitals:payment_processing' id=object.id %}" class="btn btn-outline-success px-3 mx-4 py-1"> Proceed to Payment  <i class="fa fa-play text-success"></i></a>
                         </div>
                    
-                 </div>
-             </div>
-         </section>
          <!-- end of banner -->  
 
 

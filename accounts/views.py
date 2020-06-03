@@ -84,18 +84,27 @@ class ActivateAccount(View):
 class SignUpView(View):
     form_class = SignupForm
     template_name = 'accounts/register.html'
+    template_name1 = 'accounts/profile-creation-confirmation.html'
+    
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
         return render(request, self.template_name, {'form': form})
 
+   
+
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
 
+
+
             user = form.save(commit=False)
             user.is_active = False  # Deactivate account till it is confirmed
             user.save()
+
+
+            
 
             current_site = get_current_site(request)
             subject = 'Activate Your RRBN Portal Account'
@@ -114,16 +123,37 @@ class SignUpView(View):
             messages.success(
                 request, ('Please Confirm your email to complete registration.'))
 
-            return redirect('index')
+            return render(request, self.template_name1)
 
         return render(request, self.template_name, {'form': form})
 
 
 
-class ProfileDetailView(DetailView):
-    #model = User
+
+class ProfileObjectMixin(object):
     model = settings.AUTH_USER_MODEL
-    template_name = "accounts/profile-creation-confirmation.html"
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+
+class ProfileDetailView(ProfileObjectMixin, View):
+    template_name = "accounts/profile-creation-confirmation.html" # DetailView
+    def get(self, request, id=None, *args, **kwargs):
+        # GET method
+        context = {'object': self.get_object()}
+        return render(request, self.template_name, context)
+
+
+
+
+#class ProfileDetailView(DetailView):
+    #model = User
+   # model = settings.AUTH_USER_MODEL
+   # template_name = "accounts/profile-creation-confirmation.html"
 
 
 

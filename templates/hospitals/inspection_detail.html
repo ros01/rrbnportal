@@ -1,0 +1,110 @@
+{% extends 'hospitals/hospital_base.html'%}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title%}| Welcome {% endblock %}
+
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/hospital_dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+
+
+
+<!-- Banner -->
+<section class="p-2">
+    <div class="container">
+        <div class="row ">
+            <div class="col text-center mb-3">
+                <p class="text-secondary display-4 paragraph">Continue Application - Facility Inspection</p>
+                <hr>
+                
+    <div class="row mt-0 mb-3">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+    <ul class="prog-ul d-flex list-unstyled">
+    <li class="prog "><small>HOSPITAL INFO SUBMISSION</small></li>
+    <li class="prog "><small>PAYMENT INFORMATION UPLOAD</small></li>
+    <li class="prog active"><small>FACILITY INSPECTION</small></li>
+    <li class="prog "><small>LICENSE ISSUANCE</small></li>
+    </ul>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+
+</section>
+
+<!-- End of Banner -->
+
+<section>
+    <div class="container">
+        <div class="row rounded pl-4" style="background-color: #bfe3f8;">
+            <div class="col mb-3 pt-3">
+                <p class="lead" style="color: #05567b;">Dear <strong>{{object.hospital_name}}</strong> your  hospital radiography practice license application is currently at the facility inspection stage.  Kindly check your registered email with RRBN for inspection updates.  Thank You</p>
+                
+                
+            </div>
+    </div>
+    </div>
+
+
+</section>
+
+
+<!-- Skills -->
+
+<section class="bg-light">
+    <div class="container">
+        <!-- Title -->
+<div class="row">
+    <div class="col mb-0">
+        <p class="text-success lead pt-4 pl-4"><strong>Application Summary</strong></p>
+    </div>
+</div>
+<div class="row mx-1 py-0 my-0">
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
+        <p class="lead text-secondary m-0">Application Number:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.id}}</strong></p>  
+        <br>
+        <br>
+        <p class="lead text-secondary m-0">Payment Date:</p>
+        <p class="lead text-secondary text-uppercase m-0"><strong>{{object.practice_manager.payment.payment_date_pretty}}</strong></p>  
+        <br> 
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
+        <p class="lead text-secondary m-0">License Category:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.license_category}}</strong></p>
+        <br>
+        <br>
+        <p class="lead text-secondary m-0">Application Start Date:</p>
+        <p class="lead text-secondary text-uppercase m-0"><strong>{{object.reg_date_pretty}}</strong></p>  
+        <br> 
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
+        <p class="lead text-secondary m-0">Facility Address/Location:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.address}}</strong></p>  
+        <br>
+        <p class="lead text-secondary m-0">Examinations Carried Out:</p>
+        <p class="lead text-secondary text-uppercase m-0"><strong>{{object.equipment}}</strong></p>  
+        <br>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">State of Location:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.state}}</strong></p>  
+        
+    </div>
+    </div>
+    <div class="col text-center">
+    <a href="{% url 'hospitals:hospitals_dashboard' %}"class="btn btn-warning btn-lg px-5 py-1 mt-0 mb-5">Close</a>
+    </div>
+    </div>  
+    
+</section>
+
+<!-- End of Skills -->
+
+{% endblock %}

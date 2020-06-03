@@ -14,14 +14,27 @@
 
 {% block content %}
 
-<main class="container">
+<div class="container">
        <div class="row">
            <div class="col col-lg-12">
-            <h3>New Hospital Registrations</h3>
+            
+<section class="px-2 pt-3 pb-2">
+   
+    <div class="row mt-3 mb-2">
+    <div class="col text-left mb-1">
+    <p class="text-secondary display-4 paragraph2">New Radiography Practice License Applications</p>
+    <hr>
+    </div>
+    </div>
+
+</section>
+
+
+
             <div class="table-responsive-lg">
                 <table class="table table-striped table-bordered table-hover" id="mydata">
                     <thead>
-                     <tr style="background: #44756B;">
+                     <tr style="background: #41963F;">
                       <td style="color: #fff;" class="small-text">S/N</td>
                        <td style="color: #fff;" class="small-text">Application No</td>
                        <td style="color: #fff;" class="small-text">Hospital Name</td>
@@ -34,7 +47,7 @@
                      </tr>
                     </thead>
                       <tfoot>
-                       <tr style="background: #44756B">
+                       <tr style="background: #41963F;">
                         <td style="color: #fff;" class="small-text">S/N</td>
                           <td style="color: #fff;" class="small-text">Application No</td>
                           <td style="color: #fff;" class="small-text">Hospital Name</td>
@@ -48,18 +61,18 @@
                       </tfoot>
                     
                      <tbody>
-                       {% if registration %}
-                         {% for registration in registration %}
+                       {% if payment %}
+                         {% for payment in payment %}
                          <tr>
                           <td>{{forloop.counter}}</td>
-                           <td>{{registration.id}}</td>
-                           <td>{{registration.hospital_name}}</td>
-                           <td>{{registration.rc_number}}</td>
-                           <td>{{registration.license_category}}</td>
+                           <td>{{payment.practice_manager.registration.id}}</td>
+                           <td>{{payment.hospital_name}}</td>
+                           <td>{{payment.practice_manager.registration.rc_number}}</td>
+                           <td>{{payment.license_category}}</td>
                            <td>New</td>
-                           <td>{{registration.reg_date_pretty}}</td>
+                           <td>{{payment.practice_manager.registration.reg_date_pretty}}</td>
                            <td>Pending</td>
-                           <td><a href="{% url 'monitoring:vet_application' registration.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> view</a></td>
+                           <td><a href="{% url 'monitoring:vet_application' payment.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> view</a></td>
                          </tr>
 
                         {% endfor %}
@@ -78,7 +91,7 @@
               </div>
              </div>
          </div>
-      </main>
+      </div>
 
 
 

@@ -37,23 +37,45 @@ class CertUploadModelForm(forms.ModelForm):
 class PaymentDetailsModelForm(forms.ModelForm):
     payment_method = forms.ChoiceField(choices = PAYMENT_METHOD, widget=forms.Select(), required=True)
 
-    def __init__(self, *args, **kwargs):
-       super(PaymentDetailsModelForm, self).__init__(*args, **kwargs)
-       self.fields['application_no'].widget.attrs['readonly'] = True 
- 
-
     class Meta:
         model = Payment
-        fields = ('practice_manager','hospital_name', 'application_no', 'license_category', 'rrr_number', 'receipt_number',  'payment_amount', 'payment_method',  'payment_date')
-         
+        fields = ('practice_manager','hospital_name', 'application_no', 'license_category', 'rrr_number', 'receipt_number',  'payment_amount', 'payment_method',  'payment_date', 'phone', 'phone', 'email', 'state', 'city', 'address', 'services', 'equipment', 'radiographers', 'payment_receipt',)
+                                                                                                                                                    
 
         widgets = {
         'practice_manager': forms.HiddenInput(),
         'hospital_name': forms.TextInput(attrs={'readonly': True}),
+        'application_no': forms.TextInput(attrs={'readonly': True}),
+        
+
+
+        
        
         }
 
-       
+
+    def __init__(self, *args, **kwargs):
+       super(PaymentDetailsModelForm, self).__init__(*args, **kwargs)
+       #self.fields['application_no'].widget.attrs['readonly'] = True 
+       #self.fields['phone'].widget.attrs['readonly'] = True
+
+ 
+
+       #initial = kwargs.get('initial', {})
+       #self.application_no = initial.get('application_no')
+       #self.phone = initial.get('phone')
+       #super(PaymentDetailsModelForm, self).__init__(*args, **kwargs) 
+
+
+    
+
+
+
+
+
+
+
+
 
 
 class ReceiptUploadModelForm(forms.ModelForm):

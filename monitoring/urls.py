@@ -1,10 +1,10 @@
 from django.urls import path
 from django.shortcuts import render
 from . import views
-#from .views import (
-    #PaymentsView,
+from .views import (
+    InspectionCreateView,
     #RegVerifyView,
-#)
+)
 
 # Create your views here.
 
@@ -21,6 +21,7 @@ urlpatterns = [
     #path('<int:id>/vet_application/', RegVerifyView.as_view(), name='vet_application'),
     #path('registration_list/', PaymentsView.as_view(), name='registration_list'),
     path('registration_list/', views.registration_list, name='registration_list'),
+    path('<int:id>/inspection_schedule/', InspectionCreateView.as_view(), name='inspection_schedule'),
 
 
 
