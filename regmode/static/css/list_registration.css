@@ -7,6 +7,26 @@ p {
 
 }
 
+
+
+
+.icon{
+    font-size: 36px;
+    background: #337AB7;
+    padding: 10px;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    margin-left: 20px;
+  }
+
+.ss-icon{
+      font-size: 22px;
+      color: #000;
+      margin-left: 20px;
+  }
+
 .paragraph {
   font-size: 2.5rem;
 
@@ -16,7 +36,7 @@ p {
 
 }
 .paragraph3 {
-  font-size: 1.0rem;
+  font-size: 1.5rem;
 
 }
 
@@ -123,13 +143,7 @@ tr td{
     margin-left: 120px;
  }
 
-  .fa{
-    font-size: 13px;
-  }
 
-  .big{
-    font-size: 40px;
-  }
 
   .cml{
     margin-left: 30px;

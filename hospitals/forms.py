@@ -39,7 +39,7 @@ class PaymentDetailsModelForm(forms.ModelForm):
 
     class Meta:
         model = Payment
-        fields = ('practice_manager','hospital_name', 'application_no', 'license_category', 'rrr_number', 'receipt_number',  'payment_amount', 'payment_method',  'payment_date', 'phone', 'phone', 'email', 'state', 'city', 'address', 'services', 'equipment', 'radiographers', 'payment_receipt',)
+        fields = ('practice_manager','hospital_name', 'application_no', 'license_category', 'rrr_number', 'receipt_number',  'payment_amount', 'payment_method',  'payment_date', 'phone', 'email', 'state', 'city', 'address', 'services', 'equipment', 'radiographers', 'payment_receipt',)
                                                                                                                                                     
 
         widgets = {

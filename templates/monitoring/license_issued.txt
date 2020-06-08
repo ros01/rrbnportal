@@ -1,0 +1,30 @@
+Dear {{object.hospital_name|upper }},
+
+This is an auto-generated email informing you that your Radiography Practice License Application has been issued.
+
+Kindly download an electronic copy of your Radiography Practice License from your dashboard while we conclude plans to deliver the printed copy to you soon.
+
+See brief details below:
+
+Application Number: {{object.practice_manager.registration.id}}
+
+Hospital Name: {{object.hospital_name}}
+
+Category: {{object.license_category}}
+
+License Issue Date: {{object.practice_manager.license.issue_date_pretty}}
+
+License Expiry Date: {{object.practice_manager.license.expiry_date_pretty}}
+
+
+
+Congratulations!
+
+
+
+Sincerely,
+
+Radiographers Registration Board of Nigeria (RRBN)
+monitoring.rrbn.gov.ng
+
+

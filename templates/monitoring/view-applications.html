@@ -117,11 +117,11 @@
                         </div>
                         <div class="row">
                             <span class="col-5 lead text-secondary">Vetted on: </span>
-                            <span class="col-6 lead"><strong>{{payment.practice_manager.registration.reg_date}}</strong></span>
+                            <span class="col-6 lead"><strong>{{payment.vet_date}}</strong></span>
                         </div>
                         <div class="row">
                             <span class="col-5 lead text-secondary">Vetted by: </span>
-                            <span class="col-6 lead"><strong>{{ user.first_name }} {{ user.last_name }}</strong></span>
+                            <span class="col-6 lead"><strong>{{ vetting_officer.first_name }} {{ vetting_officer.last_name }}</strong></span>
                         </div>
                     </div>
                 </div>
@@ -133,7 +133,7 @@
 
         <a href="javascript:{document.getElementById('approve{{payment.id }}').submit()}"><button class="btn btn-success py-1 mr-4 mt-1 mb-3"> Approve for Inspection <i class="fa fa-check" aria-hidden="true"></i></button> </a>
         <a href="javascript:{document.getElementById('reject{{payment.id }}').submit()}"><button class="btn btn-danger py-1 mr-4 mt-1 mb-3"> Reject Submission <i class="fa fa-reply" aria-hidden="true"></i></button></a> 
-        <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-dark py-1 px-3 mt-1 mb-3"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Return to Dashboard</a>  
+        <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-warning text-white py-1 px-3 mt-1 mb-3"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Return to Dashboard</a>  
     
     
     
@@ -146,6 +146,9 @@
 <form id="approve{{payment.id }}" method="POST" action="{% url 'monitoring:approve' payment.id %}">
   {% csrf_token%}
   <input type="hidden">
+  
+
+
 </form>
 
 <form id="reject{{payment.id }}" method="POST" action="{% url 'monitoring:reject' payment.id %}">

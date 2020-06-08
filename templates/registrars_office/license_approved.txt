@@ -1,0 +1,29 @@
+Dear {{object.hospital_name|upper }},
+
+This is an auto-generated email informing you that your Radiography Practice License Application has PASSED final validation by the Registrar/CEO of RRBN.
+
+An electronic copy of your Radiography Practice License will become available for download on your dashboard shortly.
+
+See brief details below:
+
+Application Number: {{object.practice_manager.registration.id}}
+
+Hospital Name: {{object.hospital_name}}
+
+Category: {{object.license_category}}
+
+Inspection Date: {{object.inspection_date_pretty}}
+
+Application Remark: PASSED 
+
+
+Congratulations!
+
+
+
+Sincerely,
+
+Radiographers Registration Board of Nigeria (RRBN)
+monitoring.rrbn.gov.ng
+
+

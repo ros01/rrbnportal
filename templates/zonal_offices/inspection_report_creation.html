@@ -1,0 +1,331 @@
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block title%}| Facility Inspection {% endblock %}
+{% block styles %}
+
+
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+<link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+
+
+
+
+{% endblock %}
+
+
+{% block content %}
+
+<main class="container">
+       <div class="row">
+           <div class="col col-lg-12">
+            <p class="mt-2 text-dark display-4 paragraph2">Inspection Report- New Hospital Registration</p>
+                <hr>
+          </div>
+           </div>
+
+
+          <div class="row rounded ml-1 mr-0 pl-1 pr-0 mt-2 mb-3 justify-content-center align-items-center" style="background-color: #bfe3f8;">
+            <div class="col-md-1 mt-1 pt-1">
+               <i class="fa fa-info-circle fa-2x" aria-hidden="true"></i>
+                </div>
+
+               <div class="col-md-11 mt-1 pt-1 px-0">
+                <p class="lead" style="color: #05567b;">
+                   Enter Scores for Each Parameter Below.  Final Score is calculated automatically once input is complete</p>
+               </div>
+           </div>
+
+  
+          <form method='POST' action="." enctype='multipart/form-data'>
+         
+            {% csrf_token %}
+
+           
+
+            {{ form.practice_manager|as_crispy_field }}
+
+            {{ form.license_category|as_crispy_field }}
+
+            {{ form.inspection_schedule_date|as_crispy_field }}
+
+            {{ form.inspection_report_deadline|as_crispy_field }}
+
+            <div class="row ml-2">
+              <p class="col-12 text-success lead">Hospital Details</p>
+            </div>
+            <div class="row px-4"> 
+          <div class="col-md-4"> <div class="form-group"> 
+              {{ form.application_no|as_crispy_field }}
+          </div>
+        </div>
+        <div class="col-md-4"><div class="form-group">
+            {{ form.hospital_name|as_crispy_field }}
+            
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            {{ form.equipment|as_crispy_field }}
+            
+            
+          </div>
+        </div>
+      </div>
+
+      <div class="row px-4">
+        
+        <div class="col-md-4">
+          <div class="form-group">
+             {{ form.phone|as_crispy_field }}
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+          {{ form.email|as_crispy_field }}
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+           {{ form.radiographers|as_crispy_field }}  
+              
+          </div>
+        </div>
+      </div>
+
+      <div class="row px-4">
+        <div class="col-md-12">
+        <div class="form-group">
+       {{ form.address|as_crispy_field }}    
+          </div>
+        </div>
+         </div>
+
+         <div class="row ml-2">
+              <p class="col-12 text-success lead">Inspection Scores</p>
+            </div>
+        <div class="row px-4">
+        <div class="col-md-3">
+          <div class="form-group">
+          {{ form.shielding|as_crispy_field }}
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+           {{ form.equipment_layout|as_crispy_field }}  
+              
+          </div>
+        </div>
+      
+      
+        <div class="col-md-3">
+        <div class="form-group">
+        {{ form.functional_equipment|as_crispy_field }}       
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+          {{ form.radiographer_adequacy|as_crispy_field }}
+          </div>
+        </div>
+         </div>
+
+
+
+         <div class="row px-4">
+        <div class="col-md-3">
+          <div class="form-group">
+           {{ form.radiographer_license|as_crispy_field }}  
+              
+          </div>
+        </div>
+     
+
+        <div class="col-md-3">
+        <div class="form-group">
+        {{ form.personnel_monitoring|as_crispy_field }}       
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+          {{ form.room_size|as_crispy_field }}
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+           {{ form.water_supply|as_crispy_field }}  
+              
+          </div>
+        </div>
+      </div>
+
+       <div class="row px-4">
+        <div class="col-md-3">
+        <div class="form-group">
+        {{ form.C07_form_compliance|as_crispy_field }}       
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+          {{ form.darkroom|as_crispy_field }}
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+           {{ form.public_safety|as_crispy_field }}  
+              
+          </div>
+        </div>
+      
+
+       
+        <div class="col-md-3">
+        <div class="form-group">
+        {{ form.inspection_scores|as_crispy_field }}       
+          </div>
+        </div>
+
+        
+      </div>
+
+
+      <div class="row ml-2">
+              <p class="col-12 text-success lead">Picture Uploads</p>
+            </div>
+        <div class="row px-4">
+        <div class="col-md-3">
+          <div class="form-group">
+          {{ form.photo_main|as_crispy_field }}
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+           {{ form.photo_1|as_crispy_field }}  
+              
+          </div>
+        </div>
+      
+      
+        <div class="col-md-3">
+        <div class="form-group">
+        {{ form.photo_2|as_crispy_field }}       
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+          {{ form.photo_3|as_crispy_field }}
+          </div>
+        </div>
+         </div>
+
+         <div class="row px-4">
+        <div class="col-md-3">
+          <div class="form-group">
+          {{ form.photo_4|as_crispy_field }}
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+           {{ form.photo_5|as_crispy_field }}  
+              
+          </div>
+        </div>
+      
+      
+        <div class="col-md-3">
+        <div class="form-group">
+        {{ form.photo_6|as_crispy_field }}       
+          </div>
+        </div>
+
+        
+         </div>
+
+            
+
+
+              <hr>
+              <div class="d-flex justify-content-end">   
+             
+             <a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
+
+             
+
+              <button type="submit" class="btn btn btn-success ml-4 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Post Inspection Report</button>
+
+               </form>
+
+             
+        </div>
+
+        </main>
+      
+
+
+
+
+
+
+
+
+  <!--Jquery plugin-->
+
+
+  <!--other javascript plugins-->
+  <script>
+  let urlMenu = document.getElementById('dropdown');
+  urlMenu.onchange = function(){
+    let userOption = this.options[this.selectedIndex];
+    if(userOption.value != "nothing"){
+      window.open(userOption.value, "_self", "");
+    }
+  }
+  </script>
+
+
+<script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+
+
+
+
+
+
+
+{% endblock %}

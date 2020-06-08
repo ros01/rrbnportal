@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '@nl0&7a3*=n0nuo8uuuuuggggut282q1ge&q!ojjnh1-@s'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'six',
     'crispy_forms',
     'multiselectfield',
+    'tempus_dominus',
 
 ]
 
@@ -91,7 +92,7 @@ WSGI_APPLICATION = 'regmode.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'rrbntestdb1',
+        'NAME': 'rrbntestdb',
         'USER': 'postgres',
         'PASSWORD': 'blackstone1',
         'HOST': 'localhost',
@@ -118,8 +119,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-SESSION_COOKIE_AGE = 60 * 5  # Session will expiry after 30 minutes idle.
-SESSION_SAVE_EVERY_REQUEST = True
+#SESSION_COOKIE_AGE = 60 * 5  # Session will expiry after 30 minutes idle.
+#SESSION_SAVE_EVERY_REQUEST = True
 
 
 # Internationalization

@@ -4,7 +4,7 @@ This is to confirm that your registration and payment details have been successf
 
 See brief details below:
 
-Application Number: {{object.id}}
+Application Number: {{object.practice_manager.registration.id}}
 
 Hospital Name: {{object.hospital_name}}
 
@@ -12,10 +12,10 @@ Mobile Number: {{object.phone}}
 
 Email Address: {{object.email}}
 
-Submission Time: {{object.reg_date}}
+Submission Time: {{object.practice_manager.registration.reg_date_pretty}}
 
 
-You will subsequently be notified when on the scheduled date for the inspection of your facility.
+You will subsequently be notified on the scheduled date for inspection of your facility.
 
 Congratulations!
 

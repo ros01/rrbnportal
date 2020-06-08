@@ -1,0 +1,30 @@
+Dear {{object.hospital_name|upper }},
+
+Kindly be informed that a facility inspection has been scheduled for your radiography practice license application.
+
+See brief details below:
+
+Application Number: {{object.practice_manager.registration.id}}
+
+Hospital Name: {{object.hospital_name}}
+
+Facility Address: {{object.address}}
+
+Radiography Services: {{object.services}}
+
+Inspection Date: {{object.practice_manager.schedule.inspection_date_pretty}}
+
+Inspecting Zonal Office: {{object.practice_manager.schedule.inspection_zone}}
+
+
+Kindly ensure the Radiographer in charge of your facility is present for the inspection.
+
+Thank You!
+
+
+
+Sincerely,
+
+Radiographers Registration Board of Nigeria (RRBN)
+
+monitoring.rrbn.gov.ng

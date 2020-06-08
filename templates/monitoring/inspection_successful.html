@@ -1,0 +1,106 @@
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+{% block title%}| Welcome {% endblock %}
+
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/hospital_dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="p-2">
+   
+    <div class="row mt-2 ">
+    <div class="col text-center mb-2">
+    <p class="text-secondary display-4 paragraph2">Passed Facility Inspection</p>
+    <hr>
+    </div>
+    </div>
+
+    </section>
+
+<section class="my-0">
+    <div class="container">
+    <div class="row rounded pl-3 justify-content-center align-items-center" style="background-color: #bfe3f8;">
+    <div class="col-md-1 py-0 px-auto">
+    <i class="fas fa-info-circle fa-2x" style="color: #05567b;"></i>       
+    </div>
+    <div class="col-md-11 pt-2 pb-0">
+    <p class="lead" style="color: #05567b;">
+    <strong>{{object.hospital_name}}</strong> Facility Inspection Successfully Validated. Application will now undergo final approval by the Registrar</p>           
+    </div>
+    </div>
+    </div>
+    </section>
+
+<!-- Skills -->
+
+<section>
+    <div class="container">
+        <!-- Title -->
+<div class="row">
+    <div class="col mb-0">
+        <p class="text-success lead pt-4 pl-4"><strong>Application Summary</strong></p>
+    </div>
+</div>
+<div class="row mx-1 py-0 my-0">
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
+        <p class="lead text-secondary m-0">Application Number:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.registration.id}}</strong></p>  
+        <br>
+        <br>
+        <p class="lead text-secondary m-0">Examinations Carried Out:</p>
+        <p class="lead text-secondary text-uppercase m-0"><strong>{{object.equipment}}</strong></p>  
+        <br> 
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
+        <p class="lead text-secondary m-0">License Category:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.license_category}}</strong></p>
+        <br>
+        <br>
+        <p class="lead text-secondary m-0">Insepction Date:</p>
+        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.inspection_date_pretty}}</strong></p>  
+        <br> 
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
+        <p class="lead text-secondary m-0">Facility Address/Location:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.address}}</strong></p>  
+        <br>
+        <p class="lead text-secondary m-0">Inspection Zone:</p>
+        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.practice_manager.schedule.inspection_zone}}</strong></p>  
+        <br>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">Services:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.schedule.services}}</strong></p> 
+        <br>
+        <br>
+        <p class="lead text-secondary m-0">Inspection Score:</p>
+        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.inspection_scores}}</strong></p>   
+        
+    </div>
+    </div>
+    
+
+    <hr>
+    <div class="d-flex justify-content-end">   
+    
+    
+    
+    <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-warning text-white p-2 mr-3 mt-2 mb-5 "><i class="fa fa-angle-double-left" aria-hidden="true"></i> Return to Dashboard</a>
+    
+   
+    
+    
+    </div>
+
+
+    </div>  
+    
+</section>
+
+<!-- End of Skills -->
+
+{% endblock %}

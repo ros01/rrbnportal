@@ -64,3 +64,34 @@ PAYMENT_METHOD = (
         
         )
 
+
+INSPECTION_ZONE = (
+        ('Abuja', 'Abuja'), 
+        ('Enugu', 'Enugu'), 
+        ('Lagos', 'Lagos'), 
+        ('Sokoto', 'Sokoto'), 
+        ('Kano', 'Kano'), 
+        ('Port Harcourt', 'Port Harcourt'), 
+        ('Asaba', 'Asaba'), 
+        ('Calabar', 'Calabar'), 
+        ('Nnewi', 'Nnewi'),  
+        )
+
+
+SCORE = (
+        ('1', '1'), 
+        ('2', '2'), 
+        ('3', '3'), 
+        ('4', '4'), 
+        ('5', '5'), 
+        ('6', '6'), 
+        ('7', '7'), 
+        ('8', '8'), 
+        ('9', '9'),  
+        ('10', '10'),
+        )
+
+LICENSE_STATUS = (
+        ('Active', 'Active'),
+        ('Expired', 'Expired'),
+        )

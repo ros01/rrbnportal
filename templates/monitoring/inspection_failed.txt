@@ -1,0 +1,27 @@
+Dear {{object.hospital_name|upper }},
+
+This is an auto-generated email informing you that the Facility specified on your Radiography Practice License Application FAILED inspection recently conducted by RRBN Inspection and Monitoring Team.
+
+Kindly contact our RRBN Inspection and Monitoring Team for details to follow for facility re-inspection. 
+
+See brief details below:
+
+Application Number: {{object.practice_manager.registration.id}}
+
+Hospital Name: {{object.hospital_name}}
+
+Category: {{object.license_category}}
+
+Actual Inspection Date: {{object.inspection_date_pretty}}
+
+Inspection Remark: FAILED 
+
+
+
+
+Sincerely,
+
+Radiographers Registration Board of Nigeria (RRBN)
+monitoring.rrbn.gov.ng
+
+

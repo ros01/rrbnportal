@@ -1,0 +1,30 @@
+Dear {{object.hospital_name|upper }},
+
+Kindly below a summary of your radiography practice license application inspection report.
+
+
+Application Number: {{object.practice_manager.registration.id}}
+
+Hospital Name: {{object.hospital_name}}
+
+Facility Address: {{object.practice_manager.inspection.address}}
+
+License Category: {{object.license_category}}
+
+Available Equipment: {{object.practice_manager.inspection.equipment}}
+
+Inspection Date: {{object.practice_manager.inspection.inspection_date_pretty}}
+
+Inspection Score: {{object.practice_manager.inspection.inspection_scores}}
+
+
+
+Thank You!
+
+
+
+Sincerely,
+
+Radiographers Registration Board of Nigeria (RRBN)
+
+monitoring.rrbn.gov.ng

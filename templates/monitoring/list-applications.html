@@ -61,18 +61,18 @@
                       </tfoot>
                     
                      <tbody>
-                       {% if payment %}
-                         {% for payment in payment %}
+                       {% if object %}
+                         {% for object in object %}
                          <tr>
                           <td>{{forloop.counter}}</td>
-                           <td>{{payment.practice_manager.registration.id}}</td>
-                           <td>{{payment.hospital_name}}</td>
-                           <td>{{payment.practice_manager.registration.rc_number}}</td>
-                           <td>{{payment.license_category}}</td>
+                           <td>{{object.practice_manager.registration.id}}</td>
+                           <td>{{object.hospital_name}}</td>
+                           <td>{{object.practice_manager.registration.rc_number}}</td>
+                           <td>{{object.license_category}}</td>
                            <td>New</td>
-                           <td>{{payment.practice_manager.registration.reg_date_pretty}}</td>
+                           <td>{{object.practice_manager.registration.reg_date_pretty}}</td>
                            <td>Pending</td>
-                           <td><a href="{% url 'monitoring:vet_application' payment.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> view</a></td>
+                           <td><a href="{% url 'monitoring:vet_application' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> view</a></td>
                          </tr>
 
                         {% endfor %}

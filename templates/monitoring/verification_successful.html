@@ -28,7 +28,7 @@
     </div>
     <div class="col-md-11 pt-2 pb-0">
     <p class="lead" style="color: #05567b;">
-    <strong>{{object.hospital_name}}</strong> is due for facility inspection. Kindly click on Schedule for Inspection button to proceed</p>           
+    <strong>{{object.hospital_name}}</strong> is due for facility inspection. Kindly click on Schedule Inspections button on Dashboard to proceed</p>           
     </div>
     </div>
     </div>
@@ -36,7 +36,7 @@
 
 <!-- Skills -->
 
-<section class="bg-light">
+<section>
     <div class="container">
         <!-- Title -->
 <div class="row">
@@ -50,8 +50,8 @@
         <p class="lead text-secondary m-0"><strong>{{object.practice_manager.registration.id}}</strong></p>  
         <br>
         <br>
-        <p class="lead text-secondary m-0">Payment Date:</p>
-        <p class="lead text-secondary text-uppercase m-0"><strong>{{object.payment_date_pretty}}</strong></p>  
+        <p class="lead text-secondary m-0">Examinations Carried Out:</p>
+        <p class="lead text-secondary text-uppercase m-0"><strong>{{object.equipment}}</strong></p>  
         <br> 
     </div>
 
@@ -61,20 +61,24 @@
         <br>
         <br>
         <p class="lead text-secondary m-0">Application Start Date:</p>
-        <p class="lead text-secondary text-uppercase m-0"><strong>{{object.reg_date_pretty}}</strong></p>  
+        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.practice_manager.registration.reg_date_pretty}}</strong></p>  
         <br> 
     </div>
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
         <p class="lead text-secondary m-0">Facility Address/Location:</p>
         <p class="lead text-secondary m-0"><strong>{{object.address}}</strong></p>  
         <br>
-        <p class="lead text-secondary m-0">Examinations Carried Out:</p>
-        <p class="lead text-secondary text-uppercase m-0"><strong>{{object.equipment}}</strong></p>  
+        <p class="lead text-secondary m-0">Vetted By:</p>
+        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.vetting_officer}}</strong></p>  
         <br>
     </div>
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
         <p class="lead text-secondary m-0">State of Location:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.state}}</strong></p>  
+        <p class="lead text-secondary m-0"><strong>{{object.state}}</strong></p> 
+        <br>
+        <br>
+        <p class="lead text-secondary m-0">Vetted On:</p>
+        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.vet_date}}</strong></p>   
         
     </div>
     </div>
@@ -89,7 +93,7 @@
     
    
     
-    <a href="{% url 'monitoring:monitoring_dashboard' %}"class="btn btn-info text-white  p-2 mt-2 mb-5"><i class="fa fa-eye"></i> Schedule for Inspection</a>
+    
     </div>
 
 
