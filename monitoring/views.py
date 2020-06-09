@@ -23,9 +23,6 @@ from django.core.mail import send_mail
 from django.contrib import messages
 
 
-
-
-
 User = get_user_model()
 
 
@@ -34,8 +31,7 @@ class LicensesListView(View):
     queryset = License.objects.all()
 
     def get_queryset(self):
-        return self.queryset
-        
+        return self.queryset        
 
     def get(self, request, *args, **kwargs):
         context = {'object': self.get_queryset()}
@@ -44,9 +40,6 @@ class LicensesListView(View):
 class LicensesDetailView(DetailView):
     model = License
     template_name = 'monitoring/licenses_issued_detail.html'
-
-
-
 
 
 

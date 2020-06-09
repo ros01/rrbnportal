@@ -31,19 +31,20 @@ from django.db.models import Q
 User = get_user_model()
 
 
+def hospitals_dashboard(request):
+     return render(request, 'hospitals/hospitals_dashboard.html')
 
+#class HospitalDashboardView(View):
+    #template_name = "hospitals/hospitals_dashboard.html"
+    #queryset = License.objects.all()
 
-class HospitalDashboardView(View):
-    template_name = "hospitals/hospitals_dashboard.html"
-    queryset = License.objects.all()
-
-    def get_queryset(self):
-        return self.queryset.filter(practice_manager=self.request.user)
+    #def get_queryset(self):
+        #return self.queryset.filter(practice_manager=self.request.user)
         
 
-    def get(self, request, *args, **kwargs):
-        context = {'object': self.get_queryset()}
-        return render(request, self.template_name, context)
+    #def get(self, request, *args, **kwargs):
+        #context = {'object': self.get_queryset()}
+        #return render(request, self.template_name, context)
 
 @login_required
 def lookup(request):

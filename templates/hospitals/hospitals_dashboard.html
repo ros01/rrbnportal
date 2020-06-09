@@ -12,8 +12,7 @@
        <div class="container">
            <div class="row">
 
-             {% if object %}
-             {% for object in object %}
+            
                <div class="col-md-12 d-flex justify-content-between">
                   <p class="text-secondary display-4 paragraph mt-2">Dashboard</p>
                    
@@ -128,7 +127,7 @@
                        <tbody>
                            <tr>
                                <td>License No:</td>
-                               <td><strong>{{object.practice_manager.license.license_no}}</strong></td>
+                               <td>NOT ASSIGNED</td>
                            </tr>
                            <tr>
                                <td>Valid Licenses:</td>
@@ -136,7 +135,7 @@
                            </tr>
                            <tr>
                                <td>1st Application Date:</td>
-                               <td><strong>{{object.practice_manager.registration.reg_date_pretty}}</strong></td>
+                               <td><strong>{{user.reg_date_pretty}}</strong></td>
                            </tr>
                            <tr>
                                <td>Pending Applications:</td>
@@ -151,13 +150,7 @@
                </div>
            </div>
 
-           {% endfor %}
-          {% else %}
-                       
          
-                      
-
-        {% endif %}
        </div>
        <!--main container ends-->
 

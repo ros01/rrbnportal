@@ -11,7 +11,6 @@ from .views import (
     InspectionView,
     MyLicensesListView,
     MyLicensesDetailView,
-    HospitalDashboardView,
 
 )
 
@@ -21,6 +20,7 @@ app_name = 'hospitals'
 
 
 urlpatterns = [
+    path('', views.hospitals_dashboard, name='hospitals_dashboard'),
     path('status/', views.status, name='status'),
     path('reg_table', views.reg_table, name='reg_table'),
     #path('<int:id>/payment_table/', views.payment_table, name='payment_table'),
@@ -41,7 +41,6 @@ urlpatterns = [
     path('<int:id>/payment_update/', PaymentUpdateView.as_view(), name='payment_update'),
     path('<int:id>/update/', HospitalUpdateView.as_view(), name='update'),
     path('lookup/', views.lookup, name='hospitals_lookup'),
-    path('', HospitalDashboardView.as_view(), name='hospitals_dashboard'),
     path('licenses_list/', MyLicensesListView.as_view(), name='licenses_list'),
     path('<int:id>/licenses_detail/', MyLicensesDetailView.as_view(), name='licenses_detail'),
 
