@@ -32,10 +32,18 @@ User = get_user_model()
 
 
 
-@login_required
-def hospitals_dashboard(request):
-    return render(request, 'hospitals/hospitals_dashboard.html')
 
+class HospitalDashboardView(View):
+    template_name = "hospitals/hospitals_dashboard.html"
+    queryset = License.objects.all()
+
+    def get_queryset(self):
+        return self.queryset.filter(practice_manager=self.request.user)
+        
+
+    def get(self, request, *args, **kwargs):
+        context = {'object': self.get_queryset()}
+        return render(request, self.template_name, context)
 
 @login_required
 def lookup(request):
@@ -56,7 +64,7 @@ def status(request, *args, **kwargs):
     
 
     if has_inspected:
-        return redirect('hospitals:license_table')
+        return redirect('hospitals:licenses_list')
     elif has_paid:
         return redirect('hospitals:inspection_table')
     elif has_registered:
@@ -74,9 +82,43 @@ def reg_table(request):
   #   return render(request, 'hospitals/inspection_table.html')
 
 
-@login_required
-def license_table(request):
-     return render(request, 'hospitals/license_table.html')
+class MyLicensesListView(View):
+    template_name = "hospitals/license_table.html"
+    queryset = License.objects.all()
+
+    def get_queryset(self):
+        return self.queryset.filter(practice_manager=self.request.user)
+        
+
+    def get(self, request, *args, **kwargs):
+        context = {'object': self.get_queryset()}
+        return render(request, self.template_name, context)
+
+
+
+
+class LicenseObjectMixin(object):
+    model = License
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+
+class MyLicensesDetailView(LicenseObjectMixin, View):
+    template_name = "hospitals/licenses_detail.html" # DetailView
+    def get(self, request, id=None, *args, **kwargs):
+        # GET method
+        context = {'object': self.get_object()}
+        return render(request, self.template_name, context)
+
+
+
+
+
+
 
 class InspectionObjectMixin(object):
     model = Registration

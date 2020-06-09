@@ -11,9 +11,12 @@
 
        <div class="container">
            <div class="row">
+
+             {% if object %}
+             {% for object in object %}
                <div class="col-md-12 d-flex justify-content-between">
                   <p class="text-secondary display-4 paragraph mt-2">Dashboard</p>
-                   <h5 class="mt-4 text-muted text-small">Hospital Code: NOT YET ASSIGNED</h5>
+                   
                </div>
                <div class="underline ml-4"></div>
            </div>
@@ -124,16 +127,16 @@
                    <table class="table border shadow-sm table-hover table-center table-md">
                        <tbody>
                            <tr>
-                               <td>Hospital Code:</td>
-                               <td>NOT YET ASSIGNED</td>
+                               <td>License No:</td>
+                               <td>{{object.practice_manager.license.license_no}}</td>
                            </tr>
                            <tr>
                                <td>Valid Licenses:</td>
-                               <td>0</td>
+                               <td>1</td>
                            </tr>
                            <tr>
                                <td>1st Application Date:</td>
-                               <td>11/10/2019</td>
+                               <td>{{user.reg_date_pretty}}</td>
                            </tr>
                            <tr>
                                <td>Pending Applications:</td>
@@ -147,6 +150,14 @@
                    </table>
                </div>
            </div>
+
+           {% endfor %}
+          {% else %}
+                       
+          <h4>No Data Available</h4>
+                      
+
+        {% endif %}
        </div>
        <!--main container ends-->
 

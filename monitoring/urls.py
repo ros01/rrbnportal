@@ -9,6 +9,9 @@ from .views import (
     LicenseIssueListView,
     LicenseDetailView,
     IssueLicenseView,
+    LicensesListView,
+    LicensesDetailView,
+    LicenseDownloadView,
 )
 
 # Create your views here.
@@ -33,6 +36,9 @@ urlpatterns = [
     path('license_list/', LicenseIssueListView.as_view(), name='license_list'),
     path('<int:id>/license_detail/', LicenseDetailView.as_view(), name='license_detail'),
     path('<int:id>/issue_license/', IssueLicenseView.as_view(), name='issue_license'),
+    path('license_issued/', LicensesListView.as_view(), name='license_issued'),
+    path('<int:pk>/view_license/', LicensesDetailView.as_view(), name='view_license'),
+    path('<int:pk>/download_license/', LicenseDownloadView.as_view(), name='download_license'),
 
 
 

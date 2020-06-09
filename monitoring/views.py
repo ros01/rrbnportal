@@ -4,7 +4,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponse
 from accounts.decorators import monitoring_required
-from hospitals.models import Payment, Registration, Schedule, Inspection
+from hospitals.models import Payment, Registration, Schedule, Inspection, License
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -22,7 +22,43 @@ from django.template.loader import get_template
 from django.core.mail import send_mail
 from django.contrib import messages
 
+
+
+
+import functools
+from django_weasyprint import WeasyTemplateResponseMixin
+from django_weasyprint import WeasyTemplateResponse
+from django_weasyprint.views import CONTENT_TYPE_PNG
+
 User = get_user_model()
+
+
+class LicensesListView(View):
+    template_name = "monitoring/licenses_list.html"
+    queryset = License.objects.all()
+
+    def get_queryset(self):
+        return self.queryset
+        
+
+    def get(self, request, *args, **kwargs):
+        context = {'object': self.get_queryset()}
+        return render(request, self.template_name, context)
+
+class LicensesDetailView(DetailView):
+    # vanilla Django DetailView
+    model = License
+    template_name = 'monitoring/licenses_issued_detail.html'
+
+class LicenseDownloadView(WeasyTemplateResponseMixin, LicensesDetailView):
+    # suggested filename (is required for attachment/download!)
+    pdf_filename = 'license.pdf'
+
+
+
+
+
+
 
 
 
