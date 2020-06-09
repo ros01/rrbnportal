@@ -26,34 +26,8 @@ from django.contrib import messages
 User = get_user_model()
 
 
-class LicensesListView(View):
-    template_name = "monitoring/licenses_list.html"
-    queryset = License.objects.all()
-
-    def get_queryset(self):
-        return self.queryset        
-
-    def get(self, request, *args, **kwargs):
-        context = {'object': self.get_queryset()}
-        return render(request, self.template_name, context)
-
-class LicensesDetailView(DetailView):
-    model = License
-    template_name = 'monitoring/licenses_issued_detail.html'
-
-
-
-
-
-
-
-
-@login_required
-@monitoring_required
 def monitoring_dashboard(request):
     return render(request, 'monitoring/monitoring_dashboard.html')
-
-
 
 class RegistrationListView(View):
     template_name = "monitoring/list-applications.html"
@@ -67,15 +41,12 @@ class RegistrationListView(View):
         context = {'object': self.get_queryset()}
         return render(request, self.template_name, context)
 
-@login_required
+
 def vet_application(request, id):
   payment = get_object_or_404(Payment, pk=id)
-  
-  context={'payment': payment,
-           
+  context={'payment': payment,       
            }
   return render(request, 'monitoring/view-applications.html', context)
-
 
 def approve(request, id):
   if request.method == 'POST':
@@ -83,51 +54,30 @@ def approve(request, id):
      payment.vet_status = 2
      payment.veting_officer = request.user
      payment.save()
-
-
      context = {}
      context['object'] = payment
      subject = 'Successful verification of Registration and Payment Details'
      from_email = settings.DEFAULT_FROM_EMAIL
      to_email = [payment.email]
-     
-
-     
      contact_message = get_template('monitoring/contact_message.txt').render(context)
-
      send_mail(subject, contact_message, from_email, to_email, fail_silently=False)
-
      messages.success(request, ('Application vetted successfully. Please proceed to Schedule Hospital for Inspection.'))
-     #return redirect('/monitoring/'+str(payment.id))
      return render(request, 'monitoring/verification_successful.html',context)
      
-
-
 def reject(request, id):
   if request.method == 'POST':
      payment = get_object_or_404(Payment, pk=id)
      payment.vet_status = 3
      payment.save()
-
      context = {}
      context['object'] = payment
      subject = 'Failed verification of Registration and Payment Details'
      from_email = settings.DEFAULT_FROM_EMAIL
-     to_email = [payment.email]
-     
-
-     
+     to_email = [payment.email] 
      contact_message = get_template('monitoring/verification_failed.txt').render(context)
-
      send_mail(subject, contact_message, from_email, to_email, fail_silently=False)
-
-
-
-
-
      messages.error(request, ('Verification failed.  Hospital has been sent an email to re-apply with the correct details.'))
      return redirect('/monitoring/'+str(payment.id))
-
 
 
 class InspectionScheduleListView(View):
@@ -137,7 +87,6 @@ class InspectionScheduleListView(View):
     def get_queryset(self):
         return self.queryset.filter(vet_status=2)
         
-
     def get(self, request, *args, **kwargs):
         context = {'object': self.get_queryset()}
         return render(request, self.template_name, context)
@@ -191,16 +140,6 @@ class InspectionCreateView(InspectionObjectMixin, View):
         return render(request, self.template_name1, context)
 
 
-
-
-
-
-
-
-
-
-
-
 class InspectionCompletedListView(View):
     template_name = "monitoring/inspections_completed_list.html"
     queryset = Inspection.objects.all()
@@ -209,18 +148,15 @@ class InspectionCompletedListView(View):
         #return self.queryset.filter(inspection_status=1)
         return self.queryset
         
-
     def get(self, request, *args, **kwargs):
         context = {'object': self.get_queryset()}
         return render(request, self.template_name, context)
 
 
-
 def verify(request, id):
   inspection = get_object_or_404(Inspection, pk=id)
   
-  context={'inspection': inspection,
-           
+  context={'inspection': inspection,        
            }
   return render(request, 'monitoring/inspections_detail.html', context)
 
@@ -230,21 +166,14 @@ def approve_report(request, id):
      inspection.inspection_status = 2
      inspection.save()
 
-
      context = {}
      context['object'] = inspection
      subject = 'Passed Facility Inspection'
      from_email = settings.DEFAULT_FROM_EMAIL
-     to_email = [inspection.email]
-     
-
-     
+     to_email = [inspection.email]   
      contact_message = get_template('monitoring/inspection_passed.txt').render(context)
-
      send_mail(subject, contact_message, from_email, to_email, fail_silently=False)
-
-     messages.success(request, ('Inspection Report Validation Successful'))
-     
+     messages.success(request, ('Inspection Report Validation Successful'))    
      return render(request, 'monitoring/inspection_successful.html',context)
     
 
@@ -259,23 +188,11 @@ def reject_report(request, id):
      context['object'] = inspection
      subject = 'Failed Inpsection Report Validation'
      from_email = settings.DEFAULT_FROM_EMAIL
-     to_email = [inspection.email]
-     
-
-     
+     to_email = [inspection.email]    
      contact_message = get_template('monitoring/inspection_failed.txt').render(context)
-
      send_mail(subject, contact_message, from_email, to_email, fail_silently=False)
-
-
-
-
-
      messages.error(request, ('Inspection failed.  Hospital will be contacted and guided on how to remedy inspection shortfalls.'))
      return render(request, 'monitoring/inspection_failed.html',context)
-
-
-
 
 
 class LicenseIssueListView(View):
@@ -308,8 +225,6 @@ class LicenseDetailView(LicenseObjectMixin, View):
         return render(request, self.template_name, context)
 
 
-
-
 class IssueLicenseView(LicenseObjectMixin, View):
     template_name = "monitoring/issue_license.html"
     template_name1 = "monitoring/license_issued.html"
@@ -321,7 +236,6 @@ class IssueLicenseView(LicenseObjectMixin, View):
             context['object'] = obj
             context['form'] = form
         return render(request, self.template_name, context)
-
 
     def post(self, request,  *args, **kwargs):
         form = LicenseModelForm(request.POST, request.FILES)
@@ -347,6 +261,20 @@ class IssueLicenseView(LicenseObjectMixin, View):
         
         return render(request, self.template_name1, context)
 
+class LicensesListView(View):
+    template_name = "monitoring/licenses_list.html"
+    queryset = License.objects.all()
+
+    def get_queryset(self):
+        return self.queryset        
+
+    def get(self, request, *args, **kwargs):
+        context = {'object': self.get_queryset()}
+        return render(request, self.template_name, context)
+
+class LicensesDetailView(DetailView):
+    model = License
+    template_name = 'monitoring/licenses_issued_detail.html'
 
 
 

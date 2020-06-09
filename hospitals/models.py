@@ -10,9 +10,9 @@ from django.dispatch import receiver
 
 
 class Registration(models.Model):
-    #id = models.IntegerField(max_length=6, primary_key=True, unique=True, default=10000)
-    id = models.AutoField(primary_key=True, unique=True)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    id = models.IntegerField(max_length=6, primary_key=True, unique=True, default=10000)
+    #id = models.AutoField(primary_key=True, unique=True)
+    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     hospital_name = models.CharField(max_length=200)
     license_category = models.CharField(max_length=200)
     rc_number = models.CharField(max_length=100)
@@ -47,10 +47,9 @@ class Registration(models.Model):
 
 
 class Payment(models.Model):
-    #id = models.IntegerField(max_length=6, primary_key=True, unique=True, default=10000)
     id = models.AutoField(primary_key=True, unique=True)
     application_no = models.CharField(max_length=200)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     hospital_name = models.CharField(max_length=200)
     license_category = models.CharField(max_length=200)
     phone = models.CharField(max_length=100)
@@ -70,10 +69,7 @@ class Payment(models.Model):
     vet_status = models.IntegerField(default=1)
     vetting_officer = models.CharField(max_length=200)
     vet_date =models.DateTimeField(blank=True, auto_now=False, auto_now_add=True)
-    
 
-    #def __str__(self):
-     #   return self.hospital_name
 
 
     def __str__(self):
@@ -84,6 +80,9 @@ class Payment(models.Model):
     def payment_date_pretty(self):
         return self.payment_date.strftime('%b %e %Y')
 
+    def vet_date_pretty(self):
+        return self.vet_date.strftime('%b %e %Y')
+
 
     def get_absolute_url(self):
 	    return reverse("hospitals:payment_update", kwargs={"id": self.id})
@@ -91,7 +90,7 @@ class Payment(models.Model):
 class Schedule(models.Model):
 
     application_no = models.CharField(max_length=200)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     hospital_name = models.CharField(max_length=200)
     license_category = models.CharField(max_length=200)
     phone = models.CharField(max_length=100)
@@ -106,11 +105,7 @@ class Schedule(models.Model):
     inspection_schedule_date = models.DateTimeField(default=datetime.now, blank=True)
     inspection_date = models.DateTimeField(default=datetime.now, blank=True)
     inspection_report_deadline = models.DateTimeField(default=datetime.now, blank=True)
-    inspection_zone = models.CharField(default=1, max_length=100, choices = INSPECTION_ZONE)
-    
-    
-
-
+    inspection_zone = models.CharField(max_length=100, choices = INSPECTION_ZONE)
 
     def inspection_date_pretty(self):
         return self.inspection_date.strftime('%b %e %Y')
@@ -124,7 +119,7 @@ class Schedule(models.Model):
 
 class Inspection(models.Model):
     application_no = models.CharField(max_length=100)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     hospital_name = models.CharField(max_length=200)
     license_category = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
@@ -157,24 +152,17 @@ class Inspection(models.Model):
     photo_6 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
 
 
-
-
-
     def __str__(self):
         return self.hospital_name
 
     def inspection_date_pretty(self):
         return self.inspection_date.strftime('%b %e %Y')
 
-    
-
-    #def get_absolute_url(self):
-	    #return reverse("hospitals:update", kwargs={"id": self.id})
 
 
 class License(models.Model):
     application_no = models.CharField(max_length=100)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     hospital_name = models.CharField(max_length=200)
     license_category = models.CharField(max_length=200)
     license_no = models.CharField(max_length=200)

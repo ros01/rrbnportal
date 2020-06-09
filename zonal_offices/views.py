@@ -51,17 +51,10 @@ class InspectionObjectMixin(object):
 
 
 class InspectionView(InspectionObjectMixin, View):
-    template_name = "zonal_offices/inspection_detail.html" # DetailView
+    template_name = "zonal_offices/inspection_detail.html" 
     def get(self, request, id=None, *args, **kwargs):
-        # GET method
         context = {'object': self.get_object()}
         return render(request, self.template_name, context)
-
-
-#class InspectionCreateView(CreateView):
-    #template_name = 'zonal_offices/inspection_report_creation.html'
-    #form_class =InspectionModelForm
-    #queryset = Schedule.objects.all()
 
 
 class InspectionReportView(InspectionObjectMixin, View):
@@ -79,8 +72,6 @@ class InspectionReportView(InspectionObjectMixin, View):
 
 
     def post(self, request,  *args, **kwargs):
-         
-
         form = InspectionModelForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
@@ -94,7 +85,6 @@ class InspectionReportView(InspectionObjectMixin, View):
 
            subject = 'Notice of Facility Inspection'
            from_email = settings.DEFAULT_FROM_EMAIL
-           #to_email = [request.user.email]
            to_email = [form.cleaned_data.get('email')]
 
            context['form'] = form
