@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'multiselectfield',
     'tempus_dominus',
-    'weasyprint',
 
 ]
 

@@ -25,10 +25,6 @@ from django.contrib import messages
 
 
 
-import functools
-from django_weasyprint import WeasyTemplateResponseMixin
-from django_weasyprint import WeasyTemplateResponse
-from django_weasyprint.views import CONTENT_TYPE_PNG
 
 User = get_user_model()
 
@@ -46,13 +42,10 @@ class LicensesListView(View):
         return render(request, self.template_name, context)
 
 class LicensesDetailView(DetailView):
-    # vanilla Django DetailView
     model = License
     template_name = 'monitoring/licenses_issued_detail.html'
 
-class LicenseDownloadView(WeasyTemplateResponseMixin, LicensesDetailView):
-    # suggested filename (is required for attachment/download!)
-    pdf_filename = 'license.pdf'
+
 
 
 
