@@ -1,5 +1,6 @@
 {% extends 'hospitals/hospital_base.html'%}
 {% load static %}
+{% load humanize %}
 {% block title%}| Welcome {% endblock %}
 {% block styles %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/hospital_dashboard.css' %}">
@@ -79,7 +80,7 @@
 
                 <div class="row">
                     <p class="col-5 lead">Payment Amount:</p>
-                    <p class="col-6 lead"><strong>{{object.practice_manager.payment.payment_amount}}</strong></p>
+                    <p class="col-6 lead"><strong>N{{object.practice_manager.payment.payment_amount | intcomma}}</strong></p>
                 </div>
 
                 <div class="row">

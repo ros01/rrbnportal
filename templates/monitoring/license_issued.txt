@@ -12,6 +12,8 @@ Hospital Name: {{object.hospital_name}}
 
 Category: {{object.license_category}}
 
+License No: {{object.practice_manager.license_no}}
+
 License Issue Date: {{object.practice_manager.license.issue_date_pretty}}
 
 License Expiry Date: {{object.practice_manager.license.expiry_date_pretty}}

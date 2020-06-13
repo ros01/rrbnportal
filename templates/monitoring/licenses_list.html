@@ -8,6 +8,11 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css" >
 
+<link href="https://fonts.googleapis.com/css2?family=Thasadith&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Tangerine">
+
 
 {% endblock %}
 
@@ -66,8 +71,11 @@
                            <td>{{object.license_category}}</td>
                            <td>{{object.issue_date_pretty}}</td>
                            <td>{{object.expiry_date_pretty}}</td>
-                           <td><a href="{% url 'monitoring:view_license' pk=object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i>View License</a></td>
+                          
 
+                            <td><a href="{% url 'monitoring:generate_license' id=object.id%}" target="_blank" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger" ></i>View License</a></td>
+
+                          
                          
 
                          </tr>

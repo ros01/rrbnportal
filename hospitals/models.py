@@ -10,8 +10,8 @@ from django.dispatch import receiver
 
 
 class Registration(models.Model):
-    id = models.IntegerField(max_length=6, primary_key=True, unique=True, default=10000)
-    #id = models.AutoField(primary_key=True, unique=True)
+    #id = models.IntegerField(max_length=6, primary_key=True, unique=True, default=10000)
+    id = models.AutoField(primary_key=True, unique=True)
     practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     hospital_name = models.CharField(max_length=200)
     license_category = models.CharField(max_length=200)

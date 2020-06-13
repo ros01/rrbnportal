@@ -17,7 +17,7 @@
    
         <div class="row ">
             <div class="col mb-0">
-                <p class="text-secondary display-4 paragraph">Radiography Practice License Application Facility Inspection Details</p>
+                <p class="text-secondary display-4 paragraph">Hospital/Centre Inspection Details</p>
                 <hr>
            
         </div>
@@ -114,47 +114,66 @@
 
 
                     <tbody>
+                       
+
+
+                        {% if inspection.photo_main %}
                         <tr> <td width="50%" scope="col">Photo Main:</td> 
                         <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
                         <a class="text-danger" href="{{inspection.photo_main.url}}"
                         target="_blank"> Main Photo</a></td> 
                         </tr>
+                         {% endif %}
 
+
+                        {% if inspection.photo_1 %}
                         <tr> <td width="50%" scope="col">Photo One:</td> 
                         <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
                         <a class="text-danger" href="{{inspection.photo_1.url}}"
                         target="_blank"> Photo One</a></td>  
                         </tr>
+                         {% endif %}
 
+
+                        {% if inspection.photo_2 %}
                         <tr> <td width="50%" scope="col">Photo Two:</td> 
                         <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
                         <a class="text-danger" href="{{inspection.photo_2.url}}"
                         target="_blank"> Photo Two</a></td>  
                         </tr>
+                         {% endif %}
 
+                        {% if inspection.photo_3 %}
                         <tr> <td width="50%" scope="col">Photo Three:</td> 
                         <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
                         <a class="text-danger" href="{{inspection.photo_3.url}}"
                         target="_blank"> Photo Three</a></td>  
                         </tr>
+                         {% endif %}
 
+                        {% if inspection.photo_4 %}
                         <tr> <td width="50%" scope="col">Photo Four:</td> 
                         <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
                         <a class="text-danger" href="{{inspection.photo_4.url}}"
                         target="_blank"> Photo Four</a></td>  
                         </tr>
+                         {% endif %}
 
+                        {% if inspection.photo_5 %}
                         <tr> <td width="50%" scope="col">Photo Five:</td> 
                         <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
                         <a class="text-danger" href="{{inspection.photo_5.url}}"
                         target="_blank"> Photo Five</a></td>  
                         </tr>
+                         {% endif %}
 
+                        {% if inspection.photo_6 %}
                         <tr> <td width="50%" scope="col">Photo Six:</td> 
                         <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
                         <a class="text-danger" href="{{inspection.photo_6.url}}"
                         target="_blank"> Photo Six</a></td>  
                         </tr>
+                         {% endif %}
                         
                        
                     </tbody>

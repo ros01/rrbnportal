@@ -30,7 +30,7 @@ def offices(request):
 
 class InspectionScheduleListView(View):
     template_name = "zonal_offices/inspection_schedule_list.html"
-    queryset = Schedule.objects.all()
+    queryset = Schedule.objects.all().order_by('-inspection_schedule_date')
 
     def get_queryset(self):
         return self.queryset.filter(inspection_zone="Enugu")

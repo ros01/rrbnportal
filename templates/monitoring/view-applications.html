@@ -1,5 +1,6 @@
 {% extends 'monitoring/monitoring_base.html'%}
 {% load static %}
+{% load humanize %}
 {% block title%}| Vet Registration Applications {% endblock %}
 {% block styles %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/styles-vet.css' %}" />
@@ -67,7 +68,7 @@
                     </div>
                     <div class="row">
                       <span class="col-5 lead text-secondary">Payment Amount:</span>
-                      <span class="col-6 lead text-dark"><strong>{{payment.payment_amount}}</strong>
+                      <span class="col-6 lead text-dark"><strong>{{payment.payment_amount | intcomma}}</strong>
                       </span>
                     </div>
                     <div class="row">
@@ -92,22 +93,29 @@
             <div class="col-md-6 offset-md-1 mt-0">
                 <div class="col-md-12">
                     <p class="text-success lead"><strong>Uploaded Documents<strong></p>
+                    {% if payment.practice_manager.registration.cac_certificate %}
                     <div class="row">
                         <span class="col-5 lead text-secondary">CAC Document:</span>
                         <span class="col-6 lead"><i class="fa fa-eye text-dark"></i>
                         <a class="text-danger" href="{{payment.practice_manager.registration.cac_certificate.url}}"
                         target="_blank"> View CAC Documents</a></span>
                     </div>
+
+                    {% if payment.practice_manager.registration.practice_license %}
                     <div class="row">
                         <span class="col-5 lead text-secondary">Practicing Licence:</span>
                         <span class="col-6 lead"><i class="fa fa-eye text-dark"></i>
                         <a class="text-danger" href="{{payment.practice_manager.registration.practice_license.url}}" target="_blank"> View Practicing Licence</a></span>
                     </div>
+                     {% endif %}
+
+                    {% if payment.payment_receipt %}
                     <div class="row">
                         <span class="col-5 lead text-secondary">Prayment Details:</span>
                         <span class="col-6 lead"><i class="fa fa-eye text-dark"></i>
                         <a class="text-danger"  href="{{payment.payment_receipt.url}}"  target="_blank">View Payment Receipt</a>
                     </div>
+                    {% endif %}
                     </div>
                     <div class="col-md-12 mt-3">
                         <p class="text-success lead"><strong>Control Details<strong></p>

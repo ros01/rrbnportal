@@ -21,9 +21,22 @@ from .forms import ScheduleModelForm, LicenseModelForm
 from django.template.loader import get_template
 from django.core.mail import send_mail
 from django.contrib import messages
+from xhtml2pdf import pisa
+import os
+from django.contrib.staticfiles import finders
+from io import BytesIO
+
+
+
 
 
 User = get_user_model()
+
+
+
+
+
+
 
 
 def monitoring_dashboard(request):
@@ -82,7 +95,7 @@ def reject(request, id):
 
 class InspectionScheduleListView(View):
     template_name = "monitoring/inspection_schedule_list.html"
-    queryset = Payment.objects.all()
+    queryset = Payment.objects.all().order_by('-payment_date')
 
     def get_queryset(self):
         return self.queryset.filter(vet_status=2)
@@ -142,7 +155,7 @@ class InspectionCreateView(InspectionObjectMixin, View):
 
 class InspectionCompletedListView(View):
     template_name = "monitoring/inspections_completed_list.html"
-    queryset = Inspection.objects.all()
+    queryset = Inspection.objects.all().order_by('-inspection_date')
 
     def get_queryset(self):
         #return self.queryset.filter(inspection_status=1)
@@ -197,7 +210,7 @@ def reject_report(request, id):
 
 class LicenseIssueListView(View):
     template_name = "monitoring/license_issue_list.html"
-    queryset = Inspection.objects.all()
+    queryset = Inspection.objects.all().order_by('-inspection_date')
 
     def get_queryset(self):
         return self.queryset.filter(inspection_status=4)
@@ -263,7 +276,8 @@ class IssueLicenseView(LicenseObjectMixin, View):
 
 class LicensesListView(View):
     template_name = "monitoring/licenses_list.html"
-    queryset = License.objects.all()
+    queryset = License.objects.order_by('-issue_date')
+   
 
     def get_queryset(self):
         return self.queryset        
@@ -272,9 +286,55 @@ class LicensesListView(View):
         context = {'object': self.get_queryset()}
         return render(request, self.template_name, context)
 
-class LicensesDetailView(DetailView):
+
+
+
+
+class GenerateObjectMixin(object):
     model = License
-    template_name = 'monitoring/licenses_issued_detail.html'
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+
+def link_callback(uri, rel):
+    sUrl = settings.STATIC_URL     
+    sRoot = settings.STATIC_ROOT    
+    mUrl = settings.MEDIA_URL       
+    mRoot = settings.MEDIA_ROOT     
+    if uri.startswith(mUrl):
+        path = os.path.join(mRoot, uri.replace(mUrl, ""))
+    elif uri.startswith(sUrl):
+        path = os.path.join(sRoot, uri.replace(sUrl, ""))
+    else:
+        return uri  
+    if not os.path.isfile(path):
+            raise Exception(
+                'media URI must start with %s or %s' % (sUrl, mUrl)
+            )
+    return path
+
+
+class GeneratePdfView(GenerateObjectMixin, View):
+    
+    def get(self, request, *args, **kwargs):
+        template = get_template('pdf/license.html')
+        context = {
+            'object': self.get_object()
+        }
+        html = template.render(context)
+        result = BytesIO()
+        pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result, link_callback=link_callback)
+        if not pdf.err:
+            return HttpResponse(result.getvalue(), content_type='application/pdf') 
+        return None
+
+
+
+
 
 
 

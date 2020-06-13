@@ -2,7 +2,8 @@
 {% load static %}
 {% block title%}| Zonal Offices Dashboard {% endblock %}
 {% block styles %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/zonal_officehq.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
 {% endblock %}
 
 
@@ -13,15 +14,23 @@
 
 <main class="container">
 
-    <div class="row mb-3">
-        <div class="col col-lg-12 p-3 adjust" style="background: rgb(182, 227, 245);">
-            <i class="fa fa-info-circle text-white size40"></i>
-            <p class="text-primary">DEAR RRBN {{user.module_name|upper }} USER;<br>
-            Welcome to the Zonal Office Console.<br>
-            Here, you can easily manage inspection schedules, upload inspection reports, access numerous opperational reports, etc.
-            </p>
-        </div>
-    </div>
+    
+
+    <div class="row rounded ml-3 mr-0 pl-1 pr-0 justify-content-center align-items-center" style="background-color: #bfe3f8;">
+            <div class="col-md-1 mt-1 py-auto">
+               <i class="fas fa-info-circle fa-3x"></i>
+                </div>
+
+               <div class="col-md-11 mt-2 pt-2 px-0">
+                <p class="text-dark"><strong>DEAR RRBN {{user.module_name|upper }} USER;<br>
+                    Welcome to the Zonal Office Console.<br>
+                    Here, you can easily manage inspection schedules, upload inspection reports, access numerous opperational reports, etc.</strong>
+                </p>
+               </div>
+           </div>
+
+
+
 
     <!--utility items-->
     <div class="row mt-4 mobile-top2">

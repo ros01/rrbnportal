@@ -22,7 +22,7 @@
    
     <div class="row mt-3 mb-2">
     <div class="col text-left mb-1">
-    <p class="text-secondary display-4 paragraph2">Inspection Schedule List</p>
+    <p class="text-secondary display-4 paragraph2">List of Scheduled Inspections for Enugu Zone</p>
     <hr>
     </div>
     </div>
@@ -66,7 +66,7 @@
                            <td>{{object.address}}</td>
                            <td>{{object.inspection_date_pretty}}</td>
                            <td>{{object.inspection_report_deadline_pretty}}</td>
-                           <td><a href="{% url 'zonal_offices:inspection_detail' id=object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> view</a></td>
+                           <td><a href="{% url 'zonal_offices:inspection_detail' id=object.id %}" class="btn btn-outline-warning btn-sm"> View</a></td>
 
                          </tr>
 

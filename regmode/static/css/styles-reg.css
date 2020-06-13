@@ -1,5 +1,39 @@
 main{
-    margin: 1rem 0;
+   margin: 1rem 0;
+}
+
+@font-face {
+    font-family: 'helveticaneuethin';
+    src: url('/static/fonts/helveticaneue_thin-webfont.woff2') format('woff2'),
+         url('/static/fonts/helveticaneue_thin-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+p {
+  font-family: "helveticaneuethin";
+
+}
+
+.paragraph {
+  font-size: 2.5rem;
+
+}
+.paragraph2 {
+  font-size: 2.0rem;
+
+}
+.paragraph3 {
+  font-size: 1.0rem;
+
+}
+
+h1 {
+  font-family: "helveticaneuethin";
+}
+h3 {
+  font-family: "helveticaneuethin";
 }
 
 

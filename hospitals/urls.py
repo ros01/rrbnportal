@@ -39,7 +39,7 @@ urlpatterns = [
     path('inspection_table/', InspectionListView.as_view(), name='inspection_table'),
     path('<int:id>/inspection_processing/', InspectionView.as_view(), name='inspection_processing'),
     path('licenses_list/', MyLicensesListView.as_view(), name='licenses_list'),
-    path('<int:id>/licenses_detail/', MyLicensesDetailView.as_view(), name='licenses_detail'),
+    path('<int:id>/license_details/', MyLicensesDetailView.as_view(), name='license_details'),
     path('lookup/', views.lookup, name='hospitals_lookup'),
     
 ]

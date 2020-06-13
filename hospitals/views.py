@@ -25,6 +25,10 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from .models import Registration, Payment, Inspection, License, Schedule
 from django.db.models import Q  
+from xhtml2pdf import pisa
+import os
+from django.contrib.staticfiles import finders
+from io import BytesIO
 
 
 
@@ -330,12 +334,39 @@ class LicenseObjectMixin(object):
         return obj 
 
 
-class MyLicensesDetailView(LicenseObjectMixin, View):
-    template_name = "hospitals/licenses_detail.html" 
-    def get(self, request, id=None, *args, **kwargs):
-        context = {'object': self.get_object()}
-        return render(request, self.template_name, context)
 
+def link_callback(uri, rel):
+    sUrl = settings.STATIC_URL     
+    sRoot = settings.STATIC_ROOT    
+    mUrl = settings.MEDIA_URL       
+    mRoot = settings.MEDIA_ROOT     
+    if uri.startswith(mUrl):
+        path = os.path.join(mRoot, uri.replace(mUrl, ""))
+    elif uri.startswith(sUrl):
+        path = os.path.join(sRoot, uri.replace(sUrl, ""))
+    else:
+        return uri  
+    if not os.path.isfile(path):
+            raise Exception(
+                'media URI must start with %s or %s' % (sUrl, mUrl)
+            )
+    return path
+
+
+
+class MyLicensesDetailView(LicenseObjectMixin, View):
+    
+    def get(self, request, *args, **kwargs):
+        template = get_template('pdf/license.html')
+        context = {
+            'object': self.get_object()
+        }
+        html = template.render(context)
+        result = BytesIO()
+        pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result, link_callback=link_callback)
+        if not pdf.err:
+            return HttpResponse(result.getvalue(), content_type='application/pdf') 
+        return None
 
 
 
