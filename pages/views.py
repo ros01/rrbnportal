@@ -17,7 +17,7 @@ class SearchResultsView(ListView):
     def get_queryset(self): 
         query = self.request.GET.get('q')
         object_list = License.objects.filter(
-            Q(license_no__icontains=query) | Q(hospital_name__icontains=query)
+            Q(license_no__iexact=query) | Q(hospital_name__iexact=query)
         )
         return object_list
 
