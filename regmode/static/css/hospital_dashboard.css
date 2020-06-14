@@ -15,8 +15,17 @@ main{
 
 }
 
+@font-face {
+    font-family: 'helveticaneuelight';
+    src: url('/static/fonts/helveticaneue_light-webfont.woff2') format('woff2'),
+         url('/static/fonts/helveticaneue_light-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
 p {
-  font-family: "helveticaneuethin";
+  font-family: "helveticaneuelight";
 
 }
 
@@ -34,10 +43,11 @@ p {
 }
 
 h1 {
-  font-family: "helveticaneuethin";
+  font-family: "helveticaneuelight";
 }
+
 h3 {
-  font-family: "helveticaneuethin";
+  font-family: "helveticaneuelight";
 }
 
 
