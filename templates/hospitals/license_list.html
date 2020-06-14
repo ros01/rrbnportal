@@ -45,6 +45,7 @@
 					<td width="10%">&nbsp;</td>
 
 					<td width="45%">
+                    {% if object_list %}
 					{% for license in object_list %}		
 					<label><b>Hospital/Centre Name</b></label><br/>
 					<span style="font-size:18px">{{license.hospital_name}}</span> <br/> <br/>
@@ -57,6 +58,9 @@
 					<label><b>Compliance Status</b></label><br/>
 					<span style="font-size:18px; color:#F00"><b>{{license.license_status}}</b></span> <br/> <br/>
 					 {% endfor %}
+                     {% else %}
+                     <span style="font-size:18px; color:#F00"><b>Record Not Found!</b></span> <br/> <br/>
+                    {% endif %}
 					
 					</td>
 					</table>
