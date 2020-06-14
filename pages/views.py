@@ -1,8 +1,26 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from hospitals.models import License
+from django.db.models import Q
+from django.views.generic import TemplateView, ListView
 
 def index(request):
     return render(request, 'pages/index.html')
+
+def verify_practice(request):
+    return render(request, 'pages/verify_practice.html')
+
+class SearchResultsView(ListView):
+    model = License
+    template_name = 'search_result.html'
+    
+    def get_queryset(self): 
+        query = self.request.GET.get('q')
+        object_list = License.objects.filter(
+            Q(license_no__icontains=query) | Q(hospital_name__icontains=query)
+        )
+        return object_list
+
 
 
 def about(request):

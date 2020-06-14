@@ -125,9 +125,14 @@
                    <h4 class="text-dark text-center mt-3">Important Metrics</h4>
                    <table class="table border shadow-sm table-hover table-center table-md">
                        <tbody>
+                      {% if hospitals %}
+                       {% for hospitals in hospitals %}
+                         <tr>
                            <tr>
                                <td>License No:</td>
-                               <td>NOT ASSIGNED</td>
+                               
+                               <td>{{hospitals.license_no}}</td>
+                               
                            </tr>
                            <tr>
                                <td>Valid Licenses:</td>
@@ -135,7 +140,7 @@
                            </tr>
                            <tr>
                                <td>1st Application Date:</td>
-                               <td><strong>{{user.reg_date_pretty}}</strong></td>
+                               <td>{{hospitals.practice_manager.registration.reg_date_pretty}}</td>
                            </tr>
                            <tr>
                                <td>Pending Applications:</td>
@@ -145,6 +150,34 @@
                                <td>Upcoming Renewals:</td>
                                <td>0</td>
                            </tr>
+                           {% endfor %}
+                           {% else %}
+                           <tr>
+                           <tr>
+                               <td>License No:</td>
+                               
+                               <td>NOT ASSIGNED</td>
+                               
+                           </tr>
+                           <tr>
+                               <td>Valid Licenses:</td>
+                               <td>1</td>
+                           </tr>
+                           <tr>
+                               <td>1st Application Date:</td>
+                               <td>{{user.reg_date_pretty}}</td>
+                           </tr>
+                           <tr>
+                               <td>Pending Applications:</td>
+                               <td>0</td>
+                           </tr>
+                           <tr class="border-bottom">
+                               <td>Upcoming Renewals:</td>
+                               <td>0</td>
+                           </tr>
+                       
+
+                            {% endif %}
                        </tbody>
                    </table>
                </div>

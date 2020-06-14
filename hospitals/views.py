@@ -36,7 +36,15 @@ User = get_user_model()
 
 
 def hospitals_dashboard(request):
-     return render(request, 'hospitals/hospitals_dashboard.html')
+
+     hospitals = License.objects.all().filter(practice_manager=request.user)
+
+     context = {
+          'hospitals': hospitals
+     }
+
+
+     return render(request, 'hospitals/hospitals_dashboard.html', context)
 
 
 def status(request, *args, **kwargs):

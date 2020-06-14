@@ -1,4 +1,5 @@
 from django.urls import path
+from .views import SearchResultsView
 
 from . import views
 
@@ -14,5 +15,10 @@ urlpatterns = [
     path('guidelines', views.guidelines, name='guidelines'),
     path('internship_centers', views.internship_centers, name='internship_centers'),
     path('zonal_offices', views.zonal_offices, name='zonal_offices'),
+    path('verify_practice', views.verify_practice, name='verify_practice'),
+    path('search/', SearchResultsView.as_view(), name='search_result'),
     
     ]
+
+
+

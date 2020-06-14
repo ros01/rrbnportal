@@ -1,0 +1,83 @@
+{% extends 'base-reg.html'%}
+{% load static %}
+{% block title%}| Welcome {% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
+{% endblock %}
+
+
+{% block content %}
+				<div class="container">
+                <section class="px-2 pt-3 pb-2">
+                <div class="row mt-3 mb-2">
+                <div class="col text-left mb-1">
+                <p class="text-secondary display-4 paragraph2">Verify Radiography Practice</p>
+                <hr>
+                </div>
+                </div>
+                </section>
+                 </div>
+        <!-- PAGE TITLE END -->
+
+        <!-- CONTENT START -->
+        <section id="page-content">
+
+		            <section>
+                    <div id="" class="container padding35">
+					<div class="col-md-12 wow fadeInLeft">
+					<span style="color:#F00"></span>
+					<table width="100%">
+					<td width="45%">
+					<form id="" action="{% url 'search_result' %}">
+                    <label>Enter License Number</label><br/>
+                    <div class="form-group">
+                    <input name="license_no" type="text" id="id_license_no"  class="form-control input-lg"  placeholder="Enter license number"  />
+                    </div>
+                    <div class="form-group col-xs-12 text-left">
+                    <button type="submit" class="btn btn-success btn-lg pull-right"><i class="fa fa-search fa-fw"></i> Verify Practice</button>
+                    </div>
+                    </form>
+
+					</td>
+
+					<td width="10%">&nbsp;</td>
+					<td width="45%">
+
+
+					<h1>Search Results</h1>
+
+					<ul>
+					  {% for license in object_list %}
+					    <li>
+					      {{ license.license_no }}, {{ license.hospital_name }}
+					    </li>
+					  {% endfor %}
+					</ul>
+
+
+					
+					<label>Hospital/Centre Name</label><br/>
+					<span style="font-size:18px"><b>{{license.hospital_name}}</b></span> <br/> <br/>
+					<label>License Number</label><br/>
+					<span style="font-size:18px">{{license.license_no}}</span> <br/> <br/>
+					<label>Issue Date</label><br/>
+					<span style="font-size:18px">{{license.issue_date_pretty}}</span> <br/> <br/>
+					<label>Expiry Date</label><br/>
+					<span style="font-size:18px">{{license.expiry_date_pretty}}</span> <br/> <br/>
+					<label>Compliance Status</label><br/>
+					<span style="font-size:18px; color:#F00"><b>{{license.license_status}}</b></span> <br/> <br/>
+					
+					</td>
+					</table>
+                    </div>
+
+					
+					
+                </div>
+            </div>
+{% endblock %}
+
+
+

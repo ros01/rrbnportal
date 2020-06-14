@@ -1,0 +1,56 @@
+{% extends 'base-reg.html'%}
+{% load static %}
+{% block title%}| Welcome {% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
+{% endblock %}
+
+
+{% block content %}
+                <div class="container">
+
+
+                <section class="px-2 pt-3 pb-2">
+   
+                <div class="row mt-3 mb-2">
+                <div class="col text-left mb-1">
+                <p class="text-secondary display-4 paragraph2">Verify Radiography Practice</p>
+                <hr>
+                </div>
+                </div>
+
+                </section>
+
+                 </div>
+        <!-- PAGE TITLE END -->
+
+        <!-- CONTENT START -->
+                    <section>
+                    <div id="" class="container padding35">
+                    <div class="row">
+                    <div class="col-md-12 wow fadeInLeft">
+                    <span style="color:#F00"></span>
+                    <table width="100%">
+                    <td width="45%">
+                    <form action="{% url 'search_result' %}" method="get">
+                    <label>Enter License Number</label><br/>
+                    <div class="form-group">
+                    <input name="q" type="text" class="form-control input-lg" placeholder="Enter license number">
+                    </div>
+                    <button type="submit" class="btn btn-success btn-lg pull-right"><i class="fa fa-search fa-fw"></i> Verify Practice</button>
+                     </div>
+                    </form>   
+                    </td>
+                    <td width="10%">&nbsp;</td>
+                    <td width="45%">             
+                    </td>
+                    </table>
+                    </div>        
+                    </div>
+                    </div>
+
+                    </section>
+        <!-- CONTENT END -->
+{% endblock %}
