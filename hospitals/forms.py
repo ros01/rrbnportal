@@ -17,7 +17,10 @@ class BasicDetailModelForm(forms.ModelForm):
          fields = ('practice_manager','hospital_name', 'license_category', 'rc_number', 'phone', 'email',  'city', 'state', 'address', 'services', 'equipment', 'radiographers')
          
 
-         widgets = {'practice_manager': forms.HiddenInput(),}
+         widgets = {
+         'practice_manager': forms.HiddenInput(),
+         'radiographers': forms.Textarea(attrs={'rows':6, 'cols':12}),
+         }
 
     def clean_practice_manager(self):
         practice_manager = self.cleaned_data.get('practice_manager')
@@ -25,13 +28,24 @@ class BasicDetailModelForm(forms.ModelForm):
         if qs.count() > 1:
             raise forms.ValidationError("Hospital details already submitted")
         return practice_manager
+
+    def __init__(self, *args, **kwargs):
+       super(BasicDetailModelForm, self).__init__(*args, **kwargs)
+       self.fields['rc_number'].label = "RC Number"
+       self.fields['hospital_name'].label = "Hospital Name"
         
 
 
 class CertUploadModelForm(forms.ModelForm):
     class Meta:
     	model = Registration
-    	fields = ('cac_certificate', 'practice_license')
+    	fields = ('cac_certificate', 'practice_license', 'form_c07')
+
+    def __init__(self, *args, **kwargs):
+       super(CertUploadModelForm, self).__init__(*args, **kwargs)
+       self.fields['cac_certificate'].label = "CAC Certificate"
+       self.fields['practice_license'].label = "Radiographer Practice License"
+       self.fields['form_c07'].label = "Form C07"
 
 
 class PaymentDetailsModelForm(forms.ModelForm):
@@ -45,26 +59,24 @@ class PaymentDetailsModelForm(forms.ModelForm):
         widgets = {
         'practice_manager': forms.HiddenInput(),
         'hospital_name': forms.TextInput(attrs={'readonly': True}),
-        'application_no': forms.TextInput(attrs={'readonly': True}),
-        
-
-
-        
-       
+        'application_no': forms.TextInput(attrs={'readonly': True}),   
         }
 
 
     def __init__(self, *args, **kwargs):
        super(PaymentDetailsModelForm, self).__init__(*args, **kwargs)
-       #self.fields['application_no'].widget.attrs['readonly'] = True 
-       #self.fields['phone'].widget.attrs['readonly'] = True
+       self.fields['application_no'].label = "Application No"
+       self.fields['hospital_name'].label = "Hospital Name"
+       self.fields['license_category'].label = "License Category"
+       self.fields['rrr_number'].label = "RRR Number"
+       self.fields['receipt_number'].label = "Receipt Number"
+       self.fields['payment_amount'].label = "Payment Amount"
+       self.fields['payment_method'].label = "Payment Method"
+       self.fields['payment_receipt'].label = "Payment Receipt"
 
  
 
-       #initial = kwargs.get('initial', {})
-       #self.application_no = initial.get('application_no')
-       #self.phone = initial.get('phone')
-       #super(PaymentDetailsModelForm, self).__init__(*args, **kwargs) 
+   
 
 
     

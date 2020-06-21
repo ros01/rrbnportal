@@ -81,7 +81,7 @@
 
             <div class="form-group">
             <label for="id_application_no" class=" requiredField">
-            Application no<span class="asteriskField">*</span></label>
+            Application No<span class="asteriskField">*</span></label>
             <input type="text" name="application_no" class="form-control"  {% if user.is_authenticated %}   value="{{ object.id }}" {% endif %}  required id="id_application_no"  id="div_id_application_no" readonly>
             </div>
 
@@ -90,7 +90,7 @@
 
             <div class="form-group">
             <label for="id_hospital_name" class=" requiredField">
-            Hospital name<span class="asteriskField">*</span></label>
+            Hospital Name<span class="asteriskField">*</span></label>
             <input type="text" name="hospital_name" class="form-control" {% if user.is_authenticated %} value="{{ user.hospital_name }}" {% endif %} required id="id_hospital_name"  id="div_id_hospital_name" readonly>
             </div>
 

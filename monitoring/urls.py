@@ -12,6 +12,8 @@ from .views import (
     IssueLicenseView,
     LicensesListView,
     GeneratePdfView,
+    RegisteredHospitalsListView,
+    RegisterdHospitalsDetailView,
    
 )
 
@@ -38,6 +40,8 @@ urlpatterns = [
     path('<int:id>/issue_license/', IssueLicenseView.as_view(), name='issue_license'),
     path('license_issued/', LicensesListView.as_view(), name='license_issued'),
     path('<int:id>/generate_license/', GeneratePdfView.as_view(), name='generate_license'),
+    path('hospitals_lookup/', RegisteredHospitalsListView.as_view(), name='hospitals_lookup'),
+    path('<int:id>/hospital_details/', RegisterdHospitalsDetailView.as_view(), name='hospital_details'),
 
    
 

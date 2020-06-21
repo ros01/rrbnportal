@@ -52,6 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     MODULE_NAME = (
         ('Monitoring HQ', 'Monitoring Hq'),
         ('Enugu Office', 'Enugu Office'),
+        ('Lagos Office', 'Lagos Office'),
         ('Registrars Office', 'CEO'),
         ('Accounts HQ', 'FAH'),
         )

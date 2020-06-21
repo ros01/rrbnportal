@@ -1,12 +1,17 @@
-{% extends 'hospitals/hospital_base.html'%}
+{% extends 'monitoring/monitoring_base.html'%}
 {% load static %}
-{% block title%}| Radiography Practice License Applications Due for Facility Inspection {% endblock %}
+{% block title%}| Radiography Practice Issued License{% endblock %}
 {% block styles %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'fontawesome-free-5.8.2-web/css/allt.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/dataTables.bootstrap4.min.css' %}" >
 <link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css" >
+
+<link href="https://fonts.googleapis.com/css2?family=Thasadith&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Tangerine">
 
 
 {% endblock %}
@@ -22,7 +27,7 @@
    
     <div class="row mt-3 mb-2">
     <div class="col text-left mb-1">
-    <p class="text-secondary display-4 paragraph2">My Radiography Practise License Applications</p>
+    <p class="text-secondary display-4 paragraph2">Issued Licenses List</p>
     <hr>
     </div>
     </div>
@@ -38,9 +43,10 @@
                       <td style="color: #fff;" class="small-text">S/N</td>
                           <td style="color: #fff;" class="small-text">Application No</td>
                           <td style="color: #fff;" class="small-text">Hospital Name</td>
-                          <td style="color: #fff;" class="small-text">Address</td>
-                          <td style="color: #fff;" class="small-text">Inspection Date</td>
-                          <td style="color: #fff;" class="small-text">Status</td>
+                          <td style="color: #fff;" class="small-text">License Category</td>
+                          <td style="color: #fff;" class="small-text">License No</td>
+                          <td style="color: #fff;" class="small-text">Issue Date</td>
+                          <td style="color: #fff;" class="small-text">Expiry Date</td>
                           <td style="color: #fff;" class="small-text">Action</td>
                      </tr>
                     </thead>
@@ -49,9 +55,10 @@
                         <td style="color: #fff;" class="small-text">S/N</td>
                           <td style="color: #fff;" class="small-text">Application No</td>
                           <td style="color: #fff;" class="small-text">Hospital Name</td>
-                          <td style="color: #fff;" class="small-text">Address</td>
-                          <td style="color: #fff;" class="small-text">Inspection Date</td>
-                          <td style="color: #fff;" class="small-text">Status</td>
+                          <td style="color: #fff;" class="small-text">License Category</td>
+                          <td style="color: #fff;" class="small-text">License No</td>
+                          <td style="color: #fff;" class="small-text">Issue Date</td>
+                          <td style="color: #fff;" class="small-text">Expiry Date</td>
                           <td style="color: #fff;" class="small-text">Action</td>
                        </tr>
                       </tfoot>
@@ -63,19 +70,20 @@
                           <td>{{forloop.counter}}</td>
                            <td>{{object.practice_manager.registration.id}}</td>
                            <td>{{object.hospital_name}}</td>
-                           <td>{{object.address}}</td>
-                           <td>{{object.inspection_date_pretty}}</td>
-                           <td>Facility Inspection</td>
-                           <td><a href="{% url 'hospitals:schedule_detail' id=object.id %}" class="btn btn-outline-warning btn-sm">View</a></td>
+                           <td>{{object.license_category}}</td>
+                           <td>{{object.license_no}}</td>
+                           <td>{{object.issue_date_pretty}}</td>
+                           <td>{{object.expiry_date_pretty}}</td>
+                          
+
+                            <td><a href="{% url 'registrars_office:generate_pdf' id=object.id%}" target="_blank" class="btn btn-outline-warning btn-sm">View</a></td>
+
+                          
+                         
 
                          </tr>
 
                         {% endfor %}
-                       {% else %}
-                       
-                      <h4>No Applications Due for Facility Inspection</h4>
-                      
-
                      {% endif %}
 
                      </tbody>

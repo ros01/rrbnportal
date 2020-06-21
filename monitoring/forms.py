@@ -96,8 +96,8 @@ class LicenseModelForm(forms.ModelForm):
 
     class Meta:
         model = License
-        fields = ('application_no', 'practice_manager', 'hospital_name', 'license_category', 'address', 'phone', 'email', 'inspection_date', 'issue_date', 'expiry_date', 'license_status', 'license_no',)
-        widgets = {'application_no': forms.HiddenInput(), 'practice_manager': forms.HiddenInput(), 'hospital_name': forms.HiddenInput(), 'license_category': forms.HiddenInput(), 'address': forms.HiddenInput(), 'phone': forms.HiddenInput(), 'email': forms.HiddenInput(), 'inspection_date': forms.HiddenInput(),}
+        fields = ('application_no', 'practice_manager', 'hospital_name', 'license_category', 'address', 'phone', 'email', 'inspection_date', 'issue_date', 'expiry_date', 'license_status', 'license_no', 'license_type',)
+        widgets = {'application_no': forms.HiddenInput(), 'practice_manager': forms.HiddenInput(), 'hospital_name': forms.HiddenInput(), 'license_category': forms.HiddenInput(), 'address': forms.HiddenInput(), 'phone': forms.HiddenInput(), 'email': forms.HiddenInput(), 'inspection_date': forms.HiddenInput(), 'license_type': forms.HiddenInput(),}
 
 
 

@@ -58,6 +58,14 @@
           <form method="post" action=".">
             {% csrf_token %}
 
+            {% if object.practice_manager.inspection.inspection_total > 60 %}
+              <input type="hidden" name="license_type" required id="id_license_type" value="Full Registration">
+            {% else %}
+              <input type="hidden" name="license_type" required id="id_license_type" value="Provisional Registration">
+            {% endif %}
+
+            
+
 
 
     

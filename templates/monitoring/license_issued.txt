@@ -14,6 +14,8 @@ Category: {{object.license_category}}
 
 License No: {{object.practice_manager.license.license_no}}
 
+Registration Category: {{object.practice_manager.license.license_type}}
+
 License Issue Date: {{object.practice_manager.license.issue_date_pretty}}
 
 License Expiry Date: {{object.practice_manager.license.expiry_date_pretty}}

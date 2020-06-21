@@ -274,9 +274,12 @@ class IssueLicenseView(LicenseObjectMixin, View):
         
         return render(request, self.template_name1, context)
 
+
+
+
 class LicensesListView(View):
     template_name = "monitoring/licenses_list.html"
-    queryset = License.objects.order_by('-issue_date')
+    queryset = License.objects.all().order_by('-issue_date')
    
 
     def get_queryset(self):
@@ -333,6 +336,34 @@ class GeneratePdfView(GenerateObjectMixin, View):
         return None
 
 
+class RegisteredHospitalsListView(View):
+    template_name = "monitoring/registered_hospitals_list.html"
+    queryset = License.objects.all()
+
+    def get_queryset(self):
+        return self.queryset
+        
+
+    def get(self, request, *args, **kwargs):
+        context = {'object': self.get_queryset()}
+        return render(request, self.template_name, context)
+
+class RegisteredObjectMixin(object):
+    model = License
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+
+class RegisterdHospitalsDetailView(RegisteredObjectMixin, View):
+    template_name = "monitoring/hospital_details.html" # DetailView
+    def get(self, request, id=None, *args, **kwargs):
+        # GET method
+        context = {'object': self.get_object()}
+        return render(request, self.template_name, context)
 
 
 

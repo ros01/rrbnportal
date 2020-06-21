@@ -1,6 +1,6 @@
-{% extends 'hospitals/hospital_base.html'%}
+{% extends 'monitoring/monitoring_base.html'%}
 {% load static %}
-{% block title%}| Radiography Practice License Applications Due for Facility Inspection {% endblock %}
+{% block title%}| List of Practice License Application Payments {% endblock %}
 {% block styles %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'fontawesome-free-5.8.2-web/css/allt.css' %}">
@@ -22,7 +22,7 @@
    
     <div class="row mt-3 mb-2">
     <div class="col text-left mb-1">
-    <p class="text-secondary display-4 paragraph2">My Radiography Practise License Applications</p>
+    <p class="text-secondary display-4 paragraph2">Radiography Practice License Applications Payments</p>
     <hr>
     </div>
     </div>
@@ -36,12 +36,13 @@
                     <thead>
                      <tr style="background: #41963F;">
                       <td style="color: #fff;" class="small-text">S/N</td>
-                          <td style="color: #fff;" class="small-text">Application No</td>
-                          <td style="color: #fff;" class="small-text">Hospital Name</td>
-                          <td style="color: #fff;" class="small-text">Address</td>
-                          <td style="color: #fff;" class="small-text">Inspection Date</td>
-                          <td style="color: #fff;" class="small-text">Status</td>
-                          <td style="color: #fff;" class="small-text">Action</td>
+                       <td style="color: #fff;" class="small-text">Application No</td>
+                       <td style="color: #fff;" class="small-text">Hospital Name</td>
+                       <td style="color: #fff;" class="small-text">Category</td>
+                       <td style="color: #fff;" class="small-text">Type</td>
+                       <td style="color: #fff;" class="small-text">Submitted on</td>
+                       <td style="color: #fff;" class="small-text">Payment Date</td>
+                       <td style="color: #fff;" class="small-text">View</td>
                      </tr>
                     </thead>
                       <tfoot>
@@ -49,10 +50,11 @@
                         <td style="color: #fff;" class="small-text">S/N</td>
                           <td style="color: #fff;" class="small-text">Application No</td>
                           <td style="color: #fff;" class="small-text">Hospital Name</td>
-                          <td style="color: #fff;" class="small-text">Address</td>
-                          <td style="color: #fff;" class="small-text">Inspection Date</td>
-                          <td style="color: #fff;" class="small-text">Status</td>
-                          <td style="color: #fff;" class="small-text">Action</td>
+                          <td style="color: #fff;" class="small-text">Category</td>
+                          <td style="color: #fff;" class="small-text">Type</td>
+                          <td style="color: #fff;" class="small-text">Submitted on</td>
+                          <td style="color: #fff;" class="small-text">Payment Date</td>
+                          <td style="color: #fff;" class="small-text">View</td>
                        </tr>
                       </tfoot>
                     
@@ -63,19 +65,14 @@
                           <td>{{forloop.counter}}</td>
                            <td>{{object.practice_manager.registration.id}}</td>
                            <td>{{object.hospital_name}}</td>
-                           <td>{{object.address}}</td>
-                           <td>{{object.inspection_date_pretty}}</td>
-                           <td>Facility Inspection</td>
-                           <td><a href="{% url 'hospitals:schedule_detail' id=object.id %}" class="btn btn-outline-warning btn-sm">View</a></td>
-
+                           <td>{{object.license_category}}</td>
+                           <td>New</td>
+                           <td>{{object.practice_manager.registration.reg_date_pretty}}</td>
+                           <td>{{object.payment_date_pretty}}</td>
+                           <td><a href="{% url 'finance:payment_details' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> view</a></td>
                          </tr>
 
                         {% endfor %}
-                       {% else %}
-                       
-                      <h4>No Applications Due for Facility Inspection</h4>
-                      
-
                      {% endif %}
 
                      </tbody>
@@ -87,6 +84,7 @@
              </div>
          </div>
       </div>
+
 
 
 

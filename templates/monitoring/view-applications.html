@@ -10,146 +10,199 @@
 
 {% block content %}
 
-<div class="container">
-      
+<main class="container">
 
-
-<section class="px-2 pt-2">
+<!-- Banner -->
+<section class="pt-2 pl-3">
    
-    <div class="row mt-2 ">
-    <div class="col text-left mb-1">
-    <p class="text-secondary display-4 paragraph2">Vet New Radiography Practice License Application</p>
-    <hr>
+        <div class="row ">
+            <div class="col mb-0">
+                <p class="text-secondary display-4 paragraph2">Vet New Radiography Practice License Application</p>
+                <hr>
+           
+        </div>
     </div>
-    </div>
-
 </section>
 
-        <div class="row">
-            <div class="col-md-5 mt-0">
+ <div class="row">
+            <div class="col-md-7 mt-0">
                 <div class="col-md-12">
                     <div class="row">
-                      <span class="col-5 lead text-secondary">Hospital Name:</span>
-                      <span class="col-6 lead text-dark"><strong>{{payment.hospital_name}}</strong></span>
+                        <p class="col-12 text-success lead">Application Summary</p>
+                    </div>
+                    <div class="row">
+                        <span class="col-5"><strong>Application No:</strong></span>
+                        <span class="col-6 ">{{payment.application_no}}</span>
+                    </div>
+
+                    <div class="row">
+                      <span class="col-5"><strong>Hospital Name:</strong></span>
+                      <span class="col-6">{{payment.hospital_name}}</span>
+                  </div>
+
+
+                  <div class="row">
+                      <span class="col-5"><strong>RC Number:</strong></span>
+                      <span class="col-6">{{payment.practice_manager.registration.rc_number}}</span>
                   </div>
                   <div class="row">
-                      <span class="col-5 lead text-secondary">RC Number:</span>
-                      <span class="col-6 lead text-dark"><strong>{{payment.practice_manager.registration.rc_number}}</strong></span>
+                      <span class="col-5"><strong>Application Type:</strong></span>
+                      <span class="col-6">New Registration</span>
                   </div>
                   <div class="row">
-                      <span class="col-5 lead text-secondary">Category:</span>
-                      <span class="col-6 lead text-dark"><strong>New Registration</strong></span>
+                      <span class="col-5"><strong>Telephone:</strong></span>
+                      <span class="col-6">{{payment.phone}}</span>
                   </div>
                   <div class="row">
-                      <span class="col-5 lead text-secondary">Telephone:</span>
-                      <span class="col-6 lead text-dark"><strong>{{payment.phone}}</strong></span>
+                      <span class="col-5"><strong>Hospital Admin:</strong></span>
+                      <span class="col-6">{{payment.practice_manager.first_name}} {{payment.practice_manager.last_name}}</span>
+                    </div>  
+                  <div class="row">
+                      <span class="col-5"><strong>Email:</strong></span>
+                      <span class="col-6">{{payment.email}}</span>
                   </div>
                   <div class="row">
-                      <span class="col-5 lead text-secondary">Email:</span>
-                      <span class="col-6 lead text-dark"><strong>{{payment.email}}</strong></span>
+                      <span class="col-5"><strong>Contact Address:</strong></span>
+                      <span class="col-6">{{payment.address}}</span>
                   </div>
                   <div class="row">
-                      <span class="col-5 lead text-secondary">Contact Address:</span>
-                      <span class="col-6 lead text-dark"><strong>{{payment.address}}</strong></span>
+                      <span class="col-5"><strong>City:</strong></span>
+                      <span class="col-6">{{payment.city}}</span>
                   </div>
                   <div class="row">
-                      <span class="col-5 lead text-secondary">City:</span>
-                      <span class="col-6 lead text-dark"><strong>{{payment.city}}</strong></span>
-                  </div>
-                  <div class="row">
-                      <span class="col-5 lead text-secondary">State of Location:</span>
-                      <span class="col-6 lead text-dark"><strong>{{payment.state}}</strong></span>
+                      <span class="col-5"><strong>State of Location:</strong></span>
+                      <span class="col-6">{{payment.state}}</span>
                     </div>
 
                      <div class="row">
-                      <span class="col-5 lead text-secondary">Payment Amount:</span>
-                      <span class="col-6 lead text-dark"><strong>{{payment.license_category }}</strong>
+                      <span class="col-5"><strong>License Category:</strong></span>
+                      <span class="col-6">{{payment.license_category }}
                       </span>
-                    </div>
-                    <div class="row">
-                      <span class="col-5 lead text-secondary">Payment Amount:</span>
-                      <span class="col-6 lead text-dark"><strong>{{payment.payment_amount | intcomma}}</strong>
-                      </span>
-                    </div>
-                    <div class="row">
-                      <span class="col-5 lead text-secondary">RRR Number:</span>
-                      <span class="col-6 lead text-dark"><strong>{{payment.rrr_number}}</strong>
-                      </span>
-                    </div>
-                    <div class="row">
-                      <span class="col-5 lead text-secondary">Payment Date:</span>
-                      <span class="col-6 lead text-dark"><strong>{{payment.payment_date_pretty}}</strong>
-                      </span>
-                    </div>
-                    <div class="row">
-                      <span class="col-5 lead text-secondary">Hospital Admin:</span>
-                      <span class="col-6 lead text-dark"><strong>{{payment.practice_manager.first_name}} {{payment.practice_manager.last_name}}</strong></span>
                     </div>
 
+                    <div class="row">
+                        <span class="col-5"><strong>Services:</strong></span>
+                        <span class="col-6">{{payment.practice_manager.registration.services}}</span>
+                   
+                    </div>
+                    <div class="row">
+                        <span class="col-5"><strong>Available Equipment:</strong></span>
+                        <span class="col-6">{{payment.practice_manager.registration.equipment}}</span>
+                    </div>
+                     <div class="row">
+                        <span class="col-5"><strong>Radiographers:</strong></span>
+                        <span class="col-6">{{payment.practice_manager.registration.radiographers}}</span>
+                    </div>
 
-                </div>
+                    <div class="row">
+                      <span class="col-5"><strong>Payment Amount:</strong></span>
+                      <span class="col-6">{{payment.payment_amount | intcomma}}
+                      </span>
+                    </div>
+                    <div class="row">
+                      <span class="col-5"><strong>RRR Number:</strong></span>
+                      <span class="col-6">{{payment.rrr_number}}
+                      </span>
+                    </div>
+                    <div class="row">
+                      <span class="col-5"><strong>Payment Date:</strong></span>
+                      <span class="col-6">{{payment.payment_date_pretty}}
+                      </span>
+                    </div>
+                                      
+                </div><br>
             </div>
-            <!--Right col starts here -->
-            <div class="col-md-6 offset-md-1 mt-0">
-                <div class="col-md-12">
-                    <p class="text-success lead"><strong>Uploaded Documents<strong></p>
-                    {% if payment.practice_manager.registration.cac_certificate %}
-                    <div class="row">
-                        <span class="col-5 lead text-secondary">CAC Document:</span>
-                        <span class="col-6 lead"><i class="fa fa-eye text-dark"></i>
+
+              
+            <div class="col-md-5 mt-0">
+                <p class="text-success lead">Uploads</p>
+
+            <div class="row py-0">
+               <table class="table table-hover">
+                    <thead style="background-color: #bfe3f8;">
+                        <tr>
+                        <th scope="col lead" style="color: #05567b;">Parameter</th>
+                        <th scope="col lead" style="color: #05567b;">Value</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+
+                        {% if payment.practice_manager.registration.cac_certificate %}
+                        <tr> <td width="50%" scope="col">CAC Document:</td> 
+                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
                         <a class="text-danger" href="{{payment.practice_manager.registration.cac_certificate.url}}"
-                        target="_blank"> View CAC Documents</a></span>
-                    </div>
-                    {% endif %}
+                        target="_blank">&nbsp; View CAC Certificate</a></td>  
+                        </tr>
+                        {% endif %}
 
-                    {% if payment.practice_manager.registration.practice_license %}
-                    <div class="row">
-                        <span class="col-5 lead text-secondary">Practicing Licence:</span>
-                        <span class="col-6 lead"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{payment.practice_manager.registration.practice_license.url}}" target="_blank"> View Practicing Licence</a></span>
-                    </div>
-                     {% endif %}
+                        {% if payment.practice_manager.registration.practice_license %}
+                        <tr> <td width="50%" scope="col">Practice Licence:</td> 
+                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+                        <a class="text-danger" href="{{payment.practice_manager.registration.practice_license.url}}"
+                        target="_blank">&nbsp; View Practicing Licence</a></td>  
+                        </tr>
+                        {% endif %}
 
-                    {% if payment.payment_receipt %}
+                       {% if payment.practice_manager.registration.form_c07 %}
+                        <tr> <td width="50%" scope="col">Form C07:</td> 
+                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+                        <a class="text-danger" href="{{payment.practice_manager.registration.form_c07.url}}"
+                        target="_blank">&nbsp; View Form C07</a></td>  
+                        </tr>
+                        {% endif %}
+
+                        {% if payment.payment_receipt %}
+                        <tr> <td width="50%" scope="col">Payment Receipt:</td> 
+                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+                        <a class="text-danger" href="{{payment.payment_receipt.url}}"
+                        target="_blank">&nbsp; View Payment Receipt</a></td>  
+                        </tr>
+                        {% endif %}
+                       
+
+                        
+                       
+                    </tbody>
+                </table>
+                </div>     
+            
+            
                     <div class="row">
-                        <span class="col-5 lead text-secondary">Prayment Details:</span>
-                        <span class="col-6 lead"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger"  href="{{payment.payment_receipt.url}}"  target="_blank">View Payment Receipt</a>
+                        <p class="col-12 text-success lead">Control Details</p>
                     </div>
-                    {% endif %}
+                    <div class="row">
+                        <span class="col-6"><strong>Submitted on:</strong></span>
+                        <span class="col-6">{{payment.practice_manager.registration.reg_date_pretty}}</span>
                     </div>
-                    <div class="col-md-12 mt-3">
-                        <p class="text-success lead"><strong>Control Details<strong></p>
-                        <div class="row">
-                            <span class="col-5 lead text-secondary">Submitted on: </span>
-                            <span class="col-6 lead"><strong>{{payment.practice_manager.registration.reg_date}}</strong></span>
-                        </div>
-                        <div class="row">
-                            <span class="col-5 lead text-secondary">Vetted on: </span>
-                            <span class="col-6 lead"><strong>{{payment.vet_date}}</strong></span>
-                        </div>
-                        <div class="row">
-                            <span class="col-5 lead text-secondary">Vetted by: </span>
-                            <span class="col-6 lead"><strong>{{ vetting_officer.first_name }} {{ vetting_officer.last_name }}</strong></span>
-                        </div>
+                    <div class="row">
+                        <span class="col-6"><strong>Vetted on:</strong></span>
+                        <span class="col-6">{{payment.vet_date_pretty}}</span>
                     </div>
+                    <div class="row">
+                        <span class="col-6"><strong>Vetted by:</strong></span>
+                        <span class="col-6">{{ vetting_officer.first_name }} {{ vetting_officer.last_name }}</span>
+                    </div>
+                
+
                 </div>
+
         </div>
-       
-
         <hr>
-        <div class="d-flex justify-content-end"> 
-
+        <div class="d-flex justify-content-end">   
+             
         <a href="javascript:{document.getElementById('approve{{payment.id }}').submit()}"><button class="btn btn-success py-1 mr-4 mt-1 mb-3"> Approve for Inspection <i class="fa fa-check" aria-hidden="true"></i></button> </a>
         <a href="javascript:{document.getElementById('reject{{payment.id }}').submit()}"><button class="btn btn-danger py-1 mr-4 mt-1 mb-3"> Reject Submission <i class="fa fa-reply" aria-hidden="true"></i></button></a> 
         <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-warning text-white py-1 px-3 mt-1 mb-3"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Return to Dashboard</a>  
-    
-    
-    
-       </div>
+             
+
+             
+        </div>
 
 
-      </div>
+    </main>
+
 <!--end Copy here-->
 
 <form id="approve{{payment.id }}" method="POST" action="{% url 'monitoring:approve' payment.id %}">

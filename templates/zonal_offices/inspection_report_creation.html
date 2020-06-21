@@ -57,151 +57,214 @@
 
             {{ form.inspection_report_deadline|as_crispy_field }}
 
-            <div class="row ml-2">
-              <p class="col-12 text-success lead">Hospital Details</p>
+              <div class="row ml-2">
+                <p class="col-12 text-success lead">Hospital Details</p>
+              </div>
+              <div class="row px-4"> 
+            <div class="col-md-4"> <div class="form-group"> 
+                {{ form.application_no|as_crispy_field }}
             </div>
-            <div class="row px-4"> 
-          <div class="col-md-4"> <div class="form-group"> 
-              {{ form.application_no|as_crispy_field }}
           </div>
-        </div>
-        <div class="col-md-4"><div class="form-group">
-            {{ form.hospital_name|as_crispy_field }}
-            
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="form-group">
-            {{ form.equipment|as_crispy_field }}
-            
-            
-          </div>
-        </div>
-      </div>
-
-      <div class="row px-4">
-        
-        <div class="col-md-4">
-          <div class="form-group">
-             {{ form.phone|as_crispy_field }}
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="form-group">
-          {{ form.email|as_crispy_field }}
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="form-group">
-           {{ form.radiographers|as_crispy_field }}  
+          <div class="col-md-4"><div class="form-group">
+              {{ form.hospital_name|as_crispy_field }}
               
-          </div>
-        </div>
-      </div>
-
-      <div class="row px-4">
-        <div class="col-md-12">
-        <div class="form-group">
-       {{ form.address|as_crispy_field }}    
-          </div>
-        </div>
-         </div>
-
-         <div class="row ml-2">
-              <p class="col-12 text-success lead">Inspection Scores</p>
             </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              {{ form.equipment|as_crispy_field }}
+              
+              
+            </div>
+          </div>
+        </div>
+
         <div class="row px-4">
-        <div class="col-md-3">
+          
+          <div class="col-md-4">
+            <div class="form-group">
+               {{ form.phone|as_crispy_field }}
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+            {{ form.email|as_crispy_field }}
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+             {{ form.radiographers|as_crispy_field }}  
+                
+            </div>
+          </div>
+        </div>
+
+        <div class="row px-4">
+          <div class="col-md-12">
           <div class="form-group">
-          {{ form.shielding|as_crispy_field }}
+         {{ form.address|as_crispy_field }}    
+            </div>
           </div>
-        </div>
+           </div>
 
-        <div class="col-md-3">
+           <div class="row ml-2">
+           <p class="col-12 text-success lead">Inspection Scores</p>
+          </div>
+          <div class="row px-4">
+          <div class="col-md-3">
+            <div class="form-group">
+            {{ form.shielding|as_crispy_field }}
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+             {{ form.equipment_layout|as_crispy_field }}  
+                
+            </div>
+          </div>
+        
+        
+          <div class="col-md-3">
           <div class="form-group">
-           {{ form.equipment_layout|as_crispy_field }}  
-              
+          {{ form.radiographer_no|as_crispy_field }}       
+            </div>
           </div>
-        </div>
-      
-      
-        <div class="col-md-3">
-        <div class="form-group">
-        {{ form.functional_equipment|as_crispy_field }}       
-          </div>
-        </div>
 
-        <div class="col-md-3">
+          <div class="col-md-3">
+            <div class="form-group">
+            {{ form.radiologist_certification|as_crispy_field }}
+            </div>
+          </div>
+           </div>
+
+
+
+           <div class="row px-4">
+          <div class="col-md-3">
+            <div class="form-group">
+             {{ form.radiographer_license|as_crispy_field }}  
+                
+            </div>
+          </div>
+       
+
+          <div class="col-md-3">
           <div class="form-group">
-          {{ form.radiographer_adequacy|as_crispy_field }}
+          {{ form.personnel_monitoring|as_crispy_field }}       
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+            {{ form.room_adequacy|as_crispy_field }}
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+             {{ form.water_supply|as_crispy_field }}  
+                
+            </div>
           </div>
         </div>
-         </div>
-
-
 
          <div class="row px-4">
-        <div class="col-md-3">
-          <div class="form-group">
-           {{ form.radiographer_license|as_crispy_field }}  
-              
-          </div>
-        </div>
-     
 
-        <div class="col-md-3">
-        <div class="form-group">
-        {{ form.personnel_monitoring|as_crispy_field }}       
-          </div>
-        </div>
+         <div class="col-md-3">
+         <div class="form-group">
+         {{ form.equipment_certification|as_crispy_field }}       
+         </div>
+         </div>
 
-        <div class="col-md-3">
-          <div class="form-group">
-          {{ form.room_size|as_crispy_field }}
-          </div>
-        </div>
 
-        <div class="col-md-3">
-          <div class="form-group">
-           {{ form.water_supply|as_crispy_field }}  
-              
-          </div>
-        </div>
-      </div>
+         <div class="col-md-3">
+         <div class="form-group">
+         {{ form.accessories|as_crispy_field }}
+         </div>
+         </div>
 
-       <div class="row px-4">
-        <div class="col-md-3">
-        <div class="form-group">
-        {{ form.C07_form_compliance|as_crispy_field }}       
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="form-group">
-          {{ form.darkroom|as_crispy_field }}
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="form-group">
-           {{ form.public_safety|as_crispy_field }}  
-              
-          </div>
-        </div>
-      
-
-       
-        <div class="col-md-3">
-        <div class="form-group">
-        {{ form.inspection_scores|as_crispy_field }}       
-          </div>
-        </div>
-
+         <div class="col-md-3">
+         <div class="form-group">
+         {{ form.warning_light|as_crispy_field }}  
+         </div>
+         </div>
         
-      </div>
+         <div class="col-md-3">
+         <div class="form-group">
+         {{ form.C07_form_compliance|as_crispy_field }}       
+         </div>
+         </div>
+    
+         </div>
+
+         <div class="row px-4">
+
+         <div class="col-md-3">
+         <div class="form-group">
+         {{ form.functional_equipment|as_crispy_field }}       
+         </div>
+         </div>
+
+
+         <div class="col-md-3">
+         <div class="form-group">
+         {{ form.equipment_installation|as_crispy_field }}
+         </div>
+         </div>
+
+         <div class="col-md-3">
+         <div class="form-group">
+         {{ form.darkroom|as_crispy_field }}  
+         </div>
+         </div>
+        
+         <div class="col-md-3">
+         <div class="form-group">
+         {{ form.public_safety|as_crispy_field }}       
+         </div>
+         </div>
+    
+         </div>
+
+          <div class="row px-4 justify-content">
+
+          <div class="col-md-3">
+         <div class="form-group">
+         {{ form.inspection_total|as_crispy_field }}       
+         </div>
+         </div>
+
+         <div class="col-md-3">
+         <div class="form-group">
+               
+         </div>
+         </div>
+
+          <div class="col-md-6">
+         <div class="form-group">
+         {{ form.inspection_comments|as_crispy_field }}       
+         </div>
+         </div>
+
+         
+    
+         </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
       <div class="row ml-2">
@@ -281,7 +344,12 @@
 
 
 
+<!--Jquery plugin-->
+  <script src="{% static 'js/jquery.js' %}"></script>
 
+<!--other javascript plugins-->
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  
 
 
 
@@ -291,15 +359,10 @@
 
   <!--other javascript plugins-->
   <script>
-  let urlMenu = document.getElementById('dropdown');
-  urlMenu.onchange = function(){
-    let userOption = this.options[this.selectedIndex];
-    if(userOption.value != "nothing"){
-      window.open(userOption.value, "_self", "");
-    }
-  }
-  </script>
+  $('#id_shielding, #id_equipment_layout, #id_radiographer_no, #id_radiologist_certification, #id_radiographer_license, #id_personnel_monitoring, #id_room_adequacy, #id_water_supply, #id_equipment_certification, #id_accessories, #id_warning_light, #id_C07_form_compliance, #id_functional_equipment, #id_equipment_installation, #id_darkroom, #id_public_safety').on('input',function(e){$('#id_inspection_total').val(parseInt($('#id_shielding').val()) + parseInt($('#id_equipment_layout').val()) + parseInt($('#id_radiographer_no').val()) + parseInt($('#id_radiologist_certification').val()) + parseInt($('#id_radiographer_license').val()) + parseInt($('#id_personnel_monitoring').val()) + parseInt($('#id_room_adequacy').val()) + parseInt($('#id_water_supply').val()) + parseInt($('#id_equipment_certification').val()) + parseInt($('#id_accessories').val()) + parseInt($('#id_warning_light').val()) + parseInt($('#id_C07_form_compliance').val()) + parseInt($('#id_functional_equipment').val()) + parseInt($('#id_equipment_installation').val()) + parseInt($('#id_darkroom').val()) + parseInt($('#id_public_safety').val()));
+        });
 
+  </script>
 
 <script>
         // Example starter JavaScript for disabling form submissions if there are invalid fields

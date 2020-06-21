@@ -18,7 +18,7 @@
                                 <div class="card-body">
                                     <p class="card-title text-center"><i class="fa fa-hourglass-half text-warning"></i> Awaiting Registra's Approval</p>
                                     <h3 class="mt-3 text-center">1</h3>
-                                    <p class="mt-3 text-center small-text">0 Registra's Approval [Yr 2019]&nbsp;&nbsp;&nbsp;</p>
+                                    <p class="mt-3 text-center small-text">0 Registrar's Approval [Yr 2019]&nbsp;&nbsp;&nbsp;</p>
                                 </div>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                                         <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'registrars_office:license_approval_list' %}"> Licences Waiting Approval</a></li>
                                     </ul>
                                      <ul class="list-unstyled d-flex m-up">
-                                        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> List of Issued Licences</a></li>
+                                        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'registrars_office:issued_lisenses_list' %}"> List of Issued Licences</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -83,10 +83,7 @@
                                     <i class="fa fa-wrench" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
                                     <h5 class="pb-2" style="margin: -50px 0 0 60px; font-weight: bold;">Utilities</h5>
                                     <ul class="list-unstyled d-flex">
-                                    <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'hospitals:hospitals_lookup' %}"> Hospital/Center Lookup</a></li>
-                                    </ul>
-                                        <ul class="list-unstyled d-flex m-up">
-                                        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> Hospitals Practice License Lookup</a></li>
+                                    <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'monitoring:hospitals_lookup' %}"> Hospitals/Centers Lookup</a></li>
                                     </ul>
                                     <ul class="list-unstyled d-flex m-up">
                                         <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'utilities:offices' %}"> List of RRBN Zonal Offices</a></li>

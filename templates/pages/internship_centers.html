@@ -22,7 +22,7 @@
                        <div class="card-body">
                          <h5 class="card-title">HOSPITALS/CENTERS ACCREDITED FOR INTERNSHIP TRAINING</h5>
                          <h6 class="card-subtitle mb-2 text-muted">Click the link below to view list of Hospitals/Centers accredited for internship Training</h6>
-                         <a class="unstyled shrink" href="#"><i class="fa fa-list-ol text-success"></i> VIEW LIST OF ACCREDITED CENTERS</a>
+                         <a class="unstyled shrink" href="{% static 'internship_centers.pdf' %}" target="_blank"><i class="fa fa-list-ol text-success"></i> VIEW LIST OF ACCREDITED CENTERS</a>
                        </div>
                    </div>
                    <p class="mt-2">NEED YOUR CENTER ACCREDITED FOR INTERNSHIP?</p>
@@ -35,8 +35,8 @@
                    <div class="card resize">
                        <ul class="list-group list-group-flush">
                            <li class="list-group-item"><a class="unstyled" href="{% url 'zonal_offices' %}">LOCATE OUR ZONAL OFFICE</a></li>
-                           <li class="list-group-item"><a class="unstyled" href="#">REGISTER RADIOGRAPGY PRACTICE</a></li>
-                           <li class="list-group-item"><a class="unstyled" href="#">VALIDATE REGISTRATION STATUS</a></li>
+                           <li class="list-group-item"><a class="unstyled" href="{% url 'accounts:start-reg' %}">REGISTER RADIOGRAPGY PRACTICE</a></li>
+                           <li class="list-group-item"><a class="unstyled" href="{% url 'verify_practice' %}">VALIDATE REGISTRATION STATUS</a></li>
                            <li class="list-group-item"><a class="unstyled" href="{% url 'contact' %}">CONTACT US</a></li>
                        </ul>
                    </div>
@@ -49,7 +49,7 @@
                <div class="col-md-4 down">
                    <p>Click the link below to visit:</p>
                    <p>frequently Asked Questions</p>
-                   <a href="#" class="btn btn-warning down">GO TO FAQ <i class="fa fa-caret-right text-white"></i></a>
+                   <a href="{% url 'faq' %}" class="btn btn-warning down">GO TO FAQ <i class="fa fa-caret-right text-white"></i></a>
                </div>
                <div class="col-md-4 down">
                    <p>Reach out to us on:</p>

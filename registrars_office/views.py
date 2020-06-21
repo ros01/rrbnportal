@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponse
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test
 from accounts.decorators import registrar_required
-from hospitals.models import Payment, Registration, Schedule, Inspection
+from hospitals.models import Payment, Registration, Schedule, Inspection, License
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -19,6 +20,10 @@ from django.views.generic import (
 from django.template.loader import get_template
 from django.core.mail import send_mail
 from django.contrib import messages
+from xhtml2pdf import pisa
+import os
+from django.contrib.staticfiles import finders
+from io import BytesIO
 
 User = get_user_model()
 
@@ -94,9 +99,65 @@ def reject_license(request, id):
 
      send_mail(subject, contact_message, from_email, to_email, fail_silently=False)
 
-
-
-
-
      messages.error(request, ('License Approval Issues.  Hospital will be contacted and guided on how to correct application errors.'))
      return render(request, 'registrars_office/license_rejected.html',context)
+
+
+class IssuedLicensesListView(View):
+    template_name = "registrars_office/issued_licenses_list.html"
+    queryset = License.objects.all().order_by('-issue_date')
+   
+
+    def get_queryset(self):
+        return self.queryset        
+
+    def get(self, request, *args, **kwargs):
+        context = {'object': self.get_queryset()}
+        return render(request, self.template_name, context)
+
+
+
+
+
+class GenerateObjectMixin(object):
+    model = License
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+
+def link_callback(uri, rel):
+    sUrl = settings.STATIC_URL     
+    sRoot = settings.STATIC_ROOT    
+    mUrl = settings.MEDIA_URL       
+    mRoot = settings.MEDIA_ROOT     
+    if uri.startswith(mUrl):
+        path = os.path.join(mRoot, uri.replace(mUrl, ""))
+    elif uri.startswith(sUrl):
+        path = os.path.join(sRoot, uri.replace(sUrl, ""))
+    else:
+        return uri  
+    if not os.path.isfile(path):
+            raise Exception(
+                'media URI must start with %s or %s' % (sUrl, mUrl)
+            )
+    return path
+
+
+class LicensePdfView(GenerateObjectMixin, View):
+    
+    def get(self, request, *args, **kwargs):
+        template = get_template('pdf/license.html')
+        context = {
+            'object': self.get_object()
+        }
+        html = template.render(context)
+        result = BytesIO()
+        pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result, link_callback=link_callback)
+        if not pdf.err:
+            return HttpResponse(result.getvalue(), content_type='application/pdf') 
+        return None
+

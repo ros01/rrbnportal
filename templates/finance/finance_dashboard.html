@@ -46,29 +46,25 @@
                             <div class="card card-style-2">
                                 <div class="card-body">
                                     <i class="fa fa-money-bill-wave" style="font-size: 45px; margin-right: 15px; color: #EFB465;"></i>
-                                    <h5 class="pb-2" style="margin: -45px 0 0 70px; font-weight: bold;">Proces Payments</h5>
+                                    <h5 class="pb-2" style="margin: -45px 0 0 70px; font-weight: bold;">Payment Transactions</h5>
                                     <ul class="list-unstyled d-flex">
-                                        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 70px;"></i><li><a class="text-dark" href="#"> List Payment Entries</a></li>
-                                    </ul>
-                                     <ul class="list-unstyled d-flex m-up">
-                                        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 70px;"></i><li><a class="text-dark" href="#"> Process Fee Payments</a></li>
+                                        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 70px;"></i><li><a class="text-dark" href="{% url 'finance:payments_list' %}"> Payment Transactions List</a></li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-4">
-                            <div class="card card-style-2">
-                                <div class="card-body">
-                                    <i class="fa fa-lightbulb" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
-                                    <h5 class="pb-2" style="margin: -45px 0 0 60px; font-weight: bold;">Reports and Analytics</h5>
-                                    <ul class="list-unstyled d-flex">
-                                        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> View Online Payments</a></li>
-                                    </ul>
-                                    <ul class="list-unstyled d-flex m-up">
-                                        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> Process Fee Payments</a></li>
-                                    </ul>
-                                </div>
+                            <div class="col-md-12 col-lg-4">
+                        <div class="card card-style-2">
+                            <div class="card-body">
+                                <i class="fa fa-chart-bar" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
+                                <h5 class="pb-2" style="margin: -45px 0 0 70px; font-weight: bold;">Report and Analytics</h5>
+                                <ul class="list-unstyled d-flex">
+                                    <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 70px;"></i><li><a class="text-dark" href="#"> Payment BI Reports</a></li>
+                                </ul>
                             </div>
+                        </div>
+                    </div>
                         </div>
                         <div class="col-md-12 col-lg-4">
                             <div class="card card-style-2">
@@ -76,10 +72,7 @@
                                     <i class="fa fa-wrench" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
                                     <h5 class="pb-2" style="margin: -50px 0 0 65px; font-weight: bold;">Utilities</h5>
                                     <ul class="list-unstyled d-flex">
-                                        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 65px;"></i><li><a class="text-dark" href="{% url 'hospitals:hospitals_lookup' %}"> Hospital/Center Lookup</a></li>
-                                    </ul>
-                                        <ul class="list-unstyled d-flex m-up">
-                                        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 65px;"></i><li><a class="text-dark" href="#"> Hospitals Practice License Lookup</a></li>
+                                        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 65px;"></i><li><a class="text-dark" href="{% url 'monitoring:hospitals_lookup' %}"> Hospitals/Centers Lookup</a></li>
                                     </ul>
                                     <ul class="list-unstyled d-flex m-up">
                                         <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 65px;"></i><li><a class="text-dark" href="{% url 'utilities:offices' %}"> List of RRBN Zonal Offices</a></li>
@@ -96,17 +89,7 @@
                         </div>
                 </div>
                 <div class="row mt-1 m-top mobile-bottom">
-                    <div class="col-md-12 col-lg-4">
-                        <div class="card card-style-2">
-                            <div class="card-body">
-                                <i class="fa fa-chart-bar" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
-                                <h5 class="pb-2" style="margin: -45px 0 0 70px; font-weight: bold;">Report and Analytics</h5>
-                                <ul class="list-unstyled d-flex">
-                                    <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 70px;"></i><li><a class="text-dark" href="#"> BI Reports</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="col-md-12 col-lg-4">
                         <div class="card card-style-2">
                             <div class="card-body">

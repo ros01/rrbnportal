@@ -42,10 +42,10 @@ admin.site.register(Schedule, ScheduleAdmin)
 
 
 class InspectionAdmin(admin.ModelAdmin):
-  list_display = ('id', 'application_no', 'hospital_name', 'license_category', 'address', 'inspection_date', 'inspection_scores')
-  list_display_links = ('id', 'hospital_name', 'application_no')
+  list_display = ('id', 'application_no', 'hospital_name', 'license_category', 'address', 'inspection_date', 'inspection_total',)
+  list_display_links = ('id', 'hospital_name', 'application_no', 'inspection_total')
   list_filter = ('hospital_name',)
-  search_fields = ('hospital_name', 'address', 'inspection_date', 'inspection_scores')
+  search_fields = ('hospital_name', 'address', 'inspection_date', 'inspection_total',)
   list_per_page = 25
 
 
