@@ -22,7 +22,7 @@
    
     <div class="row mt-3 mb-2">
     <div class="col text-left mb-1">
-    <p class="text-secondary display-4 paragraph2">List of Scheduled Inspections for Enugu Zone</p>
+    <p class="text-secondary display-4 paragraph2">List of Scheduled Inspections for Lagos Zone</p>
     <hr>
     </div>
     </div>
@@ -61,7 +61,7 @@
                          {% for object in object %}
                          <tr>
                           <td>{{forloop.counter}}</td>
-                           <td>{{object.practice_manager.registration.id}}</td>
+                           <td>{{object.application_no}}</td>
                            <td>{{object.hospital_name}}</td>
                            <td>{{object.address}}</td>
                            <td>{{object.inspection_date_pretty}}</td>

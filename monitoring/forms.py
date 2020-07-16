@@ -47,10 +47,10 @@ class ScheduleModelForm(forms.ModelForm):
 
     class Meta:
         model = Schedule
-        fields = ('application_no', 'practice_manager', 'hospital_name', 'license_category', 'phone', 'email', 'address', 'state', 'city', 'services', 'equipment', 'radiographers', 'inspection_date', 'inspection_report_deadline', 'inspection_zone',)
-        widgets = {'application_no': forms.HiddenInput(), 'practice_manager': forms.HiddenInput(), 'hospital_name': forms.HiddenInput(), 'license_category': forms.HiddenInput(), 'phone': forms.HiddenInput(), 'email': forms.HiddenInput(), 'address': forms.HiddenInput(), 'state': forms.HiddenInput(), 'city': forms.HiddenInput(),  'services': forms.HiddenInput(), 'equipment': forms.HiddenInput(), 'radiographers': forms.HiddenInput(),}
+        fields = ('application_no', 'practice_manager', 'hospital_name', 'license_category', 'phone', 'email', 'address', 'state', 'city', 'services', 'equipment', 'radiographers', 'radiologists', 'inspection_date', 'inspection_report_deadline', 'inspection_zone', 'inspection_scheduler',)
+        widgets = {'application_no': forms.HiddenInput(), 'practice_manager': forms.HiddenInput(), 'hospital_name': forms.HiddenInput(), 'license_category': forms.HiddenInput(), 'phone': forms.HiddenInput(), 'email': forms.HiddenInput(), 'address': forms.HiddenInput(), 'state': forms.HiddenInput(), 'city': forms.HiddenInput(),  'services': forms.HiddenInput(), 'equipment': forms.HiddenInput(), 'radiographers': forms.HiddenInput(), 'radiologists': forms.HiddenInput(),}
 
-
+                                                                                                                                                                            
 
     def __init__(self, *args, **kwargs):
        super(ScheduleModelForm, self).__init__(*args, **kwargs)

@@ -9,24 +9,25 @@
 
 {% block content %}
 
-<section class="p-2">
+    
+    <section class="p-2">
+    <div class="container">
    
-    <div class="row mt-2 ">
-    <div class="col text-center mb-2">
-    <p class="text-secondary display-4 paragraph2">My Application Details</p>
+    <div class="row mt-2 ml-2">
+    <div class="col text-left mb-2">
+    <p class="text-success display-4 paragraph3">My Application Details</p>
     <hr>
     </div>
     </div>
+     </div>
 
     </section>
 
-<section class="my-0">
+    <section class="my-0">
     <div class="container">
-    <div class="row rounded pl-3 justify-content-center align-items-center" style="background-color: #bfe3f8;">
-    <div class="col-md-1 py-0 px-auto">
-    <i class="fas fa-info-circle fa-2x" style="color: #05567b;"></i>       
-    </div>
-    <div class="col-md-11 pt-2 pb-0">
+    <div class="row rounded ml-3 pl-2 justify-content-center align-items-center" style="background-color: #bfe3f8;">
+    
+    <div class="col-md-12 pt-2 pb-0">
     <p class="lead" style="color: #05567b;">
     <strong>{{object.hospital_name}}</strong> Radiography Practice License Application currently undergoing verifications</p>           
     </div>
@@ -39,15 +40,15 @@
 <section>
     <div class="container">
         <!-- Title -->
-<div class="row">
-    <div class="col mb-0">
-        <p class="text-success lead pt-4 pl-3"><strong>Application Summary</strong></p>
+    <div class="row">
+        <div class="col mb-0">
+            <p class="text-success lead pt-4 pl-4"><strong>Application Summary</strong></p>
+        </div>
     </div>
-</div>
-<div class="row mx-1 py-0 my-0">
+<div class="row mx-2 py-0 my-0">
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
         <p class="lead text-secondary m-0">Application Number:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.registration.id}}</strong></p>  
+        <p class="lead text-secondary m-0"><strong>{{object.application_no}}</strong></p>  
         <br>
         <br>
         <p class="lead text-secondary m-0">Radiography Examinations:</p>

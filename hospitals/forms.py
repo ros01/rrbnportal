@@ -14,13 +14,24 @@ class BasicDetailModelForm(forms.ModelForm):
 
     class Meta:
          model = Registration
-         fields = ('practice_manager','hospital_name', 'license_category', 'rc_number', 'phone', 'email',  'city', 'state', 'address', 'services', 'equipment', 'radiographers')
+         fields = ('practice_manager','hospital_name', 'application_no', 'license_category', 'rc_number', 'phone', 'email',  'city', 'state', 'address', 'services', 'equipment', 'radiographers', 'radiologists', 'cac_certificate', 'practice_license1', 'practice_license2','form_c07')
          
 
          widgets = {
-         'practice_manager': forms.HiddenInput(),
-         'radiographers': forms.Textarea(attrs={'rows':6, 'cols':12}),
+         
+         'radiographers': forms.Textarea(attrs={'rows':4, 'cols':12}),
+         'radiologists': forms.Textarea(attrs={'rows':4, 'cols':12}),
+         'application_no': forms.HiddenInput(),
+         'hospital_name': forms.TextInput(attrs={'readonly': True}),
+         'phone_no': forms.TextInput(attrs={'readonly': True}),
+         'email': forms.TextInput(attrs={'readonly': True}),
+         'license_category': forms.TextInput(attrs={'readonly': True}),
          }
+
+
+
+
+
 
     def clean_practice_manager(self):
         practice_manager = self.cleaned_data.get('practice_manager')
@@ -33,13 +44,17 @@ class BasicDetailModelForm(forms.ModelForm):
        super(BasicDetailModelForm, self).__init__(*args, **kwargs)
        self.fields['rc_number'].label = "RC Number"
        self.fields['hospital_name'].label = "Hospital Name"
+       self.fields['cac_certificate'].label = "CAC Certificate"
+       self.fields['practice_license1'].label = "Radiographer Practice License"
+       self.fields['practice_license2'].label = "Radiographer Practice License"
+       self.fields['form_c07'].label = "Form C07"
         
 
 
 class CertUploadModelForm(forms.ModelForm):
     class Meta:
     	model = Registration
-    	fields = ('cac_certificate', 'practice_license', 'form_c07')
+    	fields = ('cac_certificate', 'practice_license1', 'form_c07')
 
     def __init__(self, *args, **kwargs):
        super(CertUploadModelForm, self).__init__(*args, **kwargs)
@@ -53,14 +68,24 @@ class PaymentDetailsModelForm(forms.ModelForm):
 
     class Meta:
         model = Payment
-        fields = ('practice_manager','hospital_name', 'application_no', 'license_category', 'rrr_number', 'receipt_number',  'payment_amount', 'payment_method',  'payment_date', 'phone', 'email', 'state', 'city', 'address', 'services', 'equipment', 'radiographers', 'payment_receipt',)
+        fields = ('practice_manager','hospital_name', 'application_no', 'license_category', 'rrr_number', 'receipt_number',  'payment_amount', 'payment_method',  'payment_date', 'phone', 'email', 'state', 'city', 'address', 'services', 'equipment', 'payment_receipt',)
                                                                                                                                                     
 
         widgets = {
         'practice_manager': forms.HiddenInput(),
+        'phone': forms.HiddenInput(),
+        'email': forms.HiddenInput(),
+        'state': forms.HiddenInput(),
+        'city': forms.HiddenInput(),
+        'address': forms.HiddenInput(),
+        'services': forms.HiddenInput(),
+        'equipment': forms.HiddenInput(),
+        'practice_manager': forms.HiddenInput(),
         'hospital_name': forms.TextInput(attrs={'readonly': True}),
-        'application_no': forms.TextInput(attrs={'readonly': True}),   
+        'application_no': forms.TextInput(attrs={'readonly': True}),  
+        'license_category': forms.TextInput(attrs={'readonly': True}),   
         }
+
 
 
     def __init__(self, *args, **kwargs):

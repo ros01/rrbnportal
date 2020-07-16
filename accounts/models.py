@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
+from django.urls import reverse
 
 
 
@@ -53,6 +54,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('Monitoring HQ', 'Monitoring Hq'),
         ('Enugu Office', 'Enugu Office'),
         ('Lagos Office', 'Lagos Office'),
+        ('Abuja Office', 'Abuja Office'),
         ('Registrars Office', 'CEO'),
         ('Accounts HQ', 'FAH'),
         )
@@ -95,6 +97,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     objects = MyUserManager()
 
+
+    def get_absolute_url(self):
+        return reverse("accounts:profile_detail", kwargs={"id": self.id})
+
     def __str__(self):
         return self.email
 
@@ -115,8 +121,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.date_joined .strftime('%b %e %Y')
 
 
-    def get_absolute_url(self):
-        return reverse("accounts:profile_detail", kwargs={"id": self.id})
+   
    
 
 

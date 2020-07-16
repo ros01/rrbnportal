@@ -4,7 +4,7 @@ This is to confirm that verification of your registration and payment details wa
 
 See brief details of your submission:
 
-Application Number: {{object.id}}
+Application Number: {{object.application_no}}
 
 Hospital Name: {{object.hospital_name}}
 
@@ -12,7 +12,7 @@ Mobile Number: {{object.phone}}
 
 Email Address: {{object.email}}
 
-Submission Time: {{object.reg_date}}
+Submission Time: {{object.reg_date_pretty}}
 
 
 Kindly re-apply again with the correct details.

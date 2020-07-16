@@ -24,8 +24,20 @@ from xhtml2pdf import pisa
 import os
 from django.contrib.staticfiles import finders
 from io import BytesIO
+from django.utils.decorators import method_decorator
 
 User = get_user_model()
+
+
+class LoginRequiredMixin(object):
+    #@classmethod
+    #def as_view(cls, **kwargs):
+        #view = super(LoginRequiredMixin, cls).as_view(**kwargs)
+        #return login_required(view)
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
 @login_required
@@ -33,7 +45,7 @@ User = get_user_model()
 def index(request):
     return render (request, 'registrars_office/registrar_dashboard.html')
 
-class LicenseApprovalListView(View):
+class LicenseApprovalListView(LoginRequiredMixin, View):
     template_name = "registrars_office/license_approval_list.html"
     queryset = Inspection.objects.all()
 
@@ -103,7 +115,7 @@ def reject_license(request, id):
      return render(request, 'registrars_office/license_rejected.html',context)
 
 
-class IssuedLicensesListView(View):
+class IssuedLicensesListView(LoginRequiredMixin, View):
     template_name = "registrars_office/issued_licenses_list.html"
     queryset = License.objects.all().order_by('-issue_date')
    
@@ -147,7 +159,7 @@ def link_callback(uri, rel):
     return path
 
 
-class LicensePdfView(GenerateObjectMixin, View):
+class LicensePdfView(LoginRequiredMixin, GenerateObjectMixin, View):
     
     def get(self, request, *args, **kwargs):
         template = get_template('pdf/license.html')

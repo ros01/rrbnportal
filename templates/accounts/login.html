@@ -1,0 +1,51 @@
+{% extends 'base-reg.html'%}
+{% load static %}
+{% block title%}| Welcome {% endblock %}
+
+{% block styles %}
+
+
+{% endblock %}
+
+                             
+{% block content %}
+
+
+<main class="bg-image page-holder bg-cover">
+    <div class="row justify-content-center align-items-center ">
+      <div class="col-xl-4 col-lg-6 col-md-6 col-sm-8 col-10">
+      
+      
+      <!--form starts-->
+      <form class="form-container" action="{% url 'accounts:login' %}" method="POST">
+        
+        {% csrf_token %}
+
+        <div class="form-group" style="background-color:#bbb:">
+          <div> <h3 class="text-success" style="border-bottom:1px solid #008000; padding:20px; padding-bottom:2px; padding-left:1px; margin-bottom:20px; ">Sign In</h3>
+          <label for="exampleInputEmail1">Email address</label>
+          <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input type="password" name="password" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1">
+          <label class="form-check-label" for="exampleCheck1">Remember me</label>
+        </div>
+        <button type="submit" class="btn btn-warning">Sign In</button><br>
+        <div class="row mb-2" style="border-bottom:1px solid #008000; padding-bottom:11px"></div>
+        <a href="{% url 'password_reset' %}" class="btn btn-info">Forgot Password?</a>
+      </form>
+        
+      </div>
+      
+    </div>
+   
+  </div>
+  </main>
+
+
+
+{% endblock %}

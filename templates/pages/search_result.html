@@ -3,8 +3,7 @@
 {% block title%}| Welcome {% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
+
 {% endblock %}
 
 
@@ -45,16 +44,6 @@
 					<td width="10%">&nbsp;</td>
 					<td width="45%">
 
-
-					<h1>Search Results</h1>
-
-					<ul>
-					  {% for license in object_list %}
-					    <li>
-					      {{ license.license_no }}, {{ license.hospital_name }}
-					    </li>
-					  {% endfor %}
-					</ul>
 
 
 					

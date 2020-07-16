@@ -38,7 +38,7 @@ p {
 
 }
 .paragraph3 {
-  font-size: 1.0rem;
+  font-size: 1.5rem;
 
 }
 
@@ -222,92 +222,4 @@ footer{
     padding-top: 10px;
   }
 
-  /*MEDIA QUERIES*/
-  
-
-@media screen and (max-width: 360px) {
-    .text-small{
-     font-size: 16px;
-     font-weight: bold;
-     margin-top: -20px;  
-    }  
-    
-    .mt-360{
-       margin-top: -20px !important;
-    }
-
-    .table-md{
-      margin-left: -20px !important;
-    }
-}
- @media screen and (max-width: 414px) {
-
-    .logo{
-        width: 100%;
-        margin-left: 0;
-        margin-bottom: 10px;
-    }
-
-    .push-left{
-        margin-left: 20px;
-    }
-
-    .negative-left{
-       margin-left: 5px !important;
-    }
-
-    .text-left{
-        margin-left: 20px;
-    }
-
-    .table{
-        width: 270px;
-        margin-left: 30px !important;
-    }
-    .table-center{
-        margin-left: 53px !important;
-    }
-
-    .text-small{
-        font-size: 16px;
-        font-weight: bold;
-        margin-top: -20px;  
-    }
-    .mt-360{
-        margin-top: -20px !important;
-    } 
-}
-
-@media screen and (max-width: 640px) {
-
-.logo{
-    width: 100%;
-    margin-left: 0;
-    margin-bottom: 10px;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .logo{
-    width: 70%;
-    margin-left: 20px;
-    margin-bottom: 10px;
-    }
-
-.big{
-    font-size: 22px;
-    }
-
-.size24{
-    font-size: 16px !important;
-    }
-
-.negative-left{
-    margin-left: -25px;
-    }
-
-.table{
-    width: 270px;
-    margin-left: -32px;
-    }
-}
+ 

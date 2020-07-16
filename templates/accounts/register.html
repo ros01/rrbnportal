@@ -3,6 +3,12 @@
 {% load crispy_forms_tags %}
 {% block title%}| Create Profile {% endblock %}
 
+{% block styles %}
+
+
+
+{% endblock %}
+
 
 
 
@@ -10,132 +16,131 @@
 
 <main class="container">
 
-<div class="row mt-0 pt-0">
-            <div class="col text-center p-0 m-0">
-                <p class="text-secondary display-4 paragraph2" style="line-height: 12px"> Create Hospital Practice Manager Profile</p>
+  <br>
+
+
+
+    <div class="row mt-3 mb-5">
+        <div class="col-lg-7 col-md-9 col-sm-12 col-12 m-auto" style= "border-right:2px solid #eaecef; border-left:2px solid #eaecef; border-top:2px solid #eaecef; border-bottom:2px solid #eaecef">
+
+              <div class="container">
+              <div class="row mt-2 pt-2">
+              <div class="col text-left p-0 m-0">
+                <p class="text-success display-4 paragraph2">Create Hospital Practice Manager Profile</p>
                 <hr>
                 </div>
-    </div>
+                </div>
+                           
+                </div>
+                <div class="container">
+                <div class="row mt-0 pl-1 mb-3" style="background-color: #eaecef; border-right:4px solid #eaecef; border-left:4px solid #eaecef; border-top: :4px solid #eaecef; border-bottom: :4px solid #eaecef">
+        
+               <i class="fas fa-info fa-2x py-2 pl-3"></i>      
+                <p class="lead ml-3 pl-3 py-2 my-auto">
+                Fill the Form below. All fields are required</p>
+       
+                </div>
+                 </div>
 
-
-  <div class="row mt-0">
-    <div class="col-lg-10 col-md-12 col-sm-12 m-auto">
-      <ul class="prog-ul d-flex list-unstyled">
-        <li class="prog "><small>GUIDELINES</small></li>
-        <li class="prog active"><small>HOSPITAL ADMINISTRATOR PROFILE CREATION</small></li>
-         <li class="prog "><small>PROFILE CREATION CONFIRMATION</small></li>
-      </ul>
-    </div>
-  </div>
-
-<section>
-    <div class="container-fluid">
-        <div class="row rounded pl-3 py-1 justify-content-center align-items-center" style="background-color: #bfe3f8;">
-
-            <div class="row">
-               <i class="fas fa-info-circle fa-2x py-1" style="color: #05567b;"></i>      
-                <p class="lead ml-3 py-auto my-auto" style="color: #05567b;">
-                Fill the Form below. All fields in asterisk (*) are required</p>
-                
-                
-            </div>
-    </div>
-    </div>
-
-
-</section>
-
-        <div class="row mt-5">
-            <div class="col-md-12 m-auto">
-
-              <form method="post">
+            
+                <form method="POST" action="." enctype="multipart/form-data">
                 {% csrf_token %}
 
-                   <div class="form-row">
-                                       <div class="form-group col-md-4 mb-0">
-                                         {{ form.email|as_crispy_field }}
-                                       </div>
-                                       <div class="form-group col-md-4 mb-0">
-                                         {{ form.first_name|as_crispy_field }}
-                                       </div>
-                                       <div class="form-group col-md-4 mb-0">
-                                         {{ form.last_name|as_crispy_field }}
-                                       </div>
-                                      </div>
-                      <div class="form-row">
-                                
-                                       <div class="form-group col-md-4 mb-0">
-                                         {{ form.phone_no|as_crispy_field }}
-                                       </div>
-                                       <div class="form-group col-md-4 mb-0">
-                                         {{ form.hospital_name|as_crispy_field }}
-                                       </div>
+                
 
-                      </div>
-                  <div class="form-row">
-                                      <div class="form-group col-md-4 mb-0">
-                                        {{ form.password1|as_crispy_field }}
-                                      </div>
-                                      <div class="form-group col-md-4 mb-0">
-                                        {{ form.password2|as_crispy_field }}
-                                      </div>
-                                      <div class="form-group col-md-4 mb-0">
-                                        {{ form.hospital_type|as_crispy_field }}
-                                      </div>
+                <div class="form-row">
+                <div class="form-group col-md-6 mb-0">
+                {{ form.first_name|as_crispy_field }}
+                
+                </div>    
+
+                <div class="form-group col-md-6 mb-0">
+                
+                {{ form.last_name|as_crispy_field }}
+               
+                </div>                       
+                </div>
+
+              
+
+                <div class="form-row">
+                <div class="form-group col-md-6 mb-0">
+                {{ form.email|as_crispy_field }}
+               
+                </div>                                 
+            
+                <div class="form-group col-md-6 mb-0">
+                {{ form.phone_no|as_crispy_field }}
+                </div>
+
+                </div>
+
+                <div class="form-row">
+                 <div class="form-group col-md-6 mb-0">
+                 {{ form.password1|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                {{ form.password2|as_crispy_field }}
+                </div>
+                </div>
+
+                <div class="form-row">
+                <div class="form-group col-md-6 mb-0">
+               {{ form.hospital_name|as_crispy_field }}
+               </div>
+              
+              
+                 <div class="form-group col-md-6 mb-0">
+                 {{ form.hospital_type|as_crispy_field }}
+               </div>
+               </div>
+
+
+                
+                <div class="form-group col-md-12 mb-0">
+                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                    <label class="form-check-label" for="invalidCheck">
+                        I agree that all my details are correct!
+                    </label>
+                    <div class="invalid-feedback">
+                        You must agree before submitting.
                     </div>
+                </div>
+
+            
 
 
-                                     <div class="form-group col-md-4 mb-0">
-                                       <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
-                                         <label class="form-check-label" for="invalidCheck">
-                                           I agree that all my details are correct!
-                                         </label>
-                                             <div class="invalid-feedback">
-                                               You must agree before submitting.
-                                              </div>
-                                     </div>
+            
+            
+           
+      
+    <hr>
+    <div class="d-flex justify-content-end">   
+    
+    
+    <a href="{% url 'index' %}" class="text-dark py-1 mr-3 mt-2 mb-4 btn btn-outline-dark"><i class="fas fa-times"></i> Cancel</a>
 
-
-                     
-                     
-
-                      </div>
-                      </div>
-
-              <hr>
-              <div class="d-flex justify-content-end">   
-
-
-              
-
-             
-
-              <a href="{% url 'index' %}" class="btn btn-outline-dark py-2 px-3 mr-3 mt-2 mb-4"><i class="fa fa-times"></i> Cancel</a>
-
-                    
-             <a href="{% url 'accounts:start-reg' %}" class="btn btn-warning text-white py-2 px-3 mr-3 mt-2 mb-4 "><i class="fa fa-angle-double-left" aria-hidden="true"></i> Go Back</a>
-
-              <button type="submit" class="btn btn-success text-white py-2 mt-2 mb-4">Create Profile &#x21E8;</button>
-                    
-                   
-              
-                    
-              </form>
-                    
-             </div>
+    <a href="{% url 'accounts:start-reg' %}" class="text-white py-1 mr-3 mt-2 mb-4 btn btn-warning"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Go Back</a>
+    
+    <button type="submit" class="btn btn-success py-1 mt-2 mb-4"> Create Profile &#x21E8;</button>
 
 
 
 
 
+</form>
+
+   
+  
+    </div>
 
 
+           
+        </div>
+    
+</main>
 
 
-             
-          
-        
-    </main>
 
     
     <script>

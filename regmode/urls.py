@@ -14,6 +14,7 @@ urlpatterns = [
     path('registrars_office/', include ('registrars_office.urls')),
     path('zonal_offices/', include ('zonal_offices.urls')),
     path('utilities/', include ('utilities.urls')),
+    path('captcha/', include ('captcha.urls')),
 
 
 

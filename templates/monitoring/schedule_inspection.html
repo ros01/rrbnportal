@@ -24,9 +24,9 @@
 {% block content %}
 
 <div class="container">
-       <div class="row">
+       <div class="row ml-1 my-2">
            <div class="col col-lg-12">
-            <p class="mt-2 text-dark display-4 paragraph2">New Hospital Registration - Inspection Scheduling</p>
+            <p class="mt-2 text-success display-4 paragraph3">New Hospital Registration - Inspection Scheduling</p>
                 <hr>
           </div>
            </div>
@@ -58,10 +58,11 @@
           <form method="post" action=".">
             {% csrf_token %}
 
+         
+             <input type="hidden" name="inspection_scheduler" {% if user.is_authenticated %} value="{{ request.user.first_name }} {{ request.user.last_name }}" {% endif %} required id="id_inspection_scheduler">
 
 
-    
-
+            
             {{ form.application_no|as_crispy_field }}
 
             {{ form.practice_manager|as_crispy_field }}
@@ -85,6 +86,8 @@
             {{ form.equipment|as_crispy_field }}
 
             {{ form.radiographers|as_crispy_field }}
+
+            {{ form.radiologists|as_crispy_field }}
 
 
            
@@ -139,7 +142,7 @@
                       
                          <tr>
                           <td>1</td>
-                           <td>{{object.practice_manager.registration.id}}</td>
+                           <td>{{object.application_no}}</td>
                            <td>{{object.hospital_name}}</td>
                            <td>{{object.payment_date_pretty}}</td>
                            <td>New</td>

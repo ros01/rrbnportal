@@ -75,10 +75,24 @@
                     <div class="card card-style-2">
                         <div class="card-body">
                             <i class="fa fa-lightbulb" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
-                            <h5 class="pb-2" style="margin: -45px 0 0 60px; font-weight: bold;">Inspections</h5>
-                            
+                            <h5 class="pb-2" style="margin: -45px 0 0 60px; font-weight: bold;">Inspections</h5>                
                                 <ul class="list-unstyled d-flex">
-                                <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:inspection_list' %}"> Inspection Schedules List</a></li>
+
+
+                                {% if user.module_name == "Enugu Office" %}
+
+                                <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:enugu_list' %}"> Inspection Schedules List</a></li>
+                                
+                                {% elif user.module_name == "Lagos Office" %}
+
+                                <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:lagos_list' %}"> Inspection Schedules List</a></li>
+
+                                {% else %}
+
+                                <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:abuja_list' %}"> Inspection Schedules List</a></li>
+                                  
+                                {% endif %}
+
                             </ul>
                             <ul class="list-unstyled d-flex m-up">
                                 <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> Inspection Reports</a></li>

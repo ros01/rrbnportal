@@ -1,14 +1,15 @@
 from django.views import View
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
-from .forms import SignupForm
+from .forms import SignupForm, RenewalModelForm
 from django.contrib.sites.shortcuts import get_current_site
 from .tokens import account_activation_token
+from django.http import HttpResponse, Http404
 from django.core.mail import EmailMessage
 from django.contrib.auth import get_user_model, update_session_auth_hash, authenticate, login as auth_login
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm, PasswordChangeForm
 from django.contrib.auth import views as auth_views
-from django.views.generic import DetailView
+from django.views.generic import DetailView, TemplateView, ListView
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from accounts.tokens import account_activation_token
@@ -18,13 +19,189 @@ from django.core.mail import send_mail
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.db.models import Q
+from hospitals.models import License
+from django.views.generic import (
+     CreateView,
+     DetailView,
+     ListView,
+     UpdateView,
+     DeleteView
+)
+
+from django.core.exceptions import ObjectDoesNotExist
 
 
 
-
-
+AUTH_USER_MODEL = 'accounts.User'
 
 User = get_user_model()
+
+class LoginTemplateView(TemplateView):
+    template_name = "accounts/login.html"
+
+
+def activate_account(request):
+    return render(request, 'accounts/activate_account.html')
+
+
+
+
+
+def delete(request, license_id):
+    license = License.objects.get(pk=license_id)
+    license.delete()
+    messages.success(request, ('License deleted'))
+    return redirect('accounts/renewal.html')
+
+
+
+
+class RenewalObjectMixin(object):
+    model = License
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+
+
+
+class RenewalCreateView(CreateView):
+    template_name = 'accounts/renewal.html'
+    form_class = RenewalModelForm
+
+
+
+
+
+
+def renewal(request):
+    try:
+        query = request.GET.get('q')
+        results = 0
+
+    except ValueError:
+        query = None
+        results = None
+    try:
+        results = License.objects.get(license_no=query)
+    except ObjectDoesNotExist:
+        messages.error(request, ('License Number is Invalid.  Enter a Valid License Number'))
+        pass
+
+    return render(request, 'accounts/results.html', {"results": results})
+
+def profile_details(request, id=id):
+    obj = get_object_or_404(User, id=id)
+    form = SignupForm(request.POST or None, instance=obj)
+    if form.is_valid():
+        form.save()
+    context = {
+        'form': form
+    }
+    return render(request, "accounts/update_profile.html", context)
+
+
+
+class ProfileObjectMixin(object):
+    model = User
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+class ProfileUpdateView(ProfileObjectMixin, View):
+    template_name = "accounts/update_profile.html"
+    template_name1 = "accounts/profile_update_confirmation.html"
+    
+    def get(self, request, id=None, *args, **kwargs):
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = SignupForm(instance=obj)
+            context['object'] = obj
+            context['form'] = form
+
+        return render(request, self.template_name, context)
+
+    def post(self, request, id=None, *args, **kwargs):
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+           form = SignupForm(request.POST, instance=obj)
+           if form.is_valid():
+                user = form.save(commit=False)
+                user.is_active = True  
+                user.save()
+           context['object'] = obj
+           context['form'] = form
+        
+        return render(request, self.template_name1, context)
+
+
+
+
+class RenewalView(RenewalObjectMixin, View):
+    template_name = "accounts/renewal.html"
+    template_name1 = "accounts/renewal.html"
+    def get(self, request,  *args, **kwargs):
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = RenewaModelForm(instance=obj)  
+            context['object'] = obj
+            context['form'] = form
+
+        return render(request, self.template_name, context)
+
+
+    def post(self, request,  *args, **kwargs):
+        form = RenewaModelForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+          
+           context['object'] = obj
+           context['form'] = form
+
+           
+        
+        
+        return render(request, self.template_name1, context)
+
+class RenewalView(ListView):
+    model = License
+    template_name = 'accounts/renewal.html'
+    
+    def get_queryset(self): 
+        query = self.request.GET.get('q')
+        object_list = License.objects.filter(
+            Q(license_no__iexact=query) | Q(hospital_name__iexact=query)
+        )
+        return object_list
+
+class SearchResultsView(ListView):
+    model = License
+    template_name = 'accounts/search_result.html'
+    
+    def get_queryset(self): 
+        query = self.request.GET.get('q')
+        object_list = License.objects.filter(
+            Q(license_no__iexact=query) | Q(hospital_name__iexact=query)
+        )
+        return object_list
+
+class RenewalTemplateView(TemplateView):
+    template_name = "accounts/renewal.html"
+    
 
 
 def login(request):
@@ -85,6 +262,7 @@ class SignUpView(View):
     form_class = SignupForm
     template_name = 'accounts/register.html'
     template_name1 = 'accounts/profile-creation-confirmation.html'
+    
     
 
     def get(self, request, *args, **kwargs):

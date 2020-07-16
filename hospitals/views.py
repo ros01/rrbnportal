@@ -5,12 +5,14 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail
 from django.views import View
 from .forms import BasicDetailModelForm, CertUploadModelForm, PaymentDetailsModelForm, ReceiptUploadModelForm
 from django.urls import reverse, reverse_lazy
 from django.template.loader import get_template
 from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from . import views
 from django.views.generic import (
      CreateView,
@@ -19,6 +21,7 @@ from django.views.generic import (
      UpdateView,
      DeleteView
 )
+from django.views.generic.edit import ModelFormMixin, FormMixin
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
@@ -29,10 +32,37 @@ from xhtml2pdf import pisa
 import os
 from django.contrib.staticfiles import finders
 from io import BytesIO
+from django.utils.decorators import method_decorator
+
+
 
 
 
 User = get_user_model()
+
+
+class MultipleObjectMixin(object):
+    def get_object(self, queryset=None, *args, **kwargs):
+        slug = self.kwargs.get("slug")
+        if slug:
+            try:
+                obj = self.model.objects.get(slug=slug)
+            except self.model.MultipleObjectsReturned:
+                obj = self.get_queryset().first()
+            except:
+                raise Http404
+            return obj
+        raise Http404
+
+class LoginRequiredMixin(object):
+    #@classmethod
+    #def as_view(cls, **kwargs):
+        #view = super(LoginRequiredMixin, cls).as_view(**kwargs)
+        #return login_required(view)
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
 def hospitals_dashboard(request):
@@ -72,15 +102,17 @@ def reg_table(request):
      return render(request, 'hospitals/reg_table.html')
 
 
-class HospitalCreateView(CreateView):
+class HospitalCreateView(LoginRequiredMixin, CreateView):
     template_name = 'hospitals/hospitals_register.html'
-    form_class = BasicDetailModelForm
-    queryset = Registration.objects.all()
-    
 
-class HospitalUpdateView(View):
-    template_name = 'hospitals/hospitals_validate.html'
-    template_name1 = 'hospitals/hospitals_reg_confirmation.html'
+    form_class = BasicDetailModelForm
+    #queryset = Registration.objects.all()
+
+
+
+
+class HospitalDetailView(View):
+    template_name = 'hospitals/hospitals_reg_confirmation.html'
     queryset = Registration.objects.all()
 
     def get_object(self):
@@ -95,37 +127,30 @@ class HospitalUpdateView(View):
         context = {}
         obj = self.get_object()
         if obj is not None:
-            form = CertUploadModelForm(instance=obj)
+            form = BasicDetailModelForm(instance=obj)
             context['object'] = obj
             context['form'] = form
 
-        return render(request, self.template_name, context)
 
-    def post(self, request, id=None, *args, **kwargs):
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-           form = CertUploadModelForm(
-               request.POST, request.FILES, instance=obj)
-           if form.is_valid():
-              form.save()
-           context['object'] = obj
-           context['form'] = form
+            subject = 'Acknowledgment of Interest to Register with RRBN'
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to_email = [request.user.email]
 
-           subject = 'Acknowledgment of Interest to Register with RRBN'
-           from_email = settings.DEFAULT_FROM_EMAIL
-           to_email = [obj.email]
-
-           context['form'] = form
-           contact_message = get_template(
+            context['form'] = form
+            contact_message = get_template(
                'hospitals/contact_message.txt').render(context)
 
-           send_mail(subject, contact_message, from_email,
+            send_mail(subject, contact_message, from_email,
                      to_email, fail_silently=False)
 
-        return render(request, self.template_name1, context)
+        return render(request, self.template_name, context)
 
-class PaymentListView(View):
+    
+
+
+
+
+class PaymentListView(LoginRequiredMixin, View):
     template_name = "hospitals/payment_table.html"
     queryset = Registration.objects.all()
 
@@ -147,7 +172,7 @@ class PaymentObjectMixin(object):
         return obj 
 
 
-class PaymentCreateView(PaymentObjectMixin, View):
+class PaymentCreateView(LoginRequiredMixin, PaymentObjectMixin, View):
     template_name = "hospitals/payment_processing.html"
     template_name1 = 'hospitals/payment_details_submission.html'
     def get(self, request,  *args, **kwargs):
@@ -185,51 +210,10 @@ class PaymentCreateView(PaymentObjectMixin, View):
         
         return render(request, self.template_name1, context)
 
-class PaymentUpdateView(View):
-    template_name = 'hospitals/check_payment_details.html'
-    template_name1 = 'hospitals/payment_details_submission.html'
-    queryset = Payment.objects.all()
-
-    def get_object(self):
-        id = self.kwargs.get('id')
-        obj = None
-        if id is not None:
-            obj = get_object_or_404(Payment, id=id)
-        return obj
-
-    def get(self, request, id=None, *args, **kwargs):
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = ReceiptUploadModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-        return render(request, self.template_name, context)
-
-    def post(self, request, id=None, *args, **kwargs):
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-           form = ReceiptUploadModelForm(request.POST, request.FILES, instance=obj)
-           if form.is_valid():
-              form.save()
-           context['object'] = obj
-           context['form'] = form
-
-           subject = 'Receipt of Registration Fee Payment Details'
-           from_email = settings.DEFAULT_FROM_EMAIL
-           to_email = [request.user.email]
-
-           context['form'] = form
-           contact_message = get_template(
-               'hospitals/payment_message.txt').render(context)
-
-           send_mail(subject, contact_message, from_email,
-                     to_email, fail_silently=False)
-        return render(request, self.template_name1, context)
 
 
-class PaymentVerificationListView(View):
+
+class PaymentVerificationListView(LoginRequiredMixin, View):
     template_name = "hospitals/payment_verification_table.html"
     queryset = Payment.objects.all()
 
@@ -250,14 +234,14 @@ class PaymentObjectMixin(object):
         return obj 
 
 
-class PaymentVerificationDetailView(PaymentObjectMixin, View):
+class PaymentVerificationDetailView(LoginRequiredMixin, PaymentObjectMixin, View):
     template_name = "hospitals/payment_verification_details.html" 
     def get(self, request, id=None, *args, **kwargs):
         context = {'object': self.get_object()}
         return render(request, self.template_name, context)
 
 
-class ScheduleListView(View):
+class ScheduleListView(LoginRequiredMixin, View):
     template_name = "hospitals/inspection_schedule_table.html"
     queryset = Schedule.objects.all()
 
@@ -280,7 +264,7 @@ class ScheduleObjectMixin(object):
         return obj 
 
 
-class ScheduleDetailView(ScheduleObjectMixin, View):
+class ScheduleDetailView(LoginRequiredMixin, ScheduleObjectMixin, View):
     template_name = "hospitals/inspection_schedule_details.html" 
     def get(self, request, id=None, *args, **kwargs):
         context = {'object': self.get_object()}
@@ -310,7 +294,7 @@ class InspectionObjectMixin(object):
         return obj 
 
 
-class InspectionView(InspectionObjectMixin, View):
+class InspectionView(LoginRequiredMixin, InspectionObjectMixin, View):
     template_name = "hospitals/inspection_report_detail.html" 
     def get(self, request, id=None, *args, **kwargs):
         context = {'object': self.get_object()}
@@ -319,7 +303,7 @@ class InspectionView(InspectionObjectMixin, View):
 
 
 
-class MyLicensesListView(View):
+class MyLicensesListView(LoginRequiredMixin, View):
     template_name = "hospitals/my_license_table.html"
     queryset = License.objects.all()
 
@@ -362,7 +346,7 @@ def link_callback(uri, rel):
 
 
 
-class MyLicensesDetailView(LicenseObjectMixin, View):
+class MyLicensesDetailView(LoginRequiredMixin, LicenseObjectMixin, View):
     
     def get(self, request, *args, **kwargs):
         template = get_template('pdf/license.html')

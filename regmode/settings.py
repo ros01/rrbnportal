@@ -51,6 +51,9 @@ INSTALLED_APPS = [
     'crispy_forms',
     'multiselectfield',
     'tempus_dominus',
+    'captcha',
+    
+
 
 ]
 
@@ -93,7 +96,7 @@ WSGI_APPLICATION = 'regmode.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'rrbntestdb',
+        'NAME': 'rrbntestdb1',
         'USER': 'postgres',
         'PASSWORD': 'blackstone1',
         'HOST': 'localhost',
@@ -159,11 +162,14 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
 
-#EMAIL_HOST = 'smtp.gmail.com'
-#EMAIL_PORT = 587
-#EMAIL_USE_TLS = True
-#EMAIL_HOST_USER = 'blueacetechng@gmail.com'
-#EMAIL_HOST_PASSWORD = 'blackstone123'
+
+
+
+
+
+CAPTCHA_OUTPUT_FORMAT = u'%(image)s<br>%(hidden_field)s%(text_field)s'
+CAPTCHA_IMAGE_SIZE = (175, 50)
+CAPTCHA_FONT_SIZE = 30
 
 
 EMAIL_HOST = 'smtp.sendgrid.net'

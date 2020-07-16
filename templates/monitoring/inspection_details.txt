@@ -4,7 +4,7 @@ Kindly be informed that a facility inspection has been scheduled for your radiog
 
 See brief details below:
 
-Application Number: {{object.practice_manager.registration.id}}
+Application Number: {{object.application_no}}
 
 Hospital Name: {{object.hospital_name}}
 

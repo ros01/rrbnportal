@@ -207,6 +207,8 @@
 
 <form id="approve{{payment.id }}" method="POST" action="{% url 'monitoring:approve' payment.id %}">
   {% csrf_token%}
+
+ <input type="hidden" name="vetting_officer" {% if user.is_authenticated %} value="{{ request.user.first_name }} {{ request.user.last_name }}" {% endif %} required id="id_vetting_officer">
   <input type="hidden">
   
 

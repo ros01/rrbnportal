@@ -4,7 +4,7 @@ This is to confirm that your registration and payment details have been successf
 
 See brief details below:
 
-Application Number: {{object.practice_manager.registration.id}}
+Application Number: {{object.application_no}}
 
 Hospital Name: {{object.hospital_name}}
 

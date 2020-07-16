@@ -30,20 +30,20 @@
                 </div>
                 </section>
 
+                
 
 
-
-                <div class="row green mt-2">
+                <div class="row green mt-2 px-lg-2 px-md-0">
                     <div class="container pt-2 pb-2">
                         <div class="row justify-content-center align-items-center">
-                            <div class="col-md-3 col-sm-12 mb-2 ml-2">
+                            <div class="col-md-3  col-sm-12 ml-sm-0 mb-2 ml-2">
                               <i class="fas fa-hospital fa-2x text-white my-1"></i><span
                                     class=" ml-3 text-white font-weight-bold size22">{{ user.hospital_name }}</span></div>
-                            <div class="col-md-3 col-sm-12 mb-2 push-left offset-md-2"><i
+                            <div class="col-md-3 col-sm-12 mb-2 push-left-lg offset-md-2"><i
                                     class="fas fa-laptop fa-2x text-white my-1"></i><span
-                                    class=" ml-3 text-white font-weight-bold size22">{{ user.hospital_type }}</span></div>
-                            <div class="col-md-3 mr-md-0 col-sm-12 mx-auto px-0">
-                              <div class="d-flex justify-content-end">
+                                    class="ml-1 text-white font-weight-bold size22">{{ user.hospital_type }}</span></div>
+                            <div class="col-md-4 mr-md-0 col-sm-12 mx-auto px-0">
+                              <div class="d-flex justify-content-end mr-4 mr-md-0">
                                
                                     <div class="dropdown">
                                         <a class="text-white mr-3 py-1 btn btn-warning dropdown-toggle" href="#" role="button"
@@ -54,7 +54,7 @@
 
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                         <a class="dropdown-item" href="{% url 'hospitals:hospitals_dashboard' %}">Dashboard</a>
-                                        <a class="dropdown-item" href="#">Continue New Applications</a>
+                                        <a class="dropdown-item" href="{% url 'hospitals:status' %}">Continue New Applications</a>
                                         <a class="dropdown-item" href="#">My Application History</a>
                                         <a class="dropdown-item" href="#">Renew Practice License</a>
                                         <a class="dropdown-item" href="#">My e-payment History</a>
@@ -64,15 +64,17 @@
                                         <a class="dropdown-item" href="#">Download User Guide</a>
                                         </div>
                                     </div>
-                                    <a href="javascript:{document.getElementById('logout').submit()}" onclick="" class="btn btn-danger py-1">
+                                    <a href="javascript:{document.getElementById('logout').submit()}" onclick="" class="btn btn-danger pb-1 px-4">
                                       <form id="logout" method="POST" action="{% url 'accounts:logout' %}">
                                         {% csrf_token %}
                                         <input type="hidden" />
-                                      </form><i class="fa fa-power-off"> </i>Logout</a>
-                                </div>
-                            </div>
+                                      </form><i class="fa fa-power-off"></i>&nbsp;Logout</a>
+                               
+                                
                         </div>
                     </div>
+                </div>
+                </div>
                 </div>
   </header>
 

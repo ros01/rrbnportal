@@ -49,10 +49,12 @@ EQUIPMENT = (
         ('Ultrasound', 'Ultrasound' ),
         ('X-ray', 'X-ray'),
         ('CT Scan', 'CT Scan' ),
+        ('C-Arm/O-HRM', 'C-Arm/O-HRM' ),
         ('MRI', 'MRI'),
         ('Mamography', 'Mamography' ),
         ('Angiography', 'Angiography'),
-        ('Dental Radiography', 'Dental Radiography' ),
+        ('Dental X-ray', 'Dental X-ray' ),
+        ('Fluroscopy', 'Fluroscopy' ),
         ('Echocardiography', 'Echocardiography'),
         ('Linac', 'Linac'),
         ('Cobalt 60', 'Cobalt 60'),
@@ -78,20 +80,19 @@ INSPECTION_ZONE = (
         )
 
 
-SCORE = (
-        ('1', '1'), 
-        ('2', '2'), 
-        ('3', '3'), 
-        ('4', '4'), 
-        ('5', '5'), 
-        ('6', '6'), 
-        ('7', '7'), 
-        ('8', '8'), 
-        ('9', '9'),  
-        ('10', '10'),
+VISITATION_REASON = (
+        ('Inspection', 'Inspection'), 
+        ('Accrediation', 'Accrediation'), 
+        ('Sensitization', 'Sensitization'), 
+        ('Enforcement', 'Enforcement'), 
         )
 
 LICENSE_STATUS = (
         ('Active', 'Active'),
         ('Expired', 'Expired'),
+        )
+
+HOSPITAL_TYPE = (
+        ('Radiography Practice', 'Radiography Practice'),
+        ('Radiography Internship', 'Radiography Internship'),
         )

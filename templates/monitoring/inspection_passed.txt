@@ -6,7 +6,7 @@ Once final approval is given by the Registrar/CEO, an electronic copy of your Ra
 
 See brief details below:
 
-Application Number: {{object.practice_manager.registration.id}}
+Application Number: {{object.application_no}}
 
 Hospital Name: {{object.hospital_name}}
 

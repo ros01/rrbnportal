@@ -10,141 +10,127 @@
 
 {% block content %}
 
+
 <div class="container">
-    <section class="px-2 pt-3">
-   
-    <div class="row mt-2 ">
-    <div class="col text-center mb-1">
-    <p class="text-secondary display-4 paragraph2">Radiography Practice License Application - Enter Payment Details</p>
+
+    <div class="row my-2">
+        <div class="col-lg-7 col-md-9 col-sm-12 col-12 m-auto" style= "border-right:2px solid #eaecef; border-left:2px solid #eaecef; border-top:2px solid #eaecef; border-bottom:2px solid #eaecef">
+
+              <div class="container">
+              <div class="row mt-2 pt-2">
+              <div class="col text-left p-0 m-0">
+                <p class="text-success display-4 paragraph3">Radiography Practice License Application Payment Details</p>
+                <hr>
+                </div>
+                </div>
+                           
+                </div>
+                <div class="container">
+                <div class="row mt-0 pl-1 mb-3" style="background-color: #eaecef; border-right:4px solid #eaecef; border-left:4px solid #eaecef; border-top: :4px solid #eaecef; border-bottom: :4px solid #eaecef">
+        
+               <i class="fas fa-info fa-2x py-2 pl-3"></i>      
+                <p class="lead ml-3 pl-3 py-2 my-auto">
+                Enter payment details below. All fields are required</p>
+       
+                </div>
+                 </div>
+
+            
+                <form method="POST" action="." enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {{ form.practice_manager|as_crispy_field }} 
+                {{ form.phone|as_crispy_field }} 
+                {{ form.email|as_crispy_field }} 
+                {{ form.state|as_crispy_field }} 
+                {{ form.city|as_crispy_field }}
+                {{ form.address|as_crispy_field }} 
+                {{ form.services|as_crispy_field }}
+                {{ form.equipment|as_crispy_field }} 
+                
+                <div class="form-row">
+                <div class="form-group col-md-6 mb-0">
+                {{ form.application_no|as_crispy_field }} 
+                </div>    
+
+                <div class="form-group col-md-6 mb-0">
+               {{ form.hospital_name|as_crispy_field }} 
+               
+                </div>                       
+                </div>
+
+            
+                <div class="form-row">
+                <div class="form-group col-md-6 mb-0">
+                {{ form.license_category|as_crispy_field }}
+               
+                </div>                                 
+            
+                <div class="form-group col-md-6 mb-0">
+                {{ form.payment_amount|as_crispy_field }}
+                </div>
+
+                </div>
+
+                <div class="form-row">
+                 <div class="form-group col-md-6 mb-0">
+                {{ form.rrr_number|as_crispy_field }} 
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                {{ form.receipt_number|as_crispy_field }}
+                </div>
+                </div>
+
+                <div class="form-row">
+                 <div class="form-group col-md-6 mb-0">
+                 {{ form.payment_method|as_crispy_field }} 
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                {{ form.payment_receipt|as_crispy_field }} 
+                </div>
+                </div>
+
+                <div class="form-group col-md-12 mb-0">
+                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                    <label class="form-check-label" for="invalidCheck">
+                        I agree that all my details are correct!
+                    </label>
+                    <div class="invalid-feedback">
+                        You must agree before submitting.
+                    </div>
+                </div>
+
+            
+
+
+            
+            
+           
+      
     <hr>
-    </div>
-    </div>
-
-    </section>
-
-
+    <div class="d-flex justify-content-end">   
     
-    <div class="col-lg-10 col-md-12 col-sm-12 m-auto">
-      <ul class="prog-ul d-flex list-unstyled">
-        <li class="prog "><small>HOSPITAL INFO SUBMISSION</small></li>
-             <li class="prog active"><small>PAYMENT INFORMATION UPLOAD</small></li>
-             <li class="prog "><small>FACILITY INSPECTION</small></li>
-             <li class="prog "><small>LICENSE ISSUANCE</small></li>
-      </ul>
-    </div>
     
+    <a href="{% url 'hospitals:hospitals_dashboard' %}" class="py-1 mr-3 mt-2 mb-4 btn btn-outline-secondary"><i class="fas fa-times"></i> Cancel</a>
+
+    <a href="{% url 'hospitals:payment_table' %}" class="py-1 mr-3 mt-2 mb-4 btn btn-outline-warning"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Go Back</a>
+    
+    <button type="submit" class="btn btn-success py-1 mt-2 mb-4" name="_save"> Proceed &#x21E8;</button>
+
+    </form>
+    </div>
 
 
-<section>
-    <div class="container-fluid">
-        <div class="row rounded py-1 justify-content-center align-items-center" style="background-color: #bfe3f8;">
-           <div class="row">
-               <i class="fas fa-info-circle fa-2x py-1" style="color: #05567b;"></i>      
-                <p class="lead ml-3 py-auto my-auto" style="color: #05567b;">
-                Enter payment details below. All fields are required. </p>
+           
         </div>
     </div>
 </div>
-</section>
-
-   
-
-               
-<section class="px-3">
-<div class="container-fluid">
-
-<div class="row justify-content-center">
-    <div class="col-lg-6 col-md-8 col-sm-10 bg-light mx-4 my-2 p-3" >
-    <form method="POST" action="." enctype="multipart/form-data" class="text-muted">
-    {% csrf_token %}
-       <input type="hidden" name="practice_manager" {% if user.is_authenticated %} value="{{ request.user.id }}" {% endif %} required id="id_practice_manager">
-
-
-       <input type="hidden" name="phone"  value="{{ object.phone }}"  required id="id_phone">
-
-       <input type="hidden" name="email"  value="{{ object.email }}"  required id="id_email">
-
-       <input type="hidden" name="state"  value="{{ object.state }}"  required id="id_state">
-
-       <input type="hidden" name="city"  value="{{ object.city }}"  required id="id_city">
-
-       <input type="hidden" name="address"  value="{{ object.address }}"  required id="id_address">
-
-       <input type="hidden" name="services"  value="{{ object.services }}"  required id="id_services">
-
-       <input type="hidden" name="equipment"  value="{{ object.equipment }}"  required id="id_equipment">
-
-       <input type="hidden" name="radiographers"  value="{{ object.radiographers }}"  required id="id_radiographers">
 
 
 
 
-            <div class="form-group">
-            <label for="id_application_no" class=" requiredField">
-            Application No<span class="asteriskField">*</span></label>
-            <input type="text" name="application_no" class="form-control"  {% if user.is_authenticated %}   value="{{ object.id }}" {% endif %}  required id="id_application_no"  id="div_id_application_no" readonly>
-            </div>
-
-           
 
 
-            <div class="form-group">
-            <label for="id_hospital_name" class=" requiredField">
-            Hospital Name<span class="asteriskField">*</span></label>
-            <input type="text" name="hospital_name" class="form-control" {% if user.is_authenticated %} value="{{ user.hospital_name }}" {% endif %} required id="id_hospital_name"  id="div_id_hospital_name" readonly>
-            </div>
-
-
-            <div class="form-group">
-            <label for="id_license_category" class=" requiredField">
-            License Category<span class="asteriskField">*</span></label>
-            <input type="text" name="license_category" class="form-control" {% if user.is_authenticated %} value="{{ user.hospital_type }}" {% endif %} required id="id_license_category"  id="div_id_license_category" readonly>
-            </div>
-
-            <div class="form-group">  
-            {{ form.rrr_number|as_crispy_field }} 
-            </div>
-
-            <div class="form-group">  
-            {{ form.receipt_number|as_crispy_field }} 
-            </div>
-
-            <div class="form-group">  
-            {{ form.payment_amount|as_crispy_field }}
-            </div>
-
-            <div class="form-group">  
-           {{ form.payment_method|as_crispy_field }} 
-            </div>
-
-
-            <div class="form-group">  
-            {{ form.payment_receipt|as_crispy_field }} 
-             </div>
-
-            <div class="row ml-4">
-            <div class="form-group">
-            <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
-            <label class="form-check-label" for="invalidCheck">
-            I agree that all my details are correct!
-            </label>
-            <div class="invalid-feedback">
-            You must agree before submitting.
-            </div>
-            </div>
-            </div>
-            <div class="row justify-content-center align-items-center">
-            <a href="{% url 'hospitals:hospitals_dashboard' %}"class="btn btn-outline-secondary px-2 mx-2 py-1"><i class="fa fa-times"></i> Cancel</a>                     
-            <a href="{% url 'hospitals:payment_table' %}" class="btn btn-outline-warning px-2 mx-2 py-1"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Go Back</a>
-            <button type="submit" class="btn btn-success px-2 mx-2 py-1" name="_save">Proceed &#x21E8;</button>
-            </div>
-            </form>
-            </div>
-            </div>
-
-            </div>
-            </section>
-</div>
 
 
 

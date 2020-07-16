@@ -4,7 +4,7 @@ Dear {{object.hospital_name|upper }},
 Kindly find below a summary of your Radiography Practice License Application inspection report.
 
 
-Application Number: {{object.practice_manager.registration.id}}
+Application Number: {{object.application_no}}
 
 Hospital Name: {{object.hospital_name}}
 

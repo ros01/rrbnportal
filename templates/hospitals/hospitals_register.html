@@ -8,149 +8,148 @@
 {% endblock %}
 
 
+
+
 {% block content %}
 
+
+
 <div class="container">
-<section>
-    <div class="container">
-        <div class="row mt-2 pt-2">
-            <div class="col text-center p-0 m-0">
-                <p class="text-secondary display-4 paragraph">Start New Hospital Registration</p>
+
+    <div class="row my-2">
+        <div class="col-lg-7 col-md-9 col-sm-12 col-12 m-auto" style= "border-right:2px solid #eaecef; border-left:2px solid #eaecef; border-top:2px solid #eaecef; border-bottom:2px solid #eaecef">
+
+              <div class="container">
+              <div class="row mt-2 pt-2">
+              <div class="col text-left p-0 m-0">
+                <p class="text-success display-4 paragraph2">Start New Hospital Registration</p>
                 <hr>
                 </div>
-    </div>
-                
-    <div class="row mt-0">
-        <div class="col-lg-12 col-md-12 col-sm-12">
-          <ul class="prog-ul d-flex list-unstyled">
-           <li class="prog active"><small>HOSPITAL INFO SUBMISSION</small></li>
-            <li class="prog "><small>REQUIRED DOCUMENTS UPLOAD</small></li>
-             <li class="prog "><small>PAYMENT INFORMATION UPLOAD</small></li>
-             <li class="prog "><small>FACILITY INSPECTION</small></li>
-             <li class="prog "><small>LICENSE ISSUANCE</small></li>
-
-          </ul>
-        </div>
-      </div>
-    
-    </div>
-</section>
-
-<section>
-    <div class="container-fluid">
-        <div class="row rounded pl-3 py-1 justify-content-center align-items-center" style="background-color: #bfe3f8;">
-            <div class="row">
-               <i class="fas fa-info-circle fa-2x py-1" style="color: #05567b;"></i>      
-                <p class="lead ml-3 py-auto my-auto" style="color: #05567b;">
+                </div>
+                           
+                </div>
+                <div class="container">
+                <div class="row mt-0 pl-1 mb-3" style="background-color: #eaecef; border-right:4px solid #eaecef; border-left:4px solid #eaecef; border-top: :4px solid #eaecef; border-bottom: :4px solid #eaecef">
+        
+               <i class="fas fa-info fa-2x py-2 pl-3"></i>      
+                <p class="lead ml-3 pl-3 py-2 my-auto">
                 Fill the Form below. All fields are required</p>
-        </div>
-    </div>
-    </div>
-</section>
-
-
-
-    <div class="row mt-5">
-        <div class="col-md-12 m-auto">
+       
+                </div>
+                 </div>
 
             
                 <form method="POST" action="." enctype="multipart/form-data">
                 {% csrf_token %}
 
-                <input type="hidden" name="practice_manager" {% if user.is_authenticated %} value="{{ request.user.id }}" {% endif %} required id="id_practice_manager">
+                {{ form.application_no|as_crispy_field }}
+
+                 <input type="hidden" name="practice_manager" {% if user.is_authenticated %} value="{{ request.user.id }}" {% endif %} required id="id_practice_manager">
+                 
+                 <div class="form-row">
+
+                  <div class="form-group col-md-6 mb-0">
+                  <label for="id_hospital_name" class=" requiredField">
+                  Hospital Name<span class="asteriskField">*</span></label>
+                  <input type="text" name="hospital_name" class="form-control" {% if user.is_authenticated %} value="{{ user.hospital_name }}" {% endif %} required id="id_hospital_name"  id="div_id_hospital_name" readonly>
+                  </div>
 
 
-                <input type="hidden" name="user" {% if user.is_authenticated %} value="{{ request.user.id }}" {% endif %} required id="id_user">
+                  <div class="form-group col-md-6 mb-0">
+                  <label for="id_license_category" class=" requiredField">
+                  License Category<span class="asteriskField">*</span></label>
+                  <input type="text" name="license_category" class="form-control" {% if user.is_authenticated %} value="{{ user.hospital_type }}" {% endif %} required id="id_license_category"  id="div_id_license_category" readonly>
+                  </div>
+                  </div>
 
+                  <div class="form-row">
+                  <div class="form-group col-md-6 mb-0">
+                  <label for="id_phone" class=" requiredField">
+                  Phone<span class="asteriskField">*</span></label>
+                  <input type="text" name="phone" class="form-control" {% if user.is_authenticated %} value="{{ user.phone_no }}" {% endif %} required id="id_phone"  id="div_id_phone" readonly>
+                  </div>
 
+                 <div class="form-group col-md-6 mb-0">
+                 <label for="id_email" class=" requiredField">
+                 Email<span class="asteriskField">*</span></label>
+                 <input type="text" name="email" class="form-control" {% if user.is_authenticated %} value="{{ user.email }}" {% endif %} required id="id_email"  id="div_id_email" readonly>
+                 </div>  
+                 </div>   
+                
 
-
-                <div class="form-row"> 
-                <div class="form-group col-md-4 mb-0">
-                <div id="div_id_hospital_name" class="form-group">
-               <label for="id_hospital_name" class=" requiredField">
-                Hospital Name<span class="asteriskField">*</span>
-                </label>
-                <div class="">
-                <input type="text" name="hospital_name" maxlength="200" class="textinput textInput form-control" {% if user.is_authenticated %} value="{{ user.hospital_name }}" {% endif %} required id="id_hospital_name" readonly>
-                </div>
-               </div>
-               </div>
-                          
-                                       
-                <div class="form-group col-md-4 mb-0">
-                {{ form.rc_number|as_crispy_field }}
-                </div>
-
-                <div class="form-group col-md-4 mb-0">
-                <div id="div_id_phone" class="form-group">
-                <label for="id_phone" class=" requiredField">
-                Phone<span class="asteriskField">*</span>
-                </label>
-                <div class="">
-                    <input type="text" name="phone" maxlength="100" class="textinput textInput form-control" 
-                    {% if user.is_authenticated %} value="{{ user.phone_no }}" {% endif %}
-                    required id="id_phone" readonly>
-                </div>
-               </div>            
-               </div>
-               </div>
-
-    
                 <div class="form-row">
-                <div class="form-group col-md-4 mb-0">
-                <div id="div_id_email" class="form-group">
-               <label for="id_email" class=" requiredField">
-                Email<span class="asteriskField">*</span>
-                </label>
-                <div class="">
-                 <input type="email" name="email" maxlength="100" class="emailinput form-control" 
-                {% if user.is_authenticated %} value="{{ user.email }}" {% endif %}
-                required id="id_email" readonly>
-                </div>
-                </div>
+                <div class="form-group col-md-6 mb-0">
+                {{ form.rc_number|as_crispy_field }}
+                
+                </div>    
+
+                <div class="form-group col-md-6 mb-0">
+                {{ form.services|as_crispy_field }}
+               
+                </div>                       
                 </div>
 
+              
 
-                <div class="form-group col-md-4 mb-0">
+                <div class="form-row">
+                <div class="form-group col-md-6 mb-0">
+                {{ form.address|as_crispy_field }}
+               
+                </div>                                 
+            
+                <div class="form-group col-md-6 mb-0">
                 {{ form.city|as_crispy_field }}
                 </div>
 
-                <div class="form-group col-md-4 mb-0">
-                {{ form.state|as_crispy_field }}</div>                                 
-               </div>
-               <div class="form-row">
-               <div class="form-group col-md-8 mb-0">
-               {{ form.address|as_crispy_field }}
                 </div>
-                <div class="form-group col-md-4 mb-0">
-                
-                <div id="div_id_license_category" class="form-group">
-               <label for="id_license_category" class=" requiredField">
-                License Category<span class="asteriskField">*</span>
-                </label>
-                <div class="">
-                 <input type="text" name="license_category" maxlength="200" class="textinput textInput form-control" 
-                {% if user.is_authenticated %} value="{{ user.hospital_type }}" {% endif %}
-                required id="id_license_category" readonly>
+
+                <div class="form-row">
+                 <div class="form-group col-md-6 mb-0">
+                 {{ form.state|as_crispy_field }}
                 </div>
-                </div>
+                <div class="form-group col-md-6 mb-0">
+                {{ form.equipment|as_crispy_field }}
                 </div>
                 </div>
 
                 <div class="form-row">
-                 <div class="form-group col-md-4 mb-0">
-                {{ form.services|as_crispy_field }}
-                </div>
-                <div class="form-group col-md-4 mb-0">
-                {{ form.equipment|as_crispy_field }}
-                </div>
-                <div class="form-group col-md-4 mb-0">
+                <div class="form-group col-md-6 mb-0">
                {{ form.radiographers|as_crispy_field }}
+               </div>
+              
+              
+                 <div class="form-group col-md-6 mb-0">
+                  {{ form.radiologists|as_crispy_field }}
                </div>
                </div>
 
-                <div class="form-group col-md-4 mb-0">
+
+                <div class="col text-left p-0 mb-3 mx-0">
+                <p class="text-success display-4 paragraph3">Uploads</p>
+                <hr>
+                </div>
+
+
+               <div class="form-row">
+               <div class="form-group col-md-6 mb-0">
+                  {{ form.cac_certificate|as_crispy_field }}
+               </div>
+               <div class="form-group col-md-6 mb-0">
+                  {{ form.form_c07|as_crispy_field }}
+                  
+               </div>
+               </div>
+               <div class="form-row">
+               <div class="form-group col-md-6 mb-0">
+                 {{ form.practice_license1|as_crispy_field }}
+               </div>
+               <div class="form-group col-md-6 mb-0">
+                 {{ form.practice_license2|as_crispy_field }}
+               </div>
+               </div>
+
+
+                <div class="form-group col-md-12 mb-0">
                     <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
                     <label class="form-check-label" for="invalidCheck">
                         I agree that all my details are correct!
@@ -179,8 +178,10 @@
 
 
 
+</form>
+
    
-    </form>
+  
     </div>
 
 

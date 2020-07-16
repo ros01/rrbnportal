@@ -3,7 +3,7 @@ Dear {{object.hospital_name|upper }},
 Your payment details have been submitted successfully to RRBN.
 See brief details below:
 
-Application Number: {{object.id}}
+Application Number: {{object.application_no}}
 
 Hospital Name: {{object.hospital_name}}
 

@@ -6,7 +6,7 @@ Kindly download an electronic copy of your Radiography Practice License from you
 
 See brief details below:
 
-Application Number: {{object.practice_manager.registration.id}}
+Application Number: {{object.application_no}}
 
 Hospital Name: {{object.hospital_name}}
 

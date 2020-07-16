@@ -1,6 +1,7 @@
+{% load static %} 
 
 main{
-    margin: 3rem 0;
+    margin: 5rem 0 0 0;
 }
 
 
@@ -48,7 +49,7 @@ p {
 
 }
 .paragraph3 {
-  font-size: 1.0rem;
+  font-size: 1.5rem;
 
 }
 
@@ -83,16 +84,99 @@ h3 {
 
 }
 
+
+
+
+/* Nav Bar CSS Begins Here */
+
+.navbar-brand{
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 24px;
+}
+
+.nav-item{
+  margin : 0 15px !important;
+}
+
 .nav-link{
-    padding-right: 8rem!important;
-    font-size: 16px;
-    font-weight: bold;
+  color:green !important;
+}
+.nav-link:hover{
+  color: rgb(78, 228, 78) !important;
+}
+/* Nav Bar CSS Ends Here */
+
+.xpand{
+  width: 100px !important;
+}
+
+.logo{
+  width: 80%;
+}
+
+.card-img-top {
+     
+    
+    object-fit: cover;
+
+  } 
+
+
+
+
+.btn-info:hover {
+color: #000;
+background-color: #fff;
+border-color: #fff;
+}
+
+.green-image{
+  background: url('../img/green3.jpeg') ;
+  width: 100%;
+  height: 44vh;
+}
+
+.input-recaptcha{
+ width:172px;   
 }
 
 
-.nav-link:hover {
-    color: rgb(141, 245, 131) !important;
-  }
+.bg-image{
+  background: url('../img/sec.jpg') ;
+  width: 100%;
+  height: 88vh;
+}
+
+.form-container{
+  padding: 20px 60px;
+  margin-top: 50px;
+  -webkit-box-shadow: -1px 4px 26px 11px rgba(0,0,0,0.75);
+  -moz-box-shadow: -1px 4px 26px 11px rgba(0,0,0,0.75);
+  box-shadow: -1px 4px 26px 11px rgba(0,0,0,0.75);
+  border-radius: 10px;
+  color: #000000;
+  background: #fff;
+}
+
+
+.page-holder {
+  min-height: 100vh;
+}
+
+.bg-cover {
+  background-size: cover !important;
+}
+
+
+.a-content{
+
+  font-size: 28px;
+}
+
+
+
+
 
  body{
      overflow-x: hidden;
@@ -150,7 +234,7 @@ footer{
 
 .prog-ul{
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-end;
   counter-reset: step;
 }
 
@@ -160,16 +244,16 @@ footer{
   position: relative;
   width: 33.33%;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .prog:before{
   display: block;
-  height: 50px;
-  width: 50px;
+  height: 45px;
+  width: 45px;
   border-radius: 20%;
   background: #e2dfdf;
-  line-height: 50px;
+  line-height: 45px;
   text-align: center;
   content: counter(step);
   counter-increment: step;
@@ -208,51 +292,91 @@ footer{
   color: #fff;
 }
 
+.label-as-badge {
+    border-radius: 1em;
+}
+
+.light-gold {
+
+  background: #f4efe1;
+}
+
+ul li a{
+  background: #fff;
+  color: #000;
+}
+
+ul li a:hover{
+  
+  color: #FF0000 !important;
+}
+/* MEDIA QUERY 
+the codes below will fix the image size and the 
+border on the last box on all screen sizes 
+*/
+
+@media screen and (max-width: 992px) {
+  .tanker {
+    width: 100%;
+  }
+}
 
 
+@media screen and (max-width: 985px) {
+  .tanker {
+    width: 200%;
+  }
+
+
+
+
+@media screen and (max-width: 970px) {
+  .tanker {
+    width: 200%;
+  }
+
+  .push-down{
+    padding-bottom: 0px;
+  }
+}
 
 
 @media screen and (max-width: 768px) {
+  .tanker {
+    width: 40%;
+  }
 
-    .progress{
-        width: 120%;
-        height: auto;
-        margin-left: -50px;
-    }
-
-    .logo{
-        width: 100%;
-        margin-left: 0;
-        margin-bottom: 10px;
-    }
+  .push-down{
+    padding-bottom: 0px;
+  }
 }
 
-@media screen and (max-width: 640px) {
-
-    .logo{
-        width: 100%;
-        margin-left: 0;
-        margin-bottom: 10px;
-    }
-
-    .progress{
-        width: 100%;
-        margin-left: 0;
-        margin-bottom: 10px;
-    }
+@media screen and (max-width: 414px) {
+  .tanker {
+    width: 25%;
+  }
 }
 
- @media screen and (max-width: 414px) {
-
-    .logo{
-        width: 100%;
-        margin-left: 0;
-        margin-bottom: 10px;
-    }
-
-    .progress{
-        width: 100%;
-        margin-left: 0;
-        margin-bottom: 10px;
-    }
+@media screen and (max-width: 360px) {
+  .tanker {
+    width: 25%;
+  }
 }
+
+@media screen and (max-width: 320px) {
+  .tanker {
+    width: 25%;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+

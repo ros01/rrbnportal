@@ -1,0 +1,79 @@
+{% extends 'base-reg.html'%}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title%}| Welcome {% endblock %}
+
+{% block styles %}
+
+
+{% endblock %}
+
+                             
+{% block content %}
+
+
+<main class="container">
+
+ 
+  
+
+
+
+
+	<div class="row pr-2 mr-2 pt-4 justify-content-center align-items-center"> <div class="col-md-11"> 
+       
+        <p class="display-4 paragraph2 ml-2" style="color:#05567b;">Apply for Renewal of Radiography Practice</p>
+        <hr>
+      
+        <div class="row"> <div class="col-lg-6 col-md-12 col-sm-12 col-12 mb-3" style="padding-right:0; height:100%"> 
+
+          <div class="mb-4" style="background-color: #bfe3f8; padding:5px; border-right:4px solid #ecd863; border-left:4px solid #ecd863"> <b>PLEASE NOTE:</b> All Registered Hospitals/Centres need to update their profile (activate their portal account) in order to obtain their username and password to proceed with their Radiography Hospital Practice License renewals.
+             </div> 
+
+
+          <h3>Please enter your license number</h3>
+         
+          <span style="color:#F00"></span>
+          <table width="100%">
+          <td width="45%">
+          <form method="get" action="/accounts/renewal/">
+         
+          <div class="form-group">
+          <input name="q" type="text" id="id_q"  class="form-control input-lg"  placeholder="Enter your License Number"  />
+          </div>
+          <div class="form-group col-xs-12 text-left">
+          <button type="submit" value="Search" class="btn btn-success btn-lg pull-right"><i class="fa fa-search fa-fw"></i> Retrieve</button>
+          </div>
+          </form>
+
+          </td>
+
+         
+          </table> 
+          </div>
+         
+     
+
+        <div class="col-lg-6 col-md-12 col-sm-12 col-12" style="background:#ffffff; margin-left:0; margin-right:0;"> 
+          <div class="mb-5" style="background-color: #52b45b"> <div class="a-content px-5 pt-4 pb-3"> <p class="text-white"> License Renewal</p> 
+            <p class="small text-white"> If you have already activated your Hospital Portal Account, please click on the button below to login and proceed </p> 
+            
+
+            <a href="{% url 'accounts:signin' %}" class="btn btn-outline-light py-1 px-3 mr-3 mt-2 mb-4 "> <i class="fa fa-user"></i>&nbsp; Hospital Login</a>
+
+        	</div> </div> </div> </div> </div> 
+            <div class="col-md-2"> </div> </div> 
+    
+
+</main>
+
+
+
+
+
+
+{% endblock %}
+
+
+
+    

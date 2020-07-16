@@ -1,0 +1,143 @@
+{% extends 'hospitals/hospitals_base.html'%}
+{% load static %}
+{% block title%}| Welcome {% endblock %}
+
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/hospital_dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{{ wizard.management_form }}
+<main class="container">
+
+
+<!-- Banner -->
+<section>
+    <div class="container">
+        <div class="row mt-2 pt-2">
+             <div class="col text-left p-0 m-0">
+                <p class="text-secondary display-4 paragraph3">HOSPITAL INFO SUBMISSION CONFIRMATION</p>
+                <hr>
+                
+   <div class="row mt-0">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+          <ul class="prog-ul d-flex list-unstyled">
+           <li class="prog"><small>HOSPITAL DETAILS</small></li>
+            <li class="prog active"><small>DOCUMENTS UPLOAD</small></li>
+             <li class="prog "><small>PAYMENT DETAILS</small></li>
+             <li class="prog "><small>FACILITY INSPECTION</small></li>
+             <li class="prog "><small>LICENSE ISSUANCE</small></li>
+
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    </div>
+    </div>
+
+
+</section>
+
+<!-- End of Banner -->
+
+<section>
+    <div class="container">
+        <div class="row px-md-3 px-sm-2 px-xs-2 rounded " style="background-color: #bfe3f8;">
+            <div class="mb-3 pt-3">
+                <p class="lead text-justify px-xs-2" style="color: #05567b;">Dear <strong>{{object.hospital_name}}</strong> your hospital information has been submitted successfully to RRBN.  Your Application Number is <strong>{{object.application_no}}</strong>. Brief details of your registration are as follows:</p>    
+        </div>
+     </div>
+    </div>
+
+</section>
+
+
+    
+       <div class="row mx-2 py-2 my-2"> 
+
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" style="border-right:1px solid #ddd"> <p class="lead text-success">Application Summary</p> 
+
+            <p class="lead" style="color: #05567b;"><strong>Kindly find below your a summary of your submission:</strong></p>
+
+
+                <div class="row">
+                    <span class="col-5" style="font-size:1.1em;">Application Number:</span>
+                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.application_no}}</strong></span>
+                </div>
+
+                <div class="row">
+                    <span class="col-5" style="font-size:1.1em;">Hospital Name:</span>
+                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.hospital_name}}</strong></span>
+                </div>
+                <div class="row">
+                    <span class="col-5" style="font-size:1.1em;">RC Number:</span>
+                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.rc_number}}</strong></span>
+                </div>
+                <div class="row">
+                    <span class="col-5" style="font-size:1.1em;">Phone:</span>
+                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.phone}}</strong></span>
+                </div>
+                <div class="row">
+                    <span class="col-5" style="font-size:1.1em;">Email:</span>
+                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.email}}</strong></span>
+                </div>
+                <div class="row">
+                    <span class="col-5" style="font-size:1.1em;">State:</span>
+                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.state}}</strong></span>
+                </div>
+                <div class="row">
+                    <span class="col-5" style="font-size:1.1em;">City:</span>
+                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.city}}</strong></span>
+                </div>
+                <div class="row">
+                    <span class="col-5" style="font-size:1.1em;">Address:</span>
+                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.address}}</strong></span>
+                </div>
+                <div class="row">
+                    <span class="col-5" style="font-size:1.1em;">Services:</span>
+                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.services}}</strong></span>
+                </div>
+                <div class="row">
+                    <span class="col-5" style="font-size:1.1em;">Equipment:</span>
+                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.equipment}}</strong></span>
+                </div>
+                <div class="row">
+                    <span class="col-5" style="font-size:1.1em;">Radiographers:</span>
+                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.radiographers}}</strong></span>
+                </div>
+</div>
+         
+      
+     
+<!-- Skills -->
+    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" > <p class="lead text-success">Next step is Payment of N50,000 registration fee</p> <p class="lead" style="color: #05567b;"><strong>To pay and obtain your receipt, kindly follow the instructions below:</strong></p>
+    <ol class="unstyled" style="font-size:1em; text-align:justify"> <li><b>STAGE 1:</b> Logon to www.remita.net</li> <li><b>STAGE 2:</b> Click Pay Fed Govt Agency</li> <li><b>STAGE 3:</b> Choose Radiographers Registration Board of Nigeria from the list and complete the relevant fields. <li><b>STAGE 4:</b> Generate your RRR Number and pay with your credit/debit card or </li> <li><b>STAGE 5:</b>Use the generated RRR to pay physically at any commercial bank</li> 
+    <li><b>STAGE 6:</b>Click Proceed to Payment if you have ready at this point your payment acknowledgement from the bank or the remita receipt if you completed the payment with your debit card.  Otherwise click Continue Later and log back on when you have your receipt ready.</li></ol>
+    </div>
+    </div>
+
+
+    <hr>
+    <div class="d-flex justify-content-end">   
+    
+    <a href="{% url 'hospitals:hospitals_dashboard' %}" class="btn btn-warning text-dark py-1 px-2 mr-3 mt-2 mb-4 "><i class="fa fa-times" aria-hidden="true"></i> Continue Later</a>
+    
+   
+    <a href="#" class="text-success py-1 px-2 mt-2 mb-4 btn btn-outline-success"><i class="fa fa-play text-success"></i>Proceed to Payment</a>
+    
+   
+    
+    </div>
+                        
+    
+                   
+         <!-- end of banner -->  
+
+
+
+
+    </main>
+{% endblock %}

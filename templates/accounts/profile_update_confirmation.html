@@ -1,0 +1,23 @@
+{% extends 'base-reg.html' %}
+
+{% block title %}Profile Update Complete{% endblock %}
+
+
+  {% block content %}
+<section id="" class="bg-light py-5">
+    <main class="container">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <div class="card">
+            <div class="card-body">
+            	<h4 class="pt-2 text-success">
+                 Profile Update Complete</h4>
+                 <p>Your profile has been updated successfully. <br>
+                 Kindly proceed to login in with your registered email address with RRBN and the password set in the profile update page to access your account</p> <a href="{% url 'accounts:signin' %}" class="btn btn-outline-success py-1 px-3 mr-3 mt-2 mb-4 "> <i class="fa fa-user"></i>&nbsp; Hospital Login</a>    
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </section>
+  {% endblock %}

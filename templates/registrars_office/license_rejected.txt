@@ -6,7 +6,7 @@ Kindly contact RRBN Inspection and Monitoring Team for details on how to reapply
 
 See brief details below:
 
-Application Number: {{object.practice_manager.registration.id}}
+Application Number: {{object.application_no}}
 
 Hospital Name: {{object.hospital_name}}
 

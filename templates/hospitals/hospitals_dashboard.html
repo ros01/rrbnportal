@@ -9,114 +9,135 @@
 {% block content %}
    <!--main containere-->
 
+      <div class="container">
+        <h1 class="text-secondary mt-4" >Dashboard
+        <span style="float:right; font-size:14px"> 
+          <br/> License No: {% if hospitals %} {% for hospitals in hospitals %}<b>{{hospitals.license_no}}</b> {% endfor %} {% else %} <b>NOT ASSIGNED</b> {% endif %}</span> </h1> </div>
+
+
+
        <div class="container">
-           <div class="row">
+          
+           <br>
 
+
+           <section>
+    
+          <div class="row rounded justify-content-center align-items-center pt-4" style="background-color: #bfe3f8;">
             
-               <div class="col-md-12 d-flex justify-content-between">
-                  <p class="text-secondary display-4 paragraph mt-2">Dashboard</p>
-                   
-               </div>
-               <div class="underline ml-4"></div>
-           </div>
+            <div class="col-lg-1 col-md-2 col-sm-2 col-xs-3 pb-4">
+            <i class="fa fa-info icon text-white"></i>
+            </div>
 
-
-            <div class="row rounded pl-3 justify-content-center align-items-center" style="background-color: #bfe3f8;">
-            <div class="col-md-1 mt-0 pt-0">
-               <i class="fa fa-info icon text-white"></i>
-                </div>
-
-               <div class="col-md-11 mt-2 pt-2">
-                <p class="lead" style="color: #05567b;">Welcome to RRBN Monitoring and Enforcement Portal.<br>
+            <div class="col-lg-11 col-md-10 col-sm-10 col-xs-9 text-justify">
+           <p class="lead" style="color: #05567b;">Welcome to RRBN Monitoring and Enforcement Portal.<br>
                    The portal enables you the hospital admin to perform several Radiography Practice License Application processing operations online from the comfort of your hospital.</p>
 
-               </div>
-           </div>
-           <div class="row d-flex">
-               <div class="negative-left col-md-8 col-sm-12">
-                   <h4 class="text-md-center mt-3 text-left">Online Self Service Center</h4>
+            <span style="float:right;"> </span> </div></div>
+            </section>
+
+
+
+
+
+      <div class="row d-flex">
+      <div class="negative-left col-md-8 col-sm-12 col-xs-12">
+      <h4 class="text-md-center  text-sm-center  text-xs-center mt-3 ml-3">Online Self Service Center</h4>
 
                    <div class="col-md-12 text-center btmMargin">
                        <div class="row mb-2">
-                           <div class="col-lg-3 col-md-12 col-sm-12">
+
+                           
+
+
+                           <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='{% url 'hospitals:status' %}';" style="cursor: pointer;">
                                <div class="card yellow">
-                                   <div class="card-body">
-                                    
-                                       <i class="fa fa-play big text-white ss-icon"></i><br>
-                                       
-                                       <a href="{% url 'hospitals:status' %}" class="text-white">Continue New Application</a>
-
-                                   
+                                   <div class="card-body text-dark">
+                                       <i class="fa fa-edit big text-dark ss-icon"></i><br>
+                                        Continue New Application
                                    </div>
                                </div>
                            </div>
+      
 
-                           <div class="col-lg-3 col-md-12 col-sm-12">
+                        <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
                                <div class="card green">
-                                   <div class="card-body">
+                                   <div class="card-body text-white">
                                        <i class="fa fa-edit big text-white ss-icon"></i><br>
-                                       <a href="#" class="text-white">My Application History</a>
+                                       Start New Application
                                    </div>
                                </div>
                            </div>
 
-                           <div class="col-lg-3 col-md-12 col-sm-12">
+                           <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
                                <div class="card danger">
-                                   <div class="card-body">
+                                   <div class="card-body text-white">
                                        <i class="fa fa-book big text-white ss-icon"></i><br>
-                                       <a href="#" class="text-white">Renew Practice License</a>
+                                      License History
+                                      (Renew License)
                                    </div>
                                </div>
                            </div>
 
-                           <div class="col-lg-3 col-md-12 col-sm-12">
+                            <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
                                <div class="card blue">
-                                   <div class="card-body">
+                                   <div class="card-body text-white">
                                        <i class="fa fa-credit-card big text-white ss-icon"></i><br>
-                                       <a href="#" class="text-white">My e-Payment History </a>
+                                      My e-Payment History
                                    </div>
                                </div>
                            </div>
-                       </div>
+                           </div>
+                        
 
                        <!-- Next Row -->
 
                        <div class="row">
-                           <div class="col-lg-3 col-md-12 col-sm-12">
+
+
+                        <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
                                <div class="card">
-                                   <div class="card-body">
+                                   <div class="card-body text-dark">
                                        <i class="fa fa-edit big text-success ss-icon"></i><br>
-                                       <a href="#" class="text-dark">License Types & Fees</a>
+                                      License Types & Fees
                                    </div>
                                </div>
                            </div>
 
-                           <div class="col-lg-3 col-md-12 col-sm-12">
+
+                            <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
                                <div class="card">
-                                   <div class="card-body">
-                                       <i class="fa fa-book big text-dark ss-icon"></i><br>
-                                       <a href="#" class="text-dark">My Portal Account</a>
+                                   <div class="card-body text-dark">
+                                       <i class="fa fa-book  big text-dark ss-icon"></i><br>
+                                      My Portal Account
                                    </div>
                                </div>
                            </div>
 
-                           <div class="col-lg-3 col-md-12 col-sm-12">
+
+                           <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
                                <div class="card">
-                                   <div class="card-body">
-                                       <i class="fa fa-file-pdf big text-danger ss-icon"></i><br>
-                                       <a href="#" class="text-dark">Application Guidelines</a>
+                                   <div class="card-body text-dark">
+                                       <i class="fa fa-file-pdf  big text-danger ss-icon"></i><br>
+                                     Application Guidelines
                                    </div>
                                </div>
                            </div>
 
-                           <div class="col-lg-3 col-md-12 col-sm-12">
+
+                           <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
                                <div class="card">
-                                   <div class="card-body">
-                                       <i class="fa fa-file-pdf big text-danger ss-icon"></i><br>
-                                       <a href="#" class="text-dark">Download User Guide (PDF)</a>
+                                   <div class="card-body text-dark">
+                                       <i class="fa fa-file-pdf  big text-danger ss-icon"></i><br>
+                                     Download User Guide (PDF)
                                    </div>
                                </div>
                            </div>
+
+
+                           
+
+                         
                        </div>
                    </div>
                </div>
@@ -182,10 +203,11 @@
                    </table>
                </div>
            </div>
-
-         
+           <br>
        </div>
        <!--main container ends-->
+
+
 
 
 {% endblock %}

@@ -19,77 +19,59 @@
     <div class="container">
     <div class="row">
 
-     <div class="col-md-5 my-3 mx-sm-1">
-            <div class="col-md-12">
-
-                <div class="row">
-                    
-                    <img src="{% static 'img/rrbn-logo.png' %}" alt="">
-                </div>
-
-
-         
-    </div>
-    </div>
+     
 
 
 </section>
 
+<section>
+<!--navbar start-->
 
-      <nav class="navbar navbar-expand-lg navbar-dark gcolor">
-          <div class="container">
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
-                  aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-                  <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                      <li class="nav-item active">
-                          <a class="nav-link text-white text-uppercase" href="{% url 'index' %}">Home <span class="fa fa-home"></span>
-                          </a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link text-white text-uppercase" href="{% url 'about' %}">About</a>
-                      </li>
-                      <li class="nav-item dropdown">
-                          <a class="nav-link text-white text-uppercase dropdown-toggle" href="#"
-                              id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                              aria-expanded="false">Services</a>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <a class="dropdown-item text-uppercase"href="{% url 'accounts:start-reg' %}">Register Practice</a>
-                              <div class="dropdown-divider"></div>
-                              <a class="dropdown-item text-uppercase" href="{% url 'verify_practice' %}">Verify Practice</a>
-                              <div class="dropdown-divider"></div>
-                              <a class="dropdown-item text-uppercase" href="#">Renew Practice</a>
-                              <div class="dropdown-divider"></div>
-                              <a class="dropdown-item text-uppercase" href="#">Reopen Practice</a>
-                              <div class="dropdown-divider"></div>
-                              <a class="dropdown-item text-uppercase" href="#">Internship Accreditation</a>
-                              <div class="dropdown-divider"></div>
-                          </div>
-                      </li>
-                      <li class="nav-item dropdown">
-                          <a class="nav-link text-white text-uppercase dropdown-toggle" href="#"
+  <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top p-2" style="border-bottom:2px solid #dddddd;">
+    <div class="container">
+      <a class="navbar-brand" href="#"><img class="logo" src="{% static 'img/rrbn-logo.png' %}" alt="rrbn-logo"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="col-lg-6 col-md-8 col-sm-6 col-6 ">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'index' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'about' %}">About</a>
+          </li>
+          <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#"
                               id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                               aria-expanded="false">Help</a>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <a class="dropdown-item text-uppercase" href="{% url 'guidelines' %}">Guidelines</a>
+                              <a class="dropdown-item" href="{% url 'guidelines' %}">Guidelines</a>
                               <div class="dropdown-divider"></div>
-                              <a class="dropdown-item text-uppercase" href="{% url 'faq' %}">FAQ</a>
+                              <a class="dropdown-item" href="{% url 'faq' %}">FAQ</a>
                               <div class="dropdown-divider"></div>
-                              <a class="dropdown-item text-uppercase" href="{% url 'zonal_offices' %}">Zonal Offices</a>
+                              <a class="dropdown-item" href="{% url 'zonal_offices' %}">Zonal Offices</a>
                               <div class="dropdown-divider"></div>
-                              <a class="dropdown-item text-uppercase" href="{% url 'internship_centers' %}">Internship Centres</a>
+                              <a class="dropdown-item" href="{% url 'internship_centers' %}">Internship Centres</a>
                           </div>
                       </li>
-                      <li class="nav-item">
-                          <a class="nav-link text-white text-uppercase" href="{% url 'contact' %}">Contact</a>
-                      </li>
-                  </ul>
-              </div>
-          </div>
-      </nav>
-      <div>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+          </li>
+          <a href="{% url 'accounts:signin' %}" class="btn btn-success my-2 my-sm-0 xpand" role="button" aria-pressed="true">Sign In</a>
+          
+        </ul>
+      </div>
+      </div>
+    </div>
+  </nav>
+  <!--navbar ends -->
+  
+  </section>
+
+  
         <!-- Alerts -->
                  <!-- {% include 'partials/_alerts.html' %} -->
       </div>
