@@ -15,5 +15,5 @@ MODULE_NAME = (
     
 HOSPITAL_TYPE = (
 	('Radiography Practice', 'Radiography Practice'),
-	('Radiography Internship', 'Radiography Internship'),
+	('Internship Accreditation', 'Internship Accreditation'),
 	)

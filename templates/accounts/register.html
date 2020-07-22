@@ -7,6 +7,10 @@
 
 
 
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+
+
 {% endblock %}
 
 
@@ -75,6 +79,10 @@
 
                 </div>
 
+
+
+
+
                 <div class="form-row">
                  <div class="form-group col-md-6 mb-0">
                  {{ form.password1|as_crispy_field }}
@@ -94,6 +102,9 @@
                  {{ form.hospital_type|as_crispy_field }}
                </div>
                </div>
+
+               
+               
 
 
                 
@@ -139,6 +150,68 @@
         </div>
     
 </main>
+
+<!--Jquery plugin-->
+  <script src="{% static 'js/jquery.js' %}"></script>
+
+<!--other javascript plugins-->
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  
+
+
+
+
+  <!--Jquery plugin-->
+
+
+  <!--other javascript plugins-->
+  <script>
+
+      (function(){
+
+      window.addEventListener('load', function(){
+
+      var sourceControlId = 34743361, /** THE ID OF THE SENDER CONTROL */
+
+      targetControlId = 34743365, /** THE ID OF THE RECEIVER CONTROL **/
+
+      domAbstractionLayer = loader.getDOMAbstractionLayer(),
+
+      sourceControlInstance = loader.getEngine().getDocument().getElementById(sourceControlId);
+
+      sourceControlInstance.on('value-change', function(){
+
+      domAbstractionLayer.setControlValueById(
+
+      String(targetControlId),
+
+      domAbstractionLayer.getControlValueById(
+
+      String(sourceControlId)
+
+      )
+
+      );
+
+      });
+
+      domAbstractionLayer.setControlValueById(
+
+      String(targetControlId),
+
+      domAbstractionLayer.getControlValueById(
+
+      String(sourceControlId)
+
+      )
+
+      );
+
+      });
+
+      })();
+
+  </script>
 
 
 

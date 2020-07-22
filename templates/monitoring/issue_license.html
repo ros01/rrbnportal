@@ -26,7 +26,7 @@
 <div class="container">
        <div class="row">
            <div class="col col-lg-12">
-            <p class="mt-2 text-dark display-4 paragraph2">New Hospital Registration - License Issuance</p>
+            <p class="mt-2 mx-3 text-success display-4 paragraph2">Radiography Practice Registration - License Issuance</p>
                 <hr>
           </div>
            </div>
@@ -71,6 +71,10 @@
     
 
             {{ form.application_no|as_crispy_field }}
+
+            {{ form.application_type|as_crispy_field }}
+
+            {{ form.payment_amount|as_crispy_field }}
 
             {{ form.practice_manager|as_crispy_field }}
 

@@ -215,7 +215,7 @@ def login(request):
         
         if user.hospital_type == 'Radiography Practice':
             return redirect('hospitals:hospitals_dashboard')
-        if user.hospital_type == 'Radiography Internship':
+        if user.hospital_type == 'Internship Accreditation':
             return redirect('hospitals:hospitals_dashboard')
         if user.role == 'Monitoring':
             return redirect('monitoring:monitoring_dashboard')
@@ -276,7 +276,7 @@ class SignUpView(View):
         if form.is_valid():
 
 
-
+            
             user = form.save(commit=False)
             user.is_active = False  # Deactivate account till it is confirmed
             user.save()
@@ -342,6 +342,10 @@ class ProfileDetailView(ProfileObjectMixin, View):
 class StartView(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'accounts/reg-start-details.html')
+
+class StartReg(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'accounts/start-accreditation.html')
 
 
 

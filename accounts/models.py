@@ -4,7 +4,8 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse
-
+from django.conf import settings
+from django.contrib.auth import get_user_model
 
 
 
@@ -62,7 +63,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     HOSPITAL_TYPE = (
         ('Radiography Practice', 'Radiography Practice'),
-        ('Radiography Internship', 'Radiography Internship'),
+        ('Internship Accreditation', 'Internship Accreditation'),
         )
 
     email = models.EmailField(unique=True)

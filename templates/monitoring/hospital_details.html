@@ -43,7 +43,7 @@
                         <span class="col-6 ">{{object.practice_manager.first_name}} {{object.practice_manager.last_name}}</span>
                     </div>
                     <div class="row">
-                        <span class="col-5"><strong>License Category:</strong></span>
+                        <span class="col-5"><strong>Practice Category:</strong></span>
                         <span class="col-6">{{object.license_category}}</span>
                     </div>
                     <div class="row">
@@ -58,6 +58,10 @@
                         <span class="col-5"><strong>Email:</strong></span>
                         <span class="col-6">{{object.email}}</span>
                      </div>
+
+
+                     {% if object.practice_manager.schedule.services %}
+
                         <div class="row">
                         <span class="col-5"><strong>Services:</strong></span>
                         <span class="col-6">{{object.practice_manager.schedule.services}}</span>
@@ -70,6 +74,10 @@
                      <div class="row">
                         <span class="col-5"><strong>Radiographers:</strong></span>
                         <span class="col-6">{{object.practice_manager.inspection.radiographers}}</span>
+                    </div>
+                    <div class="row">
+                        <span class="col-5"><strong>Radiologists:</strong></span>
+                        <span class="col-6">{{object.practice_manager.inspection.radiologists}}</span>
                     </div>
                 </div><br>
                 <div class="col-md-10">
@@ -90,10 +98,18 @@
                         </tr>
                         {% endif %}
 
-                        {% if object.practice_manager.registration.practice_license %}
+                        {% if object.practice_manager.registration.practice_license1 %}
                         <tr> <td width="50%" scope="col">Radiographer License:</td> 
                         <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{object.practice_manager.registration.practice_license.url}}"
+                        <a class="text-danger" href="{{object.practice_manager.registration.practice_license1.url}}"
+                        target="_blank">&nbsp; View Radiographer License</a></td>  
+                        </tr>
+                        {% endif %}
+
+                        {% if object.practice_manager.registration.practice_license2 %}
+                        <tr> <td width="50%" scope="col">Radiographer License:</td> 
+                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+                        <a class="text-danger" href="{{object.practice_manager.registration.practice_license2.url}}"
                         target="_blank">&nbsp; View Radiographer License</a></td>  
                         </tr>
                         {% endif %}
@@ -128,7 +144,7 @@
                     <div class="row">
                         <span class="col-5"><strong>Last Inspection 
                         Date:</strong></span>
-                        <span class="col-6">{{object.practice_manager.inspection.inspection_date_pretty}}</span>
+                        <span class="col-6">{{object.inspection_date_pretty}}</span>
                     </div>
                     <div class="row">
                         <span class="col-5"><strong>Inspection Zone:</strong></span>
@@ -136,11 +152,34 @@
                     </div>
                 </div>
 
+                 
+
+                 {% else %}
+
+                 
+                    <div class="row mt-3">
+
+                        <p class="col-12 text-success lead">Control Details</p>
+                    </div>
+                    <div class="row">
+                        <span class="col-5"><strong>Last Inspection 
+                        Date:</strong></span>
+                        <span class="col-6">{{object.inspection_date_pretty}}</span>
+                    </div>
+                    
+               
+                 </div>
+
+                 {% endif %}
+                 
+
             </div>
 
 
 
             <div class="col-md-5 mt-0">
+
+                {% if object.practice_manager.inspection.inspection_total %}
                 <p class="text-success lead">Last Inspection Score</p>
                 <span><strong><mark>{{object.practice_manager.inspection.inspection_total}}</mark></strong></span>
 
@@ -227,6 +266,33 @@
                 </table>
                 </div>
 
+                {% else %}
+                <br>
+            <div class="row py-0">
+               <table class="table table-hover">
+                    <thead style="background-color: #bfe3f8;">
+                        <tr>
+                        <th scope="col lead" style="color: #05567b;">Parameter</th>
+                        <th scope="col lead" style="color: #05567b;">Value</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                       
+                       
+                    </tbody>
+                </table>
+                </div>
+
+
+
+
+
+
+
+                {% endif %}
+
 
                
                     <div class="row">
@@ -236,10 +302,21 @@
                         <span class="col-6"><strong>License No:</strong></span>
                         <span class="col-6">{{object.license_no}}</span>
                     </div>
-                    <br>
                     <div class="row">
                         <span class="col-6"><strong>Registration Type:</strong></span>
                         <span class="col-6">{{object.license_type}}</span>
+                    </div>
+                    <div class="row">
+                        <span class="col-6"><strong>Issue Date:</strong></span>
+                        <span class="col-6">{{object.issue_date_pretty}}</span>
+                    </div>
+                    <div class="row">
+                        <span class="col-6"><strong>Expiry Date:</strong></span>
+                        <span class="col-6">{{object.expiry_date_pretty}}</span>
+                    </div>
+                    <div class="row">
+                        <span class="col-6"><strong>License Status:</strong></span>
+                        <span class="col-6">{{object.license_status}}</span>
                     </div>
                
 

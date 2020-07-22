@@ -47,10 +47,11 @@
                    <div class="col-md-12 text-center btmMargin">
                        <div class="row mb-2">
 
+
                            
+                          {% if user.hospital_type == 'Radiography Practice' %}
 
-
-                           <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='{% url 'hospitals:status' %}';" style="cursor: pointer;">
+                           <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='{% url 'hospitals:application_list' %}';" style="cursor: pointer;">
                                <div class="card yellow">
                                    <div class="card-body text-dark">
                                        <i class="fa fa-edit big text-dark ss-icon"></i><br>
@@ -59,8 +60,25 @@
                                </div>
                            </div>
       
+                          {% else %}
 
-                        <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
+                          <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='{% url 'hospitals:accreditation_list' %}';" style="cursor: pointer;">
+                               <div class="card yellow">
+                                   <div class="card-body text-dark">
+                                       <i class="fa fa-edit big text-dark ss-icon"></i><br>
+                                        Continue New Application
+                                   </div>
+                               </div>
+                           </div>
+
+
+
+
+
+                          {% endif %}
+
+
+                        <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='{% url 'hospitals:start_new_application' %}';" style="cursor: pointer;">
                                <div class="card green">
                                    <div class="card-body text-white">
                                        <i class="fa fa-edit big text-white ss-icon"></i><br>
@@ -69,7 +87,7 @@
                                </div>
                            </div>
 
-                           <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
+                           <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='{% url 'hospitals:license_history' %}';" style="cursor: pointer;">
                                <div class="card danger">
                                    <div class="card-body text-white">
                                        <i class="fa fa-book big text-white ss-icon"></i><br>

@@ -37,7 +37,10 @@ STATE_CHOICES = (
         ('Zamfara', 'Zamfara'),
         )
 
-
+APPLICATION_TYPE = (
+        ('New Registration', 'New Registration' ),
+        ('Renewal', 'Renewal'),
+        )
 
 SERVICES = (
         ('Diagnostic Radiography', 'Diagnostic Radiography' ),
@@ -94,5 +97,5 @@ LICENSE_STATUS = (
 
 HOSPITAL_TYPE = (
         ('Radiography Practice', 'Radiography Practice'),
-        ('Radiography Internship', 'Radiography Internship'),
+        ('Internship Accreditation', 'Internship Accreditation'),
         )

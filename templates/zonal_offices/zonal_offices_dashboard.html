@@ -95,8 +95,21 @@
 
                             </ul>
                             <ul class="list-unstyled d-flex m-up">
-                                <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> Inspection Reports</a></li>
+                                <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:inspection_reports_list' %}"> Inspection Reports</a></li>
                             </ul>
+
+                            <ul class="list-unstyled d-flex m-up">
+                                <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:create_hospital_record' %}"> Create Hospital Records</a></li>
+                            </ul>
+
+                             <ul class="list-unstyled d-flex m-up">
+                                <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:hospital_records_list' %}">Hospital Records Details</a></li>
+                            </ul>
+
+
+
+
+
                         </div>
                     </div>
                 </div>
@@ -106,7 +119,7 @@
                                 <i class="fa fa-wrench" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
                                 <h5 class="pb-2" style="margin: -50px 0 0 60px; font-weight: bold;">Utilities</h5>
                                 <ul class="list-unstyled d-flex">
-                                    <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'monitoring:hospitals_lookup' %}"> Hospitals/Centers Lookup</a></li>
+                                    <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:hospitals_lookup' %}"> Hospitals/Centers Lookup</a></li>
                                 </ul>
                                 <ul class="list-unstyled d-flex m-up">
                                     <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'utilities:offices' %}"> List of RRBN Zonal Offices</a></li>

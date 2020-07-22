@@ -96,7 +96,7 @@ WSGI_APPLICATION = 'regmode.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'rrbntestdb1',
+        'NAME': 'rrbntestdb2',
         'USER': 'postgres',
         'PASSWORD': 'blackstone1',
         'HOST': 'localhost',

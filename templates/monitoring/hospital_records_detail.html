@@ -1,0 +1,228 @@
+{% extends 'monitoring/monitoring_base_view.html'%}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title%}| Welcome {% endblock %}
+
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/hospital_dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<main class="container">
+
+<!-- Banner -->
+<section class="pt-2 pl-3">
+   
+        <div class="row ">
+            <div class="col mb-0">
+                <p class="text-info display-4 paragraph3">Hospitals/Centre Record Details</p>
+                <hr>
+           
+        </div>
+    </div>
+</section>
+
+ <div class="row">
+            <div class="col-md-7 mt-0 ">
+                <div class="col-md-12">
+                    <div class="row">
+                        <p class="col-12 text-success lead">Application Summary</p>
+                    </div>
+                    
+                    <div class="row">
+                        <span class="col-5"><strong>Hospital Name:</strong></span>
+                        <span class="col-6 ">{{object.hospital_name}}</span>
+                    </div>
+                     <div class="row">
+                        <span class="col-5"><strong>Practice Category:</strong></span>
+                        <span class="col-6">{{object.practice_category}}</span>
+                   
+                    </div>
+                    <div class="row">
+                        <span class="col-5"><strong>Phone:</strong></span>
+                        <span class="col-6">{{object.phone}}</span>
+                    </div>
+
+                    <div class="row">
+                        <span class="col-5"><strong>Email:</strong></span>
+                        <span class="col-6">{{object.email}}</span>
+                     </div>
+        
+                    <div class="row">
+                        <span class="col-5"><strong>Address:</strong></span>
+                        <span class="col-6">{{object.address}}</span>
+                    </div>
+                    <div class="row">
+                        <span class="col-5"><strong>State:</strong></span>
+                        <span class="col-6">{{object.state}}</span>
+                    </div>
+                    <div class="row">
+                        <span class="col-5"><strong>City:</strong></span>
+                        <span class="col-6">{{object.city}}</span>
+                    </div>
+                    <div class="row">
+                        <span class="col-5"><strong>Available Equipment:</strong></span>
+                        <span class="col-6">{{object.equipment}}</span>
+                    </div>
+                     <div class="row">
+                        <span class="col-5"><strong>Radiographers:</strong></span>
+                        <span class="col-6">{{object.radiographers}}</span>
+                    </div>
+                    <div class="row">
+                        <span class="col-5"><strong>Radiologists:</strong></span>
+                        <span class="col-6">{{object.radiologists}}</span>
+                    </div>
+                </div><br>
+                
+                <div class="col-md-12 mb-3">
+                    <div class="row">
+                        <p class="col-12 text-success lead">Control Details</p>
+                    </div>
+                    <div class="row">
+                        <span class="col-5"><strong>Visitation 
+                        Date:</strong></span>
+                        <span class="col-6">{{object.date_visited_pretty}}</span>
+                    </div>
+
+                    <div class="row">
+                        <span class="col-5"><strong>Visitation 
+                        Reason:</strong></span>
+                        <span class="col-6">{{object.visitation_reason}}</span>
+                    </div>
+
+                    <div class="row">
+                        <span class="col-5"><strong>Inspecting Zonal Office:</strong></span>
+                        <span class="col-6">{{object.inspection_zone}}</span>
+                    </div>
+
+                    
+                </div>
+
+            </div>
+
+
+
+            <div class="col-md-5 mt-0 ml-3 ml-md-0 ml-lg-0">
+                <p class="text-success lead">Comments/Observations</p>
+                <span><strong><mark>{{object.visitation_comments}}</mark></strong></span>
+
+                <br>
+               <br>
+
+               
+               <p class="text-success lead">Next Visitation Date</p>
+
+               <span><mark>{{object.next_visitation_date}}</mark></span>
+               <br>
+               <br>
+                <p class="text-success lead">Inspection Uploads</p>
+
+            <div class="row py-0">
+               <table class="table table-hover">
+                    <thead style="background-color: #bfe3f8;">
+                        <tr>
+                        <th scope="col lead" style="color: #05567b;">Parameter</th>
+                        <th scope="col lead" style="color: #05567b;">Value</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% if object.cac_certificate %}
+                        <tr> <td width="45%" scope="col">CAC Certificate:</td> 
+                        <td width="55%" scope="col"><i class="fa fa-eye text-dark"></i>
+                        <a class="text-danger" href="{{object.cac_certificate.url}}"
+                        target="_blank">&nbsp; View CAC Certficiate</a></td> 
+                        </tr>
+                        {% endif %}
+
+                        {% if object.practice_license1 %}
+                        <tr> <td width="45%" scope="col">Radiographer License:</td> 
+                        <td width="55%" scope="col"><i class="fa fa-eye text-dark"></i>
+                        <a class="text-danger" href="{{object.practice_license1.url}}"
+                        target="_blank">&nbsp; View Radiographer License</a></td>  
+                        </tr>
+                        {% endif %}
+
+                        {% if object.practice_license2 %}
+                        <tr> <td width="45%" scope="col">Radiographer License:</td> 
+                        <td width="55%" scope="col"><i class="fa fa-eye text-dark"></i>
+                        <a class="text-danger" href="{{object.practice_license2.url}}"
+                        target="_blank">&nbsp; View Radiographer License</a></td>  
+                        </tr>
+                        {% endif %}
+
+                        {% if object.form_c07 %}
+                        <tr> <td width="45%" scope="col">Form C07:</td> 
+                        <td width="55%" scope="col"><i class="fa fa-eye text-dark"></i>
+                        <a class="text-danger" href="{{object.form_c07.url}}"
+                        target="_blank">&nbsp; View Form C07</a></td>  
+                        </tr>
+                        {% endif %}
+
+                        
+                       
+                    </tbody>
+                </table>
+                </div>
+
+                
+
+
+                
+                
+            </div>
+
+        </div>
+        <hr>
+        <div class="d-flex justify-content-end">   
+             
+             <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
+ 
+             
+
+             
+        </div>
+
+
+
+    </main>
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+<!--Jquery plugin-->
+  <script src="{% static 'js/jquery.js' %}"></script>
+
+<!--other javascript plugins-->
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'js/dataTables.bootstrap.min.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+  $('#mydata').dataTable();
+
+  let urlMenu = document.getElementById('dropdown');
+  urlMenu.onchange = function(){
+    let userOption = this.options[this.selectedIndex];
+    if(userOption.value != "nothing"){
+      window.open(userOption.value, "_self", "");
+    }
+  }
+  </script>
+
+
+{% endblock %}

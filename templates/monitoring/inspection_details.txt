@@ -1,6 +1,6 @@
 Dear {{object.hospital_name|upper }},
 
-Kindly be informed that a facility inspection has been scheduled for your radiography practice license application.
+Kindly be informed that a facility inspection has been scheduled for your license application.
 
 See brief details below:
 

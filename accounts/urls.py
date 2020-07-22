@@ -1,7 +1,7 @@
 from . import views
 from django.urls import path
 from .views import (
-    RenewalCreateView, StartView, SignUpView, ActivateAccount, ProfileUpdateView, LoginTemplateView, RenewalView, SearchResultsView
+    RenewalCreateView, StartView, StartReg, SignUpView, ActivateAccount, ProfileUpdateView, LoginTemplateView, RenewalView, SearchResultsView
     
 )
 
@@ -22,6 +22,7 @@ urlpatterns = [
     #path('verify_practice', views.verify_practice, name='verify_practice'),
     #path('search/', SearchResultsView.as_view(), name='search_result'),
     path('start/', views.StartView.as_view(), name='start-reg'),
+    path('start_registration/', views.StartReg.as_view(), name='start_registration'),
     path('signup/', SignUpView.as_view(), name='create_profile'),
     path('signin', LoginTemplateView.as_view(), name='signin'),
     #path('renewal/', views.renewal, name='renewal'),

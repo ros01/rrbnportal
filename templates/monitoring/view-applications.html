@@ -17,7 +17,7 @@
    
         <div class="row ">
             <div class="col mb-0">
-                <p class="text-secondary display-4 paragraph2">Vet New Radiography Practice License Application</p>
+                <p class="text-info display-4 paragraph2">Vet New Radiography Practice License Application</p>
                 <hr>
            
         </div>
@@ -40,11 +40,14 @@
                       <span class="col-6">{{payment.hospital_name}}</span>
                   </div>
 
-
+                  {% if payment %}
                   <div class="row">
                       <span class="col-5"><strong>RC Number:</strong></span>
                       <span class="col-6">{{payment.practice_manager.registration.rc_number}}</span>
                   </div>
+                  {% endif %}
+
+                 
                   <div class="row">
                       <span class="col-5"><strong>Application Type:</strong></span>
                       <span class="col-6">New Registration</span>
@@ -95,6 +98,11 @@
                     </div>
 
                     <div class="row">
+                        <span class="col-5"><strong>Radiologists:</strong></span>
+                        <span class="col-6">{{payment.practice_manager.registration.radiologists}}</span>
+                    </div>
+
+                    <div class="row">
                       <span class="col-5"><strong>Payment Amount:</strong></span>
                       <span class="col-6">{{payment.payment_amount | intcomma}}
                       </span>
@@ -137,10 +145,18 @@
                         </tr>
                         {% endif %}
 
-                        {% if payment.practice_manager.registration.practice_license %}
+                        {% if payment.practice_manager.registration.practice_license1 %}
                         <tr> <td width="50%" scope="col">Practice Licence:</td> 
                         <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{payment.practice_manager.registration.practice_license.url}}"
+                        <a class="text-danger" href="{{payment.practice_manager.registration.practice_license1.url}}"
+                        target="_blank">&nbsp; View Practicing Licence</a></td>  
+                        </tr>
+                        {% endif %}
+
+                        {% if payment.practice_manager.registration.practice_license2 %}
+                        <tr> <td width="50%" scope="col">Practice Licence:</td> 
+                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+                        <a class="text-danger" href="{{payment.practice_manager.registration.practice_license2.url}}"
                         target="_blank">&nbsp; View Practicing Licence</a></td>  
                         </tr>
                         {% endif %}

@@ -27,7 +27,7 @@
    
     <div class="row mt-3 mb-2">
     <div class="col text-left mb-1">
-    <p class="text-secondary display-4 paragraph2">Issued Licenses List</p>
+    <p class="text-success display-4 paragraph2">Issued Licenses List</p>
     <hr>
     </div>
     </div>
@@ -64,8 +64,8 @@
                       </tfoot>
                     
                      <tbody>
-                       {% if object %}
-                         {% for object in object %}
+                       {% if license_qs %}
+                         {% for object in license_qs %}
                          <tr>
                           <td>{{forloop.counter}}</td>
                            <td>{{object.application_no}}</td>

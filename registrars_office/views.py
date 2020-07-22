@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test
 from accounts.decorators import registrar_required
-from hospitals.models import Payment, Registration, Schedule, Inspection, License
+from hospitals.models import Payment, Registration, Schedule, Inspection, License, Appraisal
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -45,18 +45,22 @@ class LoginRequiredMixin(object):
 def index(request):
     return render (request, 'registrars_office/registrar_dashboard.html')
 
-class LicenseApprovalListView(LoginRequiredMixin, View):
+class LicenseApprovalListView(LoginRequiredMixin, ListView):
     template_name = "registrars_office/license_approval_list.html"
-    queryset = Inspection.objects.all()
+    context_object_name = 'object'
+    
 
     def get_queryset(self):
-        return self.queryset.filter(inspection_status=2)
-        #return self.queryset
-        
+        return Inspection.objects.all()
 
-    def get(self, request, *args, **kwargs):
-        context = {'object': self.get_queryset()}
-        return render(request, self.template_name, context)
+
+    def get_context_data(self, **kwargs):
+        obj = super(LicenseApprovalListView, self).get_context_data(**kwargs)
+        obj['approval_list_qs'] = Inspection.objects.filter(inspection_status=2)
+        obj['approval_list_qss'] = Appraisal.objects.filter(appraisal_status=2)
+        return obj
+        
+    
 
 
 
@@ -72,6 +76,7 @@ def approve_license(request, id):
   if request.method == 'POST':
      inspection = get_object_or_404(Inspection, pk=id)
      inspection.inspection_status = 4
+     inspection.application_status = 7
      inspection.save()
 
 
@@ -114,6 +119,124 @@ def reject_license(request, id):
      messages.error(request, ('License Approval Issues.  Hospital will be contacted and guided on how to correct application errors.'))
      return render(request, 'registrars_office/license_rejected.html',context)
 
+def validate_report(request, id):
+  appraisal = get_object_or_404(Appraisal, pk=id)
+  
+  context={'appraisal': appraisal,
+           
+           }
+  return render(request, 'registrars_office/license_appraisal_detail.html', context)
+
+def approve_internship_license(request, id):
+  if request.method == 'POST':
+     appraisal = get_object_or_404(Appraisal, pk=id)
+     appraisal.appraisal_status = 4
+     appraisal.application_status = 7
+     appraisal.save()
+
+
+     context = {}
+     context['object'] = appraisal
+     subject = 'Radiography Internship License Approval'
+     from_email = settings.DEFAULT_FROM_EMAIL
+     to_email = [appraisal.email]
+     
+
+     
+     contact_message = get_template('registrars_office/internship_license_approved.txt').render(context)
+
+     send_mail(subject, contact_message, from_email, to_email, fail_silently=False)
+
+     messages.success(request, ('Radiography Internship License Approval'))
+     
+     return render(request, 'registrars_office/internship_license_approved.html',context)
+    
+
+
+def reject_internship_license(request, id):
+  if request.method == 'POST':
+     appraisal = get_object_or_404(Appraisal, pk=id)
+     appraisal.appraisal_status = 5
+     appraisal.save()
+
+     context = {}
+     context['object'] = appraisal
+     subject = 'Radiography Internship License Approval Issues'
+     from_email = settings.DEFAULT_FROM_EMAIL
+     to_email = [appraisal.email]
+     
+
+     
+     contact_message = get_template('registrars_office/internship_license_rejected.txt').render(context)
+
+     send_mail(subject, contact_message, from_email, to_email, fail_silently=False)
+
+     messages.error(request, ('License Approval Issues.  Hospital will be contacted and guided on how to correct application errors.'))
+     return render(request, 'registrars_office/internship_license_rejected.html',context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+#class InspectionReportsView(LoginRequiredMixin, View):
+    #template_name = "registrars_office/inspection_reports_list.html"
+    #queryset = Inspection.objects.all()
+
+    #def get_queryset(self):
+        #return self.queryset
+        #return self.queryset
+        
+
+    #def get(self, request, *args, **kwargs):
+        #context = {'object': self.get_queryset()}
+        #return render(request, self.template_name, context)
+
+
+class InspectionReportsView(LoginRequiredMixin, ListView):
+    template_name = 'registrars_office/inspection_reports_list.html'
+    context_object_name = 'object'
+
+    def get_queryset(self):
+        return Inspection.objects.all()
+
+    def get_context_data(self, **kwargs):
+        obj = super(InspectionReportsView, self).get_context_data(**kwargs)
+
+        obj['inspection_qs'] = Inspection.objects.filter(inspection_status=1)
+        obj['inspections_qs'] = Inspection.objects.all()
+        obj['appraisal_qs'] = Appraisal.objects.filter(appraisal_status=1)
+        obj['appraisals_qs'] = Appraisal.objects.all()
+        
+        return obj
+
+
+def view_inspection_report(request, id):
+  inspection = get_object_or_404(Inspection, pk=id)
+  
+  context={'inspection': inspection,
+           
+           }
+  return render(request, 'registrars_office/inspection_details.html', context)
+
+
+def view_appraisal_report(request, id):
+  appraisal = get_object_or_404(Appraisal, pk=id)
+  
+  context={'appraisal': appraisal,
+           
+           }
+  return render(request, 'registrars_office/appraisal_details.html', context)
+
+
+
 
 class IssuedLicensesListView(LoginRequiredMixin, View):
     template_name = "registrars_office/issued_licenses_list.html"
@@ -126,10 +249,6 @@ class IssuedLicensesListView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         context = {'object': self.get_queryset()}
         return render(request, self.template_name, context)
-
-
-
-
 
 class GenerateObjectMixin(object):
     model = License
@@ -172,4 +291,34 @@ class LicensePdfView(LoginRequiredMixin, GenerateObjectMixin, View):
         if not pdf.err:
             return HttpResponse(result.getvalue(), content_type='application/pdf') 
         return None
+
+class RegisteredHospitalsListView(LoginRequiredMixin, View):
+    template_name = "registrars_office/registered_hospitals_list.html"
+    queryset = License.objects.all()
+
+    def get_queryset(self):
+        return self.queryset
+        
+
+    def get(self, request, *args, **kwargs):
+        context = {'object': self.get_queryset()}
+        return render(request, self.template_name, context)
+
+
+class RegisteredObjectMixin(object):
+    model = License
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+
+class RegisterdHospitalsDetailView(LoginRequiredMixin, RegisteredObjectMixin, View):
+    template_name = "registrars_office/hospital_details.html" # DetailView
+    def get(self, request, id=None, *args, **kwargs):
+        # GET method
+        context = {'object': self.get_object()}
+        return render(request, self.template_name, context)
 

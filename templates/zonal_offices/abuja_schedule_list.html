@@ -22,7 +22,7 @@
    
     <div class="row mt-3 mb-2">
     <div class="col text-left mb-1">
-    <p class="text-secondary display-4 paragraph2">List of Scheduled Inspections for Abuja Zone</p>
+    <p class="text-info display-4 paragraph2">List of Scheduled Inspections for Abuja Zone</p>
     <hr>
     </div>
     </div>
@@ -57,8 +57,27 @@
                       </tfoot>
                     
                      <tbody>
-                       {% if object %}
-                         {% for object in object %}
+                     
+                     {% if schedule_qs and inspection_qs %}
+                       
+                         {% for object in schedule_qs %}
+                         <tr>
+                          <td></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           
+                         
+                         </tr>
+
+                        {% endfor %}
+
+                        {% else %}
+
+                        {% for object in schedule_qs %}
                          <tr>
                           <td>{{forloop.counter}}</td>
                            <td>{{object.application_no}}</td>
@@ -66,11 +85,12 @@
                            <td>{{object.address}}</td>
                            <td>{{object.inspection_date_pretty}}</td>
                            <td>{{object.inspection_report_deadline_pretty}}</td>
-                           <td><a href="{% url 'zonal_offices:inspection_detail' id=object.id %}" class="btn btn-outline-warning btn-sm"> View</a></td>
-
+                           <td><a href="{% url 'zonal_offices:inspection_detail' object.id %}" class="btn btn-outline-warning btn-sm">View</a></td>
                          </tr>
 
                         {% endfor %}
+
+
                      {% endif %}
 
                      </tbody>

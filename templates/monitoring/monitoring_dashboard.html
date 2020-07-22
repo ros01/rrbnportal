@@ -71,7 +71,7 @@
                     <ul class="list-unstyled d-flex">
                         <i class="fa fa-check-circle text-success mt-1"
                             style="font-size: 15px; margin:0 7px 0 60px;"></i>
-                        <li><a class="text-dark" href="{% url 'monitoring:registration_list' %}"> List Application Entries</a></li>
+                        <li><a class="text-dark" href="{% url 'monitoring:registration_list' %}"> New Application Entries</a></li>
                     </ul>
                 </div>
             </div>
@@ -94,7 +94,12 @@
                     <ul class="list-unstyled d-flex m-up">
                         <i class="fa fa-check-circle text-success mt-1"
                             style="font-size: 15px; margin:0 7px 0 60px;"></i>
-                        <li><a class="text-dark" href="#"> Visited Hospital Entries</a></li>
+                        <li><a class="text-dark" href="{% url 'monitoring:create_hospital_record' %}"> Create Hospital Records</a></li>
+                    </ul>
+                    <ul class="list-unstyled d-flex m-up">
+                        <i class="fa fa-check-circle text-success mt-1"
+                            style="font-size: 15px; margin:0 7px 0 60px;"></i>
+                        <li><a class="text-dark" href="{% url 'monitoring:hospital_records_list' %}"> Hospital Records Details</a></li>
                     </ul>
                 </div>
             </div>
@@ -127,8 +132,7 @@
                     <ul class="list-unstyled d-flex">
                         <i class="fa fa-check-circle text-success mt-1"
                             style="font-size: 15px; margin:0 7px 0 60px;"></i>
-                        <li><a class="text-dark" href="{% url 'monitoring:hospitals_lookup' %}"> Hospitals/Centers
-                                Lookup</a></li>
+                        <li><a class="text-dark" href="{% url 'monitoring:hospitals_lookup' %}"> Registered Hospitals/Centers</a></li>
                     </ul>
                     <ul class="list-unstyled d-flex m-up">
                         <i class="fa fa-check-circle text-success mt-1"

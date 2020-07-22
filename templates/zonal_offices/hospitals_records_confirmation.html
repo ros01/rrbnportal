@@ -1,0 +1,79 @@
+{% extends 'zonal_offices/zonal_offices_base.html'%}
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block title%}| New Hospital Records Creation Confirmation {% endblock %}
+{% block styles %}
+
+
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+<link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
+
+
+
+
+
+
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="container">
+    <section class="p-2">
+   
+    <div class="row mt-2 ">
+    <div class="col text-left ml-2 mb-0">
+    <p class="text-success display-4 paragraph3">New Hospital Records Creation Confirmation</p>
+    <hr>
+    </div>
+    </div>
+
+    </section>
+        <section>
+            <div class="row ml-3 mt-0 mr-2 pl-3 pt-2" style="background-color: #bfe3f8;"> <div class="col-md-12 col-sm-12 col-xs-12">  <p class="lead text-justify" style="color: #05567b;">Hospital records created successfully for <b>{{object.hospital_name|upper}}</b>, <br/>See brief details below: </p></div> </div>
+
+        </section>
+        <br>
+        
+                    
+
+                <div class="container">
+              
+                <div class="row mr-2 pl-3"> 
+                <table class="table table-hover table-condensed"> 
+                <thead> 
+                <tr class="blackTr"> 
+                <th>SN</th> 
+                <th width="15%">Hospital Name</th> 
+                <th width="18%">Address</th> 
+                <th width="13%">Phone</th> 
+                <th width="18%">Email</th> 
+                <th width="17%">Practice Category</th> 
+                <th width="17%">Equipment</th> 
+                </tr> </thead> 
+
+                <tbody> 
+                {% if object %}
+               
+                <tr> <td width="2%">1.</td> 
+                <td width="15%">{{object.hospital_name}}</td> 
+                <td width="18%">{{object.address}}</td> 
+                <td width="13%">{{object.phone}}</td> 
+                <td width="18%">{{object.email}}</td> 
+                <td width="17%">{{object.practice_category}}</td> 
+                <td width="17%">{{object.equipment}} </td> 
+                </tr> </tbody> </table> </div> 
+
+                {% endif %}
+     
+                <hr>
+                <div class="d-flex justify-content-end">   
+                <a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="text-dark py-1 mr-3 mt-6 btn btn-outline-info"><i class="fas fa-times"></i> Close</a>   
+                </div>
+                <br>  
+
+                </div>
+                </div>
+                {% endblock %}

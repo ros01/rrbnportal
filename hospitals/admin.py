@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Registration, Payment, Inspection, License, Schedule
+from .models import Registration, Payment, Inspection, License, Schedule, Records, Appraisal
 
 
 class RegistrationAdmin(admin.ModelAdmin):
@@ -51,6 +51,16 @@ class InspectionAdmin(admin.ModelAdmin):
 
 admin.site.register(Inspection, InspectionAdmin)
 
+class AppraisalAdmin(admin.ModelAdmin):
+  list_display = ('application_no', 'hospital_name', 'license_category', 'address', 'inspection_date', 'appraisal_total',)
+  list_display_links = ('hospital_name', 'application_no', 'appraisal_total')
+  list_filter = ('hospital_name',)
+  search_fields = ('hospital_name', 'address', 'inspection_date', 'appraisal_total',)
+  list_per_page = 25
+
+
+admin.site.register(Appraisal, AppraisalAdmin)
+
 
 
 
@@ -65,6 +75,17 @@ class LicenseAdmin(admin.ModelAdmin):
 
 
 admin.site.register(License, LicenseAdmin)
+
+
+class RecordsAdmin(admin.ModelAdmin):
+  list_display = ('hospital_name', 'practice_category', 'address', 'state', 'equipment', 'date_visited',)
+  list_display_links = ('hospital_name', 'practice_category')
+  list_filter = ('hospital_name', 'address', 'equipment', 'date_visited', )
+  search_fields = ('hospital_name', 'address', 'practice_category', 'radiographers', )
+  list_per_page = 25
+
+
+admin.site.register(Records, RecordsAdmin)
 
 
 

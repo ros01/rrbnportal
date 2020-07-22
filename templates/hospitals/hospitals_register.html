@@ -44,7 +44,7 @@
 
                 {{ form.application_no|as_crispy_field }}
 
-                 <input type="hidden" name="practice_manager" {% if user.is_authenticated %} value="{{ request.user.id }}" {% endif %} required id="id_practice_manager">
+                 <input type="hidden" name="practice_manager " {% if user.is_authenticated %} value="{{ request.user.id }}" {% endif %} required id="id_practice_manager ">
                  
                  <div class="form-row">
 
@@ -92,20 +92,28 @@
               
 
                 <div class="form-row">
-                <div class="form-group col-md-6 mb-0">
+                <div class="form-group col-md-12 mb-0">
                 {{ form.address|as_crispy_field }}
                
-                </div>                                 
+                </div>  
+                </div>                               
             
+                
+
+               <div class="form-row">
                 <div class="form-group col-md-6 mb-0">
                 {{ form.city|as_crispy_field }}
                 </div>
 
+                
+                 <div class="form-group col-md-6 mb-0">
+                 {{ form.state|as_crispy_field }}
+                </div>
                 </div>
 
                 <div class="form-row">
-                 <div class="form-group col-md-6 mb-0">
-                 {{ form.state|as_crispy_field }}
+                <div class="form-group col-md-6 mb-0">
+                {{ form.application_type|as_crispy_field }}
                 </div>
                 <div class="form-group col-md-6 mb-0">
                 {{ form.equipment|as_crispy_field }}

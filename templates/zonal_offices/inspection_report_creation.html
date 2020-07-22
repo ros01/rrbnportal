@@ -25,7 +25,7 @@
 <main class="container">
        <div class="row">
            <div class="col col-lg-12">
-            <p class="mt-2 text-dark display-4 paragraph2">Inspection Report- New Hospital Registration</p>
+            <p class="mt-2 text-info display-4 paragraph2">Radiography Practice License Inspection Report Submission</p>
                 <hr>
           </div>
            </div>
@@ -47,9 +47,15 @@
          
             {% csrf_token %}
 
+            <input type="hidden" name="inspection_zone" {% if user.is_authenticated %} value="{{ user.module_name }}" {% endif %} required id="id_inspection_zone">
+
            
 
             {{ form.practice_manager|as_crispy_field }}
+
+            {{ form.application_type|as_crispy_field }}
+
+            {{ form.payment_amount|as_crispy_field }}
 
             {{ form.license_category|as_crispy_field }}
 

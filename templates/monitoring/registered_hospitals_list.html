@@ -38,9 +38,9 @@
                       <td style="color: #fff;" class="small-text">S/N</td>
                           <td style="color: #fff;" class="small-text">Application No</td>
                           <td style="color: #fff;" class="small-text">Hospital/Center Name</td>
-                          <td style="color: #fff;" class="small-text">State</td>
-                          <td style="color: #fff;" class="small-text">Equipment</td>
-                          <td style="color: #fff;" class="small-text">Radiographers</td>
+                          <td style="color: #fff;" class="small-text">Address</td>
+                          <td style="color: #fff;" class="small-text">License Category</td>
+                          <td style="color: #fff;" class="small-text">License No</td>
                           <td style="color: #fff;" class="small-text">Registration Date</td>
                           <td style="color: #fff;" class="small-text">Action</td>
                      </tr>
@@ -50,24 +50,24 @@
                         <td style="color: #fff;" class="small-text">S/N</td>
                          <td style="color: #fff;" class="small-text">Application No</td>
                           <td style="color: #fff;" class="small-text">Hospital/Center Name</td>
-                          <td style="color: #fff;" class="small-text">State</td>
-                          <td style="color: #fff;" class="small-text">Equipment</td>
-                          <td style="color: #fff;" class="small-text">Radiographers</td>
+                          <td style="color: #fff;" class="small-text">Address</td>
+                          <td style="color: #fff;" class="small-text">License Category</td>
+                          <td style="color: #fff;" class="small-text">License No</td>
                           <td style="color: #fff;" class="small-text">Registration Date</td>
                           <td style="color: #fff;" class="small-text">Action</td>
                        </tr>
                       </tfoot>
                     
                      <tbody>
-                       {% if object %}
-                         {% for object in object %}
+                       {% if hospitals_qs %}
+                         {% for object in hospitals_qs %}
                          <tr>
                           <td>{{forloop.counter}}</td>
                            <td>{{object.application_no}}</td>
                            <td>{{object.hospital_name}}</td>
-                           <td>{{object.practice_manager.schedule.state}}</td>
-                           <td>{{object.practice_manager.inspection.equipment}}</td>
-                           <td>{{object.practice_manager.inspection.radiographers}}</td>
+                           <td>{{object.address}}</td>
+                           <td>{{object.license_category}}</td>
+                           <td>{{object.license_no}}</td>
                            <td>{{object.issue_date_pretty}}</td>
                            <td><a href="{% url 'monitoring:hospital_details' id=object.id %}" class="btn btn-outline-warning btn-sm">View</a></td>
 

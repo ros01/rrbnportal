@@ -39,7 +39,8 @@
                 <form method="POST" action="." enctype="multipart/form-data">
                 {% csrf_token %}
 
-                {{ form.practice_manager|as_crispy_field }} 
+                {{ form.practice_manager |as_crispy_field }} 
+                {{ form.application_type |as_crispy_field }}
                 {{ form.phone|as_crispy_field }} 
                 {{ form.email|as_crispy_field }} 
                 {{ form.state|as_crispy_field }} 
@@ -47,6 +48,8 @@
                 {{ form.address|as_crispy_field }} 
                 {{ form.services|as_crispy_field }}
                 {{ form.equipment|as_crispy_field }} 
+                {{ form.radiographers|as_crispy_field }}
+                {{ form.radiologists|as_crispy_field }}
                 
                 <div class="form-row">
                 <div class="form-group col-md-6 mb-0">

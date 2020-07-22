@@ -5,7 +5,7 @@ from datetime import datetime
 from django.utils import timezone
 from django.conf import settings
 from django.urls import reverse
-from .choices import STATE_CHOICES, INSPECTION_ZONE, EQUIPMENT, SERVICES, PAYMENT_METHOD, LICENSE_STATUS, VISITATION_REASON, HOSPITAL_TYPE
+from .choices import STATE_CHOICES, INSPECTION_ZONE, EQUIPMENT, SERVICES, PAYMENT_METHOD, LICENSE_STATUS, VISITATION_REASON, HOSPITAL_TYPE, APPLICATION_TYPE
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -35,6 +35,8 @@ class Registration(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     application_no = models.CharField(max_length=500, null=True, blank=True, 
         default=increment_application_no)
+    application_type = models.CharField(max_length=100, choices = APPLICATION_TYPE)
+    application_status = models.IntegerField(default=1)
     practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     hospital_name = models.CharField(max_length=200)
     license_category = models.CharField(max_length=200)
@@ -62,8 +64,7 @@ class Registration(models.Model):
     def reg_date_pretty(self):
         return self.reg_date.strftime('%b %e %Y')
 
-    def get_absolute_url(self):
-	    return reverse("hospitals:hospital_details", kwargs={"id": self.id})
+    
 
 
 
@@ -72,6 +73,8 @@ class Payment(models.Model):
     application_no = models.CharField(max_length=200)
     practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     hospital_name = models.CharField(max_length=200)
+    application_type = models.CharField(max_length=100)
+    application_status = models.IntegerField(default=2)
     license_category = models.CharField(max_length=200)
     phone = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
@@ -80,6 +83,9 @@ class Payment(models.Model):
     address = models.CharField(max_length=200)
     services = models.CharField(max_length=200)
     equipment = models.CharField(max_length=200)
+    radiographers = models.TextField(blank=True)
+    radiologists = models.TextField(blank=True, null=
+        True)
     rrr_number = models.CharField(max_length=100)
     receipt_number = models.CharField(max_length=100)
     payment_amount = models.CharField(max_length=100)
@@ -102,9 +108,6 @@ class Payment(models.Model):
         return self.vet_date.strftime('%b %e %Y')
 
 
-    def get_absolute_url(self):
-	    return reverse("hospitals:payment_update", kwargs={"id": self.id})
-
 
 class Schedule(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -112,6 +115,8 @@ class Schedule(models.Model):
     practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     hospital_name = models.CharField(max_length=200)
     license_category = models.CharField(max_length=200)
+    application_type = models.CharField(max_length=100)
+    application_status = models.IntegerField(default=4)
     phone = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
     address = models.CharField(max_length=200)
@@ -120,8 +125,9 @@ class Schedule(models.Model):
     services = models.CharField(max_length=300)
     equipment = models.CharField(max_length=300)
     vet_status = models.IntegerField(default=3)
-    radiographers = models.CharField(default="Malachy Owakwe", max_length=300)
-    radiologists = models.CharField(default="Malachy Owakwe", max_length=300, blank=True, null=
+    payment_amount = models.CharField(max_length=100)
+    radiographers = models.CharField(max_length=300)
+    radiologists = models.CharField(max_length=300, blank=True, null=
         True)
     inspection_scheduler = models.CharField(max_length=300)
     inspection_schedule_date = models.DateTimeField(default=datetime.now, blank=True)
@@ -148,15 +154,21 @@ class Inspection(models.Model):
     practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     hospital_name = models.CharField(max_length=200)
     license_category = models.CharField(max_length=200)
+    application_status = models.IntegerField(default=5)
+    application_type = models.CharField(max_length=100)
     address = models.CharField(max_length=200)
     phone = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
     equipment = models.CharField(max_length=300)
     radiographers = models.CharField(max_length=300)
     radiologists = models.CharField(max_length=300)
+    payment_amount = models.CharField(max_length=100)
     inspection_schedule_date = models.DateTimeField(default=datetime.now, blank=True)
     inspection_date = models.DateTimeField(default=datetime.now, blank=True)
+    next_inspection_date = models.DateTimeField(default=datetime.now, blank=True)
     inspection_report_deadline = models.DateTimeField(default=datetime.now, blank=True)
+    inspection_zone = models.CharField(max_length=100)
+    vet_status = models.IntegerField(default=4)
     inspection_status = models.IntegerField(default=1)
     shielding_score = models.IntegerField()
     equipment_layout_score = models.IntegerField()
@@ -198,6 +210,8 @@ class Appraisal(models.Model):
     practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     hospital_name = models.CharField(max_length=200)
     license_category = models.CharField(max_length=200)
+    application_status = models.IntegerField(default=5)
+    application_type = models.CharField(max_length=100)
     address = models.CharField(max_length=200)
     phone = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
@@ -205,10 +219,14 @@ class Appraisal(models.Model):
     radiographers = models.CharField(max_length=300)
     radiologists = models.CharField(max_length=300, blank=True, null=
         True)
+    appraisal_status = models.IntegerField(default=1)
+    payment_amount = models.CharField(max_length=100)
     inspection_schedule_date = models.DateTimeField(default=datetime.now, blank=True)
     inspection_date = models.DateTimeField(default=datetime.now, blank=True)
     inspection_report_deadline = models.DateTimeField(default=datetime.now, blank=True)
+    next_inspection_date = models.DateTimeField(default=datetime.now, blank=True)
     inspection_status = models.IntegerField(default=1)
+    inspection_zone = models.CharField(max_length=100)
     radiographers_score = models.IntegerField()
     radiologists_score = models.IntegerField()
     darkroom_technicians_score = models.IntegerField()
@@ -264,10 +282,13 @@ class License(models.Model):
     hospital_name = models.CharField(max_length=200)
     license_category = models.CharField(max_length=200)
     license_type = models.CharField(max_length=200)
+    application_status = models.IntegerField(default=8)
+    application_type = models.CharField(max_length=100)
     license_no = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
     phone = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
+    payment_amount = models.CharField(max_length=100)
     inspection_date = models.DateTimeField(default=datetime.now, blank=True)
     issue_date = models.DateTimeField(default=datetime.now, blank=True)
     expiry_date = models.DateTimeField(default=datetime.now, blank=True)
@@ -281,6 +302,9 @@ class License(models.Model):
     def __str__(self):
         return self.license_no
 
+    def inspection_date_pretty(self):
+        return self.inspection_date.strftime('%b %e %Y')
+
 
     def issue_date_pretty(self):
         return self.issue_date.strftime('%b %e %Y')
@@ -291,14 +315,14 @@ class License(models.Model):
 
 
 class Records(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     hospital_name = models.CharField(max_length=200)
-    hospital_type = models.CharField(max_length=100, choices = HOSPITAL_TYPE)
     phone = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
     state = models.CharField(max_length=100, choices = STATE_CHOICES)
     city = models.CharField(max_length=100)
     address = models.CharField(max_length=200)
-    services = models.CharField(max_length=100, choices = SERVICES)
+    practice_category = models.CharField(max_length=100, choices = SERVICES)
     equipment = MultiSelectField(choices = EQUIPMENT)
     radiographers = models.TextField(blank=True, null=
         True)
@@ -309,8 +333,10 @@ class Records(models.Model):
     date_visited = models.DateTimeField(default=datetime.now, blank=True)
     next_visitation_date = models.DateTimeField(default=datetime.now, blank=True)
     cac_certificate = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
-    practice_license = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
+    practice_license1 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
+    practice_license2 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     form_c07 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
+    inspection_zone = models.CharField(max_length=100)
 
 
     def __str__(self):
@@ -318,6 +344,10 @@ class Records(models.Model):
 
     def date_visited_pretty(self):
         return self.date_visited.strftime('%b %e %Y')
+
+
+    #def get_absolute_url(self):
+        #return reverse("monitoring:hospital_record_details", kwargs={"id": self.id})
 
 
 

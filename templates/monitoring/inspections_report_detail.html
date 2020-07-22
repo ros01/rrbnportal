@@ -90,10 +90,18 @@
                         </tr>
                         {% endif %}
 
-                        {% if inspection.practice_manager.registration.practice_license %}
+                        {% if inspection.practice_manager.registration.practice_license1 %}
                         <tr> <td width="50%" scope="col">Radiographer License:</td> 
                         <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{inspection.practice_manager.registration.practice_license.url}}"
+                        <a class="text-danger" href="{{inspection.practice_manager.registration.practice_license1.url}}"
+                        target="_blank">&nbsp; View Radiographer License</a></td>  
+                        </tr>
+                        {% endif %}
+
+                        {% if inspection.practice_manager.registration.practice_license2 %}
+                        <tr> <td width="50%" scope="col">Radiographer License:</td> 
+                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+                        <a class="text-danger" href="{{inspection.practice_manager.registration.practice_license2.url}}"
                         target="_blank">&nbsp; View Radiographer License</a></td>  
                         </tr>
                         {% endif %}

@@ -1,0 +1,207 @@
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+{% block title%}| Radiography Practice License Applications Due for Registrar's Approval {% endblock %}
+{% block styles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'fontawesome-free-5.8.2-web/css/allt.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/dataTables.bootstrap4.min.css' %}" >
+<link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css" >
+
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+       <div class="row">
+           <div class="col col-lg-12">
+            
+<section class="px-2 pt-3 pb-2">
+   
+    <div class="row mt-3 mb-2">
+    <div class="col text-left mb-1">
+    <p class="text-secondary display-4 paragraph2">Inspection Reports</p>
+    <hr>
+    </div>
+    </div>
+
+</section>
+          <div class="table-responsive-lg">
+                <table class="table table-striped table-bordered table-hover" id="mydata">
+                    <thead>
+                     <tr style="background: #41963F;">
+                      <td style="color: #fff;" class="small-text">S/N</td>
+                          <td style="color: #fff;" class="small-text">Application No</td>
+                          <td style="color: #fff;" class="small-text">Hospital Name</td>
+                          <td style="color: #fff;" class="small-text">Address</td>
+                          <td style="color: #fff;" class="small-text">Inspection Date</td>
+                          <td style="color: #fff;" class="small-text">Inspection Zone</td>
+                          <td style="color: #fff;" class="small-text">Action</td>
+                     </tr>
+                    </thead>
+                      <tfoot>
+                       <tr style="background: #41963F;">
+                        <td style="color: #fff;" class="small-text">S/N</td>
+                          <td style="color: #fff;" class="small-text">Application No</td>
+                          <td style="color: #fff;" class="small-text">Hospital Name</td>
+                          <td style="color: #fff;" class="small-text">Address</td>
+                          <td style="color: #fff;" class="small-text">Inspection Date</td>
+                          <td style="color: #fff;" class="small-text">Inspection Zone</td>
+                          <td style="color: #fff;" class="small-text">Action</td>
+                       </tr>
+                      </tfoot>
+                    
+                     <tbody>
+                       {% if inspection_qs and inspections_qs %}
+                         {% for object in inspection_qs %}
+                         <tr>
+                          <td>{{forloop.counter}}</td>
+                           <td>{{object.application_no}}</td>
+                           <td>{{object.hospital_name}}</td>
+                           <td>{{object.address}}</td>
+                           <td>{{object.inspection_date_pretty}}</td>
+                           <td>{{object.practice_manager.schedule.inspection_zone}}</td>
+                           <td><a href="{% url 'registrars_office:validate' id=object.id %}" class="btn btn-outline-warning btn-sm"> View</a></td>
+                         </tr>
+
+                        {% endfor %}
+
+                        {% endif %}
+
+                      {% if inspections_qs %}
+
+                        {% for object in inspections_qs %}
+                         <tr>
+                          <td>{{forloop.counter}}</td>
+                           <td>{{object.application_no}}</td>
+                           <td>{{object.hospital_name}}</td>
+                           <td>{{object.address}}</td>
+                           <td>{{object.inspection_date_pretty}}</td>
+                           <td>{{object.practice_manager.schedule.inspection_zone}}</td>
+                           <td><a href="{% url 'registrars_office:view_inspection_report' id=object.id %}" class="btn btn-outline-warning btn-sm"> View</a></td>
+                         </tr>
+
+                        {% endfor %}
+
+                        {% endif %}
+
+
+                        {% if  appraisal_qs and appraisals_qs %}
+
+                        {% for object in appraisal_qs %}
+
+                        <tr>
+                          <td>{{forloop.counter}}</td>
+                           <td>{{object.application_no}}</td>
+                           <td>{{object.hospital_name}}</td>
+                           <td>{{object.address}}</td>
+                           <td>{{object.inspection_date_pretty}}</td>
+                           <td>{{object.practice_manager.schedule.inspection_zone}}</td>
+                           <td><a href="{% url 'registrars_office:validate_report' id=object.id %}" class="btn btn-outline-warning btn-sm"> View</a></td>
+                         </tr>
+
+                          {% endfor %}
+
+                          {% endif %}
+
+                        {% if  appraisals_qs %}
+
+                        {% for object in appraisals_qs %}
+
+                        <tr>
+                          <td>{{forloop.counter}}</td>
+                           <td>{{object.application_no}}</td>
+                           <td>{{object.hospital_name}}</td>
+                           <td>{{object.address}}</td>
+                           <td>{{object.inspection_date_pretty}}</td>
+                           <td>{{object.practice_manager.schedule.inspection_zone}}</td>
+                           <td><a href="{% url 'registrars_office:view_appraisal_report' id=object.id %}" class="btn btn-outline-warning btn-sm"> View</a></td>
+                         </tr>
+
+                          {% endfor %}
+
+
+                     {% endif %}
+
+                     </tbody>
+
+
+                  </table>
+              </div>
+             </div>
+         </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+            
+
+
+  <!--Jquery plugin-->
+
+
+  <!--other javascript plugins-->
+  <script>
+  let urlMenu = document.getElementById('dropdown');
+  urlMenu.onchange = function(){
+    let userOption = this.options[this.selectedIndex];
+    if(userOption.value != "nothing"){
+      window.open(userOption.value, "_self", "");
+    }
+  }
+  </script>
+
+  <script>
+     // Example starter JavaScript for disabling form submissions if there are invalid fields
+     (function () {
+         'use strict';
+         window.addEventListener('load', function () {
+             // Fetch all the forms we want to apply custom Bootstrap validation styles to
+             var forms = document.getElementsByClassName('needs-validation');
+             // Loop over them and prevent submission
+             var validation = Array.prototype.filter.call(forms, function (form) {
+                 form.addEventListener('submit', function (event) {
+                     if (form.checkValidity() === false) {
+                         event.preventDefault();
+                         event.stopPropagation();
+                     }
+                     form.classList.add('was-validated');
+                 }, false);
+             });
+         }, false);
+     })();
+ </script>
+ <script>
+     let urlMenu = document.getElementById('dropdown');
+     urlMenu.onchange = function(){
+       let userOption = this.options[this.selectedIndex];
+       if(userOption.value != "nothing"){
+         window.open(userOption.value, "_self", "");
+       }
+     }
+   </script>
+
+
+   <!--Jquery plugin-->
+     <script src="{% static 'js/jquery.js' %}"></script>
+     <script src="{% static 'js/poppert.min.js' %}"></script>
+
+     <script src="{% static 'js/dataTables.bootstrap4.min.js' %}"></script>
+     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
+
+    <script>
+      $('#mydata').dataTable();
+    </script>
+
+
+
+{% endblock %}

@@ -1,0 +1,31 @@
+Dear {{object.hospital_name|upper }},
+
+
+Kindly find below a summary of your Internship Accreditation Application Facility Inspection Report.
+
+
+Application Number: {{object.application_no}}
+
+Hospital Name: {{object.hospital_name}}
+
+Facility Address: {{object.practice_manager.appraisal.address}}
+
+License Category: {{object.license_category}}
+
+Available Equipment: {{object.practice_manager.appraisal.equipment}}
+
+Accreditation Date: {{object.practice_manager.appraisal.inspection_date_pretty}}
+
+Accreditation Score: {{object.practice_manager.appraisal.appraisal_total}}
+
+
+
+Thank You!
+
+
+
+Sincerely,
+
+Radiographers Registration Board of Nigeria (RRBN)
+
+monitoring.rrbn.gov.ng

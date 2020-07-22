@@ -1,0 +1,139 @@
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+{% load humanize %}
+
+{% load crispy_forms_tags %}
+
+{% block title%}| Internship License Issuance {% endblock %}
+{% block styles %}
+
+
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+<link rel="stylesheet" type="text/css" href="{% static 'css/licence.css' %}" >
+
+
+{% endblock %}
+
+
+{% block content %}
+<main class="container">
+
+        <div class="row ">
+            <div class="col-sm-8 m-auto border border-dark border-thick p-2">
+                <div class="row">
+
+                    <div class="col-3">
+                        <img class="rbn-logo" src="{% static 'img/rrbn-logo.png' %}" alt="rrbn logo">
+
+                    </div>
+
+                    <div class="col-9 text-right small-text">
+                        <p>
+                            Federal Secretariat Complex, Phase 1, Annex III, Block 5B, 4th Floor Central Business<br>
+                            District, FCT Abuja, Nigeria<br>
+                            Email: info@rrbn.gov.ng<br>
+                            Telephone: +234 092914928
+                        </p>
+                    </div>
+                </div>
+                <div class="underline"></div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h2 class="text-center text-success mt-3 mb-3">CERTIFICATE OF INTERNSHIP ACCREDITAION</h2>
+                    </div>
+                </div>
+
+                <div class="row ">
+                    
+                    <div class="col-sm-12">
+                        <p class="text-center">License No: &nbsp; &nbsp;<strong>{{object.practice_manager.license.license_no}}</strong></p>
+                    </div>
+                    <div class="col-sm-12">
+                        <p class="text-center">Category: &nbsp; &nbsp; <span class="text-success text-uppercase">{{object.license_category}}</span></p><br>
+                    </div>
+
+                    <div class="col-sm-12 mb-2">
+                        <h4 class="text-center">This is to Certify that</h4><br>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <p class="text-center namefont">{{object.hospital_name}}</p>
+                    </div>
+                    <div class="col-sm-12">
+                        <p class="text-center"><strong>Hospital Address: &nbsp; &nbsp;</strong>{{object.address}}</p>
+
+                    </div>
+                    <div class="col-sm-12">
+                        <p class="text-center namefont">Having satisfied all laid down conditions of the Radiographers Registration Board of Nigeria </p>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <h5 class="text-center mt-3 mb-3">Have been granted {{object.practice_manager.license.license_type}} Status</h5>
+                    </div>
+
+                    <div class="col-sm-5 border border-dark p-2 push-down">
+                        <p class="text-center"><strong>Issue Date:</strong> {{object.practice_manager.license.issue_date_pretty}}</p>
+                        <p class="text-center"><strong>Processing Fee Paid: </strong>N{{object.practice_manager.payment.payment_amount | intcomma}}</p>
+                        <p class="text-center"><strong>Expiry Date:</strong> {{object.practice_manager.license.expiry_date_pretty}}</p>
+                    </div>
+                </div>
+                <p class="tiny-text text-center">Generated from Radiography Registration Bord Portal (www.monitoring.rrbn.gov.ng)</p>
+            </div>
+        </div>
+
+
+        <hr>
+        <div class="d-flex justify-content-end">   
+             
+             <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
+             
+
+             
+        </div>
+        
+    </main>
+
+<!--Jquery plugin-->
+
+
+  <!--other javascript plugins-->
+  <script>
+  let urlMenu = document.getElementById('dropdown');
+  urlMenu.onchange = function(){
+    let userOption = this.options[this.selectedIndex];
+    if(userOption.value != "nothing"){
+      window.open(userOption.value, "_self", "");
+    }
+  }
+  </script>
+
+
+<script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+
+
+
+
+
+
+
+{% endblock %}

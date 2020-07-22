@@ -1,0 +1,29 @@
+Dear {{object.hospital_name|upper }},
+
+This is an auto-generated email informing you that your Radiography Internship License Application has PASSED final validation by the Registrar/CEO of RRBN.
+
+An electronic copy of your Radiography Internship License will become available for download on your dashboard shortly.
+
+See brief details below:
+
+Application Number: {{object.application_no}}
+
+Hospital Name: {{object.hospital_name}}
+
+Category: {{object.license_category}}
+
+Inspection Date: {{object.appraisal_date_pretty}}
+
+Application Remark: PASSED 
+
+
+Congratulations!
+
+
+
+Sincerely,
+
+Radiographers Registration Board of Nigeria (RRBN)
+monitoring.rrbn.gov.ng
+
+

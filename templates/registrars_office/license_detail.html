@@ -28,7 +28,7 @@
             <div class="col-md-7 mt-0">
                 <div class="col-md-12">
                     <div class="row">
-                        <p class="col-12 text-success lead">Application Summary</p>
+                        <p class="col-12 text-success lead mb-0">Application Summary</p>
                     </div>
                     <div class="row">
                         <span class="col-5"><strong>Application No:</strong></span>
@@ -45,6 +45,10 @@
                     <div class="row">
                         <span class="col-5"><strong>License Category:</strong></span>
                         <span class="col-6">{{inspection.license_category}}</span>
+                    </div>
+                    <div class="row">
+                        <span class="col-5"><strong>Application Type:</strong></span>
+                        <span class="col-6">{{inspection.application_type}}</span>
                     </div>
                     <div class="row">
                         <span class="col-5"><strong>Address:</strong></span>
@@ -71,10 +75,14 @@
                         <span class="col-5"><strong>Radiographers:</strong></span>
                         <span class="col-6">{{inspection.radiographers}}</span>
                     </div>
+                    <div class="row">
+                        <span class="col-5"><strong>Covering Radiologist:</strong></span>
+                        <span class="col-6">{{inspection.radiologists}}</span>
+                    </div>
                 </div><br>
                 <div class="col-md-10">
                     <div class="row">
-                        <p class="col-12 text-success lead">Initial Uploads</p>
+                        <p class="col-12 text-success lead mb-0">Initial Uploads</p>
                     </div>
 
                      <div class="row py-0 pl-1">
@@ -90,10 +98,18 @@
                         </tr>
                         {% endif %}
 
-                        {% if inspection.practice_manager.registration.practice_license %}
+                        {% if inspection.practice_manager.registration.practice_license1 %}
                         <tr> <td width="50%" scope="col">Radiographer License:</td> 
                         <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{inspection.practice_manager.registration.practice_license.url}}"
+                        <a class="text-danger" href="{{inspection.practice_manager.registration.practice_license1.url}}"
+                        target="_blank">&nbsp; View Radiographer License</a></td>  
+                        </tr>
+                        {% endif %}
+
+                        {% if inspection.practice_manager.registration.practice_license2 %}
+                        <tr> <td width="50%" scope="col">Radiographer License:</td> 
+                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+                        <a class="text-danger" href="{{inspection.practice_manager.registration.practice_license2.url}}"
                         target="_blank">&nbsp; View Radiographer License</a></td>  
                         </tr>
                         {% endif %}

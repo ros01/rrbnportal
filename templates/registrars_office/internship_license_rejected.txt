@@ -1,0 +1,27 @@
+Dear {{object.hospital_name|upper }},
+
+This is an auto-generated email informing you that your Radiography Internshop License Application was not  approved by the Registrar/CEO of RRBN. 
+
+Kindly contact RRBN Inspection and Monitoring Team for details on how to reapply.
+
+See brief details below:
+
+Application Number: {{object.application_no}}
+
+Hospital Name: {{object.hospital_name}}
+
+Category: {{object.license_category}}
+
+Inspection Date: {{object.inspection_date_pretty}}
+
+Application Remarks: FAILED 
+
+
+
+
+Sincerely,
+
+Radiographers Registration Board of Nigeria (RRBN)
+monitoring.rrbn.gov.ng
+
+

@@ -14,11 +14,10 @@ class BasicDetailModelForm(forms.ModelForm):
 
     class Meta:
          model = Registration
-         fields = ('practice_manager','hospital_name', 'application_no', 'license_category', 'rc_number', 'phone', 'email',  'city', 'state', 'address', 'services', 'equipment', 'radiographers', 'radiologists', 'cac_certificate', 'practice_license1', 'practice_license2','form_c07')
+         fields = ('practice_manager','hospital_name', 'application_no', 'application_type', 'license_category', 'rc_number', 'phone', 'email',  'city', 'state', 'address', 'services', 'equipment', 'radiographers', 'radiologists', 'cac_certificate', 'practice_license1', 'practice_license2','form_c07')
          
 
          widgets = {
-         
          'radiographers': forms.Textarea(attrs={'rows':4, 'cols':12}),
          'radiologists': forms.Textarea(attrs={'rows':4, 'cols':12}),
          'application_no': forms.HiddenInput(),
@@ -33,12 +32,12 @@ class BasicDetailModelForm(forms.ModelForm):
 
 
 
-    def clean_practice_manager(self):
-        practice_manager = self.cleaned_data.get('practice_manager')
-        qs = Registration.objects.filter(practice_manager=practice_manager)
-        if qs.count() > 1:
-            raise forms.ValidationError("Hospital details already submitted")
-        return practice_manager
+    #def clean_practice_manager(self):
+        #practice_manager = self.cleaned_data.get('practice_manager')
+        #qs = Registration.objects.filter(practice_manager=practice_manager)
+        #if qs.count() > 1:
+            #raise forms.ValidationError("Hospital details already submitted")
+        #return practice_manager
 
     def __init__(self, *args, **kwargs):
        super(BasicDetailModelForm, self).__init__(*args, **kwargs)
@@ -68,11 +67,12 @@ class PaymentDetailsModelForm(forms.ModelForm):
 
     class Meta:
         model = Payment
-        fields = ('practice_manager','hospital_name', 'application_no', 'license_category', 'rrr_number', 'receipt_number',  'payment_amount', 'payment_method',  'payment_date', 'phone', 'email', 'state', 'city', 'address', 'services', 'equipment', 'payment_receipt',)
+        fields = ('practice_manager','hospital_name', 'application_no', 'license_category', 'application_type','rrr_number', 'receipt_number',  'payment_amount', 'payment_method',  'payment_date', 'phone', 'email', 'state', 'city', 'address', 'services', 'equipment', 'payment_receipt', 'radiographers', 'radiologists',)
                                                                                                                                                     
 
         widgets = {
         'practice_manager': forms.HiddenInput(),
+        'application_type': forms.HiddenInput(),
         'phone': forms.HiddenInput(),
         'email': forms.HiddenInput(),
         'state': forms.HiddenInput(),
@@ -80,7 +80,8 @@ class PaymentDetailsModelForm(forms.ModelForm):
         'address': forms.HiddenInput(),
         'services': forms.HiddenInput(),
         'equipment': forms.HiddenInput(),
-        'practice_manager': forms.HiddenInput(),
+        'radiographers': forms.HiddenInput(),
+        'radiologists': forms.HiddenInput(),
         'hospital_name': forms.TextInput(attrs={'readonly': True}),
         'application_no': forms.TextInput(attrs={'readonly': True}),  
         'license_category': forms.TextInput(attrs={'readonly': True}),   
@@ -102,17 +103,6 @@ class PaymentDetailsModelForm(forms.ModelForm):
  
 
    
-
-
-    
-
-
-
-
-
-
-
-
 
 
 class ReceiptUploadModelForm(forms.ModelForm):

@@ -13,15 +13,24 @@ User = get_user_model()
 
 
 class SignupForm(UserCreationForm):
-    email = forms.EmailField(max_length=200, help_text='Required')
-    phone_no = forms.CharField(max_length=100, help_text='Phone Number')
-    hospital_name = forms.CharField(max_length=200, help_text='Hospital Name')
     hospital_type = forms.ChoiceField(choices = HOSPITAL_TYPE, widget=forms.Select(), required=True)
 
 
     class Meta:
         model = User
         fields = ('email', 'first_name', 'last_name', 'phone_no', 'hospital_name', 'password1', 'password2',  'hospital_type')
+
+
+
+    def __init__(self, *args, **kwargs):
+       super(SignupForm, self).__init__(*args, **kwargs)
+       self.fields['first_name'].label = "First Name"
+       self.fields['last_name'].label = "Last Name"
+       self.fields['phone_no'].label = "Phone Number"
+       self.fields['hospital_name'].label = "Hospital Name"
+       self.fields['hospital_type'].label = "Application Type"
+       
+
 
 class RenewalModelForm(forms.ModelForm):
     captcha = CaptchaField(widget=CaptchaTextInput(attrs={'class': 'form-control'}))

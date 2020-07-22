@@ -9,7 +9,6 @@
 
 {% block content %}
 
-{{ wizard.management_form }}
 <main class="container">
 
 
@@ -57,6 +56,11 @@
                 </div>
 
                 <div class="row">
+                    <span class="col-5" style="font-size:1.1em;">Application Type:</span>
+                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.application_type}}</strong></span>
+                </div>
+
+                <div class="row">
                     <span class="col-5" style="font-size:1.1em;">Hospital Name:</span>
                     <span class="col-6" style="font-size:1.1em;"><strong>{{object.hospital_name}}</strong></span>
                 </div>
@@ -95,6 +99,11 @@
                 <div class="row">
                     <span class="col-5" style="font-size:1.1em;">Radiographers:</span>
                     <span class="col-6" style="font-size:1.1em;"><strong>{{object.radiographers}}</strong></span>
+                </div>
+
+                <div class="row">
+                    <span class="col-5" style="font-size:1.1em;">Radiologists:</span>
+                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.radiologists}}</strong></span>
                 </div>
 </div>
          

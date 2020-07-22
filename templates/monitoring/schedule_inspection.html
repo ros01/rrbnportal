@@ -62,8 +62,12 @@
              <input type="hidden" name="inspection_scheduler" {% if user.is_authenticated %} value="{{ request.user.first_name }} {{ request.user.last_name }}" {% endif %} required id="id_inspection_scheduler">
 
 
-            
+        
             {{ form.application_no|as_crispy_field }}
+
+            {{ form.application_type|as_crispy_field }}
+
+            {{ form.payment_amount|as_crispy_field }}
 
             {{ form.practice_manager|as_crispy_field }}
 

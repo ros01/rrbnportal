@@ -1,0 +1,30 @@
+Dear {{object.hospital_name|upper }},
+
+Your registration details have been submitted successfully to RRBN.
+See brief details below:
+
+Application Number: {{object.application_no}}
+
+Hospital Name: {{object.hospital_name}}
+
+Application Type: {{object.application_type}}
+
+Category: {{object.license_category}}
+
+Mobile Number: {{object.phone}}
+
+Email Address: {{object.email}}
+
+Submission Time: {{object.reg_date}}
+
+Kindly proceed to pay your accreditation fee of N200,000 by generating RRR on remita and either paying online or at any commercial bank of your choice.
+
+Thank You!
+
+
+
+Sincerely,
+
+Radiographers Registration Board of Nigeria (RRBN)
+
+monitoring.rrbn.gov.ng

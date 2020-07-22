@@ -17,7 +17,7 @@
    
         <div class="row ">
             <div class="col mb-0">
-                <p class="text-secondary display-4 paragraph2">Hospital/Centre Inspection Details</p>
+                <p class="text-info display-4 paragraph3">Hospital/Centre Inspection Details</p>
                 <hr>
            
         </div>
@@ -46,6 +46,11 @@
                         <span class="col-5"><strong>License Category:</strong></span>
                         <span class="col-6">{{inspection.license_category}}</span>
                     </div>
+
+                    <div class="row">
+                        <span class="col-5"><strong>Application Type:</strong></span>
+                        <span class="col-6">{{inspection.application_type}}</span>
+                    </div>
                     <div class="row">
                         <span class="col-5"><strong>Address:</strong></span>
                         <span class="col-6">{{inspection.address}}</span>
@@ -70,6 +75,10 @@
                      <div class="row">
                         <span class="col-5"><strong>Radiographers:</strong></span>
                         <span class="col-6">{{inspection.radiographers}}</span>
+                    </div>
+                    <div class="row">
+                        <span class="col-5"><strong>Radiologists:</strong></span>
+                        <span class="col-6">{{inspection.radiologists}}</span>
                     </div>
                 </div><br>
                 <div class="col-md-12">

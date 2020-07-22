@@ -1,0 +1,146 @@
+{% extends 'hospitals/hospital_base.html'%}
+{% load static %}
+{% block title%}| Radiography Practice License Applications{% endblock %}
+{% block styles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'fontawesome-free-5.8.2-web/css/allt.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/dataTables.bootstrap4.min.css' %}" >
+<link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css" >
+
+
+{% endblock %}
+
+
+{% block content %}
+
+
+        <div class="container">
+        <div class="row">
+        <div class="col col-lg-12">
+            
+       
+   
+        <div class="row mt-3 mb-2">
+        <div class="col text-left mb-1">
+        <p class="text-info display-4 paragraph2">My Radiography Practise License History</p>
+        <hr>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+
+       
+
+
+    
+        <div class="container">
+            
+        <table width="100%" class="table table-hover" id="mydata"> 
+        <thead> 
+        <tr style="background: #41963F;">
+        
+        <th class="small-text" style="color: #fff;">SN</th> 
+        <th class="small-text" style="color: #fff;">License Number</th> 
+        <th class="small-text" style="color: #fff;">Category</th> 
+        <th class="small-text" style="color: #fff;">Issue Date</th> 
+        <th class="small-text" style="color: #fff;">Expiry Date</th> 
+        <th class="small-text" style="color: #fff;">Status</th> 
+        <th class="text-right" style="color: #fff;">&nbsp;</th> 
+        </tr> 
+        </thead>  
+        </tfoot>
+        <tbody> 
+        {% if license_history_qs %}
+        {% for object in license_history_qs %}
+        <tr> 
+        <td width="3%">1.</td> 
+        <td width="15%"> {{object.license_no}} </td> 
+        <td width="18%"> {{object.license_category}} </td>
+        <td width="13%"> {{object.issue_date_pretty}} </td> 
+        <td width="13%"> <span style="color:black"> {{object.expiry_date_pretty}} </span> </td> 
+        <td width="10%"> {% if object.license_status == "Active" %}<span class="text-success">{{object.license_status}} <i class="fa fa-check"></i></span>  {% else %}<span class="text-danger">{{object.license_status}} <i class="fa fa-times"></i></span>  {% endif %}</td> <td width="27%"> <a href="{% url 'hospitals:license_download' object.id %}" class="btn btn-outline-warning py-0" target="_blank"> <i class="fa fa-file"></i> License </a>
+        {% if object.license_status == "Active" %}
+        <a href="{% url 'hospitals:license_download' object.id %}" class="btn btn-outline-secondary disabled py-0"> <i class="fa fa-undo"></i> Start Renewal </a> 
+        {% else %}
+        <a href="{% url 'hospitals:start_renewal' object.id %}" class="btn btn-outline-success py-0"> <i class="fa fa-undo"></i> Start Renewal </a> 
+        {% endif %}
+
+
+        </td>
+        </tr> 
+        {% endfor %}
+        {% endif %}
+        </tbody> </table>
+        </div>
+        
+       
+       
+
+
+
+
+
+
+
+
+  <!--Jquery plugin-->
+
+
+  <!--other javascript plugins-->
+  <script>
+  let urlMenu = document.getElementById('dropdown');
+  urlMenu.onchange = function(){
+    let userOption = this.options[this.selectedIndex];
+    if(userOption.value != "nothing"){
+      window.open(userOption.value, "_self", "");
+    }
+  }
+  </script>
+
+  <script>
+     // Example starter JavaScript for disabling form submissions if there are invalid fields
+     (function () {
+         'use strict';
+         window.addEventListener('load', function () {
+             // Fetch all the forms we want to apply custom Bootstrap validation styles to
+             var forms = document.getElementsByClassName('needs-validation');
+             // Loop over them and prevent submission
+             var validation = Array.prototype.filter.call(forms, function (form) {
+                 form.addEventListener('submit', function (event) {
+                     if (form.checkValidity() === false) {
+                         event.preventDefault();
+                         event.stopPropagation();
+                     }
+                     form.classList.add('was-validated');
+                 }, false);
+             });
+         }, false);
+     })();
+ </script>
+ <script>
+     let urlMenu = document.getElementById('dropdown');
+     urlMenu.onchange = function(){
+       let userOption = this.options[this.selectedIndex];
+       if(userOption.value != "nothing"){
+         window.open(userOption.value, "_self", "");
+       }
+     }
+   </script>
+
+
+   <!--Jquery plugin-->
+     <script src="{% static 'js/jquery.js' %}"></script>
+     <script src="{% static 'js/poppert.min.js' %}"></script>
+
+     <script src="{% static 'js/dataTables.bootstrap4.min.js' %}"></script>
+     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
+
+    <script>
+      $('#mydata').dataTable();
+    </script>
+
+
+
+{% endblock %}
