@@ -1,11 +1,11 @@
 from django.contrib import admin
 
-from .models import Registration, Payment, Inspection, License, Schedule, Records, Appraisal
+from .models import Registration, Payment, Inspection, License, Schedule, Records, Appraisal, Ultrasound, Mri, Xray, Ctscan, Flouroscopy, Nuclearmedicine, Radiotherapy
 
 
 class RegistrationAdmin(admin.ModelAdmin):
   list_display = ('application_no', 'hospital_name', 'license_category', 'address', 'state',
-                  'services', 'equipment', 'radiographers')
+                  'services', 'radiographers')
   list_display_links = ('application_no', 'hospital_name')
   list_filter = ('hospital_name',)
   search_fields = ('hospital_name', 'address', 'state',
@@ -14,6 +14,9 @@ class RegistrationAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Registration, RegistrationAdmin)
+
+
+
 
 class PaymentAdmin(admin.ModelAdmin):
   list_display = ('application_no', 'hospital_name', 'license_category', 'rrr_number', 'receipt_number', 'payment_amount',
@@ -39,6 +42,84 @@ class ScheduleAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Schedule, ScheduleAdmin)
+
+class NuclearmedicineAdmin(admin.ModelAdmin):
+  list_display = ('id', 'practice_manager',  'nuclear_medicine_total')
+  list_display_links = ('id', 'practice_manager', 'nuclear_medicine_total')
+  list_filter = ('id', 'practice_manager', 'nuclear_medicine_total')
+  search_fields = ('id', 'practice_manager', 'nuclear_medicine_total')
+  list_per_page = 25
+
+
+admin.site.register(Nuclearmedicine, NuclearmedicineAdmin)
+
+class RadiotherapyAdmin(admin.ModelAdmin):
+  list_display = ('id', 'practice_manager',  'radiotherapy_total')
+  list_display_links = ('id', 'practice_manager', 'radiotherapy_total')
+  list_filter = ('id', 'practice_manager', 'radiotherapy_total')
+  search_fields = ('id', 'practice_manager', 'radiotherapy_total')
+  list_per_page = 25
+
+
+admin.site.register(Radiotherapy, RadiotherapyAdmin)
+
+
+
+class UltrasoundAdmin(admin.ModelAdmin):
+  list_display = ('id', 'practice_manager',  'ultrasound_total')
+  list_display_links = ('id', 'practice_manager', 'ultrasound_total')
+  list_filter = ('id', 'practice_manager', 'ultrasound_total')
+  search_fields = ('id', 'practice_manager', 'ultrasound_total')
+  list_per_page = 25
+
+
+admin.site.register(Ultrasound, UltrasoundAdmin)
+
+
+class MriAdmin(admin.ModelAdmin):
+  list_display = ('id', 'practice_manager',  'mri_total')
+  list_display_links = ('id', 'practice_manager', 'mri_total')
+  list_filter = ('id', 'practice_manager', 'mri_total')
+  search_fields = ('id', 'practice_manager', 'mri_total')
+  list_per_page = 25
+
+
+admin.site.register(Mri, MriAdmin)
+
+
+
+class XrayAdmin(admin.ModelAdmin):
+  list_display = ('id', 'practice_manager',  'xray_total')
+  list_display_links = ('id', 'practice_manager', 'xray_total')
+  list_filter = ('id', 'practice_manager', 'xray_total')
+  search_fields = ('id', 'practice_manager', 'xray_total')
+  list_per_page = 25
+
+
+admin.site.register(Xray, XrayAdmin)
+
+
+
+
+class CtscanAdmin(admin.ModelAdmin):
+  list_display = ('id', 'practice_manager',  'ctscan_total')
+  list_display_links = ('id', 'practice_manager', 'ctscan_total')
+  list_filter = ('id', 'practice_manager', 'ctscan_total')
+  search_fields = ('id', 'practice_manager', 'ctscan_total')
+  list_per_page = 25
+
+
+admin.site.register(Ctscan, CtscanAdmin)
+
+class FlouroscopyAdmin(admin.ModelAdmin):
+  list_display = ('id', 'practice_manager',  'flouroscopy_total')
+  list_display_links = ('id', 'practice_manager', 'flouroscopy_total')
+  list_filter = ('id', 'practice_manager', 'flouroscopy_total')
+  search_fields = ('id', 'practice_manager', 'flouroscopy_total')
+  list_per_page = 25
+
+
+admin.site.register(Flouroscopy, FlouroscopyAdmin)
 
 
 class InspectionAdmin(admin.ModelAdmin):

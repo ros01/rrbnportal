@@ -1,0 +1,349 @@
+{% load widget_tweaks %}
+
+<form method="post" action="">
+  {% csrf_token %}
+
+ <div class="modal-header">
+    <h5 class="modal-title text-success">Enter MRI Scores</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+    {% for field in form %}
+
+      <div class="form-group col-md-4{% if field.errors %} invalid{% endif %}">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% for error in field.errors %}
+          <p class="help-block">{{ error }}</p>
+        {% endfor %}
+      </div>
+      
+    {% endfor %}
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+    <button type="button" class="submit-btn btn btn-success ml-2 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Submit MRI Scores</button>
+
+  </div>
+
+</form>
+
+<div class="container">
+
+<p class="text-success m-0 p-0"> <b>Scoring Legend: </b></p>
+i.	Pass Mark is 50 <br>
+ii.	Score grade = (50 – 59 marks is for Provisional Registration, while above 60marks is for Full Registration where one modality is considered); For a facility with more than one modality, failure in any of the modalities or score of 50 – 59 marks in all the modalities shall attract issuing of Provisional Registration of Practice Certificate pending the remedy of the defects. <br>
+iii.Each modality should have at least 2 Radiographers (50 -59 marks for less than two per modality) <br>
+
+<br>
+1. 	Shielding of the relevant parts of the equipment room with Faraday Cage must be properly done <br>
+2.	Design and layout of the treatment room must be in such a way to guarantee safety of patients & staff <br>
+3.	Each Radiographer attracts 2.5 marks <br>
+4.	Each Radiologist attracts 1.5 marks  <br>
+5.	Each current licence of the Radiographer attracts 2.5marks  <br>
+6.	Post graduate certification in MRI must be that recognized and registrable by RRBN  <br>
+7.	Availability Metal Screening Device = 2 marks; Availability of Metal Screening Device and evidence of proper use = 4 marks  <br>
+8.	Availability Screening Questionnaire = 2 marks; Availability of Metal Screening Device and evidence of proper use = 4 marks  <br>
+9.	Running water (2marks) is preferable source of water supply than stagnant water – water in reservoir or container (1 mark)  <br>
+10.	Each MRI accessory attracts 1mark  <br>
+11.	Warning signs must be placed on entrance to MRI equipment room. It must be in lingua franca and local dialect <br>
+12.	The completed form CO7 should contain names of the directors and their contacts <br>
+13.	For Adequacy of Equipment, Installation & Location: MRI with strength below 1.5T = 3 marks, while >1.5T = 6marks; Proper Installation = 2marks & Proper Location = 2marks. Only Functional Equipment is to be considered. <br>
+14.	Good processing unit = 1mark; Good processing unit linked with teleradiology, PACS or the like = 2 marks  <br>
+15.	Toilets include General Toilet (1mark), & Staff Toilet (1 mark) <br>
+16.	Adequacy of waiting room should comprise of its cleanliness (1.5marks), ventilation/air conditioning (1.5marks) and furnishing (2 marks) <br>
+17.	Offices include Office of Radiographer-in-Charge (2marks), & Radiographers’ Common Room (2 marks) <br>
+18.	Technical Room include rooms for backup power (eg batteries) = 2 marks, and room for maintenance personnel = 1 mark  <br>
+
+
+
+</div>
+
+
+<script>
+$(function () {
+       $( "#id_shielding_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_room_design_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_radiographers_no_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_radiologists_no_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_radiographer_license_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+    
+$(function () {
+       $( "#id_mri_certification_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_metal_screening_device_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_screening_questionnaire_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_water_supply_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+
+$(function () {
+       $( "#id_accessories_adequacy_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+
+$(function () {
+       $( "#id_warning_signs_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_C07_form_compliance_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_equipment_installation_location_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_processing_unit_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_toilets_cleanliness_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_waiting_room_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_offices_adequacy_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_technical_room_adequacy_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+</script>
+
+<script>
+  $('#id_shielding_score, #id_room_design_score, #id_radiographers_no_score, #id_radiologists_no_score, #id_radiographer_license_score, #id_mri_certification_score, #id_metal_screening_device_score, #id_screening_questionnaire_score, #id_water_supply_score, #id_accessories_adequacy_score, #id_warning_signs_score, #id_C07_form_compliance_score, #id_equipment_installation_location_score, #id_processing_unit_score, #id_toilets_cleanliness_score, #id_waiting_room_score, #id_offices_adequacy_score, #id_technical_room_adequacy_score').on('input',function(e){$('#id_mri_total').val(parseInt($('#id_shielding_score').val()) + parseInt($('#id_room_design_score').val()) + parseInt($('#id_radiographers_no_score').val()) + parseInt($('#id_radiologists_no_score').val()) + parseInt($('#id_radiographer_license_score').val()) + parseInt($('#id_mri_certification_score').val()) + parseInt($('#id_metal_screening_device_score').val()) + parseInt($('#id_screening_questionnaire_score').val()) + parseInt($('#id_water_supply_score').val()) + parseInt($('#id_accessories_adequacy_score').val()) + parseInt($('#id_warning_signs_score').val()) + parseInt($('#id_C07_form_compliance_score').val()) + parseInt($('#id_equipment_installation_location_score').val()) + parseInt($('#id_processing_unit_score').val()) + parseInt($('#id_toilets_cleanliness_score').val()) + parseInt($('#id_waiting_room_score').val()) + parseInt($('#id_offices_adequacy_score').val()) + parseInt($('#id_technical_room_adequacy_score').val()));
+        });
+
+  
+
+</script>

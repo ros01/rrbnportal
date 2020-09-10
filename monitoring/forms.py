@@ -8,6 +8,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field
 from hospitals.choices import INSPECTION_ZONE, LICENSE_STATUS, STATE_CHOICES, SERVICES, EQUIPMENT
 from django.conf import settings
+from django.db import transaction
+from django.shortcuts import get_object_or_404
 
 
 
@@ -98,17 +100,35 @@ class LicenseModelForm(forms.ModelForm):
 
     class Meta:
         model = License
-        fields = ('application_no', 'practice_manager', 'application_type', 'payment_amount', 'hospital_name', 'license_category', 'address', 'phone', 'email', 'inspection_date', 'issue_date', 'expiry_date', 'license_status', 'license_no', 'license_type',)
-        widgets = {'application_no': forms.HiddenInput(), 'practice_manager': forms.HiddenInput(), 'application_type': forms.HiddenInput(), 'payment_amount': forms.HiddenInput(), 'hospital_name': forms.HiddenInput(), 'license_category': forms.HiddenInput(), 'address': forms.HiddenInput(), 'phone': forms.HiddenInput(), 'email': forms.HiddenInput(), 'inspection_date': forms.HiddenInput(), 'license_type': forms.HiddenInput(),}
+        fields = ('application_no', 'practice_manager', 'application_type', 'payment_amount', 'hospital_name', 'license_category', 'address', 'phone', 'email', 'inspection_date', 'issue_date', 'expiry_date', 'license_status', 'license_no', 'license_type')
+        widgets = {'application_no': forms.HiddenInput(), 'application_type': forms.HiddenInput(), 'payment_amount': forms.HiddenInput(), 'practice_manager': forms.HiddenInput(), 'hospital_name': forms.HiddenInput(), 'license_category': forms.HiddenInput(), 'phone': forms.HiddenInput(), 'email': forms.HiddenInput(), 'address': forms.HiddenInput(), 'inspection_date': forms.HiddenInput(),}
 
 
-
+    
+      
+       
     def __init__(self, *args, **kwargs):
        super(LicenseModelForm, self).__init__(*args, **kwargs)
        self.fields['issue_date'].label = "Issue Date"
        self.fields['expiry_date'].label = "Expiry Date"
        self.fields['license_no'].label = "License No"
        self.fields['license_status'].label = "License Status"
+    
+
+
+
+
+       
+    
+      
+
+    
+      
+       
+
+    
+
+
 
 
 class RecordsModelForm(forms.ModelForm):

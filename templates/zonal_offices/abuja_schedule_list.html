@@ -58,26 +58,8 @@
                     
                      <tbody>
                      
-                     {% if schedule_qs and inspection_qs %}
-                       
-                         {% for object in schedule_qs %}
-                         <tr>
-                          <td></td>
-                           <td></td>
-                           <td></td>
-                           <td></td>
-                           <td></td>
-                           <td></td>
-                           <td></td>
-                           
-                         
-                         </tr>
-
-                        {% endfor %}
-
-                        {% else %}
-
-                        {% for object in schedule_qs %}
+                     {% if schedule_qs %}
+                      {% for object in schedule_qs %}
                          <tr>
                           <td>{{forloop.counter}}</td>
                            <td>{{object.application_no}}</td>

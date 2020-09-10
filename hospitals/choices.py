@@ -43,24 +43,24 @@ APPLICATION_TYPE = (
         )
 
 SERVICES = (
-        ('Diagnostic Radiography', 'Diagnostic Radiography' ),
-        ('Therapeutic Radiography', 'Therapeutic Radiography'),
+        ('Diagnostic only', 'Diagnostic only' ),
+        ('Therapeutic only', 'Therapeutic only'),
+        ('Diagnostic and Therapeutic', 'Diagnostic and Therapeutic'),
         )
 
 
 EQUIPMENT = (
         ('Ultrasound', 'Ultrasound' ),
-        ('X-ray', 'X-ray'),
+        ('Conventional X-ray', 'Conventional X-ray'),
+        ('Conventional X-ray with Fluoroscopy', 'Conventional X-ray with Fluoroscopy' ),
         ('CT Scan', 'CT Scan' ),
         ('C-Arm/O-HRM', 'C-Arm/O-HRM' ),
         ('MRI', 'MRI'),
         ('Mamography', 'Mamography' ),
         ('Angiography', 'Angiography'),
         ('Dental X-ray', 'Dental X-ray' ),
-        ('Fluroscopy', 'Fluroscopy' ),
         ('Echocardiography', 'Echocardiography'),
-        ('Linac', 'Linac'),
-        ('Cobalt 60', 'Cobalt 60'),
+        ('Radiotherapy', 'Radiotherapy'),
         ('Nuclear Medicine', 'Nuclear Medicine'),
         )
 
@@ -83,9 +83,7 @@ INSPECTION_ZONE = (
         )
 
 
-VISITATION_REASON = (
-        ('Inspection', 'Inspection'), 
-        ('Accrediation', 'Accrediation'), 
+VISITATION_REASON = ( 
         ('Sensitization', 'Sensitization'), 
         ('Enforcement', 'Enforcement'), 
         )

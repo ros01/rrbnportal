@@ -1,0 +1,243 @@
+{% load widget_tweaks %}
+
+
+<form method="post" action="">
+  {% csrf_token %}
+
+ <div class="modal-header">
+    <h5 class="modal-title text-success">Enter Ultrasound Scores</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  
+  <div class="modal-body">
+    <div class="row">
+    {% for field in form %}
+
+      <div class="form-group col-md-4{% if field.errors %} invalid{% endif %}">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% for error in field.errors %}
+          <p class="help-block">{{ error }}</p>
+        {% endfor %}
+      </div>
+      
+    {% endfor %}
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times text-white"></i>  Close</button>
+    <button type="button" class="submit-btn btn btn-success ml-2 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Submit Ultrasound Scores</button>
+
+  </div>
+
+</form>
+
+<div class="container">
+
+<p class="text-success m-0 p-0"> <b>Scoring Legend: </b></p>
+
+i.	Pass Mark is 50  <br>
+ii.	Score grade = (50 – 59marks is for Provisional Registration, while above 60marks is for Full Registration where one modality is considered); For a facility with more than one modality, failure in any of the modalities or score of 50 – 59marks in all the modalities shall attract issuing of Provisional Registration of Practice Certificate pending the remedy of the defects. <br>
+iii.	Each modality should have at least 2 Radiographers (50 -59marks for less than two per modality) <br>
+<br>
+1.	Room design and layout for ultrasound must be conducive, and guarantees patients safety and privacy <br>
+2.	Each Radiographer attracts 5marks. Where the unit is manned by a Radiologist or Board certified Sonographer same mark shall apply <br>
+3.	Each current licence of the Radiographer/Board certified Sonographer attracts 2.5marks <br>
+4.	Post graduate certification in ultrasonography must be that recognized and registrable by RRBN <br>
+5.	Running water (5marks) is preferable source of water supply than stagnant water – water in reservoir or container (2marks) <br>
+6.	Accessories {1.5 marks for each type of probe (for 6 probes) and 0.5mark for each viewing monitor (for 1 for User and 1 for patient), 0.5mark for printer} <br>
+7.	The completed form CO7 should contain names of the directors and their contacts
+8.	For Adequacy of Equipment, Installation & Location: Portable Unit is 5marks, Mobile with 2D capability = 5marks, Mobile with 3D Capability = 15marks, while Mobile with 4D Capability = 20marks. Only Functional Equipment is to be considered. <br>
+9.	Toilets include General Toilet (2.5marks), & Staff Toilet (2.5marks) <br>
+10.	Adequacy of waiting room should comprise of its cleanliness (1.5marks), ventilation/air conditioning (1.5marks) and furnishing (2marks) <br>
+11.	Offices include Office of Radiographer-in-Charge (2marks), & Radiographers’ Common Room (2marks) <br>
+12.	Support staff especially chaperon = 2mark <br>
+
+
+</div>
+
+
+
+<script>
+$(function () {
+       $( "#id_room_design_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_radiographers_no_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_radiographer_license_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_ultrasound_qualification_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_water_supply_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_accessories_adequacy_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_C07_form_compliance_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_equipment_installation_location_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_toilets_cleanliness_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_waiting_room_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_offices_adequacy_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_support_staff_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+</script>
+
+
+  <script>
+  $('#id_room_design_score, #id_radiographers_no_score, #id_radiographer_license_score, #id_ultrasound_qualification_score, #id_water_supply_score, #id_accessories_adequacy_score, #id_C07_form_compliance_score, #id_equipment_installation_location_score, #id_toilets_cleanliness_score, #id_waiting_room_score, #id_offices_adequacy_score, #id_support_staff_score').on('input',function(e){$('#id_ultrasound_total').val(parseInt($('#id_room_design_score').val()) + parseInt($('#id_radiographers_no_score').val()) + parseInt($('#id_radiographer_license_score').val()) + parseInt($('#id_ultrasound_qualification_score').val()) + parseInt($('#id_water_supply_score').val()) + parseInt($('#id_accessories_adequacy_score').val()) + parseInt($('#id_C07_form_compliance_score').val()) + parseInt($('#id_equipment_installation_location_score').val()) + parseInt($('#id_toilets_cleanliness_score').val()) + parseInt($('#id_waiting_room_score').val()) + parseInt($('#id_offices_adequacy_score').val()) + parseInt($('#id_support_staff_score').val()));
+        });
+
+  </script>
+
+<script>

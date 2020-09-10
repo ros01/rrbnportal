@@ -1,7 +1,7 @@
 from . import views
 from django.urls import path
 from .views import (
-    RenewalCreateView, StartView, StartReg, SignUpView, ActivateAccount, ProfileUpdateView, LoginTemplateView, RenewalView, SearchResultsView
+    RenewalCreateView, StartView, StartReg, SignUpView, StartIntershipApplication, ActivateAccount, ProfileUpdateView, LoginTemplateView, RenewalView, SearchResultsView
     
 )
 
@@ -24,6 +24,7 @@ urlpatterns = [
     path('start/', views.StartView.as_view(), name='start-reg'),
     path('start_registration/', views.StartReg.as_view(), name='start_registration'),
     path('signup/', SignUpView.as_view(), name='create_profile'),
+    path('start_intership_application/', StartIntershipApplication.as_view(), name='create_manager_profile'),
     path('signin', LoginTemplateView.as_view(), name='signin'),
     #path('renewal/', views.renewal, name='renewal'),
     #path('delete/<license_id>', RenewalModelForm, views.delete, name="delete")

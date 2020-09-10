@@ -52,43 +52,29 @@
         
         <!-- Insert Datepicker here -->
       
-          <div class="row ml-2 mb-3">
-          <div class="col-md-3">
+            <div class="row ml-2 mb-3">
+            <div class="col-md-3">
           
-          <form method="post" action=".">
+            <form method="POST" action=".">
             {% csrf_token %}
-
-            {% if object.practice_manager.inspection.inspection_total > 60 %}
-              <input type="hidden" name="license_type" required id="id_license_type" value="Full Registration">
+            {% if object.practice_manager.inspection_total > 60 %}
+              <input type="hidden" name="license_type" required id="id_license_type" id="div_id_license_type" value="Full Registration">
             {% else %}
-              <input type="hidden" name="license_type" required id="id_license_type" value="Provisional Registration">
+              <input type="hidden" name="license_type" required id="id_license_type" id="div_id_license_type" value="Provisional Registration">
             {% endif %}
-
             
-
-
-
-    
-
+            
             {{ form.application_no|as_crispy_field }}
-
             {{ form.application_type|as_crispy_field }}
-
             {{ form.payment_amount|as_crispy_field }}
-
             {{ form.practice_manager|as_crispy_field }}
-
             {{ form.hospital_name|as_crispy_field }}
-
-            {{ form.license_category|as_crispy_field }}
-
+            {{ form.license_category |as_crispy_field }}
             {{ form.address|as_crispy_field }}
-
             {{ form.phone|as_crispy_field }}
-
             {{ form.email|as_crispy_field }}
-
             {{ form.inspection_date|as_crispy_field }}
+
 
            
             {{ form.issue_date|as_crispy_field }}
@@ -112,7 +98,7 @@
         <div class="d-flex justify-content-end">    
              <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
 
-             <button type="submit" class="btn btn-success ml-4 px-3"><i class="fa fa-podcast text-white"></i> Issue License</button>
+             <button type="submit" class="btn btn-success ml-4 px-3" name="_save"><i class="fa fa-podcast text-white"></i> Issue License</button>
              
         </div>
         <hr>
@@ -136,7 +122,7 @@
                      
                      <tbody>
 
-                      
+                       
                          <tr>
                           <td>1</td>
                            <td>{{object.application_no}}</td>
@@ -146,7 +132,7 @@
                            <td>{{object.practice_manager.schedule.inspection_date_pretty}}</td>
                          </tr>
                        
-                     <!-- Insert Datepicker here -->  
+                    
                      
                      </tbody>
 

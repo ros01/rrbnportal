@@ -42,6 +42,219 @@
                </div>
            </div>
 
+             <div class="container mt-5">
+    <form>
+      <div class="form-group">
+        <fieldset class="the-fieldset">
+            <legend class="the-legend">SELECT AN OPTION</legend>
+            <div class="col d-flex">
+              <div class="form-check mr-3">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" data-toggle="modal" data-target=".modal-1">
+                <label class="form-check-label" for="exampleRadios1">
+                  MRI
+                </label>
+              </div>
+              <div class="form-check mr-3">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option1" data-toggle="modal" data-target=".modal-2">
+                <label class="form-check-label" for="exampleRadios2">
+                 X-RAY
+                </label>
+              </div>
+              <div class="form-check mr-3">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option1" data-toggle="modal" data-target=".modal-3">
+                <label class="form-check-label" for="exampleRadios3">
+                  ULTRASOUND
+                </label>
+              </div>
+            </div>
+        </fieldset>
+      </div>
+
+    </form>
+  </div>
+ 
+<!-- 1st Modal-->
+    <div class="modal fade modal-1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <form class="p-3">
+            <h4 class="mb-3">Score for  MRI</h4>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputEmail4">Email</label>
+                <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputPassword4">Password</label>
+                <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputAddress">Address</label>
+              <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+            </div>
+            <div class="form-group">
+              <label for="inputAddress2">Address 2</label>
+              <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputCity">City</label>
+                <input type="text" class="form-control" id="inputCity">
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputState">State</label>
+                <select id="inputState" class="form-control">
+                  <option selected>Choose...</option>
+                  <option>...</option>
+                </select>
+              </div>
+              <div class="form-group col-md-2">
+                <label for="inputZip">Zip</label>
+                <input type="text" class="form-control" id="inputZip">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="gridCheck">
+                <label class="form-check-label" for="gridCheck">
+                  Check me out
+                </label>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2nd Modal-->
+
+    <div class="modal fade modal-2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <form class="p-3">
+            <h4 class="mb-3">Score for  X-RAY</h4>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputEmail4">Email</label>
+                <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputPassword4">Password</label>
+                <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputAddress">Address</label>
+              <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+            </div>
+            <div class="form-group">
+              <label for="inputAddress2">Address 2</label>
+              <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputCity">City</label>
+                <input type="text" class="form-control" id="inputCity">
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputState">State</label>
+                <select id="inputState" class="form-control">
+                  <option selected>Choose...</option>
+                  <option>...</option>
+                </select>
+              </div>
+              <div class="form-group col-md-2">
+                <label for="inputZip">Zip</label>
+                <input type="text" class="form-control" id="inputZip">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="gridCheck">
+                <label class="form-check-label" for="gridCheck">
+                  Check me out
+                </label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign in</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3rd Modal-->
+
+    <div class="modal fade modal-3" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <form class="p-3">
+            <h4 class="mb-3">Score for  ULTRASOUND</h4>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputEmail4">Email</label>
+                <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputPassword4">Password</label>
+                <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputAddress">Address</label>
+              <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+            </div>
+            <div class="form-group">
+              <label for="inputAddress2">Address 2</label>
+              <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputCity">City</label>
+                <input type="text" class="form-control" id="inputCity">
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputState">State</label>
+                <select id="inputState" class="form-control">
+                  <option selected>Choose...</option>
+                  <option>...</option>
+                </select>
+              </div>
+              <div class="form-group col-md-2">
+                <label for="inputZip">Zip</label>
+                <input type="text" class="form-control" id="inputZip">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="gridCheck">
+                <label class="form-check-label" for="gridCheck">
+                  Check me out
+                </label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign in</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
           <form method='POST' action="." enctype='multipart/form-data'>
          
@@ -127,7 +340,7 @@
           <div class="row px-4">
           <div class="col-md-3">
             <div class="form-group">
-            {{ form.shielding_score|as_crispy_field }}
+           {{ form.shielding_score|as_crispy_field }}
             </div>
           </div>
 
@@ -245,7 +458,7 @@
 
           <div class="col-md-3">
          <div class="form-group">
-         {{ form.inspection_total|as_crispy_field }}       
+         {{ form.inspection_total|as_crispy_field }}   
          </div>
          </div>
 
@@ -360,6 +573,7 @@
 
 <!--other javascript plugins-->
   <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   
 
 
@@ -369,6 +583,38 @@
 
 
   <!--other javascript plugins-->
+<script>
+$(function () {
+       $( "#id_shielding_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_equipment_layout_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+</script>
+
+
   <script>
   $('#id_shielding_score, #id_equipment_layout_score, #id_radiographer_no_score, #id_radiologist_certification_score, #id_radiographer_license_score, #id_personnel_monitoring_score, #id_room_adequacy_score, #id_water_supply_score, #id_equipment_certification_score, #id_accessories_score, #id_warning_light_score, #id_C07_form_compliance_score, #id_functional_equipment_score, #id_equipment_installation_score, #id_darkroom_score, #id_public_safety_score').on('input',function(e){$('#id_inspection_total').val(parseInt($('#id_shielding_score').val()) + parseInt($('#id_equipment_layout_score').val()) + parseInt($('#id_radiographer_no_score').val()) + parseInt($('#id_radiologist_certification_score').val()) + parseInt($('#id_radiographer_license_score').val()) + parseInt($('#id_personnel_monitoring_score').val()) + parseInt($('#id_room_adequacy_score').val()) + parseInt($('#id_water_supply_score').val()) + parseInt($('#id_equipment_certification_score').val()) + parseInt($('#id_accessories_score').val()) + parseInt($('#id_warning_light_score').val()) + parseInt($('#id_C07_form_compliance_score').val()) + parseInt($('#id_functional_equipment_score').val()) + parseInt($('#id_equipment_installation_score').val()) + parseInt($('#id_darkroom_score').val()) + parseInt($('#id_public_safety_score').val()));
         });

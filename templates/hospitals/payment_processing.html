@@ -116,7 +116,7 @@
     
     <a href="{% url 'hospitals:hospitals_dashboard' %}" class="py-1 mr-3 mt-2 mb-4 btn btn-outline-secondary"><i class="fas fa-times"></i> Cancel</a>
 
-    <a href="{% url 'hospitals:payment_table' %}" class="py-1 mr-3 mt-2 mb-4 btn btn-outline-warning"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Go Back</a>
+    <a href="{% url 'hospitals:generate_invoice' id=object.id %}" class="py-1 mr-3 mt-2 mb-4 btn btn-outline-warning"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Go Back</a>
     
     <button type="submit" class="btn btn-success py-1 mt-2 mb-4" name="_save"> Proceed &#x21E8;</button>
 

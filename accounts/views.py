@@ -226,8 +226,8 @@ def login(request):
         if user.role == 'Finance':
             return redirect('finance:finance_dashboard')
     else:
-        messages.error(request, 'Invalid credentials')
-        return redirect('index')
+        messages.error(request, 'Please enter the correct email and password for your account. Note that both fields may be case-sensitive.')
+        return redirect('accounts:signin')
 
 
 
@@ -307,6 +307,52 @@ class SignUpView(View):
 
 
 
+class StartIntershipApplication(View):
+    form_class = SignupForm
+    template_name = 'accounts/register_internship.html'
+    template_name1 = 'accounts/profile-creation-confirmation.html'
+    
+    
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+   
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+
+
+            
+            user = form.save(commit=False)
+            user.is_active = False  # Deactivate account till it is confirmed
+            user.save()
+
+
+            
+
+            current_site = get_current_site(request)
+            subject = 'Activate Your RRBN Portal Account'
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to_email = [form.cleaned_data.get('email')]
+            message = render_to_string('accounts/activation_request.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            send_mail(subject, message, from_email, to_email, fail_silently=False)
+
+
+
+            messages.success(
+                request, ('Please Confirm your email to complete registration.'))
+
+            return render(request, self.template_name1)
+
+        return render(request, self.template_name, {'form': form})
 
 class ProfileObjectMixin(object):
     model = settings.AUTH_USER_MODEL

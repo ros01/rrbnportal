@@ -9,7 +9,7 @@
 
 {% block content %}
 
-    {% if license_category == "Radiography Practice" %}
+    {% if object.license_category == "Radiography Practice" %}
     <section class="p-2">
     <div class="container">
    
@@ -83,7 +83,7 @@
         <br>
         <br>
         <p class="lead text-secondary m-0">Services:</p>
-        <p class="lead text-secondary text-uppercase m-0"><strong>{{object.equipment}}</strong></p>  
+        <p class="lead text-secondary m-0"><strong>{{object.equipment}}</strong></p>  
         <br> 
     </div>
 

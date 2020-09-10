@@ -30,13 +30,7 @@ from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from itertools import chain
 from operator import attrgetter
-
-
-
-
-
-
-
+from django.db.models import Count
 
 
 
@@ -52,9 +46,6 @@ class LoginRequiredMixin(object):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
-
-
-
 
 
 def monitoring_dashboard(request):
@@ -85,6 +76,7 @@ def approve(request, id):
      payment = get_object_or_404(Payment, pk=id)
      payment.vet_status = 2
      payment.application_status = 3
+     payment.vetting_officer = request.user
      payment.save()
      context = {}
      context['object'] = payment
@@ -125,12 +117,11 @@ class InspectionScheduleListView(LoginRequiredMixin, ListView):
     
     def get_context_data(self, **kwargs):
         obj = super(InspectionScheduleListView, self).get_context_data(**kwargs)
-        obj['payment_qs'] = Payment.objects.filter(application_status=3, vet_status=2)
-        obj['schedule_qs'] = Schedule.objects.filter(application_status=8, vet_status=3)
+        obj['payment_qs'] = Payment.objects.filter(vet_status=2)
         return obj                          
 
 
-class InspectionObjectMixin(object):
+class PaymentObjectMixin(object):
     model = Payment
     def get_object(self):
         id = self.kwargs.get('id')
@@ -140,7 +131,7 @@ class InspectionObjectMixin(object):
         return obj 
 
 
-class InspectionCreateView(LoginRequiredMixin, InspectionObjectMixin, View):
+class InspectionCreateView(LoginRequiredMixin, PaymentObjectMixin, View):
     template_name = 'monitoring/schedule_inspection.html'
     template_name1 = 'monitoring/inspection_scheduled.html'
     def get(self, request,  *args, **kwargs):
@@ -374,21 +365,27 @@ def reject_appraisal_report(request, id):
 class LicenseIssueListView(LoginRequiredMixin, ListView):
     template_name = "monitoring/license_issue_list.html"
     context_object_name = 'object'
+    queryset = Inspection.objects.all()
     
-    def get_queryset(self):
-        return Inspection.objects.all().order_by('-inspection_date')
-
     def get_context_data(self, **kwargs):
         obj = super(LicenseIssueListView, self).get_context_data(**kwargs)
-        obj['license_issue_list_qs'] = Inspection.objects.filter(application_status=7)
-        obj['license_issued_qs'] = License.objects.filter(application_status=8)
-        obj['internship_issue_list_qs'] = Appraisal.objects.filter(application_status=7)
+        obj['inspection'] = self.queryset.filter(application_status=7).count()
         return obj
-        
+
+
+class LicenseIssueListTable(LoginRequiredMixin, ListView):
+    template_name = "monitoring/license_list_table.html"
+    context_object_name = 'object'
+    queryset = Inspection.objects.all()
+    
+    def get_context_data(self, **kwargs):
+        obj = super(LicenseIssueListTable, self).get_context_data(**kwargs)
+        obj['issue_license_qs'] = self.queryset.filter(application_status=7)
+        return obj
 
 
 
-class LicenseObjectMixin(object):
+class InspectionObjectMixin(object):
     model = Inspection
     def get_object(self):
         id = self.kwargs.get('id')
@@ -398,7 +395,7 @@ class LicenseObjectMixin(object):
         return obj 
 
 
-class LicenseDetailView(LoginRequiredMixin, LicenseObjectMixin, View):
+class LicenseDetailView(LoginRequiredMixin, InspectionObjectMixin, View):
     template_name = "monitoring/licenses_detail.html" # DetailView
     def get(self, request, id=None, *args, **kwargs):
         # GET method
@@ -425,9 +422,13 @@ class AccreditationDetailView(LoginRequiredMixin, AccreditationObjectMixin, View
 
 
 
-class IssueLicenseView(LoginRequiredMixin, LicenseObjectMixin, View):
+class IssueLicenseView(LoginRequiredMixin, InspectionObjectMixin, View):
     template_name = "monitoring/issue_license.html"
     template_name1 = "monitoring/license_issued.html"
+
+
+    
+
     def get(self, request,  *args, **kwargs):
         context = {}
         obj = self.get_object()
@@ -436,6 +437,7 @@ class IssueLicenseView(LoginRequiredMixin, LicenseObjectMixin, View):
             context['object'] = obj
             context['form'] = form
         return render(request, self.template_name, context)
+
 
     def post(self, request,  *args, **kwargs):
         form = LicenseModelForm(request.POST, request.FILES)
@@ -455,11 +457,50 @@ class IssueLicenseView(LoginRequiredMixin, LicenseObjectMixin, View):
            contact_message = get_template(
                'monitoring/license_issued.txt').render(context)
 
-           send_mail(subject, contact_message, from_email,
+        send_mail(subject, contact_message, from_email,
                      to_email, fail_silently=False)
         
         
         return render(request, self.template_name1, context)
+
+
+
+
+
+
+class LicenseObjectMixin(object):
+    model = License
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+class LicenseIssuedDetailView(LoginRequiredMixin, LicenseObjectMixin, View):
+    template_name = 'monitoring/license_issued.html' 
+    def get(self, request, id=None, *args, **kwargs):
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = LicenseModelForm(instance=obj)
+            context['object'] = obj
+            context['form'] = form
+
+
+            subject = 'Notice of Radiography License Issuance'
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to_email = [request.user.email]
+
+            context['form'] = form
+            contact_message = get_template(
+               'monitoring/license_issued.txt').render(context)
+
+            send_mail(subject, contact_message, from_email,
+                     to_email, fail_silently=False)
+
+        return render(request, self.template_name, context)
+
 
 
 

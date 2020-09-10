@@ -92,29 +92,21 @@
               
 
                 <div class="form-row">
-                <div class="form-group col-md-12 mb-0">
+                <div class="form-group col-md-6 mb-0">
                 {{ form.address|as_crispy_field }}
-               
-                </div>  
+                </div> 
+                <div class="form-group col-md-6 mb-0">
+                {{ form.city|as_crispy_field }}
+                </div> 
                 </div>                               
             
                 
 
                <div class="form-row">
-                <div class="form-group col-md-6 mb-0">
-                {{ form.city|as_crispy_field }}
+               <div class="form-group col-md-6 mb-0">
+                {{ form.state|as_crispy_field }}
                 </div>
-
-                
-                 <div class="form-group col-md-6 mb-0">
-                 {{ form.state|as_crispy_field }}
-                </div>
-                </div>
-
-                <div class="form-row">
-                <div class="form-group col-md-6 mb-0">
-                {{ form.application_type|as_crispy_field }}
-                </div>
+                <input type="hidden" name="application_type" required id="id_application_type" value="New Registration">
                 <div class="form-group col-md-6 mb-0">
                 {{ form.equipment|as_crispy_field }}
                 </div>
@@ -180,7 +172,7 @@
     
     <a href="{% url 'hospitals:hospitals_dashboard' %}" class="text-dark py-1 mr-3 mt-2 mb-4 btn btn-outline-dark"><i class="fas fa-times"></i> Cancel</a>
 
-    <a href="{% url 'hospitals:status' %}" class="text-white py-1 mr-3 mt-2 mb-4 btn btn-warning"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Go Back</a>
+    <a href="{% url 'hospitals:hospitals_dashboard' %}" class="text-white py-1 mr-3 mt-2 mb-4 btn btn-warning"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Go Back</a>
     
     <button type="submit" class="btn btn-success py-1 mt-2 mb-4" name="_save"> Proceed &#x21E8;</button>
 

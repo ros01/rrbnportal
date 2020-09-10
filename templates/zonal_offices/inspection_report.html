@@ -1,0 +1,415 @@
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block title%}| Facility Inspection {% endblock %}
+{% block styles %}
+
+
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+<link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+
+
+
+
+{% endblock %}
+
+
+{% block content %}
+
+{% include "_modal.html" %}
+
+
+<main class="container">
+       <div class="row">
+           <div class="col col-lg-12">
+            <p class="mt-2 text-info display-4 paragraph2">Radiography Practice License Inspection Report Submission</p>
+                <hr>
+          </div>
+           </div>
+
+
+
+
+          <div class="row rounded ml-1 mr-0 pl-1 pr-0 mt-2 mb-3 justify-content-center align-items-center" style="background-color: #bfe3f8;">
+            <div class="col-md-1 mt-1 pt-1">
+               <i class="fa fa-info-circle fa-2x" aria-hidden="true"></i>
+                </div>
+
+               <div class="col-md-11 mt-1 pt-1 px-0">
+                <p class="lead" style="color: #05567b;">
+                   Enter Scores for Each Parameter Below.  Final Score is calculated automatically once input is complete</p>
+               </div>
+           </div>
+
+
+<div class="container mt-5">
+    <form>
+      <div class="form-group">
+        <fieldset class="the-fieldset">
+            <legend class="the-legend text-info">Registered Modalities in License Application</legend>
+            <div class="col d-flex">
+
+           
+              {% if "Ultrasound" in object.equipment %}
+                <div class="form-check mr-3">
+                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-ultrasound" data-form-url="{% url 'zonal_offices:ultrasound_score' object.id %}">
+                <label class="form-check-label" for="exampleRadios2">
+                 Ultrasound
+                </label>
+              </div>
+
+              {% endif %}
+
+              {% if "Conventional X-ray" in object.equipment %}
+              <div class="form-check mr-3">
+                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-xray" data-form-url="{% url 'zonal_offices:xray_score' object.id %}">
+                <label class="form-check-label" for="exampleRadios2">
+                 Conventional X-ray
+                </label>
+              </div>
+
+              {% endif %}
+
+              {% if "Conventional X-ray with Fluoroscopy" in object.equipment %}
+
+              <div class="form-check mr-3">
+                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-flouroscopy" data-form-url="{% url 'zonal_offices:flouroscopy_score' object.id %}">
+                <label class="form-check-label" for="exampleRadios3">
+                  Conventional X-ray with Flouroscopy
+                </label>
+              </div>
+
+              {% endif %}
+
+              {% if "CT Scan" in object.equipment %}
+              <div class="form-check mr-3">
+                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-ctscan" data-form-url="{% url 'zonal_offices:ctscan_score' object.id %}">
+                <label class="form-check-label" for="exampleRadios3">
+                  CT Scan
+                </label>
+              </div>
+
+              {% endif %}
+
+              {% if "MRI" in object.equipment %}
+              <div class="form-check mr-3">
+                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-mri" data-form-url="{% url 'zonal_offices:mri_score' object.id %}">
+                <label class="form-check-label" for="exampleRadios3">
+                  MRI
+                </label>
+              </div>
+              {% endif %}
+
+              {% if "Radiotherapy" in object.equipment %}
+              <div class="form-check mr-3">
+                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-radiotherapy" data-form-url="{% url 'zonal_offices:radiotherapy_score' object.id %}">
+                <label class="form-check-label" for="exampleRadios3">
+                  Radiotherapy
+                </label>
+              </div>
+              {% endif %}
+
+              {% if "Nuclear Medicine" in object.equipment %}
+              <div class="form-check mr-3">
+                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-nuclearmedicine" data-form-url="{% url 'zonal_offices:nuclear_medicine_score' object.id %}">
+                <label class="form-check-label" for="exampleRadios3">
+                  Nuclear Medicine
+                </label>
+              </div>
+              {% endif %}
+             
+            </div>
+        </fieldset>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+
+
+   
+<form method='POST' action="." enctype='multipart/form-data'>
+         
+            {% csrf_token %}
+
+            <input type="hidden" name="inspection_zone" {% if user.is_authenticated %} value="{{ user.module_name }}" {% endif %} required id="id_inspection_zone">
+
+           
+
+            {{ form.practice_manager|as_crispy_field }}
+
+            {{ form.application_type|as_crispy_field }}
+
+            {{ form.payment_amount|as_crispy_field }}
+
+            {{ form.license_category|as_crispy_field }}
+
+            {{ form.inspection_schedule_date|as_crispy_field }}
+
+            {{ form.inspection_report_deadline|as_crispy_field }}
+
+              <div class="row ml-2">
+                <p class="col-12 text-success lead">Hospital Details</p>
+              </div>
+
+              <div class="row px-4"> 
+              
+              <div class="col-md-4"> 
+               <div class="form-group"> 
+               {{ form.application_no|as_crispy_field }}
+              </div>
+              </div>
+
+
+              <div class="col-md-4">
+              <div class="form-group">
+              {{ form.hospital_name|as_crispy_field }}
+              </div>
+              </div>
+
+              <div class="col-md-4">
+              <div class="form-group">
+              {{ form.email|as_crispy_field }}
+              </div>
+              </div>
+
+              </div>
+             
+
+              <div class="row px-4">
+          
+                <div class="col-md-4">
+                <div class="form-group">
+               {{ form.phone|as_crispy_field }}
+                </div>
+                </div>
+
+                <div class="col-md-4">
+                <div class="form-group">
+                {{ form.equipment|as_crispy_field }}
+                </div>
+                </div>
+
+                <div class="col-md-4">
+                <div class="form-group">
+                {{ form.address|as_crispy_field }}
+                </div>
+                </div>
+
+                </div>
+          
+
+                <div class="row px-4">
+             
+                </div>
+
+                <div class="row px-4">
+                <div class="col-md-4">
+                <div class="form-group">
+                {{ form.radiographers|as_crispy_field }}  
+                </div>
+                </div>
+      
+                <div class="col-md-4">
+                <div class="form-group">
+                 {{ form.radiologists|as_crispy_field }}    
+                </div>
+                </div>
+
+                 <div class="col-md-4">
+                 <div class="form-group">
+                 {{ form.inspection_comments|as_crispy_field }}   
+                 </div>
+                 </div>
+
+                 </div>
+                 
+         
+
+              <div class="row ml-2">
+                      <p class="col-12 text-success lead">Picture Uploads</p>
+                    </div>
+                <div class="row px-4">
+                <div class="col-md-3">
+                  <div class="form-group">
+                  {{ form.photo_main|as_crispy_field }}
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                   {{ form.photo_1|as_crispy_field }}  
+                      
+                  </div>
+                </div>
+              
+              
+                <div class="col-md-3">
+                <div class="form-group">
+                {{ form.photo_2|as_crispy_field }}       
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                  {{ form.photo_3|as_crispy_field }}
+                  </div>
+                </div>
+                 </div>
+
+                 <div class="row px-4">
+                <div class="col-md-3">
+                  <div class="form-group">
+                  {{ form.photo_4|as_crispy_field }}
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                   {{ form.photo_5|as_crispy_field }}  
+                      
+                  </div>
+                </div>
+              
+              
+                <div class="col-md-3">
+                <div class="form-group">
+                {{ form.photo_6|as_crispy_field }}       
+                  </div>
+                </div>
+
+                
+                 </div>
+
+            
+
+
+              <hr>
+              <div class="d-flex justify-content-end">   
+             
+             <a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
+
+             
+
+              <button type="submit" class="btn btn btn-success ml-4 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Post Inspection Report</button>
+
+               </form>
+
+             
+        </div>
+
+        </main>
+      
+
+
+
+<!--Jquery plugin-->
+  <script src="{% static 'js/jquery.js' %}"></script>
+
+  <script src="{% static 'js/bootstrap.js' %}"></script>
+  <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+   
+
+<!--other javascript plugins
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
+
+
+
+
+
+  <!--Jquery plugin-->
+
+
+<script type="text/javascript">
+    $(function() {
+    
+        $(".bs-modal").each(function () {
+          $(this).modalForm({
+              formURL: $(this).data('form-url')
+          });
+        });
+    
+    });
+</script>
+
+
+
+
+  <!--other javascript plugins-->
+
+
+
+<script>
+$(function () {
+       $( "#id_shielding_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_equipment_layout_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+</script>
+
+
+  <script>
+  $('#id_shielding_score, #id_equipment_layout_score, #id_radiographer_no_score, #id_radiologist_certification_score, #id_radiographer_license_score, #id_personnel_monitoring_score, #id_room_adequacy_score, #id_water_supply_score, #id_equipment_certification_score, #id_accessories_score, #id_warning_light_score, #id_C07_form_compliance_score, #id_functional_equipment_score, #id_equipment_installation_score, #id_darkroom_score, #id_public_safety_score').on('input',function(e){$('#id_inspection_total').val(parseInt($('#id_shielding_score').val()) + parseInt($('#id_equipment_layout_score').val()) + parseInt($('#id_radiographer_no_score').val()) + parseInt($('#id_radiologist_certification_score').val()) + parseInt($('#id_radiographer_license_score').val()) + parseInt($('#id_personnel_monitoring_score').val()) + parseInt($('#id_room_adequacy_score').val()) + parseInt($('#id_water_supply_score').val()) + parseInt($('#id_equipment_certification_score').val()) + parseInt($('#id_accessories_score').val()) + parseInt($('#id_warning_light_score').val()) + parseInt($('#id_C07_form_compliance_score').val()) + parseInt($('#id_functional_equipment_score').val()) + parseInt($('#id_equipment_installation_score').val()) + parseInt($('#id_darkroom_score').val()) + parseInt($('#id_public_safety_score').val()));
+        });
+
+  </script>
+
+<script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+
+
+
+
+
+
+
+{% endblock %}

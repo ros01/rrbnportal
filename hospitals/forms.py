@@ -3,6 +3,7 @@ from django.db.models import Q
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from .models import Registration, Payment
 from .choices import STATE_CHOICES, SERVICES, EQUIPMENT, PAYMENT_METHOD
+from django.forms import MultipleChoiceField
 
 
 
@@ -10,7 +11,9 @@ from .choices import STATE_CHOICES, SERVICES, EQUIPMENT, PAYMENT_METHOD
 class BasicDetailModelForm(forms.ModelForm):
     state = forms.ChoiceField(choices = STATE_CHOICES, widget=forms.Select(), required=True)
     services = forms.ChoiceField(choices = SERVICES, widget=forms.Select(), required=True)
-    equipment = forms.MultipleChoiceField(choices = EQUIPMENT, widget=forms.CheckboxSelectMultiple())
+    equipment = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(), choices=EQUIPMENT)
+    #equipment = forms.ModelMultipleChoiceField(queryset=Equipment.objects.all(), required=False, widget=forms.CheckboxSelectMultiple)
+    #equipment = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(), queryset=Equipment.objects.all())
 
     class Meta:
          model = Registration
@@ -26,12 +29,6 @@ class BasicDetailModelForm(forms.ModelForm):
          'email': forms.TextInput(attrs={'readonly': True}),
          'license_category': forms.TextInput(attrs={'readonly': True}),
          }
-
-
-
-
-
-
     #def clean_practice_manager(self):
         #practice_manager = self.cleaned_data.get('practice_manager')
         #qs = Registration.objects.filter(practice_manager=practice_manager)
@@ -47,6 +44,8 @@ class BasicDetailModelForm(forms.ModelForm):
        self.fields['practice_license1'].label = "Radiographer Practice License"
        self.fields['practice_license2'].label = "Radiographer Practice License"
        self.fields['form_c07'].label = "Form C07"
+       #self.fields['equipment'] = MultipleChoiceField(
+            #choices=Equipment.objects.all())
         
 
 

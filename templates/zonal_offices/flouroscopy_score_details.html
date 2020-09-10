@@ -1,0 +1,207 @@
+
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+{% block title%}| Welcome {% endblock %}
+
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+
+
+{% endblock %}
+
+{% block content %}
+
+<section class="p-2">
+   
+    <div class="container mt-2 ">
+    <div class="col mb-2">
+    <p class="text-success display-4 paragraph3"> Flouroscopy Score Details</p>
+    <hr>
+    </div>
+    </div>
+
+    </section>
+
+
+<!-- Skills -->
+    
+
+<section>
+    <div class="container">
+        <!-- Title -->
+
+<div class="row mx-1 py-0 my-0">
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">Shielding:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.flouroscopy.shielding_score}}</strong></p>  
+        <br>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">Room Design:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.flouroscopy.room_design_score}}</strong></p>  
+        <br> 
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">No of Radiographers:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.flouroscopy.radiographers_no_score}}</strong></p>  
+        <br>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">Radiographer License:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.flouroscopy.radiographer_license_score}}</strong></p>  
+        <br> 
+    </div>
+
+</div>
+
+<div class="row mx-1 py-0 my-0">
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">PRMD PRPE:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.flouroscopy.prmd_prpe_score}}</strong></p>  
+        <br>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">Radiation Safety Officer:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.flouroscopy.rso_rsa_score}}</strong></p>  
+        <br> 
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">Water Supply:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.flouroscopy.water_supply_score}}</strong></p>  
+        <br> 
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">Equipment Certification:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.flouroscopy.equipment_certification_score}}</strong></p>  
+        <br>
+    </div>
+
+</div>
+
+<div class="row mx-1 py-0 my-0">
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">Adequacy of Accessories:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.flouroscopy.accessories_adequacy_score}}</strong></p>  
+        <br> 
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">Warning Lights:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.flouroscopy.warning_lights_score}}</strong></p>  
+        <br>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">Warning Signs:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.flouroscopy.warning_signs_score}}</strong></p> 
+        <br> 
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">Compliance to Form C07:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.flouroscopy.C07_form_compliance_score}}</strong></p>  
+        <br>
+    </div>
+
+</div>
+
+<div class="row mx-1 py-0 my-0">
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">Equipment Installation:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.flouroscopy.equipment_installation_location_score}}</strong></p>  
+        <br> 
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">Processing Unit:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.flouroscopy.processing_unit_score}}</strong></p>  
+        <br> 
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">Toilets & Cleanliness:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.flouroscopy.toilets_cleanliness_score}}</strong></p>  
+        <br> 
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">Adequacy of Waiting Room:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.flouroscopy.waiting_room_score}}</strong></p>  
+        <br>
+    </div>
+
+</div>
+
+<div class="row mx-1 py-0 my-0">
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">Adequacy of Offices:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.flouroscopy.offices_adequacy_score}}</strong></p>  
+        <br>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">Total Score:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.flouroscopy.flouroscopy_total }}</strong></p>  
+        <br> 
+    </div>
+
+</div>  
+
+    <hr>
+    <div class="d-flex justify-content-end">   
+
+   
+
+    <button type="button" id="update-flouroscopy" class="btn btn-info text-white p-2 mr-3 mt-2 mb-5 " data-form-url="#">
+        <span class="fa fa-barcode text-white"> Update Flouroscopy Scores</span>
+        </button>
+    
+    
+      
+    <a href="{% url 'zonal_offices:inspection_report' id=object.practice_manager.schedule.id %}" class="btn btn-warning text-white p-2 mr-3 mt-2 mb-5 "><i class="fa fa-angle-double-left" aria-hidden="true"></i> Return to Inspection Report</a>
+    
+   
+    
+    
+    </div> 
+
+    </div>  
+    
+</section>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content"></div>
+    </div>
+  </div>
+
+<!-- End of Skills -->
+
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+<script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+    
+        $("#update-flouroscopy").modalForm({
+            formURL: "{% url 'zonal_offices:flouroscopy_update' object.practice_manager.flouroscopy.id %}"
+        });
+    
+    });
+    </script>
+
+
+
+{% endblock %}

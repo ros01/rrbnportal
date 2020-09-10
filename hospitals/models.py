@@ -31,6 +31,17 @@ def increment_hospital_code():
     return new_hospital_code
 
 
+
+    
+
+
+    
+
+
+
+
+
+
 class Registration(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     application_no = models.CharField(max_length=500, null=True, blank=True, 
@@ -38,6 +49,7 @@ class Registration(models.Model):
     application_type = models.CharField(max_length=100, choices = APPLICATION_TYPE)
     application_status = models.IntegerField(default=1)
     practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    #practice_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     hospital_name = models.CharField(max_length=200)
     license_category = models.CharField(max_length=200)
     rc_number = models.CharField(max_length=100)
@@ -64,7 +76,10 @@ class Registration(models.Model):
     def reg_date_pretty(self):
         return self.reg_date.strftime('%b %e %Y')
 
-    
+    def equipment_count(self):
+        equipment_count = self.equipment
+        equipment_count = len(equipment_count)
+        return equipment_count
 
 
 
@@ -72,6 +87,7 @@ class Payment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     application_no = models.CharField(max_length=200)
     practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    #practice_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     hospital_name = models.CharField(max_length=200)
     application_type = models.CharField(max_length=100)
     application_status = models.IntegerField(default=2)
@@ -84,8 +100,7 @@ class Payment(models.Model):
     services = models.CharField(max_length=200)
     equipment = models.CharField(max_length=200)
     radiographers = models.TextField(blank=True)
-    radiologists = models.TextField(blank=True, null=
-        True)
+    radiologists = models.TextField(blank=True, null=True)
     rrr_number = models.CharField(max_length=100)
     receipt_number = models.CharField(max_length=100)
     payment_amount = models.CharField(max_length=100)
@@ -113,6 +128,7 @@ class Schedule(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     application_no = models.CharField(max_length=200)
     practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    #practice_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     hospital_name = models.CharField(max_length=200)
     license_category = models.CharField(max_length=200)
     application_type = models.CharField(max_length=100)
@@ -127,8 +143,7 @@ class Schedule(models.Model):
     vet_status = models.IntegerField(default=3)
     payment_amount = models.CharField(max_length=100)
     radiographers = models.CharField(max_length=300)
-    radiologists = models.CharField(max_length=300, blank=True, null=
-        True)
+    radiologists = models.CharField(max_length=300, blank=True, null=True)
     inspection_scheduler = models.CharField(max_length=300)
     inspection_schedule_date = models.DateTimeField(default=datetime.now, blank=True)
     inspection_date = models.DateTimeField(default=datetime.now, blank=True)
@@ -147,19 +162,220 @@ class Schedule(models.Model):
     def inspection_schedule_date_pretty(self):
         return self.inspection_schedule_date.strftime('%b %e %Y')
 
+    def save(self, *args, **kwargs):
+        super(Schedule, self).save(*args, **kwargs)
+        self.practice_manager.payment.vet_status=4
+        self.practice_manager.payment.save()
+
+class Nuclearmedicine(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    shielding_score = models.IntegerField()
+    room_design_score = models.IntegerField()
+    radiographers_no_score = models.IntegerField()
+    nuclear_medicine_physicians_no_score  = models.IntegerField()
+    other_staff_no_score  = models.IntegerField() 
+    nuclear_medicine_certification_score = models.IntegerField()
+    radiographer_license_score = models.IntegerField()  
+    prmd_prpe_score = models.IntegerField() 
+    water_supply_score = models.IntegerField()
+    equipment_certification_score = models.IntegerField()
+    radionuclide_accessories_score = models.IntegerField()
+    warning_lights_score = models.IntegerField()
+    warning_signs_score = models.IntegerField()
+    C07_form_compliance_score = models.IntegerField() 
+    equipment_installation_location_score = models.IntegerField() 
+    radionuclide_storage_unit_score = models.IntegerField() 
+    offices_adequacy_score = models.IntegerField() 
+    quality_control_score = models.IntegerField()
+    rso_score = models.IntegerField() 
+    radiation_safety_program_score = models.IntegerField()
+    labelling_score = models.IntegerField()
+    performance_survey_score = models.IntegerField()
+    radioactive_materials_security_score = models.IntegerField()
+    toilets_cleanliness_score = models.IntegerField() 
+    waiting_room_score = models.IntegerField() 
+    nuclear_medicine_total = models.IntegerField() 
+
+    def __str__(self):
+        return str(self.nuclear_medicine_total)
+
+class Radiotherapy(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    shielding_score = models.IntegerField()
+    room_design_score = models.IntegerField()
+    radiographers_no_score = models.IntegerField() 
+    radiologists_no_score = models.IntegerField()
+    other_staff_score = models.IntegerField()
+    radiotherapy_certification_score = models.IntegerField()
+    radiographer_license_score = models.IntegerField()
+    prmd_prpe_score = models.IntegerField()
+    rso_score = models.IntegerField()
+    water_supply_score = models.IntegerField()
+    equipment_certification_score = models.IntegerField()
+    warning_lights_score = models.IntegerField()
+    warning_signs_score = models.IntegerField()
+    C07_form_compliance_score = models.IntegerField()
+    equipment_installation_location_score = models.IntegerField()
+    radiotherapy_accessories_score = models.IntegerField()
+    mould_room_score = models.IntegerField()
+    toilets_cleanliness_score = models.IntegerField()
+    waiting_room_score = models.IntegerField()
+    offices_adequacy_score = models.IntegerField()
+    radiotherapy_total = models.IntegerField()
+
+    def __str__(self):
+        return str(self.radiotherapy_total)
+
+class Mri(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    shielding_score = models.IntegerField()
+    room_design_score = models.IntegerField()
+    radiographers_no_score = models.IntegerField()
+    radiologists_no_score = models.IntegerField()
+    radiographer_license_score = models.IntegerField()
+    mri_certification_score = models.IntegerField()
+    metal_screening_device_score = models.IntegerField()
+    screening_questionnaire_score = models.IntegerField()
+    water_supply_score = models.IntegerField()
+    accessories_adequacy_score = models.IntegerField()
+    warning_signs_score = models.IntegerField()
+    C07_form_compliance_score = models.IntegerField()
+    equipment_installation_location_score = models.IntegerField()
+    processing_unit_score = models.IntegerField()
+    toilets_cleanliness_score = models.IntegerField()
+    waiting_room_score = models.IntegerField()
+    offices_adequacy_score = models.IntegerField()
+    technical_room_adequacy_score = models.IntegerField()
+    mri_total = models.IntegerField()
+
+    def __str__(self):
+        return str(self.mri_total)
+
+
+
+class Ultrasound(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    room_design_score = models.IntegerField()
+    radiographers_no_score = models.IntegerField()
+    radiographer_license_score = models.IntegerField()
+    ultrasound_qualification_score = models.IntegerField()
+    water_supply_score = models.IntegerField()
+    accessories_adequacy_score = models.IntegerField()
+    C07_form_compliance_score = models.IntegerField()
+    equipment_installation_location_score = models.IntegerField()
+    toilets_cleanliness_score = models.IntegerField()
+    waiting_room_score = models.IntegerField()
+    offices_adequacy_score = models.IntegerField()
+    support_staff_score = models.IntegerField()
+    ultrasound_total = models.IntegerField()
+
+
+    def __str__(self):
+        return str(self.ultrasound_total)
+    
+
+class Ctscan(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    shielding_score = models.IntegerField()
+    room_design_score = models.IntegerField()
+    radiographers_no_score = models.IntegerField()
+    radiologists_no_score = models.IntegerField()
+    radiographer_license_score = models.IntegerField()
+    prmd_prpe_score = models.IntegerField()
+    rso_rsa_score = models.IntegerField()
+    water_supply_score = models.IntegerField()
+    equipment_certification_score = models.IntegerField()
+    accessories_adequacy_score = models.IntegerField()
+    warning_lights_score = models.IntegerField()
+    warning_signs_score = models.IntegerField()
+    C07_form_compliance_score = models.IntegerField()
+    equipment_installation_location_score = models.IntegerField()
+    processing_unit_score = models.IntegerField()
+    toilets_cleanliness_score = models.IntegerField()
+    waiting_room_score = models.IntegerField()
+    offices_adequacy_score = models.IntegerField()
+    ctscan_total = models.IntegerField()
+
+    def __str__(self):
+        return str(self.ctscan_total)
+
+    
+
+
+class Xray(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    shielding_score = models.IntegerField()
+    room_design_score = models.IntegerField()
+    radiographers_no_score = models.IntegerField()
+    radiologists_no_score = models.IntegerField()
+    radiographer_license_score = models.IntegerField()
+    prmd_prpe_score = models.IntegerField()
+    rso_rsa_score = models.IntegerField()
+    water_supply_score = models.IntegerField()
+    equipment_certification_score = models.IntegerField()
+    accessories_adequacy_score = models.IntegerField()
+    warning_lights_score = models.IntegerField()
+    warning_signs_score = models.IntegerField()
+    C07_form_compliance_score = models.IntegerField()
+    equipment_installation_location_score = models.IntegerField()
+    processing_unit_score = models.IntegerField()
+    toilets_cleanliness_score = models.IntegerField()
+    waiting_room_score = models.IntegerField()
+    offices_adequacy_score = models.IntegerField()
+    xray_total = models.IntegerField()
+
+
+    def __str__(self):
+        return str(self.xray_total)
+
+    
+class Flouroscopy(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    shielding_score = models.IntegerField()
+    room_design_score = models.IntegerField()
+    radiographers_no_score = models.IntegerField()
+    radiologists_no_score = models.IntegerField()
+    radiographer_license_score = models.IntegerField()
+    prmd_prpe_score = models.IntegerField()
+    rso_rsa_score = models.IntegerField()
+    water_supply_score = models.IntegerField()
+    equipment_certification_score = models.IntegerField()
+    accessories_adequacy_score = models.IntegerField()
+    warning_lights_score = models.IntegerField()
+    warning_signs_score = models.IntegerField()
+    C07_form_compliance_score = models.IntegerField()
+    equipment_installation_location_score = models.IntegerField()
+    processing_unit_score = models.IntegerField()
+    toilets_cleanliness_score = models.IntegerField()
+    waiting_room_score = models.IntegerField()
+    offices_adequacy_score = models.IntegerField()
+    flouroscopy_total = models.IntegerField()
+
+    
+    def __str__(self):
+        return str(self.flouroscopy_total)
+
 
 class Inspection(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     application_no = models.CharField(max_length=100)
     practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    #practice_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     hospital_name = models.CharField(max_length=200)
+    equipment = models.CharField(max_length=300)
     license_category = models.CharField(max_length=200)
     application_status = models.IntegerField(default=5)
     application_type = models.CharField(max_length=100)
     address = models.CharField(max_length=200)
     phone = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
-    equipment = models.CharField(max_length=300)
     radiographers = models.CharField(max_length=300)
     radiologists = models.CharField(max_length=300)
     payment_amount = models.CharField(max_length=100)
@@ -170,23 +386,7 @@ class Inspection(models.Model):
     inspection_zone = models.CharField(max_length=100)
     vet_status = models.IntegerField(default=4)
     inspection_status = models.IntegerField(default=1)
-    shielding_score = models.IntegerField()
-    equipment_layout_score = models.IntegerField()
-    radiographer_no_score = models.IntegerField()
-    radiologist_certification_score = models.IntegerField()
-    radiographer_license_score = models.IntegerField()
-    personnel_monitoring_score = models.IntegerField()
-    room_adequacy_score = models.IntegerField()
-    water_supply_score = models.IntegerField()
-    equipment_certification_score = models.IntegerField()
-    accessories_score = models.IntegerField()
-    warning_light_score = models.IntegerField()
-    C07_form_compliance_score = models.IntegerField()
-    functional_equipment_score = models.IntegerField()
-    equipment_installation_score = models.IntegerField()
-    darkroom_score = models.IntegerField()
-    public_safety_score = models.IntegerField()
-    inspection_total = models.IntegerField()
+    inspection_total = models.IntegerField(blank=True)
     inspection_comments = models.TextField(blank=True)
     photo_main = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     photo_1 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
@@ -203,11 +403,52 @@ class Inspection(models.Model):
     def inspection_date_pretty(self):
         return self.inspection_date.strftime('%b %e %Y')
 
+    
+
+
+    def save(self, *args, **kwargs):
+        #super(Inspection, self).save(*args, **kwargs)
+        #self.practice_manager.schedule.application_status=5
+        #self.practice_manager.schedule.save()
+
+        #if self.practice_manager.nuclearmedicine.nuclear_medicine_total and self.practice_manager.nuclearmedicine.nuclear_medicine_total
+
+        #score = self.practice_manager.nuclearmedicine.nuclear_medicine_total + self.practice_manager.radiotherapy.radiotherapy_total + self.practice_manager.mri.mri_total + self.practice_manager.ultrasound.ultrasound_total + self.practice_manager.ctscan.ctscan_total + self.practice_manager.xray.xray_total + self.practice_manager.flouroscopy.flouroscopy_total 
+        #self.inspection_total = 99
+        
+        #score = [self.practice_manager.nuclearmedicine.nuclear_medicine_total, self.practice_manager.radiotherapy.radiotherapy_total, self.practice_manager.mri.mri_total, self.practice_manager.ultrasound.ultrasound_total, self.practice_manager.ctscan.ctscan_total, self.practice_manager.xray.xray_total, self.practice_manager.flouroscopy.flouroscopy_total] 
+        
+        #score = [self.practice_manager.nuclearmedicine.nuclear_medicine_total, self.practice_manager.radiotherapy.radiotherapy_total, self.practice_manager.mri.mri_total, self.practice_manager.ultrasound.ultrasound_total, self.practice_manager.ctscan.ctscan_total, self.practice_manager.xray.xray_total, self.practice_manager.flouroscopy.flouroscopy_total]
+        score = []
+        if self.practice_manager.nuclearmedicine.nuclear_medicine_total:
+            score.insert(0, self.practice_manager.nuclearmedicine.nuclear_medicine_total)
+        if self.practice_manager.radiotherapy.radiotherapy_total:
+            score.insert(0, self.practice_manager.radiotherapy.radiotherapy_total)
+        if self.practice_manager.mri.mri_total:
+            score.insert(0, self.practice_manager.mri.mri_total)
+        if self.practice_manager.ctscan.ctscan_total:
+            score.insert(0, self.practice_manager.ctscan.ctscan_total)
+        if self.practice_manager.ultrasound.ultrasound_total:
+            score.insert(0, self.practice_manager.ultrasound.ultrasound_total)
+        if self.practice_manager.xray.xray_total:
+            score.insert(0, self.practice_manager.xray.xray_total)
+        if self.practice_manager.flouroscopy.flouroscopy_total:
+            score.insert(0, self.practice_manager.flouroscopy.flouroscopy_total)
+        
+        self.inspection_total = sum(score)/len(score)
+        super(Inspection, self).save(*args, **kwargs)
+
+        
+       
+
+        
+
 
 class Appraisal(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     application_no = models.CharField(max_length=100)
     practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    #practice_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     hospital_name = models.CharField(max_length=200)
     license_category = models.CharField(max_length=200)
     application_status = models.IntegerField(default=5)
@@ -229,12 +470,13 @@ class Appraisal(models.Model):
     inspection_zone = models.CharField(max_length=100)
     radiographers_score = models.IntegerField()
     radiologists_score = models.IntegerField()
-    darkroom_technicians_score = models.IntegerField()
+    support_staff_score = models.IntegerField()
     offices_score = models.IntegerField()
     library_score = models.IntegerField()
     call_room_score = models.IntegerField()
     waiting_room_score = models.IntegerField()
     toilets_score = models.IntegerField()
+    room_design_score = models.IntegerField() 
     static_xray_score = models.IntegerField()
     mobile_xray_score = models.IntegerField()
     ct_score = models.IntegerField()
@@ -246,11 +488,9 @@ class Appraisal(models.Model):
     mammography_score = models.IntegerField()
     dental_equipment_score = models.IntegerField()
     carm_score = models.IntegerField()
-    processing_room_score = models.IntegerField()
+    processing_unit_score = models.IntegerField()
     diagnostic_room_score = models.IntegerField()
-    personnel_monitoring_score = models.IntegerField()
-    warning_light_score = models.IntegerField()
-    warning_signs_score = models.IntegerField()
+    personnel_score = models.IntegerField()
     cpds_score = models.IntegerField()
     departmental_seminars_score = models.IntegerField()
     licence_status_score = models.IntegerField()
@@ -272,13 +512,13 @@ class Appraisal(models.Model):
         return self.inspection_date.strftime('%b %e %Y')
 
 
-
 class License(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     application_no = models.CharField(max_length=100)
     hospital_code = models.CharField(max_length=500, null=True, blank=True, 
         default=increment_hospital_code)
     practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    #practice_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     hospital_name = models.CharField(max_length=200)
     license_category = models.CharField(max_length=200)
     license_type = models.CharField(max_length=200)
@@ -297,7 +537,7 @@ class License(models.Model):
 
 
     def get_absolute_url(self):
-        return reverse("monitoring:license_issued", kwargs={"id": self.id})
+        return reverse("monitoring:issued_license_details", kwargs={"id": self.id})
     
     def __str__(self):
         return self.license_no
@@ -312,6 +552,15 @@ class License(models.Model):
 
     def expiry_date_pretty(self):
         return self.expiry_date.strftime('%b %e %Y')
+
+
+    def save(self, *args, **kwargs):
+        super(License, self).save(*args, **kwargs)
+        self.practice_manager.inspection.application_status = 8
+        self.practice_manager.inspection.save()
+
+
+    
 
 
 class Records(models.Model):

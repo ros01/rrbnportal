@@ -268,7 +268,11 @@ class FacilityDetailView(LoginRequiredMixin, RegistrationObjectMixin, View):
         return render(request, self.template_name, context)
 
 
-
+class GenerateInvoiceView(LoginRequiredMixin, RegistrationObjectMixin, View):
+    template_name = "hospitals/generate_invoice.html" 
+    def get(self, request, id=None, *args, **kwargs):
+        context = {'object': self.get_object()}
+        return render(request, self.template_name, context)
 
 
 class PaymentListView(LoginRequiredMixin, View):
@@ -326,8 +330,8 @@ class PaymentCreateView(LoginRequiredMixin, PaymentObjectMixin, View):
            contact_message = get_template(
                'hospitals/payment_message.txt').render(context)
 
-           send_mail(subject, contact_message, from_email,
-                     to_email, fail_silently=False)  
+           #send_mail(subject, contact_message, from_email,
+                     #to_email, fail_silently=False)  
         
         return render(request, self.template_name1, context)
 

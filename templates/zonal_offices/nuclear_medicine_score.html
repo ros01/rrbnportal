@@ -1,0 +1,460 @@
+{% load widget_tweaks %}
+
+<form method="post" action="">
+  {% csrf_token %}
+
+ <div class="modal-header">
+    <h5 class="modal-title text-success">Enter Nuclear Medicine Scores</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+    {% for field in form %}
+
+      <div class="form-group col-md-4{% if field.errors %} invalid{% endif %}">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% for error in field.errors %}
+          <p class="help-block">{{ error }}</p>
+        {% endfor %}
+      </div>
+      
+    {% endfor %}
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times text-white"></i>  Close</button>
+    <button type="button" class="submit-btn btn btn-success ml-2 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Post Inspection Report</button>
+
+  </div>
+
+</form>
+
+<div class="container">
+
+<p class="text-success m-0 p-0"> <b>Scoring Legend: </b></p>
+i.	Pass Mark is 50 <br>
+ii.	Score grade = (50 – 59marks is for Provisional Registration, while above 60marks is for Full Registration where one modality is considered); For a facility with more than one modality, failure in any of the modalities or score of 50 – 59marks in all the modalities shall attract issuing of Provisional Registration of Practice Certificate pending the remedy of the defects. <br>
+iii.	Each modality should have at least 2 Radiographers (50 -59marks for less than two per modality) <br>
+<br>
+1.	Shielding of the Equipment room, door, window, and console area with lead, barium plaster or concrete of adequate thickness is considered as (wall = 4marks, door/door & window = 2marks, console area = 2marks, and Proper shielding and Isolation of the Molybdenum-99/Technetium-99 (Mo-99/Tc-99 generators to the keep radiation levels ALARA = 2mark) <br>
+2.	On room design and layout score as follows: ( Adequacy and security of areas for material receipt, use, and storage for licensee’s activities = 1mark, Proper assignment of areas for receipt, use, and waste storage of licensed materials as identified/approved in the license = 1mark, Adequate security of the “hot lab” at all times when not occupied = 1mark, Proper location of the “hot lab” = 1mark, Proper utilization of the Molybdenum-99/Technetium-99 (Mo-99/Tc-99) generators by the licensee = 1mark, and Provision of adequate measures to ensure that concentration for each elutes/extraction for Tc-99m does not exceed 0.15 μCi of Mo-99 per mCi of Tc-99m = 1mark) <br>
+3.	Each Radiographer attracts 2.5marks. <br>
+4.	Each Nuclear Medicine Physician attracts 1mark <br>
+5.	Other staff include Medical Physicist (0.5mark), Nuclear Medicine nurse (0.5mark), Radio-pharmacist (0.5mark), Medical Record Staff/Departmental Secretary (0.25mark), Biomedical Engineer (0.25mark) <br>
+6.	Postgraduate certification in Nuclear Medicine must be that recognized by and registrable with RRBN <br>
+7.	Each current licence of a Radiographer is 2.5marks <br>
+8.	PRMD (TLDs &/or Instadose) = 3marks; PRPE (Lead apron, Lead goggle, Lead Shield, Console Lead glass of adequate Lead equivalent, Lead glasses, Lead gloves etc = 3marks <br>
+9.	The Radionuclide Storage Unit should be surveyed periodical to confirm safety <br>
+10.	Running water (5marks) should be preferred to stagnant water - water being fetched from reservoir or container – (2marks) <br>
+11.	Certification of equipment must be by authority recognizable in Nigeria  <br>
+12.	Radionuclide handling accessories include lead pots or shielded box, lead syringe or Perspex syringe, survey meter, etc. Each of the accessories carries 0.5mark. The maximum mark is 3.  <br>
+13.	Warning lights should be mounted at the entrance to any room with radioactive material or where there is radiation activity  <br>
+14.	Warning signs should be placed at the entrance to any room with radioactive material or where there is radiation activity.  The lingua franca and the local dialect should be used.  <br>
+15.	Form CO7 should give details of the Directors and their contacts <br>
+16.	The installation and location of all radiation equipment should be made in strict compliance to high radiation safety standards. <br>
+17.	Offices include Office of Radiographer-in-Charge (0.5mark), (No sharing of office space for Radiographers from Chief and above cadre) & Radiographers’ Common Room (1mark), Clinical consulting areas (0.25mark), medical Physicist office (0.25mark), Nuclear Medicine nurse office (0.25mark), Radio-pharmacist Office (0.25mark), Medical Record Office/Secretary Office (0.25mark), Office of Biomedical Engineer (0.25mark) <br>
+18.	Note that prior to medical use, the licensee should perform daily QC checks on the dose calibrator, SPECT/CT/PET and should defined procedures if the measured activity exceeds tolerance levels. Also, records of Molybdenum concentration tests should be maintained. Provision of such evidence of quality control checks (1mark) and tests = (1mark). Award full mark if the facility is about to commence activity <br>
+19.	Non Radiographer RSO, and RSC without a Radiographer in Nuclear Medicine = 1mark, Radiographer RSO and RSC without a Radiographer in Nuclear Medicine = 2marks, while Radiographer RSO and RSC with a Radiographer in Nuclear Medicine = 3marks <br>
+20.	Document of recent result as evidence of annual radiation safety program reviews (audits) being performed = 1mark, such audit with evidence of review by management = 2marks; Score full mark of 2 if the facility is yet to commence activity <br>
+21.	Clear and proper labelling of radioactive syringes and vial = 1mark  <br>
+22.	Conduct of performance survey/Plan for performance survey of all areas of use before leaving the job site. This should include {Contamination surveys? – 1.5marks, Area (dose rate) surveys? – 1.5marks. Note that At least 3-year records should be maintained for existing facility}. For a facility that is yet to commence activity score the full mark of 3  <br>
+23.	Observation and evidence of adequate security of radioactive materials = 1.5marks and provision of constant surveillance during transport and at the location of use (1.5marks)  <br>
+24.	Adequacy and cleanliness of toilets should include:  patient’s toilet (1.5marks) and staff toilet (1.5marks)  <br>
+25.	Adequacy of waiting room includes: provision of waiting room 1 = mark, cleanliness of waiting room = 1mark, adequate furnishing of waiting room = 1mark.
+
+
+
+</div>
+
+<script>
+$(function () {
+       $( "#id_shielding_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_room_design_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_radiographers_no_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_nuclear_medicine_physicians_no_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_other_staff_no_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_nuclear_medicine_certification_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+
+$(function () {
+       $( "#id_radiographer_license_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_prmd_prpe_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_water_supply_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_equipment_certification_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_radionuclide_accessories_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+
+$(function () {
+       $( "#id_warning_lights_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_warning_signs_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_C07_form_compliance_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_equipment_installation_location_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_radionuclide_storage_unit_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_offices_adequacy_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_quality_control_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_rso_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_radiation_safety_program_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_labelling_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_performance_survey_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_radioactive_materials_security_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_toilets_cleanliness_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_waiting_room_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+</script>
+
+<script>
+  $('#id_shielding_score, #id_room_design_score, #id_radiographers_no_score, #id_nuclear_medicine_physicians_no_score, #id_other_staff_no_score, #id_nuclear_medicine_certification_score, #id_radiographer_license_score, #id_prmd_prpe_score, #id_water_supply_score, #id_equipment_certification_score, #id_radionuclide_accessories_score, #id_warning_lights_score, #id_warning_signs_score, #id_C07_form_compliance_score, #id_equipment_installation_location_score, #id_radionuclide_storage_unit_score, #id_offices_adequacy_score, #id_quality_control_score, #id_rso_score, #id_radiation_safety_program_score, #id_labelling_score, #id_performance_survey_score, #id_radioactive_materials_security_score, #id_toilets_cleanliness_score, #id_waiting_room_score').on('input',function(e){$('#id_nuclear_medicine_total').val(parseInt($('#id_shielding_score').val()) + parseInt($('#id_room_design_score').val()) + parseInt($('#id_radiographers_no_score').val()) + parseInt($('#id_nuclear_medicine_physicians_no_score').val()) + parseInt($('#id_other_staff_no_score').val()) + parseInt($('#id_nuclear_medicine_certification_score').val()) + parseInt($('#id_radiographer_license_score').val()) + parseInt($('#id_prmd_prpe_score').val()) + parseInt($('#id_water_supply_score').val()) + parseInt($('#id_equipment_certification_score').val()) + parseInt($('#id_radionuclide_accessories_score').val()) + parseInt($('#id_warning_lights_score').val()) + parseInt($('#id_warning_signs_score').val()) + parseInt($('#id_C07_form_compliance_score').val()) + parseInt($('#id_equipment_installation_location_score').val()) + parseInt($('#id_radionuclide_storage_unit_score').val()) + parseInt($('#id_offices_adequacy_score').val()) + parseInt($('#id_quality_control_score').val()) + parseInt($('#id_rso_score').val()) + parseInt($('#id_radiation_safety_program_score').val()) + parseInt($('#id_labelling_score').val()) + parseInt($('#id_performance_survey_score').val()) + parseInt($('#id_radioactive_materials_security_score').val()) + parseInt($('#id_toilets_cleanliness_score').val()) + parseInt($('#id_waiting_room_score').val()));
+        });
+
+  
+
+</script>

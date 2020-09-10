@@ -30,7 +30,7 @@
               <div class="container">
               <div class="row mt-2 pt-2">
               <div class="col text-left p-0 m-0">
-                <p class="text-success display-4 paragraph2">Create Hospital Practice Manager Profile</p>
+                <p class="text-success display-4 paragraph2">Create Hospital/Centre Practice Manager Profile</p>
                 <hr>
                 </div>
                 </div>
@@ -79,10 +79,6 @@
 
                 </div>
 
-
-
-
-
                 <div class="form-row">
                  <div class="form-group col-md-6 mb-0">
                  {{ form.password1|as_crispy_field }}
@@ -93,14 +89,15 @@
                 </div>
 
                 <div class="form-row">
-                <div class="form-group col-md-6 mb-0">
+                  <div class="form-group col-md-12 mb-0">
                {{ form.hospital_name|as_crispy_field }}
                </div>
+                
+
+               <input type="hidden" name="hospital_type" required id="id_hospital_type" value="Radiography Practice">
               
               
-                 <div class="form-group col-md-6 mb-0">
-                 {{ form.hospital_type|as_crispy_field }}
-               </div>
+                 
                </div>
 
                

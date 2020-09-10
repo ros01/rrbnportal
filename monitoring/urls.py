@@ -8,10 +8,12 @@ from .views import (
     InspectionCreateView,
     InspectionCompletedListView,
     LicenseIssueListView,
+    LicenseIssueListTable,
     LicenseDetailView,
     AccreditationDetailView,
     IssueLicenseView,
     IssueAccreditationView,
+    LicenseIssuedDetailView,
     LicensesListView,
     GeneratePdfView,
     RegisteredHospitalsListView,
@@ -19,9 +21,7 @@ from .views import (
     RecordsCreateView,
     RecordsDetailView,
     HospitalRecordsListView,
-    HospitalRecordsDetailView,
-
-   
+    HospitalRecordsDetailView,   
 )
 
 # Create your views here.
@@ -52,17 +52,14 @@ urlpatterns = [
     path('<uuid:id>/approve_report/', views.approve_report, name='approve_report'),
     path('<uuid:id>/reject_report/', views.reject_report, name='reject_report'),
     path('license_list/', LicenseIssueListView.as_view(), name='license_list'),
+    path('license_list_table/', LicenseIssueListTable.as_view(), name='license_list_table'),
     path('<uuid:id>/license_detail/', LicenseDetailView.as_view(), name='license_detail'),
     path('<uuid:id>/accreditation_detail/', AccreditationDetailView.as_view(), name='accreditation_detail'),
     path('<uuid:id>/issue_license/', IssueLicenseView.as_view(), name='issue_license'),
+    path('<uuid:id>/issued_license_details/', LicenseIssuedDetailView.as_view(), name='issued_license_details'),
     path('<uuid:id>/issue_accreditation/', IssueAccreditationView.as_view(), name='issue_accreditation'),
     path('license_issued/', LicensesListView.as_view(), name='license_issued'),
     path('<uuid:id>/generate_license/', GeneratePdfView.as_view(), name='generate_license'),
     path('hospitals_lookup/', RegisteredHospitalsListView.as_view(), name='hospitals_lookup'),
     path('<uuid:id>/hospital_details/', RegisterdHospitalsDetailView.as_view(), name='hospital_details'),
-
-   
-
-
-
 ]

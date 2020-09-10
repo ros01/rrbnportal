@@ -16,6 +16,32 @@ from .views import (
     RecordsDetail,
     HospitalRecordsList,
     HospitalRecordsDetail,
+    UltrasoundScore,
+    UltrasoundScoreUpdate,
+    UltrasoundScoreDetail,
+    NuclearMedicineScore,
+    NuclearMedicineScoreDetail,
+    NuclearMedicineScoreUpdate,
+    RadiotherapyScore,
+    RadiotherapyScoreUpdate,
+    MriScore,
+    MriScoreUpdate,
+    CtscanScore,
+    CtscanScoreUpdate,
+    XrayScore,
+    XrayScoreUpdate,
+    XrayScoreDetail,
+    FlouroscopyScore,
+    FlouroscopyScoreUpdate,
+
+    
+
+   
+    
+    
+
+
+
 )
 
 from django.views.generic import (
@@ -25,6 +51,7 @@ from django.views.generic import (
      UpdateView,
      DeleteView,
      TemplateView
+     
 )
 
 
@@ -40,6 +67,23 @@ urlpatterns = [
     path('abuja_list/', AbujaScheduleListView.as_view(), name='abuja_list'),
     path('<uuid:id>/inspection_detail/', InspectionView.as_view(), name='inspection_detail'),
     path('<uuid:id>/inspection_report/', InspectionReportView.as_view(), name='inspection_report'),
+    path('<uuid:id>/ultrasound_score/', UltrasoundScore.as_view(), name='ultrasound_score'),
+    path('<uuid:id>/ultrasound_detail/', UltrasoundScoreDetail.as_view(), name='ultrasound_detail'),
+    path('<uuid:id>/ultrasound_update/', UltrasoundScoreUpdate.as_view(), name='ultrasound_update'),
+    path('<uuid:id>/nuclear_medicine_score/', NuclearMedicineScore.as_view(), name='nuclear_medicine_score'),
+    path('<uuid:id>/nuclear_medicine_detail/', NuclearMedicineScoreDetail.as_view(), name='nuclear_medicine_detail'),
+    path('<uuid:id>/nuclear_medicine_update/', NuclearMedicineScoreUpdate.as_view(), name='nuclear_medicine_update'),
+    path('<uuid:id>/radiotherapy_score/', RadiotherapyScore.as_view(), name='radiotherapy_score'),
+    path('<uuid:id>/radiotherapy_update/', RadiotherapyScoreUpdate.as_view(), name='radiotherapy_update'),
+    path('<uuid:id>/mri_score/', MriScore.as_view(), name='mri_score'),
+    path('<uuid:id>/mri_update/', MriScoreUpdate.as_view(), name='mri_update'),
+    path('<uuid:id>/ctscan_score/', CtscanScore.as_view(), name='ctscan_score'),
+    path('<uuid:id>/ctscan_update/', CtscanScoreUpdate.as_view(), name='ctscan_update'),
+    path('<uuid:id>/xray_score/', XrayScore.as_view(), name='xray_score'),
+    path('<uuid:id>/xray_detail/', XrayScoreDetail.as_view(), name='xray_detail'),
+    path('<uuid:id>/xray_update/', XrayScoreUpdate.as_view(), name='xray_update'),
+    path('<uuid:id>/flouroscopy_score/', FlouroscopyScore.as_view(), name='flouroscopy_score'),
+    path('<uuid:id>/flouroscopy_update/', FlouroscopyScoreUpdate.as_view(), name='flouroscopy_update'),
     path('<uuid:id>/accreditation_report/', AccreditationReportView.as_view(), name='accreditation_report'),
     path('inspection_reports_list/', InspectionReportsView.as_view(), name='inspection_reports_list'),
     path('<uuid:id>/view_inspection_report/', views.view_inspection_report, name='view_inspection_report'),
