@@ -1,0 +1,365 @@
+{% load widget_tweaks %}
+
+<form method="post" action="">
+  {% csrf_token %}
+
+ <div class="modal-header">
+    <h5 class="modal-title text-success">Enter Mamography Scores</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+    {% for field in form %}
+
+      <div class="form-group col-md-4{% if field.errors %} invalid{% endif %}">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% for error in field.errors %}
+          <p class="help-block">{{ error }}</p>
+        {% endfor %}
+      </div>
+      
+    {% endfor %}
+    </div>
+  </div>
+
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+    <button type="button" class="submit-btn btn btn-success ml-2 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Submit Mamography Scores</button>
+
+  </div>
+</form>
+  <div class="container">
+
+<p class="text-success m-0 p-0"> <b>Scoring Legend: </b></p>
+
+i.  Pass Mark is 50 <br>
+ii. Score grade = (50 – 59marks is for Provisional Registration, while above 60marks is for Full Registration where one modality is considered); For a facility with more than one modality, failure in any of the modalities or score of 50 – 59marks in all the modalities shall attract issuing of Provisional Registration of Practice Certificate pending the remedy of the defects. <br>
+iii.  Each modality should have at least 2 Radiographers (50 -59marks for less than two per modality) <br>
+<br>
+1.  Shielding of the Equipment room, door, window, and console area with lead, barium plaster or concrete of adequate thickness is considered as (wall = 4marks, door/door & window = 2 marks, and console area = 4 marks). <br>
+2.  Room design and layout for all radiation emitting equipment should be in strict compliance to high radiation safety standards <br>
+3.  Each Radiographer attracts 5 marks <br>
+4.  Radiologist without special training in mammography = 2 marks; Radiologist with special training in mammography = 4 marks <br>  
+5.  Each current licence is 5 marks  <br>
+6.  Post graduate certification in mammography must be that recognized and registrable by RRBN <br>
+7.  PRMD (TLDs & Instadose) = 5 marks; PRPE (Lead apron, Lead Shield, Console Lead glass of adequate Lead equivalent, Lead glasses, Lead gloves etc) = 5 marks  <br>
+8.  Non Radiographer RSO, and Non Radiographer RSA = 1mark, Radiographer RSO and Non Radiographer RSA = 1.5 marks, while Radiographer RSO and Radiographer RSA = 2 marks <br>
+9.  Running water (4 marks) is preferable source of water supply than stagnant water – water in reservoir or container (2 marks) <br>
+10. Equipment certification must be by authority recognizable in Nigeria <br>
+11. Each mammography accessory attracts 1 mark <br>
+12. Warning light must be mounted on entrance to radiation equipment room.
+13. Warning signs must be placed on entrance to radiation equipment room. It must be in lingua franca and local dialect <br>
+14. The completed form CO7 should contain names of the directors and their contacts <br>
+15. For Adequacy of Equipment, Installation & Location: Normal mammography machine= 1mark, while Tomosynthesis Machine = 2 marks; Proper Installation (Where X-Ray tube is not directed to public/residential zone or such a way that radiation may seriously hit the console area) = 1 mark, & Proper Location (i.e. ground floor) = 1 mark. Only Functional Equipment is to be considered. <br>
+16. Processing unit includes (a) manual = 3 marks to be distributed as follows (each tank = 0.3 mark, Standard Dryer = 0.3 mark, wet bench = 0.3 mark., Dry bench = 0.3 mark, actinic marker 0.3 mark, safelight = 0.3 mark, hatch = 0.3 mark, film carrier = 0.2 mark, film storage system = 0.3 mark, hangers & cassettes = 0.4); <br>                   
+(b)  Automatic Processing = 3.5 marks to be distributed as follows  (automatic processing machine = 2 marks, Dry bench = 0.3 mark, actinic marker 0.6 mark, safelight = 0.3 mark, hatch = 0.3 mark, film carrier = 0.3 mark, film storage system = 0.2 mark, hangers & cassettes = 0.5); <br>          
+(c)  Digitized processing  = 5 marks <br>
+17. Toilets include General Toilet (2 mark) & Staff Toilet (2 marks) <br>
+18. Adequacy of waiting room should comprise of its cleanliness (1.5 marks) Ventilation/air conditioning (1.5 marks) and furnishing (2 marks) <br>
+19. Spacious and conducive nature of the office for the Radiographer = 2 marks.  Adequate furnishing of the office = 2 marks <br>
+
+
+
+</div>
+
+<script>
+$(function () {
+       $( "#id_shielding_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_room_design_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_radiographers_no_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_radiologists_no_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_radiographer_license_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_mammography_certification_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_prmd_prpe_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+    
+$(function () {
+       $( "#id_rso_rsa_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });  
+$(function () {
+       $( "#id_water_supply_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_equipment_certification_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_accessories_adequacy_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_warning_lights_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_warning_signs_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_C07_form_compliance_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_equipment_installation_location_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_processing_unit_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_toilets_cleanliness_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_waiting_room_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_offices_adequacy_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+</script>
+
+<script>
+  $('#id_shielding_score, #id_room_design_score, #id_radiographers_no_score, #id_radiologists_no_score, #id_radiographer_license_score, #id_mammography_certification_score, #id_prmd_prpe_score, #id_rso_rsa_score, #id_water_supply_score, #id_equipment_certification_score, #id_accessories_adequacy_score,  #id_warning_lights_score,  #id_warning_signs_score, #id_C07_form_compliance_score, #id_equipment_installation_location_score, #id_processing_unit_score, #id_toilets_cleanliness_score, #id_waiting_room_score, #id_offices_adequacy_score').on('input',function(e){$('#id_mamography_total').val(parseInt($('#id_shielding_score').val()) + parseInt($('#id_room_design_score').val()) + parseInt($('#id_radiographers_no_score').val()) + parseInt($('#id_radiologists_no_score').val()) + parseInt($('#id_radiographer_license_score').val()) + parseInt($('#id_mammography_certification_score').val()) + parseInt($('#id_prmd_prpe_score').val()) + parseInt($('#id_rso_rsa_score').val()) + parseInt($('#id_water_supply_score').val()) + parseInt($('#id_equipment_certification_score').val()) + parseInt($('#id_accessories_adequacy_score').val()) + parseInt($('#id_warning_lights_score').val()) + parseInt($('#id_warning_signs_score').val()) + parseInt($('#id_C07_form_compliance_score').val()) + parseInt($('#id_equipment_installation_location_score').val()) + parseInt($('#id_processing_unit_score').val()) + parseInt($('#id_toilets_cleanliness_score').val()) + parseInt($('#id_waiting_room_score').val()) + parseInt($('#id_offices_adequacy_score').val()));
+        });
+
+  
+
+</script>
+

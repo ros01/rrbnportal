@@ -362,6 +362,113 @@ class Flouroscopy(models.Model):
     def __str__(self):
         return str(self.flouroscopy_total)
 
+class Mamography(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    shielding_score = models.IntegerField()
+    room_design_score = models.IntegerField()
+    radiographers_no_score = models.IntegerField()
+    radiologists_no_score = models.IntegerField()
+    radiographer_license_score = models.IntegerField()
+    mammography_certification_score = models.IntegerField()
+    prmd_prpe_score = models.IntegerField()
+    rso_rsa_score = models.IntegerField()
+    water_supply_score = models.IntegerField()
+    equipment_certification_score = models.IntegerField()
+    accessories_adequacy_score = models.IntegerField()
+    warning_lights_score = models.IntegerField()
+    warning_signs_score = models.IntegerField()
+    C07_form_compliance_score = models.IntegerField()
+    equipment_installation_location_score = models.IntegerField()
+    processing_unit_score = models.IntegerField()
+    toilets_cleanliness_score = models.IntegerField()
+    waiting_room_score = models.IntegerField()
+    offices_adequacy_score = models.IntegerField()
+    mamography_total = models.IntegerField()
+
+    
+    def __str__(self):
+        return str(self.mamography_total)
+
+
+class Echocardiography(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    room_design_score = models.IntegerField()
+    radiographers_no_score = models.IntegerField()
+    radiographer_license_score = models.IntegerField()
+    echocardiography_certification_score = models.IntegerField()
+    water_supply_score = models.IntegerField()
+    accessories_adequacy_score = models.IntegerField()
+    C07_form_compliance_score = models.IntegerField()
+    equipment_installation_location_score = models.IntegerField()
+    toilets_cleanliness_score = models.IntegerField()
+    waiting_room_score = models.IntegerField()
+    offices_adequacy_score = models.IntegerField()
+    support_staff_score = models.IntegerField()
+    echocardiography_total = models.IntegerField()
+
+    
+    def __str__(self):
+        return str(self.echocardiography_total)
+
+
+class Dentalxray(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    shielding_score = models.IntegerField()
+    room_design_score = models.IntegerField()
+    radiographers_no_score = models.IntegerField()
+    radiologists_no_score = models.IntegerField()
+    radiographer_license_score = models.IntegerField()
+    prmd_prpe_score = models.IntegerField()
+    water_supply_score = models.IntegerField()
+    equipment_certification_score = models.IntegerField()
+    warning_lights_score = models.IntegerField()
+    warning_signs_score = models.IntegerField()
+    C07_form_compliance_score = models.IntegerField()
+    equipment_installation_location_score = models.IntegerField()
+    processing_unit_score = models.IntegerField()
+    toilets_cleanliness_score = models.IntegerField()
+    waiting_room_score = models.IntegerField()
+    offices_adequacy_score = models.IntegerField()
+    dentalxray_total = models.IntegerField()
+
+    
+    def __str__(self):
+        return str(self.dentalxray_total)
+
+
+class Angiography(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    shielding_score = models.IntegerField()
+    room_design_score = models.IntegerField()
+    radiographers_no_score = models.IntegerField()
+    radiologists_no_score = models.IntegerField()
+    radiographer_license_score = models.IntegerField()
+    angiography_certification_score = models.IntegerField()
+    prmd_prpe_score = models.IntegerField()
+    rso_rsa_score = models.IntegerField()
+    water_supply_score = models.IntegerField()
+    equipment_certification_score = models.IntegerField()
+    accessories_adequacy_score = models.IntegerField()
+    warning_lights_score = models.IntegerField()
+    warning_signs_score = models.IntegerField()
+    C07_form_compliance_score = models.IntegerField()
+    equipment_installation_location_score = models.IntegerField()
+    processing_unit_score = models.IntegerField()
+    toilets_cleanliness_score = models.IntegerField()
+    waiting_room_score = models.IntegerField()
+    offices_adequacy_score = models.IntegerField()
+    angiography_total = models.IntegerField()
+
+    
+    def __str__(self):
+        return str(self.angiography_total)
+
+
+
 
 class Inspection(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -434,6 +541,14 @@ class Inspection(models.Model):
             score.insert(0, self.practice_manager.xray.xray_total)
         if self.practice_manager.flouroscopy.flouroscopy_total:
             score.insert(0, self.practice_manager.flouroscopy.flouroscopy_total)
+        if self.practice_manager.mamography.mamography_total:
+            score.insert(0, self.practice_manager.mamography.mamography_total)
+        if self.practice_manager.angiography.angiography_total:
+            score.insert(0, self.practice_manager.angiography.angiography_total)
+        if self.practice_manager.echocardiography.echocardiography_total:
+            score.insert(0, self.practice_manager.echocardiography.echocardiography_total)
+        if self.practice_manager.dentalxray.dentalxray_total:
+            score.insert(0, self.practice_manager.dentalxray.dentalxray_total)
         
         self.inspection_total = sum(score)/len(score)
         super(Inspection, self).save(*args, **kwargs)

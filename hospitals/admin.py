@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Registration, Payment, Inspection, License, Schedule, Records, Appraisal, Ultrasound, Mri, Xray, Ctscan, Flouroscopy, Nuclearmedicine, Radiotherapy
+from .models import Registration, Payment, Inspection, License, Schedule, Records, Appraisal, Ultrasound, Mri, Xray, Ctscan, Flouroscopy, Nuclearmedicine, Radiotherapy, Mamography, Dentalxray, Echocardiography, Angiography
 
 
 class RegistrationAdmin(admin.ModelAdmin):
@@ -120,6 +120,50 @@ class FlouroscopyAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Flouroscopy, FlouroscopyAdmin)
+
+
+
+class MamographyAdmin(admin.ModelAdmin):
+  list_display = ('id', 'practice_manager',  'mamography_total')
+  list_display_links = ('id', 'practice_manager', 'mamography_total')
+  list_filter = ('id', 'practice_manager', 'mamography_total')
+  search_fields = ('id', 'practice_manager', 'mamography_total')
+  list_per_page = 25
+
+
+admin.site.register(Mamography, MamographyAdmin)
+
+
+class DentalxrayAdmin(admin.ModelAdmin):
+  list_display = ('id', 'practice_manager',  'dentalxray_total')
+  list_display_links = ('id', 'practice_manager', 'dentalxray_total')
+  list_filter = ('id', 'practice_manager', 'dentalxray_total')
+  search_fields = ('id', 'practice_manager', 'dentalxray_total')
+  list_per_page = 25
+
+
+admin.site.register(Dentalxray, DentalxrayAdmin)
+
+
+class AngiographyAdmin(admin.ModelAdmin):
+  list_display = ('id', 'practice_manager',  'angiography_total')
+  list_display_links = ('id', 'practice_manager', 'angiography_total')
+  list_filter = ('id', 'practice_manager', 'angiography_total')
+  search_fields = ('id', 'practice_manager', 'angiography_total')
+  list_per_page = 25
+
+
+admin.site.register(Angiography, AngiographyAdmin)
+
+class EchocardiographyAdmin(admin.ModelAdmin):
+  list_display = ('id', 'practice_manager',  'echocardiography_total')
+  list_display_links = ('id', 'practice_manager', 'echocardiography_total')
+  list_filter = ('id', 'practice_manager', 'echocardiography_total')
+  search_fields = ('id', 'practice_manager', 'echocardiography_total')
+  list_per_page = 25
+
+
+admin.site.register(Echocardiography, EchocardiographyAdmin)
 
 
 class InspectionAdmin(admin.ModelAdmin):

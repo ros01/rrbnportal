@@ -3,8 +3,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test
 from accounts.decorators import zonaloffices_required
-from hospitals.models import Schedule, Inspection, License, Records, Ultrasound, Xray, Nuclearmedicine, Radiotherapy, Mri, Ctscan, Xray, Flouroscopy
-from .forms import InspectionModelForm, RecordsModelForm, AccreditationModelForm, UltrasoundModelForm, XrayModelForm, FlouroscopyModelForm, CtscanModelForm, MriModelForm, NuclearMedicineModelForm, RadiotherapyModelForm
+from hospitals.models import Schedule, Inspection, License, Records, Ultrasound, Xray, Nuclearmedicine, Radiotherapy, Mri, Ctscan, Xray, Flouroscopy, Mamography, Dentalxray, Echocardiography, Angiography
+from .forms import InspectionModelForm, RecordsModelForm, AccreditationModelForm, UltrasoundModelForm, XrayModelForm, FlouroscopyModelForm, CtscanModelForm, MriModelForm, NuclearMedicineModelForm, RadiotherapyModelForm,  MamographyModelForm, DentalXrayModelForm, EchocardiographyModelForm, AngiographyModelForm
 from django.views import View
 from django.views.generic import (
      CreateView,
@@ -738,7 +738,301 @@ class FlouroscopyScoreUpdate(FlouroscopyObjectMixin, View):
 
 
 
+class MamographyScore(InspectionObjectMixin, View):
+    template_name = 'zonal_offices/mamography_score.html'
+    template_name1 = 'zonal_offices/mamography_score_details.html'
+    def get(self, request,  *args, **kwargs):
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = MamographyModelForm(instance=obj)
+            context['object'] = obj
+            context['form'] = form
 
+        return render(request, self.template_name, context)
+
+    def post(self, request,  *args, **kwargs):
+        
+        form = MamographyModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+        
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = MamographyModelForm(instance=obj)
+            context['object'] = obj
+            context['form'] = form
+
+        return render(request, self.template_name1, context)
+        
+
+class MamographyObjectMixin(object):
+    model = Mamography
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+class MamographyScoreDetail(MamographyObjectMixin, View):
+    template_name = "zonal_offices/mamography_score_details.html"
+
+    def get(self, request, id=None, *args, **kwargs):
+        context = {'object': self.get_object()}
+        return render(request, self.template_name, context)
+
+ 
+class MamographyScoreUpdate(MamographyObjectMixin, View):
+    template_name = "zonal_offices/mamography_score_update.html" 
+    template_name1 = "zonal_offices/mamography_score_details.html" 
+    success_message = 'Mamography Score Updated Successfully.'
+
+    def get(self, request, id=None, *args, **kwargs):
+        # GET method
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = MamographyModelForm(instance=obj)
+            context['object'] = obj
+            context['form'] = form
+        return render(request, self.template_name, context)
+
+    def post(self, request, id=None,  *args, **kwargs):
+        # POST method
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = MamographyModelForm(request.POST or None, instance=obj)
+            if form.is_valid():
+                form.save()
+            context['object'] = obj
+            context['form'] = form
+        return render(request, self.template_name1, context)
+
+
+class DentalXrayScore(InspectionObjectMixin, View):
+    template_name = 'zonal_offices/dental_xray_score.html'
+    template_name1 = 'zonal_offices/dental_xray_score_details.html'
+    def get(self, request,  *args, **kwargs):
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = DentalXrayModelForm(instance=obj)
+            context['object'] = obj
+            context['form'] = form
+
+        return render(request, self.template_name, context)
+
+    def post(self, request,  *args, **kwargs):
+        
+        form = DentalXrayModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+        
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = DentalXrayModelForm(instance=obj)
+            context['object'] = obj
+            context['form'] = form
+
+        return render(request, self.template_name1, context)
+        
+
+class DentalXrayObjectMixin(object):
+    model = Dentalxray
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+class DentalXrayScoreDetail(DentalXrayObjectMixin, View):
+    template_name = "zonal_offices/dental_xray_score_details.html"
+
+    def get(self, request, id=None, *args, **kwargs):
+        context = {'object': self.get_object()}
+        return render(request, self.template_name, context)
+
+ 
+class DentalXrayScoreUpdate(DentalXrayObjectMixin, View):
+    template_name = "zonal_offices/dental_xray_score_update.html" 
+    template_name1 = "zonal_offices/dental_xray_score_details.html" 
+    success_message = 'Dental X-ray Score Updated Successfully.'
+
+    def get(self, request, id=None, *args, **kwargs):
+        # GET method
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = DentalXrayModelForm(instance=obj)
+            context['object'] = obj
+            context['form'] = form
+        return render(request, self.template_name, context)
+
+    def post(self, request, id=None,  *args, **kwargs):
+        # POST method
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = DentalXrayModelForm(request.POST or None, instance=obj)
+            if form.is_valid():
+                form.save()
+            context['object'] = obj
+            context['form'] = form
+        return render(request, self.template_name1, context)
+
+
+class EchocardiographyScore(InspectionObjectMixin, View):
+    template_name = 'zonal_offices/echocardiography_score.html'
+    template_name1 = 'zonal_offices/echocardiography_score_details.html'
+    def get(self, request,  *args, **kwargs):
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = EchocardiographyModelForm(instance=obj)
+            context['object'] = obj
+            context['form'] = form
+
+        return render(request, self.template_name, context)
+
+    def post(self, request,  *args, **kwargs):
+        
+        form = EchocardiographyModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+        
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = EchocardiographyModelForm(instance=obj)
+            context['object'] = obj
+            context['form'] = form
+
+        return render(request, self.template_name1, context)
+        
+
+class EchocardiographyObjectMixin(object):
+    model = Echocardiography
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+class EchocardiographyScoreDetail(EchocardiographyObjectMixin, View):
+    template_name = "zonal_offices/echocardiography_score_details.html"
+
+    def get(self, request, id=None, *args, **kwargs):
+        context = {'object': self.get_object()}
+        return render(request, self.template_name, context)
+
+ 
+class EchocardiographyScoreUpdate(EchocardiographyObjectMixin, View):
+    template_name = "zonal_offices/echocardiography_score_update.html" 
+    template_name1 = "zonal_offices/echocardiography_score_details.html" 
+    success_message = 'Echocardiography Score Updated Successfully.'
+
+    def get(self, request, id=None, *args, **kwargs):
+        # GET method
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = EchocardiographyModelForm(instance=obj)
+            context['object'] = obj
+            context['form'] = form
+        return render(request, self.template_name, context)
+
+    def post(self, request, id=None,  *args, **kwargs):
+        # POST method
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = EchocardiographyModelForm(request.POST or None, instance=obj)
+            if form.is_valid():
+                form.save()
+            context['object'] = obj
+            context['form'] = form
+        return render(request, self.template_name1, context)
+
+
+
+class AngiographyScore(InspectionObjectMixin, View):
+    template_name = 'zonal_offices/angiography_score.html'
+    template_name1 = 'zonal_offices/angiography_score_details.html'
+    def get(self, request,  *args, **kwargs):
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = AngiographyModelForm(instance=obj)
+            context['object'] = obj
+            context['form'] = form
+
+        return render(request, self.template_name, context)
+
+    def post(self, request,  *args, **kwargs):
+        
+        form = AngiographyModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+        
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = AngiographyModelForm(instance=obj)
+            context['object'] = obj
+            context['form'] = form
+
+        return render(request, self.template_name1, context)
+        
+
+class AngiographyObjectMixin(object):
+    model = Angiography
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+class AngiographyScoreDetail(AngiographyObjectMixin, View):
+    template_name = "zonal_offices/angiography_score_details.html"
+
+    def get(self, request, id=None, *args, **kwargs):
+        context = {'object': self.get_object()}
+        return render(request, self.template_name, context)
+
+ 
+class AngiographyScoreUpdate(AngiographyObjectMixin, View):
+    template_name = "zonal_offices/angiography_score_update.html" 
+    template_name1 = "zonal_offices/angiography_score_details.html" 
+    success_message = 'Angiography Score Updated Successfully.'
+
+    def get(self, request, id=None, *args, **kwargs):
+        # GET method
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = AngiographyModelForm(instance=obj)
+            context['object'] = obj
+            context['form'] = form
+        return render(request, self.template_name, context)
+
+    def post(self, request, id=None,  *args, **kwargs):
+        # POST method
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = AngiographyModelForm(request.POST or None, instance=obj)
+            if form.is_valid():
+                form.save()
+            context['object'] = obj
+            context['form'] = form
+        return render(request, self.template_name1, context)
 
 
 def mri(request, id):

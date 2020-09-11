@@ -33,6 +33,20 @@ from .views import (
     XrayScoreDetail,
     FlouroscopyScore,
     FlouroscopyScoreUpdate,
+    MamographyScore,
+    MamographyScoreUpdate, 
+    DentalXrayScore,
+    DentalXrayScoreUpdate,
+    EchocardiographyScore,
+    EchocardiographyScoreUpdate,
+    AngiographyScore,
+    AngiographyScoreUpdate,
+
+
+
+
+
+
 
     
 
@@ -84,6 +98,14 @@ urlpatterns = [
     path('<uuid:id>/xray_update/', XrayScoreUpdate.as_view(), name='xray_update'),
     path('<uuid:id>/flouroscopy_score/', FlouroscopyScore.as_view(), name='flouroscopy_score'),
     path('<uuid:id>/flouroscopy_update/', FlouroscopyScoreUpdate.as_view(), name='flouroscopy_update'),
+    path('<uuid:id>/mamography_score/', MamographyScore.as_view(), name='mamography_score'),
+    path('<uuid:id>/mamography_update/', MamographyScoreUpdate.as_view(), name='mamography_update'),
+    path('<uuid:id>/dental_xray_score/', DentalXrayScore.as_view(), name='dental_xray_score'),
+    path('<uuid:id>/dental_xray_update/', DentalXrayScoreUpdate.as_view(), name='dental_xray_update'),
+    path('<uuid:id>/echocardiography_score/', EchocardiographyScore.as_view(), name='echocardiography_score'),
+    path('<uuid:id>/echocardiography_update/', EchocardiographyScoreUpdate.as_view(), name='echocardiography_update'),
+    path('<uuid:id>/angiography_score/', AngiographyScore.as_view(), name='angiography_score'),
+    path('<uuid:id>/angiography_update/', AngiographyScoreUpdate.as_view(), name='angiography_update'),
     path('<uuid:id>/accreditation_report/', AccreditationReportView.as_view(), name='accreditation_report'),
     path('inspection_reports_list/', InspectionReportsView.as_view(), name='inspection_reports_list'),
     path('<uuid:id>/view_inspection_report/', views.view_inspection_report, name='view_inspection_report'),

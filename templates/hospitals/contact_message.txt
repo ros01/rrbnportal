@@ -13,7 +13,7 @@ Email Address: {{object.email}}
 
 Submission Time: {{object.reg_date}}
 
-Kindly proceed to pay your registration fee of N50,000 by generating RRR on remita and either paying online or at any commercial bank of your choice.
+Kindly proceed to pay your registration fee of N50,000 plus cost of available modalities by generating RRR on remita and either paying online or at any commercial bank of your choice.
 
 Thank You!
 

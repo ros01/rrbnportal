@@ -123,6 +123,42 @@
                 </label>
               </div>
               {% endif %}
+
+              {% if "Mamography" in object.equipment %}
+              <div class="form-check mr-3">
+                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-mamography" data-form-url="{% url 'zonal_offices:mamography_score' object.id %}">
+                <label class="form-check-label" for="exampleRadios3">
+                  Mamography
+                </label>
+              </div>
+              {% endif %}
+
+              {% if "Dental X-ray" in object.equipment %}
+              <div class="form-check mr-3">
+                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-dentalxray" data-form-url="{% url 'zonal_offices:dental_xray_score' object.id %}">
+                <label class="form-check-label" for="exampleRadios3">
+                  Dental X-ray
+                </label>
+              </div>
+              {% endif %}
+
+              {% if "Echocardiography" in object.equipment %}
+              <div class="form-check mr-3">
+                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-echocardiography" data-form-url="{% url 'zonal_offices:echocardiography_score' object.id %}">
+                <label class="form-check-label" for="exampleRadios3">
+                  Echocardiography
+                </label>
+              </div>
+              {% endif %}
+
+              {% if "Angiography" in object.equipment %}
+              <div class="form-check mr-3">
+                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-angiography" data-form-url="{% url 'zonal_offices:angiography_score' object.id %}">
+                <label class="form-check-label" for="exampleRadios3">
+                  Angiography
+                </label>
+              </div>
+              {% endif %}
              
             </div>
         </fieldset>
