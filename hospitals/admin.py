@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Registration, Payment, Inspection, License, Schedule, Records, Appraisal, Ultrasound, Mri, Xray, Ctscan, Flouroscopy, Nuclearmedicine, Radiotherapy, Mamography, Dentalxray, Echocardiography, Angiography
+from .models import Registration, Payment, Inspection, License, Schedule, Records, Appraisal, Ultrasound, Mri, Xray, Ctscan, Flouroscopy, Nuclearmedicine, Radiotherapy, Mamography, Dentalxray, Echocardiography, Angiography, Carm
 
 
 class RegistrationAdmin(admin.ModelAdmin):
@@ -164,6 +164,17 @@ class EchocardiographyAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Echocardiography, EchocardiographyAdmin)
+
+
+class CarmAdmin(admin.ModelAdmin):
+  list_display = ('id', 'practice_manager',  'carm_total')
+  list_display_links = ('id', 'practice_manager', 'carm_total')
+  list_filter = ('id', 'practice_manager', 'carm_total')
+  search_fields = ('id', 'practice_manager', 'carm_total')
+  list_per_page = 25
+
+
+admin.site.register(Carm, CarmAdmin)
 
 
 class InspectionAdmin(admin.ModelAdmin):

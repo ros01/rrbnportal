@@ -8,6 +8,7 @@ from django.urls import reverse
 from .choices import STATE_CHOICES, INSPECTION_ZONE, EQUIPMENT, SERVICES, PAYMENT_METHOD, LICENSE_STATUS, VISITATION_REASON, HOSPITAL_TYPE, APPLICATION_TYPE
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.core.exceptions import ObjectDoesNotExist
 
 
 
@@ -29,15 +30,6 @@ def increment_hospital_code():
     new_hospital_code = str(int(hospital_code) + 1)
     new_hospital_code = hospital_code[0:-(len(new_hospital_code))] + new_hospital_code
     return new_hospital_code
-
-
-
-    
-
-
-    
-
-
 
 
 
@@ -109,7 +101,7 @@ class Payment(models.Model):
     payment_date = models.DateTimeField(default=datetime.now, blank=True)  
     vet_status = models.IntegerField(default=1)
     vetting_officer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, related_name='vetted_by', blank=True, null=True)
-    vet_date =models.DateTimeField(blank=True, auto_now=False, auto_now_add=True)
+    vet_date =models.DateTimeField(blank=True, null=True)
 
 
 
@@ -118,6 +110,16 @@ class Payment(models.Model):
 
     def payment_date_pretty(self):
         return self.payment_date.strftime('%b %e %Y')
+
+   
+
+
+    def save(self, *args, **kwargs):
+        
+        if self.vet_status == 2:
+            self.vet_date = datetime.now()
+        super(Payment, self).save(*args, **kwargs)
+
 
     def vet_date_pretty(self):
         return self.vet_date.strftime('%b %e %Y')
@@ -164,8 +166,11 @@ class Schedule(models.Model):
 
     def save(self, *args, **kwargs):
         super(Schedule, self).save(*args, **kwargs)
-        self.practice_manager.payment.vet_status=4
+        self.practice_manager.payment.vet_status = 4
         self.practice_manager.payment.save()
+
+
+        
 
 class Nuclearmedicine(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -468,6 +473,33 @@ class Angiography(models.Model):
         return str(self.angiography_total)
 
 
+    
+
+class Carm(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    shielding_score = models.IntegerField()
+    room_design_score = models.IntegerField()
+    radiographers_no_score = models.IntegerField()
+    radiologists_no_score = models.IntegerField()
+    radiographer_license_score = models.IntegerField()
+    prmd_prpe_score = models.IntegerField()
+    water_supply_score = models.IntegerField()
+    equipment_certification_score = models.IntegerField()
+    accessories_adequacy_score = models.IntegerField()
+    warning_lights_score = models.IntegerField()
+    warning_signs_score = models.IntegerField()
+    C07_form_compliance_score = models.IntegerField()
+    equipment_installation_location_score = models.IntegerField()
+    processing_unit_score = models.IntegerField()
+    toilets_cleanliness_score = models.IntegerField()
+    waiting_room_score = models.IntegerField()
+    offices_adequacy_score = models.IntegerField()
+    carm_total = models.IntegerField()
+
+    
+    def __str__(self):
+        return str(self.carm_total)
 
 
 class Inspection(models.Model):
@@ -493,7 +525,7 @@ class Inspection(models.Model):
     inspection_zone = models.CharField(max_length=100)
     vet_status = models.IntegerField(default=4)
     inspection_status = models.IntegerField(default=1)
-    inspection_total = models.IntegerField(blank=True)
+    inspection_total = models.DecimalField(blank=True, max_digits=5, decimal_places=2)
     inspection_comments = models.TextField(blank=True)
     photo_main = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     photo_1 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
@@ -527,31 +559,73 @@ class Inspection(models.Model):
         
         #score = [self.practice_manager.nuclearmedicine.nuclear_medicine_total, self.practice_manager.radiotherapy.radiotherapy_total, self.practice_manager.mri.mri_total, self.practice_manager.ultrasound.ultrasound_total, self.practice_manager.ctscan.ctscan_total, self.practice_manager.xray.xray_total, self.practice_manager.flouroscopy.flouroscopy_total]
         score = []
-        if self.practice_manager.nuclearmedicine.nuclear_medicine_total:
+
+       
+        try:
             score.insert(0, self.practice_manager.nuclearmedicine.nuclear_medicine_total)
-        if self.practice_manager.radiotherapy.radiotherapy_total:
+        except Nuclearmedicine.DoesNotExist:
+            pass
+        
+        try:
             score.insert(0, self.practice_manager.radiotherapy.radiotherapy_total)
-        if self.practice_manager.mri.mri_total:
+        except Radiotherapy.DoesNotExist:
+            pass
+
+        try:
             score.insert(0, self.practice_manager.mri.mri_total)
-        if self.practice_manager.ctscan.ctscan_total:
+        except Mri.DoesNotExist:
+            pass
+
+        try:
             score.insert(0, self.practice_manager.ctscan.ctscan_total)
-        if self.practice_manager.ultrasound.ultrasound_total:
+        except Ctscan.DoesNotExist:
+            pass
+
+        try:
             score.insert(0, self.practice_manager.ultrasound.ultrasound_total)
-        if self.practice_manager.xray.xray_total:
+        except Ultrasound.DoesNotExist:
+            pass
+
+        try:
             score.insert(0, self.practice_manager.xray.xray_total)
-        if self.practice_manager.flouroscopy.flouroscopy_total:
+        except Xray.DoesNotExist:
+            pass
+
+        try:
             score.insert(0, self.practice_manager.flouroscopy.flouroscopy_total)
-        if self.practice_manager.mamography.mamography_total:
+        except Flouroscopy.DoesNotExist:
+            pass
+
+        try:
             score.insert(0, self.practice_manager.mamography.mamography_total)
-        if self.practice_manager.angiography.angiography_total:
+        except Mamography.DoesNotExist:
+            pass
+
+        try:
             score.insert(0, self.practice_manager.angiography.angiography_total)
-        if self.practice_manager.echocardiography.echocardiography_total:
+        except Angiography.DoesNotExist:
+            pass
+
+        try:
             score.insert(0, self.practice_manager.echocardiography.echocardiography_total)
-        if self.practice_manager.dentalxray.dentalxray_total:
+        except Echocardiography.DoesNotExist:
+            pass
+
+        try:
             score.insert(0, self.practice_manager.dentalxray.dentalxray_total)
+        except Dentalxray.DoesNotExist:
+            pass
+
+        try:
+            score.insert(0, self.practice_manager.carm.carm_total)
+        except Carm.DoesNotExist:
+            pass
+      
         
         self.inspection_total = sum(score)/len(score)
         super(Inspection, self).save(*args, **kwargs)
+        self.practice_manager.schedule.application_status = 5
+        self.practice_manager.schedule.save()
 
         
        
@@ -647,7 +721,7 @@ class License(models.Model):
     inspection_date = models.DateTimeField(default=datetime.now, blank=True)
     issue_date = models.DateTimeField(default=datetime.now, blank=True)
     expiry_date = models.DateTimeField(default=datetime.now, blank=True)
-    license_status = models.CharField(max_length=10, choices = LICENSE_STATUS)
+    license_status = models.CharField(max_length=10)
 
 
 
@@ -670,9 +744,23 @@ class License(models.Model):
 
 
     def save(self, *args, **kwargs):
+        
+        now = datetime.now(timezone.utc)
+        
+        if self.expiry_date > now:
+            self.license_status = "Active"
+        else:
+            self.license_status = "Expired"
+
+            
+    
+        
         super(License, self).save(*args, **kwargs)
         self.practice_manager.inspection.application_status = 8
         self.practice_manager.inspection.save()
+
+
+
 
 
     

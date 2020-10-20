@@ -159,6 +159,15 @@
                 </label>
               </div>
               {% endif %}
+
+              {% if "C-Arm/O-HRM" in object.equipment %}
+              <div class="form-check mr-3">
+                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-carm" data-form-url="{% url 'zonal_offices:carm_score' object.id %}">
+                <label class="form-check-label" for="exampleRadios3">
+                  C-Arm/O-HRM
+                </label>
+              </div>
+              {% endif %}
              
             </div>
         </fieldset>

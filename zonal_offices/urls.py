@@ -41,21 +41,8 @@ from .views import (
     EchocardiographyScoreUpdate,
     AngiographyScore,
     AngiographyScoreUpdate,
-
-
-
-
-
-
-
-    
-
-   
-    
-    
-
-
-
+    CarmScore,
+    CarmScoreUpdate,
 )
 
 from django.views.generic import (
@@ -81,6 +68,8 @@ urlpatterns = [
     path('abuja_list/', AbujaScheduleListView.as_view(), name='abuja_list'),
     path('<uuid:id>/inspection_detail/', InspectionView.as_view(), name='inspection_detail'),
     path('<uuid:id>/inspection_report/', InspectionReportView.as_view(), name='inspection_report'),
+    path('inspection_reports_list/', InspectionReportsView.as_view(), name='inspection_reports_list'),
+    path('<uuid:id>/view_inspection_report/', views.view_inspection_report, name='view_inspection_report'),
     path('<uuid:id>/ultrasound_score/', UltrasoundScore.as_view(), name='ultrasound_score'),
     path('<uuid:id>/ultrasound_detail/', UltrasoundScoreDetail.as_view(), name='ultrasound_detail'),
     path('<uuid:id>/ultrasound_update/', UltrasoundScoreUpdate.as_view(), name='ultrasound_update'),
@@ -106,9 +95,9 @@ urlpatterns = [
     path('<uuid:id>/echocardiography_update/', EchocardiographyScoreUpdate.as_view(), name='echocardiography_update'),
     path('<uuid:id>/angiography_score/', AngiographyScore.as_view(), name='angiography_score'),
     path('<uuid:id>/angiography_update/', AngiographyScoreUpdate.as_view(), name='angiography_update'),
+    path('<uuid:id>/carm_score/', CarmScore.as_view(), name='carm_score'),
+    path('<uuid:id>/carm_update/', CarmScoreUpdate.as_view(), name='carm_update'),
     path('<uuid:id>/accreditation_report/', AccreditationReportView.as_view(), name='accreditation_report'),
-    path('inspection_reports_list/', InspectionReportsView.as_view(), name='inspection_reports_list'),
-    path('<uuid:id>/view_inspection_report/', views.view_inspection_report, name='view_inspection_report'),
     path('hospitals_lookup/', RegisteredHospitalsListView.as_view(), name='hospitals_lookup'),
     path('<uuid:id>/hospital_details/', RegisterdHospitalsDetailView.as_view(), name='hospital_details'),
     path('create_hospital_record/', RecordsCreate.as_view(), name='create_hospital_record'),

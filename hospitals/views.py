@@ -330,8 +330,8 @@ class PaymentCreateView(LoginRequiredMixin, PaymentObjectMixin, View):
            contact_message = get_template(
                'hospitals/payment_message.txt').render(context)
 
-           #send_mail(subject, contact_message, from_email,
-                     #to_email, fail_silently=False)  
+           send_mail(subject, contact_message, from_email,
+                     to_email, fail_silently=False)  
         
         return render(request, self.template_name1, context)
 

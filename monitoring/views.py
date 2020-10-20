@@ -233,8 +233,8 @@ class InspectionCompletedListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         obj = super(InspectionCompletedListView, self).get_context_data(**kwargs)
 
-        obj['inspection_qs'] = Inspection.objects.filter(inspection_status=1)
-        obj['inspections_qs'] = Inspection.objects.all()
+        obj['inspection_qs'] = Inspection.objects.all()
+        #obj['inspections_qs'] = Inspection.objects.all()
         obj['appraisal_qs'] = Appraisal.objects.filter(appraisal_status=1)
         obj['appraisals_qs'] = Appraisal.objects.all()
         
@@ -257,7 +257,7 @@ class InspectionCompletedListView(LoginRequiredMixin, ListView):
         #return render(request, self.template_name, context)
 
 
-def verify(request, id):
+def inspection_report(request, id):
   inspection = get_object_or_404(Inspection, pk=id)
   
   context={'inspection': inspection,        
@@ -265,12 +265,12 @@ def verify(request, id):
   return render(request, 'monitoring/inspections_detail.html', context)
 
 
-def view_report(request, id):
-  inspection = get_object_or_404(Inspection, pk=id)
+#def view_report(request, id):
+  #inspection = get_object_or_404(Inspection, pk=id)
   
-  context={'inspection': inspection,        
-           }
-  return render(request, 'monitoring/inspections_report_detail.html', context)
+  #context={'inspection': inspection,        
+          # }
+ # return render(request, 'monitoring/inspections_report_detail.html', context)
 
 
 def validate(request, id):
@@ -365,7 +365,7 @@ def reject_appraisal_report(request, id):
 class LicenseIssueListView(LoginRequiredMixin, ListView):
     template_name = "monitoring/license_issue_list.html"
     context_object_name = 'object'
-    queryset = Inspection.objects.all()
+    queryset = Inspection.objects.all().filter(application_status=7)
     
     def get_context_data(self, **kwargs):
         obj = super(LicenseIssueListView, self).get_context_data(**kwargs)
@@ -377,6 +377,7 @@ class LicenseIssueListTable(LoginRequiredMixin, ListView):
     template_name = "monitoring/license_list_table.html"
     context_object_name = 'object'
     queryset = Inspection.objects.all()
+
     
     def get_context_data(self, **kwargs):
         obj = super(LicenseIssueListTable, self).get_context_data(**kwargs)

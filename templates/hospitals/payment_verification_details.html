@@ -69,8 +69,18 @@
         <p class="lead text-secondary m-0">Facility Address/Location:</p>
         <p class="lead text-secondary m-0"><strong>{{object.address}}</strong></p>  
         <br>
+
         <p class="lead text-secondary m-0">Vetted By:</p>
-        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.vetting_officer}}</strong></p>  
+
+        {% if object.vetting_officer %}
+        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.vetting_officer}}</strong></p> 
+
+        {% else %} 
+         <p class="lead text-secondary text-capitalize m-0"><strong></strong></p>
+
+         {% endif %}
+
+
         <br>
     </div>
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
@@ -79,7 +89,15 @@
         <br>
         <br>
         <p class="lead text-secondary m-0">Vetted On:</p>
-        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.vet_date_pretty}}</strong></p>   
+
+        {% if object.vet_date %}
+        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.vet_date_pretty}}</strong></p>  
+
+        {% else %} 
+
+        <p class="lead text-secondary text-capitalize m-0"><strong></strong></p> 
+
+        {% endif %}
         
     </div>
     </div>

@@ -1,6 +1,6 @@
 from django import forms
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from hospitals.models import Inspection, Records, Appraisal, Ultrasound, Mri, Xray, Ctscan, Flouroscopy, Radiotherapy, Nuclearmedicine, Mamography, Dentalxray, Echocardiography, Angiography
+from hospitals.models import Inspection, Records, Appraisal, Ultrasound, Mri, Xray, Ctscan, Flouroscopy, Radiotherapy, Nuclearmedicine, Mamography, Dentalxray, Echocardiography, Angiography, Carm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field
 from django.utils import timezone
@@ -57,31 +57,31 @@ class NuclearMedicineModelForm(forms.ModelForm):
           
         widgets = {
         'practice_manager': forms.TextInput(attrs={'readonly': True}),
-        'shielding_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'room_design_score': forms.NumberInput(attrs={'min':1,'max':6,'type': 'number'}),
-        'radiographers_no_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}), 
-        'nuclear_medicine_physicians_no_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}), 
-        'other_staff_no_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}), 
-        'nuclear_medicine_certification_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}), 
-        'radiographer_license_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'prmd_prpe_score': forms.NumberInput(attrs={'min':1,'max':6,'type': 'number'}),
-        'radionuclide_storage_unit_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'water_supply_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'equipment_certification_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'radionuclide_accessories_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}),
-        'warning_lights_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}),
-        'warning_signs_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}),
-        'C07_form_compliance_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'equipment_installation_location_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'offices_adequacy_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}),
-        'quality_control_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'rso_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}),
-        'radiation_safety_program_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'labelling_score': forms.NumberInput(attrs={'min':1,'max':1,'type': 'number'}),
-        'performance_survey_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}),
-        'radioactive_materials_security_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}),
-        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}),
-        'waiting_room_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}),
+        'shielding_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'room_design_score': forms.NumberInput(attrs={'min':0,'max':6,'type': 'number'}),
+        'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
+        'nuclear_medicine_physicians_no_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}), 
+        'other_staff_no_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}), 
+        'nuclear_medicine_certification_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}), 
+        'radiographer_license_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'prmd_prpe_score': forms.NumberInput(attrs={'min':0,'max':6,'type': 'number'}),
+        'radionuclide_storage_unit_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'water_supply_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'equipment_certification_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'radionuclide_accessories_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'warning_lights_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'warning_signs_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'C07_form_compliance_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'equipment_installation_location_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'offices_adequacy_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'quality_control_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'rso_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'radiation_safety_program_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'labelling_score': forms.NumberInput(attrs={'min':0,'max':1,'type': 'number'}),
+        'performance_survey_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'radioactive_materials_security_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'waiting_room_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
            
         }
 
@@ -156,26 +156,26 @@ class RadiotherapyModelForm(forms.ModelForm):
           
         widgets = {
         'practice_manager': forms.TextInput(attrs={'readonly': True}),
-        'shielding_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'room_design_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'radiographers_no_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}), 
-        'radiologists_no_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}), 
-        'other_staff_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}), 
-        'radiotherapy_certification_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}), 
-        'radiographer_license_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'prmd_prpe_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'rso_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'water_supply_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'equipment_certification_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'warning_lights_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'warning_signs_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}),
-        'C07_form_compliance_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'equipment_installation_location_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'radiotherapy_accessories_score': forms.NumberInput(attrs={'min':1,'max':6,'type': 'number'}),
-        'mould_room_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'waiting_room_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'offices_adequacy_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),    
+        'shielding_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
+        'radiologists_no_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}), 
+        'other_staff_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}), 
+        'radiotherapy_certification_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}), 
+        'radiographer_license_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'prmd_prpe_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'rso_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'water_supply_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'equipment_certification_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'warning_lights_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'warning_signs_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'C07_form_compliance_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'equipment_installation_location_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'radiotherapy_accessories_score': forms.NumberInput(attrs={'min':0,'max':6,'type': 'number'}),
+        'mould_room_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'waiting_room_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'offices_adequacy_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),    
         }
 
 
@@ -243,18 +243,18 @@ class UltrasoundModelForm(forms.ModelForm):
         
         widgets = {
         'practice_manager': forms.TextInput(attrs={'readonly': True}),
-        'room_design_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'radiographers_no_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),  
-        'radiographer_license_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'ultrasound_qualification_score': forms.NumberInput(attrs={'min':1,'max':20,'type': 'number'}),
-        'water_supply_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'accessories_adequacy_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'C07_form_compliance_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'equipment_installation_location_score': forms.NumberInput(attrs={'min':1,'max':20,'type': 'number'}),
-        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'waiting_room_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'offices_adequacy_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'support_staff_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}), 
+        'room_design_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),  
+        'radiographer_license_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'ultrasound_qualification_score': forms.NumberInput(attrs={'min':0,'max':20,'type': 'number'}),
+        'water_supply_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'accessories_adequacy_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'C07_form_compliance_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'equipment_installation_location_score': forms.NumberInput(attrs={'min':0,'max':20,'type': 'number'}),
+        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'waiting_room_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'offices_adequacy_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'support_staff_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}), 
         }
 
     def __init__(self, *args, **kwargs):
@@ -304,28 +304,25 @@ class XrayModelForm(forms.ModelForm):
           
         widgets = {
         'practice_manager': forms.TextInput(attrs={'readonly': True}),
-        'shielding_score': forms.NumberInput(attrs={'min':1,'max':15,'type': 'number'}),
-        'room_design_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'radiographers_no_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}), 
-        'radiologists_no_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}), 
-        'radiographer_license_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'prmd_prpe_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),  
-        'rso_rsa_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'water_supply_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'equipment_certification_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'accessories_adequacy_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'warning_lights_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'warning_signs_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'C07_form_compliance_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'equipment_installation_location_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'processing_unit_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'waiting_room_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'offices_adequacy_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),    
-        }
-
-
-    
+        'shielding_score': forms.NumberInput(attrs={'min':0,'max':15,'type': 'number'}),
+        'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
+        'radiologists_no_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}), 
+        'radiographer_license_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'prmd_prpe_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),  
+        'rso_rsa_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'water_supply_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'equipment_certification_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'accessories_adequacy_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'warning_lights_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'warning_signs_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'C07_form_compliance_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'equipment_installation_location_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'processing_unit_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'waiting_room_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'offices_adequacy_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),    
+        } 
 
     def __init__(self, *args, **kwargs):
        super(XrayModelForm, self).__init__(*args, **kwargs)
@@ -385,24 +382,24 @@ class FlouroscopyModelForm(forms.ModelForm):
           
         widgets = {
         'practice_manager': forms.TextInput(attrs={'readonly': True}),
-        'shielding_score': forms.NumberInput(attrs={'min':1,'max':15,'type': 'number'}),
-        'room_design_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'radiographers_no_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}), 
-        'radiologists_no_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}), 
-        'radiographer_license_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'prmd_prpe_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}), 
-        'rso_rsa_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'water_supply_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'equipment_certification_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'accessories_adequacy_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'warning_lights_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'warning_signs_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'C07_form_compliance_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'equipment_installation_location_score': forms.NumberInput(attrs={'min':1,'max':6,'type': 'number'}),
-        'processing_unit_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'waiting_room_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'offices_adequacy_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),    
+        'shielding_score': forms.NumberInput(attrs={'min':0,'max':15,'type': 'number'}),
+        'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
+        'radiologists_no_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}), 
+        'radiographer_license_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'prmd_prpe_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
+        'rso_rsa_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'water_supply_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'equipment_certification_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'accessories_adequacy_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'warning_lights_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'warning_signs_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'C07_form_compliance_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'equipment_installation_location_score': forms.NumberInput(attrs={'min':0,'max':6,'type': 'number'}),
+        'processing_unit_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'waiting_room_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'offices_adequacy_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),    
         }
 
 
@@ -464,24 +461,24 @@ class CtscanModelForm(forms.ModelForm):
           
         widgets = {
         'practice_manager': forms.TextInput(attrs={'readonly': True}),
-        'shielding_score': forms.NumberInput(attrs={'min':1,'max':15,'type': 'number'}),
-        'room_design_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'radiographers_no_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}), 
-        'radiologists_no_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}), 
-        'radiographer_license_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'prmd_prpe_score': forms.NumberInput(attrs={'min':1,'max':14,'type': 'number'}),
-        'rso_rsa_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'water_supply_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'equipment_certification_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'accessories_adequacy_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'warning_lights_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'warning_signs_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'C07_form_compliance_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'equipment_installation_location_score': forms.NumberInput(attrs={'min':1,'max':6,'type': 'number'}),
-        'processing_unit_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}),
-        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'waiting_room_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'offices_adequacy_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),    
+        'shielding_score': forms.NumberInput(attrs={'min':0,'max':15,'type': 'number'}),
+        'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
+        'radiologists_no_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}), 
+        'radiographer_license_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'prmd_prpe_score': forms.NumberInput(attrs={'min':0,'max':14,'type': 'number'}),
+        'rso_rsa_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'water_supply_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'equipment_certification_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'accessories_adequacy_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'warning_lights_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'warning_signs_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'C07_form_compliance_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'equipment_installation_location_score': forms.NumberInput(attrs={'min':0,'max':6,'type': 'number'}),
+        'processing_unit_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'waiting_room_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'offices_adequacy_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),    
         }
 
     def __init__(self, *args, **kwargs):
@@ -540,24 +537,24 @@ class MriModelForm(forms.ModelForm):
           
         widgets = {
         'practice_manager': forms.TextInput(attrs={'readonly': True}),
-        'shielding_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'room_design_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'radiographers_no_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}), 
-        'radiologists_no_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}), 
-        'radiographer_license_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'mri_certification_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'metal_screening_device_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'screening_questionnaire_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'water_supply_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'accessories_adequacy_score': forms.NumberInput(attrs={'min':1,'max':7,'type': 'number'}),
-        'warning_signs_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'C07_form_compliance_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'equipment_installation_location_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'processing_unit_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'waiting_room_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'offices_adequacy_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}), 
-        'technical_room_adequacy_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}),    
+        'shielding_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'room_design_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
+        'radiologists_no_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}), 
+        'radiographer_license_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'mri_certification_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'metal_screening_device_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'screening_questionnaire_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'water_supply_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'accessories_adequacy_score': forms.NumberInput(attrs={'min':0,'max':7,'type': 'number'}),
+        'warning_signs_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'C07_form_compliance_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'equipment_installation_location_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'processing_unit_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'waiting_room_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'offices_adequacy_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}), 
+        'technical_room_adequacy_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),    
         }
 
 
@@ -619,25 +616,25 @@ class MamographyModelForm(forms.ModelForm):
           
         widgets = {
         'practice_manager': forms.TextInput(attrs={'readonly': True}),
-        'shielding_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'room_design_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'radiographers_no_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}), 
-        'radiologists_no_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}), 
-        'radiographer_license_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'mammography_certification_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'prmd_prpe_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}), 
-        'rso_rsa_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'water_supply_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'equipment_certification_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'accessories_adequacy_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'warning_lights_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'warning_signs_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'C07_form_compliance_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'equipment_installation_location_score': forms.NumberInput(attrs={'min':1,'max':4, 'type': 'number'}),
-        'processing_unit_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'waiting_room_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'offices_adequacy_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),    
+        'shielding_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
+        'radiologists_no_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}), 
+        'radiographer_license_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'mammography_certification_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'prmd_prpe_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
+        'rso_rsa_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'water_supply_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'equipment_certification_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'accessories_adequacy_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'warning_lights_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'warning_signs_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'C07_form_compliance_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'equipment_installation_location_score': forms.NumberInput(attrs={'min':0,'max':4, 'type': 'number'}),
+        'processing_unit_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'waiting_room_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'offices_adequacy_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),    
         }
 
 
@@ -701,26 +698,23 @@ class DentalXrayModelForm(forms.ModelForm):
           
         widgets = {
         'practice_manager': forms.TextInput(attrs={'readonly': True}),
-        'shielding_score': forms.NumberInput(attrs={'min':1,'max':15,'type': 'number'}),
-        'room_design_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'radiographers_no_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}), 
-        'radiologists_no_score': forms.NumberInput(attrs={'min':1,'max':1,'type': 'number'}), 
-        'radiographer_license_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'prmd_prpe_score': forms.NumberInput(attrs={'min':1,'max':15,'type': 'number'}), 
-        'water_supply_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'equipment_certification_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'warning_lights_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'warning_signs_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'C07_form_compliance_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'equipment_installation_location_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'processing_unit_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'waiting_room_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'offices_adequacy_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),    
+        'shielding_score': forms.NumberInput(attrs={'min':0,'max':15,'type': 'number'}),
+        'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
+        'radiologists_no_score': forms.NumberInput(attrs={'min':0,'max':1,'type': 'number'}), 
+        'radiographer_license_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'prmd_prpe_score': forms.NumberInput(attrs={'min':0,'max':15,'type': 'number'}), 
+        'water_supply_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'equipment_certification_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'warning_lights_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'warning_signs_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'C07_form_compliance_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'equipment_installation_location_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'processing_unit_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'waiting_room_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'offices_adequacy_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),    
         }
-
-
-    
 
     def __init__(self, *args, **kwargs):
        super(DentalXrayModelForm, self).__init__(*args, **kwargs)
@@ -774,22 +768,19 @@ class EchocardiographyModelForm(forms.ModelForm):
           
         widgets = {
         'practice_manager': forms.TextInput(attrs={'readonly': True}),
-        'room_design_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'radiographers_no_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}), 
-        'radiographer_license_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'echocardiography_certification_score': forms.NumberInput(attrs={'min':1,'max':20,'type': 'number'}),
-        'water_supply_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'accessories_adequacy_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'C07_form_compliance_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'equipment_installation_location_score': forms.NumberInput(attrs={'min':1,'max':20,'type': 'number'}),
-        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'waiting_room_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'offices_adequacy_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}), 
-        'support_staff_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),     
-        }
-
-
-    
+        'room_design_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
+        'radiographer_license_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'echocardiography_certification_score': forms.NumberInput(attrs={'min':0,'max':20,'type': 'number'}),
+        'water_supply_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'accessories_adequacy_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'C07_form_compliance_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'equipment_installation_location_score': forms.NumberInput(attrs={'min':0,'max':20,'type': 'number'}),
+        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'waiting_room_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'offices_adequacy_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}), 
+        'support_staff_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),     
+        }  
 
     def __init__(self, *args, **kwargs):
        super(EchocardiographyModelForm, self).__init__(*args, **kwargs)
@@ -835,29 +826,26 @@ class AngiographyModelForm(forms.ModelForm):
           
         widgets = {
         'practice_manager': forms.TextInput(attrs={'readonly': True}),
-        'shielding_score': forms.NumberInput(attrs={'min':1,'max':15,'type': 'number'}),
-        'room_design_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'radiographers_no_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}), 
-        'radiologists_no_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}), 
-        'radiographer_license_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'angiography_certification_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'prmd_prpe_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}), 
-        'rso_rsa_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'water_supply_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'equipment_certification_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'accessories_adequacy_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'warning_lights_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'warning_signs_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'C07_form_compliance_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'equipment_installation_location_score': forms.NumberInput(attrs={'min':1,'max':6,'type': 'number'}),
-        'processing_unit_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'waiting_room_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'offices_adequacy_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),    
+        'shielding_score': forms.NumberInput(attrs={'min':0,'max':15,'type': 'number'}),
+        'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
+        'radiologists_no_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}), 
+        'radiographer_license_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'angiography_certification_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'prmd_prpe_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
+        'rso_rsa_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'water_supply_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'equipment_certification_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'accessories_adequacy_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'warning_lights_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'warning_signs_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'C07_form_compliance_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'equipment_installation_location_score': forms.NumberInput(attrs={'min':0,'max':6,'type': 'number'}),
+        'processing_unit_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'waiting_room_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'offices_adequacy_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),    
         }
-
-
-    
 
     def __init__(self, *args, **kwargs):
        super(AngiographyModelForm, self).__init__(*args, **kwargs)
@@ -909,6 +897,79 @@ class AngiographyModelForm(forms.ModelForm):
 
 
 
+class CarmModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Carm
+        fields = ('practice_manager', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'prmd_prpe_score', 'water_supply_score', 'equipment_certification_score', 'accessories_adequacy_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'carm_total')
+
+          
+        widgets = {
+        'practice_manager': forms.TextInput(attrs={'readonly': True}),
+        'shielding_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
+        'radiologists_no_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}), 
+        'radiographer_license_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'prmd_prpe_score': forms.NumberInput(attrs={'min':0,'max':15,'type': 'number'}), 
+        'water_supply_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'equipment_certification_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'accessories_adequacy_score': forms.NumberInput(attrs={'min':0,'max':6,'type': 'number'}),
+        'warning_lights_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'warning_signs_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'C07_form_compliance_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'equipment_installation_location_score': forms.NumberInput(attrs={'min':0,'max':6,'type': 'number'}),
+        'processing_unit_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'waiting_room_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'offices_adequacy_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),    
+        }
+
+    def __init__(self, *args, **kwargs):
+       super(CarmModelForm, self).__init__(*args, **kwargs)
+       
+       for name in self.fields.keys():
+            self.fields[name].widget.attrs.update({
+                'class': 'form-control',
+            })
+       self.fields['practice_manager'].label = "Hospital Admin Id"
+       self.fields['shielding_score'].label = "Shielding"
+       self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+       self.fields['room_design_score'].label = "Room Design & Layout"
+       self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+       self.fields['radiographers_no_score'].label = "No. of Radiographers"
+       self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+       self.fields['radiologists_no_score'].label = "No. of Radiologists"
+       self.fields['radiologists_no_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+       self.fields['radiographer_license_score'].label = "Radiographers Current License"
+       self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+       self.fields['prmd_prpe_score'].label = "PRMD & PRPE"
+       self.fields['prmd_prpe_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
+       self.fields['water_supply_score'].label = "Water Supply"
+       self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+       self.fields['equipment_certification_score'].label = "Equipment Certification"
+       self.fields['equipment_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+       self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
+       self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
+       self.fields['warning_lights_score'].label = "Warning Lights"
+       self.fields['warning_lights_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+       self.fields['warning_signs_score'].label = "Warning Signs"
+       self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+       self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
+       self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+       self.fields['equipment_installation_location_score'].label = "Equipment Installation "
+       self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
+       self.fields['processing_unit_score'].label = "Adequacy of Processing Unit"
+       self.fields['processing_unit_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+       self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
+       self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+       self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
+       self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+       self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
+       self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+       self.fields['carm_total'].label = "Total Score"
+
+
 
 
 class AccreditationModelForm(forms.ModelForm):
@@ -928,32 +989,32 @@ class AccreditationModelForm(forms.ModelForm):
         'hospital_name': forms.TextInput(attrs={'readonly': True}),
         'application_no': forms.TextInput(attrs={'readonly': True}),
         'appraisal_comments': forms.Textarea(attrs={'rows':6, 'cols':12}),'shielding_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'radiographers_score': forms.NumberInput(attrs={'min':1,'max':6,'type': 'number'}),
-        'radiologists_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}), 
-        'support_staff_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}), 
-        'offices_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'library_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'call_room_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'waiting_room_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'toilets_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'room_design_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}),
-        'static_xray_score': forms.NumberInput(attrs={'min':1,'max':15,'type': 'number'}),
-        'mobile_xray_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}),
-        'ct_score': forms.NumberInput(attrs={'min':1,'max':5,'type': 'number'}),
-        'mri_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}),
-        'fluoroscopy_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}),
-        'nuclear_medicine_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'radiation_therapy_score': forms.NumberInput(attrs={'min':1,'max':1,'type': 'number'}), 
-        'ultrasound_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
-        'mammography_score': forms.NumberInput(attrs={'min':1,'max':3,'type': 'number'}),
-        'dental_equipment_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'carm_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'processing_unit_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
-        'diagnostic_room_score': forms.NumberInput(attrs={'min':1,'max':6,'type': 'number'}),
-        'personnel_score': forms.NumberInput(attrs={'min':1,'max':8,'type': 'number'}),
-        'cpds_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'departmental_seminars_score': forms.NumberInput(attrs={'min':1,'max':2,'type': 'number'}),
-        'licence_status_score': forms.NumberInput(attrs={'min':1,'max':4,'type': 'number'}),
+        'radiographers_score': forms.NumberInput(attrs={'min':0,'max':6,'type': 'number'}),
+        'radiologists_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}), 
+        'support_staff_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}), 
+        'offices_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'library_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'call_room_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'waiting_room_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'toilets_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'room_design_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'static_xray_score': forms.NumberInput(attrs={'min':0,'max':15,'type': 'number'}),
+        'mobile_xray_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'ct_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'mri_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'fluoroscopy_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'nuclear_medicine_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'radiation_therapy_score': forms.NumberInput(attrs={'min':0,'max':1,'type': 'number'}), 
+        'ultrasound_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'mammography_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'dental_equipment_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'carm_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'processing_unit_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'diagnostic_room_score': forms.NumberInput(attrs={'min':0,'max':6,'type': 'number'}),
+        'personnel_score': forms.NumberInput(attrs={'min':0,'max':8,'type': 'number'}),
+        'cpds_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'departmental_seminars_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'licence_status_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
          
         }
 

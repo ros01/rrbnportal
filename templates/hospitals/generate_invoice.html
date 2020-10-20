@@ -66,7 +66,8 @@
 
       <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> 
 
-      {% for object in object.equipment.all %}
+      
+     
       {% if object.equipment_count == 13 %}   
       N70,000.00
       {% elif object.equipment_count == 12  %}
@@ -83,7 +84,7 @@
       N40,000.00
       {% elif object.equipment_count == 6  %}
       N35,000.00
-      {% elif object.equipment_name_count == 5  %}
+      {% elif object.equipment_count == 5  %}
       N30,000.00
       {% elif object.equipment_count == 4  %}
       N25,000.00
@@ -94,7 +95,7 @@
       {% else  %}
       N10,000.00
       {% endif %}
-      {% endfor %}
+     
 
        </span> </div>
 

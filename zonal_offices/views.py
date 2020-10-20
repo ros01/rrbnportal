@@ -3,8 +3,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test
 from accounts.decorators import zonaloffices_required
-from hospitals.models import Schedule, Inspection, License, Records, Ultrasound, Xray, Nuclearmedicine, Radiotherapy, Mri, Ctscan, Xray, Flouroscopy, Mamography, Dentalxray, Echocardiography, Angiography
-from .forms import InspectionModelForm, RecordsModelForm, AccreditationModelForm, UltrasoundModelForm, XrayModelForm, FlouroscopyModelForm, CtscanModelForm, MriModelForm, NuclearMedicineModelForm, RadiotherapyModelForm,  MamographyModelForm, DentalXrayModelForm, EchocardiographyModelForm, AngiographyModelForm
+from hospitals.models import Schedule, Inspection, License, Records, Ultrasound, Xray, Nuclearmedicine, Radiotherapy, Mri, Ctscan, Xray, Flouroscopy, Mamography, Dentalxray, Echocardiography, Angiography, Carm
+from .forms import InspectionModelForm, RecordsModelForm, AccreditationModelForm, UltrasoundModelForm, XrayModelForm, FlouroscopyModelForm, CtscanModelForm, MriModelForm, NuclearMedicineModelForm, RadiotherapyModelForm,  MamographyModelForm, DentalXrayModelForm, EchocardiographyModelForm, AngiographyModelForm, CarmModelForm
 from django.views import View
 from django.views.generic import (
      CreateView,
@@ -1034,6 +1034,84 @@ class AngiographyScoreUpdate(AngiographyObjectMixin, View):
             context['form'] = form
         return render(request, self.template_name1, context)
 
+    
+
+class CarmScore(InspectionObjectMixin, View):
+    template_name = 'zonal_offices/carm_score.html'
+    template_name1 = 'zonal_offices/carm_score_details.html'
+    def get(self, request,  *args, **kwargs):
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = CarmModelForm(instance=obj)
+            context['object'] = obj
+            context['form'] = form
+
+        return render(request, self.template_name, context)
+
+    def post(self, request,  *args, **kwargs):
+        
+        form = CarmModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+        
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = CarmModelForm(instance=obj)
+            context['object'] = obj
+            context['form'] = form
+
+        return render(request, self.template_name1, context)
+        
+
+class CarmObjectMixin(object):
+    model = Carm
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+class CarmScoreDetail(CarmObjectMixin, View):
+    template_name = "zonal_offices/carm_score_details.html"
+
+    def get(self, request, id=None, *args, **kwargs):
+        context = {'object': self.get_object()}
+        return render(request, self.template_name, context)
+
+ 
+class CarmScoreUpdate(CarmObjectMixin, View):
+    template_name = "zonal_offices/carm_score_update.html" 
+    template_name1 = "zonal_offices/carm_score_details.html" 
+    success_message = 'C-Arm Score Updated Successfully.'
+
+    def get(self, request, id=None, *args, **kwargs):
+        # GET method
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = CarmModelForm(instance=obj)
+            context['object'] = obj
+            context['form'] = form
+        return render(request, self.template_name, context)
+
+    def post(self, request, id=None,  *args, **kwargs):
+        # POST method
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = CarmModelForm(request.POST or None, instance=obj)
+            if form.is_valid():
+                form.save()
+            context['object'] = obj
+            context['form'] = form
+        return render(request, self.template_name1, context)
+
+
+
+
 
 def mri(request, id):
   if request.method == 'POST':
@@ -1141,8 +1219,6 @@ class RecordsCreate(LoginRequiredMixin, CreateView):
         return reverse('zonal_offices:hospital_record_details', kwargs={'id' : self.object.id})
 
    
-    
-
 
 class RecordsObjectMixin(object):
     model = Records

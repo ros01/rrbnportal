@@ -60,7 +60,7 @@
             {% if object.practice_manager.inspection_total > 60 %}
               <input type="hidden" name="license_type" required id="id_license_type" id="div_id_license_type" value="Full Registration">
             {% else %}
-              <input type="hidden" name="license_type" required id="id_license_type" id="div_id_license_type" value="Full Registration">
+              <input type="hidden" name="license_type" required id="id_license_type" id="div_id_license_type" value="Provisional Registration">
             {% endif %}
             
             
@@ -88,9 +88,7 @@
                 {{ form.license_no|as_crispy_field }}
             </div>
 
-             <div class="col-md-3">
-                {{ form.license_status|as_crispy_field }}
-            </div>
+             
 
          </div>
      

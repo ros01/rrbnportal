@@ -194,11 +194,23 @@
                     </div>
                     <div class="row">
                         <span class="col-6"><strong>Vetted on:</strong></span>
+                         {% if object.vet_date %}
                         <span class="col-6">{{payment.vet_date_pretty}}</span>
+                         {% else %} 
+                         <span class="col-6"></span>
+                         {% endif %}
+
+
                     </div>
                     <div class="row">
                         <span class="col-6"><strong>Vetted by:</strong></span>
+                        {% if object.vetting_officer %}
                         <span class="col-6">{{ vetting_officer.first_name }} {{ vetting_officer.last_name }}</span>
+
+                        {% else %} 
+                        <span class="col-6"></span>
+
+                        {% endif %}
                     </div>
                 
 

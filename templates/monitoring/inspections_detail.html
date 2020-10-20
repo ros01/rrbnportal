@@ -204,19 +204,31 @@
 
         </div>
         <hr>
-        <div class="d-flex justify-content-end">   
+
+        {% if inspection.inspection_status == 1 %}
+        <div class="d-flex justify-content-end">  
+
              
              <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
+
+             <a href="{% url 'monitoring:inspections_list' %}" class="btn btn-info ml-4 px-3"><i class="fa fa-window-close text-danger"></i>  Return to Inspection Reports</a> 
 
 
             <a href="javascript:{document.getElementById('approve_report{{inspection.id }}').submit()}"><button class="btn btn-success ml-4 px-3"> Approve Inspection Report<i class="fa fa-podcast text-white"></i></button> </a>
 
 
             <a href="javascript:{document.getElementById('reject_report{{inspection.id }}').submit()}"><button class="btn btn-danger ml-4 px-3"> Reject Inspection Report<i class="fa fa-podcast text-white"></i></button></a> 
-             
-
-             
         </div>
+
+        {% else %}
+
+        <div class="d-flex justify-content-end">   
+            <a href="{% url 'monitoring:inspections_list' %}" class="btn btn-info px-3"><i class="fa fa-window-close text-danger"></i>  Return to Inspection Reports</a> 
+             
+             <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-dark px-3 ml-4"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>     
+        </div>
+
+        {% endif %}
 
 
     </main>
