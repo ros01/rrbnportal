@@ -7,13 +7,13 @@ Application Number: {{object.application_no}}
 
 Hospital Name: {{object.hospital_name}}
 
-RRR Number: {{object.practice_manager.payment.rrr_number}}
+RRR Number: {{object.rrr_number}}
 
-Receipt Number: {{object.practice_manager.payment.receipt_number}}
+Receipt Number: {{object.receipt_number}}
 
-Payment Amount: {{object.practice_manager.payment.payment_amount}}
+Payment Amount: {{object.payment_amount}}
 
-Payment Time: {{object.practice_manager.payment.payment_date_pretty}}
+Payment Time: {{object.payment_date}}
 
 
 

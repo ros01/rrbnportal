@@ -48,44 +48,51 @@
 <div class="row mx-2 py-0 my-0">
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
         <p class="lead text-secondary m-0">Application Number:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.application_no}}</strong></p>  
+        {% for payment in payment %}
+        <p class="lead text-secondary m-0"><strong>{{payment.application_no}}</strong></p>  
         <br>
         <br>
         <p class="lead text-secondary m-0">Radiography Examinations:</p>
-        <p class="lead text-secondary text-uppercase m-0"><strong>{{object.equipment}}</strong></p>  
+        <p class="lead text-secondary text-uppercase m-0"><strong>{{payment.equipment}}</strong></p>  
         <br> 
     </div>
 
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
-        <p class="lead text-secondary m-0">License Category:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.license_category}}</strong></p>
+        <p class="lead text-secondary m-0">License Type:</p>
+        <p class="lead text-secondary m-0"><strong>{{payment.license_type}}</strong></p>
         <br>
         <br>
         <p class="lead text-secondary m-0">Application Start Date:</p>
-        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.practice_manager.registration.reg_date_pretty}}</strong></p>  
+        <p class="lead text-secondary text-capitalize m-0"><strong>{{payment.submission_date}}</strong></p>  
         <br> 
     </div>
+    {% endfor %}
+
+    {% for hospital in hospital %}
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
         <p class="lead text-secondary m-0">Facility Address/Location:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.address}}</strong></p>  
+        <p class="lead text-secondary m-0"><strong>{{hospital.address}}</strong></p>  
         <br>
+    {% endfor %}
 
-        <p class="lead text-secondary m-0">Vetted By:</p>
+        <p class="lead text-secondary m-0 mt-4">Vetted By:</p>
 
         {% if object.vetting_officer %}
         <p class="lead text-secondary text-capitalize m-0"><strong>{{object.vetting_officer}}</strong></p> 
 
         {% else %} 
-         <p class="lead text-secondary text-capitalize m-0"><strong></strong></p>
+         <p class="lead text-secondary text-capitalize m-0"><strong>Pending Verifications</strong></p> 
 
          {% endif %}
 
 
         <br>
     </div>
+    {% for hospital in hospital %}
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
         <p class="lead text-secondary m-0">State of Location:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.state}}</strong></p> 
+        <p class="lead text-secondary m-0"><strong>{{hospital.state}}</strong></p>
+        {% endfor %} 
         <br>
         <br>
         <p class="lead text-secondary m-0">Vetted On:</p>

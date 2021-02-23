@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test
 from accounts.decorators import registrar_required
-from hospitals.models import Payment, Registration, Schedule, Inspection, License, Appraisal
+from hospitals.models import Payment, Document, Schedule, Inspection, License, Appraisal
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -60,7 +60,25 @@ class LicenseApprovalListView(LoginRequiredMixin, ListView):
         obj['approval_list_qss'] = Appraisal.objects.filter(appraisal_status=2)
         return obj
         
-    
+ 
+
+class InspectionObjectMixin(object):
+    model = Inspection
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+
+class LicenseApprovalDetailView(LoginRequiredMixin, InspectionObjectMixin, View):
+    template_name = "registrars_office/license_detail.html" # DetailView
+    def get(self, request, id=None, *args, **kwargs):
+        # GET method
+        context = {'object': self.get_object()}
+        #context = {'object': self.get_object()}
+        return render(request, self.template_name, context)   
 
 
 
@@ -74,17 +92,17 @@ def validate(request, id):
 
 def approve_license(request, id):
   if request.method == 'POST':
-     inspection = get_object_or_404(Inspection, pk=id)
-     inspection.inspection_status = 4
-     inspection.application_status = 7
-     inspection.save()
+     object = get_object_or_404(Inspection, pk=id)
+     object.inspection_status = 4
+     object.application_status = 7
+     object.save()
 
 
      context = {}
-     context['object'] = inspection
+     context['object'] = object
      subject = 'Radiography Practise License Approval'
      from_email = settings.DEFAULT_FROM_EMAIL
-     to_email = [inspection.email]
+     to_email = [object.hospital_name.hospital_admin]
      
 
      
@@ -100,15 +118,15 @@ def approve_license(request, id):
 
 def reject_license(request, id):
   if request.method == 'POST':
-     inspection = get_object_or_404(Inspection, pk=id)
-     inspection.inspection_status = 5
-     inspection.save()
+     object = get_object_or_404(Inspection, pk=id)
+     object.inspection_status = 5
+     object.save()
 
      context = {}
-     context['object'] = inspection
+     context['object'] = object
      subject = 'Radiography License Approval Issues'
      from_email = settings.DEFAULT_FROM_EMAIL
-     to_email = [inspection.email]
+     to_email = [object.hospital_name.hospital_admin]
      
 
      

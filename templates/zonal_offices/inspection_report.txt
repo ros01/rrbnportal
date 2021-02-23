@@ -8,15 +8,15 @@ Application Number: {{object.application_no}}
 
 Hospital Name: {{object.hospital_name}}
 
-Facility Address: {{object.practice_manager.inspection.address}}
+Facility Address: {{object.hospital_name.address}}
 
-License Category: {{object.license_category}}
+License Type: {{object.hospital_name.license_type}}
 
-Available Equipment: {{object.practice_manager.inspection.equipment}}
+Listed Modalities: {{object.hospital.equipment}}
 
-Inspection Date: {{object.practice_manager.inspection.inspection_date_pretty}}
+Inspection Date: {{object.schedule.inspection_date}}
 
-Inspection Score: {{object.practice_manager.inspection.inspection_total}}
+Inspection Score: {{object.inspection_total}}
 
 
 

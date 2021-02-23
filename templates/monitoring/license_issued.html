@@ -46,11 +46,10 @@
 
                 <div class="row ">
                     
-                    <div class="col-sm-12">
-                        <p class="text-center">License No: &nbsp; &nbsp;<strong>{{object.practice_manager.license.license_no}}</strong></p>
+                    <div class="col-sm-12"><p class="text-center">License No: &nbsp; &nbsp;<strong>{{object.license_no}}</strong></p>
                     </div>
                     <div class="col-sm-12">
-                        <p class="text-center">Category: &nbsp; &nbsp; <span class="text-success text-uppercase">{{object.license_category}}</span></p><br>
+                    <p class="text-center">License Type: &nbsp; &nbsp; <span class="text-success text-uppercase">{{object.hospital_name.license_type}}</span></p><br>
                     </div>
 
                     <div class="col-sm-12 mb-2">
@@ -61,7 +60,7 @@
                         <p class="text-center namefont">{{object.hospital_name}}</p>
                     </div>
                     <div class="col-sm-12">
-                        <p class="text-center"><strong>Hospital Address: &nbsp; &nbsp;</strong>{{object.address}}</p>
+                        <p class="text-center"><strong>Hospital Address: &nbsp; &nbsp;</strong>{{object.hospital_name.address}}</p>
 
                     </div>
                     <div class="col-sm-12">
@@ -73,9 +72,9 @@
                     </div>
 
                     <div class="col-sm-5 border border-dark p-2 push-down">
-                        <p class="text-center"><strong>Issue Date:</strong> {{object.practice_manager.license.issue_date_pretty}}</p>
-                        <p class="text-center"><strong>Processing Fee Paid: </strong>N{{object.practice_manager.payment.payment_amount | intcomma}}</p>
-                        <p class="text-center"><strong>Expiry Date:</strong> {{object.practice_manager.license.expiry_date_pretty}}</p>
+                        <p class="text-center"><strong>Issue Date:</strong> {{object.issue_date}}</p>
+                        <p class="text-center"><strong>Processing Fee Paid: </strong>N{{object.payment.payment_amount | intcomma}}</p>
+                        <p class="text-center"><strong>Expiry Date:</strong> {{object.expiry_date}}</p>
                     </div>
                 </div>
                 <p class="tiny-text text-center">Generated from Radiography Registration Bord Portal (www.monitoring.rrbn.gov.ng)</p>

@@ -1,7 +1,8 @@
 from django.views import View
 from django.http import HttpResponse
+from .models import Hospital
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
-from .forms import SignupForm, RenewalModelForm
+from .forms import SignupForm, RenewalModelForm, HospitalModelForm
 from django.contrib.sites.shortcuts import get_current_site
 from .tokens import account_activation_token
 from django.http import HttpResponse, Http404
@@ -37,6 +38,10 @@ AUTH_USER_MODEL = 'accounts.User'
 
 User = get_user_model()
 
+class StartView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'accounts/reg-start-details.html')
+
 class LoginTemplateView(TemplateView):
     template_name = "accounts/login.html"
 
@@ -45,38 +50,134 @@ def activate_account(request):
     return render(request, 'accounts/activate_account.html')
 
 
+#def CreateHospitalProfile(request):
+    #if request.method == 'POST':
+        #user_form = SignupForm(request.POST)
+        #hospital_form = HospitalModelForm(request.POST)
+        
+        #if user_form.is_valid and hospital_form.is_valid:
+            #user = user_form.save(commit=False)
+            #user.is_active = False  # Deactivate account till it is confirmed
+            #user.save()
+            #hospital = hospital_form.save(commit=False)
+            #Hospital.objects.create(
+                #hospital_admin = user,
+                #hospital_name = hospital.hospital_name,
+                #rc_number = hospital.rc_number,
+                #phone_no = hospital.phone_no,
+                #state = hospital.state,
+                #city = hospital.city,
+                #hospital_type = hospital.hospital_type,
+                #)
+            
+        #current_site = get_current_site(request)
+        #subject = 'Activate Your RRBN Portal Account'
+        #from_email = settings.DEFAULT_FROM_EMAIL
+        #to_email = [user.email]
+        #message = render_to_string('accounts/activation_request.html', {
+            #'user': user,
+            #'hospital': hospital,
+            #'domain': current_site.domain,
+            #'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            #'token': account_activation_token.make_token(user),
+        #})
+        #send_mail(subject, message, from_email, to_email, fail_silently=False)
+
+        #messages.success(request, ('Please Confirm your email to complete registration.'))
+
+        #return render(request, 'accounts/profile-creation-confirmation.html')
+    
+    #user_form = SignupForm()
+    #hospital_form = HospitalModelForm()        
+
+    #return render(request, "accounts/profile_creation.html", {'user_form':user_form, 'hospital_form':hospital_form,})
+     
+class CreateHospitalProfile(View):
+    user_form = SignupForm
+    hospital_form = HospitalModelForm
+    template_name = 'accounts/profile_creation.html'
+    template_name1 = 'accounts/profile-creation-confirmation.html'
+ 
+    def get(self, request, *args, **kwargs):
+        user_form = self.user_form()
+        hospital_form = self.hospital_form()
+        return render(request, self.template_name, {'user_form':user_form, 'hospital_form':hospital_form,})
+    def post(self, request, *args, **kwargs):
+        user_form = self.user_form(request.POST)
+        hospital_form = self.hospital_form(request.POST)
+
+        if user_form.is_valid() and hospital_form.is_valid():
+            user = user_form.save(commit=False)
+            user.is_active = False  # Deactivate account till it is confirmed
+            user.save()
+            hospital = hospital_form.save(commit=False)
+            Hospital.objects.create(
+                hospital_admin = user,
+                license_type = user.license_type,
+                hospital_name = hospital.hospital_name,
+                rc_number = hospital.rc_number,
+                phone_no = hospital.phone_no,
+                state = hospital.state,
+                city = hospital.city,
+                address = hospital.address,
+               
+                )
+            
+            current_site = get_current_site(request)
+            subject = 'Activate Your RRBN Portal Account'
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to_email = [user.email]
+            message = render_to_string('accounts/activation_request.html', {
+                'user': user,
+                'hospital': hospital,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            send_mail(subject, message, from_email, to_email, fail_silently=False)
+
+            messages.success(request, ('Please Confirm your email to complete registration.'))
+
+            return render(request, self.template_name1)
+
+             
+
+        return render(request, self.template_name, {'user_form':user_form, 'hospital_form':hospital_form,})
 
 
 
-def delete(request, license_id):
-    license = License.objects.get(pk=license_id)
-    license.delete()
-    messages.success(request, ('License deleted'))
-    return redirect('accounts/renewal.html')
+#class SignUpView(View):
+    #form_class = SignupForm
+    #template_name = 'accounts/register.html'
+    #template_name1 = 'accounts/profile-creation-confirmation.html'
+ 
+    #def get(self, request, *args, **kwargs):
+        #form = self.form_class()
+        #return render(request, self.template_name, {'form': form})
+    #def post(self, request, *args, **kwargs):
+        #form = self.form_class(request.POST)
+        #if form.is_valid():
+            #user = form.save(commit=False)
+            #user.is_active = False  # Deactivate account till it is confirmed
+            #user.save()
+            #current_site = get_current_site(request)
+            #subject = 'Activate Your RRBN Portal Account'
+            #from_email = settings.DEFAULT_FROM_EMAIL
+            #to_email = [form.cleaned_data.get('email')]
+            #message = render_to_string('accounts/activation_request.html', {
+                #'user': user,
+                #'domain': current_site.domain,
+                #'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                #'token': account_activation_token.make_token(user),
+           # })
+            #send_mail(subject, message, from_email, to_email, fail_silently=False)
 
+            #messages.success(
+                #request, ('Please Confirm your email to complete registration.'))
 
-
-
-class RenewalObjectMixin(object):
-    model = License
-    def get_object(self):
-        id = self.kwargs.get('id')
-        obj = None
-        if id is not None:
-            obj = get_object_or_404(self.model, id=id)
-        return obj 
-
-
-
-
-class RenewalCreateView(CreateView):
-    template_name = 'accounts/renewal.html'
-    form_class = RenewalModelForm
-
-
-
-
-
+            #return render(request, self.template_name1)
+        #else:
+            #return render(request, self.template_name, {'form': form})
 
 def renewal(request):
     try:
@@ -93,16 +194,6 @@ def renewal(request):
         pass
 
     return render(request, 'accounts/results.html', {"results": results})
-
-def profile_details(request, id=id):
-    obj = get_object_or_404(User, id=id)
-    form = SignupForm(request.POST or None, instance=obj)
-    if form.is_valid():
-        form.save()
-    context = {
-        'form': form
-    }
-    return render(request, "accounts/update_profile.html", context)
 
 
 
@@ -144,6 +235,36 @@ class ProfileUpdateView(ProfileObjectMixin, View):
         return render(request, self.template_name1, context)
 
 
+
+def delete(request, license_id):
+    license = License.objects.get(pk=license_id)
+    license.delete()
+    messages.success(request, ('License deleted'))
+    return redirect('accounts/renewal.html')
+
+class RenewalObjectMixin(object):
+    model = License
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+class RenewalCreateView(CreateView):
+    template_name = 'accounts/renewal.html'
+    form_class = RenewalModelForm
+
+
+def profile_details(request, id=id):
+    obj = get_object_or_404(User, id=id)
+    form = SignupForm(request.POST or None, instance=obj)
+    if form.is_valid():
+        form.save()
+    context = {
+        'form': form
+    }
+    return render(request, "accounts/update_profile.html", context)
 
 
 class RenewalView(RenewalObjectMixin, View):
@@ -213,9 +334,9 @@ def login(request):
     if user is not None:
         auth_login(request, user)
         
-        if user.hospital_type == 'Radiography Practice':
+        if user.license_type == 'Radiography Practice':
             return redirect('hospitals:hospitals_dashboard')
-        if user.hospital_type == 'Internship Accreditation':
+        if user.license_type == 'Internship Accreditation':
             return redirect('hospitals:hospitals_dashboard')
         if user.role == 'Monitoring':
             return redirect('monitoring:monitoring_dashboard')
@@ -225,6 +346,9 @@ def login(request):
             return redirect('zonal_offices:zonal_offices_dashboard')
         if user.role == 'Finance':
             return redirect('finance:finance_dashboard')
+        else:
+            messages.error(request, 'Please enter the correct email and password for your account. Note that both fields may be case-sensitive.')
+            return redirect('accounts:signin')
     else:
         messages.error(request, 'Please enter the correct email and password for your account. Note that both fields may be case-sensitive.')
         return redirect('accounts:signin')
@@ -255,35 +379,20 @@ class ActivateAccount(View):
             return redirect('index')
 
 
-
-
-
 class SignUpView(View):
     form_class = SignupForm
     template_name = 'accounts/register.html'
     template_name1 = 'accounts/profile-creation-confirmation.html'
-    
-    
-
+ 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
         return render(request, self.template_name, {'form': form})
-
-   
-
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-
-
-            
             user = form.save(commit=False)
             user.is_active = False  # Deactivate account till it is confirmed
             user.save()
-
-
-            
-
             current_site = get_current_site(request)
             subject = 'Activate Your RRBN Portal Account'
             from_email = settings.DEFAULT_FROM_EMAIL
@@ -295,8 +404,6 @@ class SignUpView(View):
                 'token': account_activation_token.make_token(user),
             })
             send_mail(subject, message, from_email, to_email, fail_silently=False)
-
-
 
             messages.success(
                 request, ('Please Confirm your email to complete registration.'))
@@ -312,27 +419,17 @@ class StartIntershipApplication(View):
     template_name = 'accounts/register_internship.html'
     template_name1 = 'accounts/profile-creation-confirmation.html'
     
-    
-
     def get(self, request, *args, **kwargs):
         form = self.form_class()
         return render(request, self.template_name, {'form': form})
 
-   
-
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-
-
-            
             user = form.save(commit=False)
             user.is_active = False  # Deactivate account till it is confirmed
             user.save()
-
-
-            
-
+    
             current_site = get_current_site(request)
             subject = 'Activate Your RRBN Portal Account'
             from_email = settings.DEFAULT_FROM_EMAIL
@@ -344,8 +441,6 @@ class StartIntershipApplication(View):
                 'token': account_activation_token.make_token(user),
             })
             send_mail(subject, message, from_email, to_email, fail_silently=False)
-
-
 
             messages.success(
                 request, ('Please Confirm your email to complete registration.'))
@@ -371,9 +466,6 @@ class ProfileDetailView(ProfileObjectMixin, View):
         context = {'object': self.get_object()}
         return render(request, self.template_name, context)
 
-
-
-
 #class ProfileDetailView(DetailView):
     #model = User
    # model = settings.AUTH_USER_MODEL
@@ -381,21 +473,9 @@ class ProfileDetailView(ProfileObjectMixin, View):
 
 
 
-
-
-
-
-class StartView(View):
-    def get(self, request, *args, **kwargs):
-        return render(request, 'accounts/reg-start-details.html')
-
 class StartReg(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'accounts/start-accreditation.html')
-
-
-
-    
 
 
 def logout(request):
@@ -403,7 +483,6 @@ def logout(request):
     auth.logout(request)
     messages.success(request, 'You are now logged out')
     return redirect('index')
-
 
 
 class PasswordChangeView(auth_views.PasswordChangeView):

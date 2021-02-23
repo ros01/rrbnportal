@@ -52,22 +52,22 @@
         <br>
         <br>
         <p class="lead text-secondary m-0">Inspection Date:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.inspection_date_pretty}}</strong></p>  
+        <p class="lead text-secondary m-0"><strong>{{object.schedule.inspection_date}}</strong></p>  
         <br> 
     </div>
 
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
-        <p class="lead text-secondary m-0">Facility Inspected:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.address}}</strong></p>
+        <p class="lead text-secondary m-0">Hospital/Centre Address:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.hospital_name.address}}</strong></p>
         <br>
        
         <p class="lead text-secondary m-0">Inspection Zone:</p>
-        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.inspection_zone}}</strong></p>  
+        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.schedule.inspection_zone}}</strong></p>  
         <br> 
     </div>
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
-        <p class="lead text-secondary m-0">Practice Category:</p>
-        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.license_category}}</strong></p>
+        <p class="lead text-secondary m-0">License Type:</p>
+        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.hospital_name.license_type}}</strong></p>
         <br>
         <br>
         <p class="lead text-secondary m-0">Inspection Score:</p>
@@ -75,11 +75,10 @@
         <br>
     </div>
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
-        <p class="lead text-secondary m-0">Registered Services:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.equipment}}</strong></p>  
+        <p class="lead text-secondary m-0">Available Modalities:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.hospital.equipment}}</strong></p>  
         <br>
-        <p class="lead text-secondary m-0">Next Inspection Date:</p>
-        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.next_inspection_date}}</strong></p>  
+          
         <br>
         
     </div>

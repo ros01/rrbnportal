@@ -25,43 +25,45 @@
     </section>
     <br>
         
-                    
-
-               
-        
-
-
        <div class="row justify-content-center mx-auto"> 
 
-        <div class="col-md-8 col-md text-center" style="background:#1ca8dd"> 
+        <div class="col-md-7 col-md text-center" style="background:#1ca8dd"> 
         <h4 class="justify-content-center" style="font-size:30px; padding:10px; color:#fff"> Invoice </h4> 
        </div> 
 
-       <div class="col-md-8 col-md"> 
+       <div class="col-md-7 col-md"> 
        <div class="row"> 
-       <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12"> <b>{{object.hospital_name|upper}}</b> <br/> {{object.address|upper}}<br/> {{object.email}}; {{object.phone}} </div> 
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <b>{{object.hospital_name|upper}}</b> <br/> 
 
-       <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> <b style="color:#888">Date : </b>{{object.reg_date_pretty}} <br/><br/> <b style="color:#888">Application #: </b> {{object.application_no}} 
+        {% for invoice in invoice %}
+        {{ invoice.address }}
+        <br/> {{invoice.phone_no}}
+        {% endfor %}
+        <br/>
+        {{user.email}} </div> 
+        
+
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"> <b style="color:#888">Application Date: </b>{{object.submission_date}} <br/><br/> <b style="color:#888">Application #: </b> {{object.application_no}} 
        </div>
 
        </div> <br/> 
 
-       <div class="row" style="background: #efefef; color:#333; padding:8px;"> <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12"> Description </div> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> Amount (NGN) </div> 
+       <div class="row" style="background: #efefef; color:#333; padding:8px;"> <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> Description </div> <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"> Amount (NGN) </div> 
        </div> 
        <br/> 
 
       <div class="row"> 
 
-      <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> Registration of Practice Application Fee</span> <br/> <p class="help-block"> <b style="color:#888">Category:</b>{{object.license_category|upper}} <br/> <b style="color:#888">Type:</b> {{object.application_type|upper}} </p> </div> 
+      <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> Registration of Practice Application Fee</span> <br/> <p class="help-block"> <b style="color:#888">Category:</b>{{object.license_type|upper}} <br/> <b style="color:#888">Type:</b> {{object.application_type|upper}} </p> </div> 
 
 
-      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> N50,000.00 </span> </div>
+      <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> N50,000.00 </span> </div>
 
       </div> <!-- total --> 
 
       <div class="row"> 
 
-      <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> Cost for Registration of Modalities</span>  </div> 
+      <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> Cost for Registration of Modalities</span>  </div> 
 
 
       <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> 
@@ -149,7 +151,7 @@
         
         <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12 text-right"> 
         <br/> <a href="{% url 'hospitals:hospitals_dashboard' %}" class="text-dark py-1 mr-3 mt-6 btn btn-outline-danger"><i class="fas fa-times"></i>  <br/>Close</a>    
-        <a href="{% url 'hospitals:payment_processing' object.id %}" class="py-1 mr-3 mt-6 btn btn-warning"><i class="fa fa-check"></i> <br/>Proceed with Payment</a>
+        <a href="{% url 'hospitals:payment_processing' object.pk %}" class="py-1 mr-3 mt-6 btn btn-warning"><i class="fa fa-check"></i> <br/>Proceed with Payment</a>
         </div>
         </div>
         </div>

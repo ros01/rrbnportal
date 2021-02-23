@@ -7,6 +7,7 @@ from django.utils import timezone
 from tempus_dominus.widgets import DatePicker
 from hospitals.choices import INSPECTION_ZONE, LICENSE_STATUS, STATE_CHOICES, SERVICES, EQUIPMENT
 from bootstrap_modal_forms.forms import BSModalModelForm
+from bootstrap_modal_forms.mixins import PassRequestMixin, PopRequestMixin, CreateUpdateAjaxMixin
 
 
 
@@ -16,25 +17,16 @@ class InspectionModelForm(forms.ModelForm):
 
     class Meta:
         model = Inspection
-        fields = ('application_no', 'practice_manager','application_type', 'payment_amount', 'hospital_name', 'license_category', 'address', 'phone', 'email', 'radiographers', 'radiologists', 'inspection_zone', 'equipment', 'inspection_schedule_date', 'inspection_report_deadline', 'inspection_comments', 'photo_main', 'photo_1', 'photo_2', 'photo_3', 'photo_4', 'photo_5', 'photo_6',)
+        fields = ('application_no', 'hospital_name', 'hospital', 'payment', 'schedule', 'inspection_comments', 'photo_main', 'photo_1', 'photo_2', 'photo_3', 'photo_4', 'photo_5', 'photo_6',)
             
         
         widgets = {
-        'practice_manager': forms.HiddenInput(),
-        'license_category': forms.HiddenInput(),
-        'application_type': forms.HiddenInput(),
-        'payment_amount': forms.HiddenInput(),
-        'inspection_report_deadline': forms.HiddenInput(),
-        'inspection_schedule_date': forms.HiddenInput(),
-        'hospital_name': forms.TextInput(attrs={'readonly': True}),
+        'hospital_name': forms.HiddenInput(),
+        'hospital': forms.HiddenInput(),
+        'payment': forms.HiddenInput(),
+        'schedule': forms.HiddenInput(),
         'application_no': forms.TextInput(attrs={'readonly': True}),
-        'equipment': forms.Textarea(attrs={'readonly': True,'rows':6, 'cols':12}),
-        'phone': forms.TextInput(attrs={'readonly': True}),
-        'email': forms.TextInput(attrs={'readonly': True}),
         'inspection_comments': forms.Textarea(attrs={'rows':6, 'cols':12}),
-        'address': forms.Textarea(attrs={'rows':6, 'cols':12}),
-        'radiographers': forms.Textarea(attrs={'rows':6, 'cols':12}),
-        'radiologists': forms.Textarea(attrs={'rows':6, 'cols':12}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -43,20 +35,89 @@ class InspectionModelForm(forms.ModelForm):
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       self.fields['inspection_zone'].label = False
+       #self.fields['inspection_zone'].label = False
        #self.fields['inspection_total'].label = "Total Score"
        self.fields['inspection_comments'].label = "Enter Observations and Comments"
 
 
-class NuclearMedicineModelForm(forms.ModelForm):
+class UltrasoundModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
+
+    class Meta:
+        model = Ultrasound
+        fields = ('application_no', 'hospital_name', 'schedule', 'room_design_score', 'radiographers_no_score', 'radiographer_license_score', 'ultrasound_qualification_score', 'water_supply_score', 'accessories_adequacy_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'support_staff_score', 'ultrasound_total' )
+            
+        
+        widgets = {
+        
+        'room_design_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),  
+        'radiographer_license_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'ultrasound_qualification_score': forms.NumberInput(attrs={'min':0,'max':20,'type': 'number'}),
+        'water_supply_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'accessories_adequacy_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'C07_form_compliance_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'equipment_installation_location_score': forms.NumberInput(attrs={'min':0,'max':20,'type': 'number'}),
+        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'waiting_room_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'offices_adequacy_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'support_staff_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}), 
+        }
+
+    def __init__(self, *args, **kwargs):                                  
+       super(UltrasoundModelForm, self).__init__(*args, **kwargs)
+
+       for name in self.fields.keys():
+            self.fields[name].widget.attrs.update({
+                'class': 'form-control',
+            })
+       
+       self.fields['room_design_score'].label = "Room Design"
+       self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+       self.fields['radiographers_no_score'].label = "No of Radiographers"
+       self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+       self.fields['radiographer_license_score'].label = "Radiographers Current License"
+       self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+       self.fields['ultrasound_qualification_score'].label = "Qualification in Ultrasonography"
+       self.fields['ultrasound_qualification_score'].widget.attrs['placeholder'] = "(Max Score = 20)"
+       self.fields['water_supply_score'].label = "Water Supply"
+       self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+       self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
+       self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+       self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
+       self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+       self.fields['equipment_installation_location_score'].label = "Equipment Installation"
+       self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 20)"
+       self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
+       self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+       self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
+       self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+       self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
+       self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+       self.fields['support_staff_score'].label = "Support Staff (Chaperon)"
+       self.fields['support_staff_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+       self.fields['ultrasound_total'].label = "Total Score"
+
+    def save(self):
+
+      if not self.request.is_ajax():
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+          instance.save()
+      else:
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+
+      return instance
+
+
+
+class NuclearMedicineModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):                     
 
     class Meta:
         model = Nuclearmedicine
-        fields = ('practice_manager', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'nuclear_medicine_physicians_no_score', 'other_staff_no_score', 'nuclear_medicine_certification_score', 'radiographer_license_score', 'prmd_prpe_score', 'water_supply_score', 'equipment_certification_score', 'radionuclide_accessories_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'radionuclide_storage_unit_score', 'offices_adequacy_score', 'quality_control_score', 'rso_score', 'radiation_safety_program_score', 'labelling_score', 'performance_survey_score', 'radioactive_materials_security_score', 'toilets_cleanliness_score', 'waiting_room_score', 'nuclear_medicine_total')
+        fields = ('application_no', 'hospital_name', 'schedule', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'nuclear_medicine_physicians_no_score', 'other_staff_no_score', 'nuclear_medicine_certification_score', 'radiographer_license_score', 'prmd_prpe_score', 'water_supply_score', 'equipment_certification_score', 'radionuclide_accessories_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'radionuclide_storage_unit_score', 'offices_adequacy_score', 'quality_control_score', 'rso_score', 'radiation_safety_program_score', 'labelling_score', 'performance_survey_score', 'radioactive_materials_security_score', 'toilets_cleanliness_score', 'waiting_room_score', 'nuclear_medicine_total')
 
           
         widgets = {
-        'practice_manager': forms.TextInput(attrs={'readonly': True}),
+        
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':6,'type': 'number'}),
         'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
@@ -92,7 +153,7 @@ class NuclearMedicineModelForm(forms.ModelForm):
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       self.fields['practice_manager'].label = "Hospital Admin Id"
+      
        self.fields['shielding_score'].label = "Shielding"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -144,18 +205,27 @@ class NuclearMedicineModelForm(forms.ModelForm):
        self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
        self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
        self.fields['nuclear_medicine_total'].label = "Total Score"
-      
+    
+    def save(self):
+
+      if not self.request.is_ajax():
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+          instance.save()
+      else:
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+
+      return instance
 
 
-class RadiotherapyModelForm(forms.ModelForm):
+class RadiotherapyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
 
     class Meta:
         model = Radiotherapy
-        fields = ('practice_manager', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'other_staff_score', 'radiotherapy_certification_score', 'radiographer_license_score', 'prmd_prpe_score', 'rso_score', 'water_supply_score', 'equipment_certification_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'radiotherapy_accessories_score', 'mould_room_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'radiotherapy_total')
+        fields = ('application_no', 'hospital_name', 'schedule', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'other_staff_score', 'radiotherapy_certification_score', 'radiographer_license_score', 'prmd_prpe_score', 'rso_score', 'water_supply_score', 'equipment_certification_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'radiotherapy_accessories_score', 'mould_room_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'radiotherapy_total')
 
           
         widgets = {
-        'practice_manager': forms.TextInput(attrs={'readonly': True}),
+        
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
         'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
@@ -188,7 +258,7 @@ class RadiotherapyModelForm(forms.ModelForm):
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       self.fields['practice_manager'].label = "Hospital Admin Id"
+       
        self.fields['shielding_score'].label = "Shielding"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -232,78 +302,24 @@ class RadiotherapyModelForm(forms.ModelForm):
        self.fields['radiotherapy_total'].label = "Total Score"
 
 
+    def save(self):
+      if not self.request.is_ajax():
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+          instance.save()
+      else:
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+      return instance
 
 
-class UltrasoundModelForm(forms.ModelForm):
-
-    class Meta:
-        model = Ultrasound
-        fields = ('practice_manager', 'room_design_score', 'radiographers_no_score', 'radiographer_license_score', 'ultrasound_qualification_score', 'water_supply_score', 'accessories_adequacy_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'support_staff_score', 'ultrasound_total' )
-            
-        
-        widgets = {
-        'practice_manager': forms.TextInput(attrs={'readonly': True}),
-        'room_design_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
-        'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),  
-        'radiographer_license_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
-        'ultrasound_qualification_score': forms.NumberInput(attrs={'min':0,'max':20,'type': 'number'}),
-        'water_supply_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
-        'accessories_adequacy_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
-        'C07_form_compliance_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
-        'equipment_installation_location_score': forms.NumberInput(attrs={'min':0,'max':20,'type': 'number'}),
-        'toilets_cleanliness_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
-        'waiting_room_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
-        'offices_adequacy_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
-        'support_staff_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}), 
-        }
-
-    def __init__(self, *args, **kwargs):
-       super(UltrasoundModelForm, self).__init__(*args, **kwargs)
-
-       for name in self.fields.keys():
-            self.fields[name].widget.attrs.update({
-                'class': 'form-control',
-            })
-       
-       
-       self.fields['practice_manager'].label = "Hospital Admin Id"
-       self.fields['room_design_score'].label = "Room Design"
-       self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['radiographers_no_score'].label = "No of Radiographers"
-       self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['radiographer_license_score'].label = "Radiographers Current License"
-       self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['ultrasound_qualification_score'].label = "Qualification in Ultrasonography"
-       self.fields['ultrasound_qualification_score'].widget.attrs['placeholder'] = "(Max Score = 20)"
-       self.fields['water_supply_score'].label = "Water Supply"
-       self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
-       self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
-       self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['equipment_installation_location_score'].label = "Equipment Installation"
-       self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 20)"
-       self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
-       self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
-       self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
-       self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['support_staff_score'].label = "Support Staff (Chaperon)"
-       self.fields['support_staff_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['ultrasound_total'].label = "Total Score"
-
-
-
-class XrayModelForm(forms.ModelForm):
+class XrayModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
 
     class Meta:
         model = Xray 
-        fields = ('practice_manager', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'prmd_prpe_score', 'rso_rsa_score', 'water_supply_score', 'equipment_installation_location_score', 'equipment_certification_score', 'accessories_adequacy_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'xray_total')
+        fields = ('application_no', 'hospital_name', 'schedule', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'prmd_prpe_score', 'rso_rsa_score', 'water_supply_score', 'equipment_installation_location_score', 'equipment_certification_score', 'accessories_adequacy_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'xray_total')
 
           
         widgets = {
-        'practice_manager': forms.TextInput(attrs={'readonly': True}),
+        
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':15,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
         'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
@@ -332,7 +348,7 @@ class XrayModelForm(forms.ModelForm):
                 'class': 'form-control',
             })
 
-       self.fields['practice_manager'].label = "Hospital Admin Id"
+       
        self.fields['shielding_score'].label = "Shielding"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -371,17 +387,26 @@ class XrayModelForm(forms.ModelForm):
        self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
        self.fields['xray_total'].label = "Total Score"
       
+    def save(self):
+
+      if not self.request.is_ajax():
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+          instance.save()
+      else:
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+
+      return instance
 
 
-class FlouroscopyModelForm(forms.ModelForm):
+class FlouroscopyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
 
     class Meta:
         model = Flouroscopy
-        fields = ('practice_manager', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'prmd_prpe_score', 'rso_rsa_score', 'water_supply_score', 'equipment_installation_location_score', 'equipment_certification_score', 'accessories_adequacy_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'flouroscopy_total')
+        fields = ('application_no', 'hospital_name', 'schedule', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'prmd_prpe_score', 'rso_rsa_score', 'water_supply_score', 'equipment_installation_location_score', 'equipment_certification_score', 'accessories_adequacy_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'flouroscopy_total')
 
           
         widgets = {
-        'practice_manager': forms.TextInput(attrs={'readonly': True}),
+        
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':15,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
         'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
@@ -402,9 +427,6 @@ class FlouroscopyModelForm(forms.ModelForm):
         'offices_adequacy_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),    
         }
 
-
-    
-
     def __init__(self, *args, **kwargs):
        super(FlouroscopyModelForm, self).__init__(*args, **kwargs)
        
@@ -412,7 +434,7 @@ class FlouroscopyModelForm(forms.ModelForm):
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       self.fields['practice_manager'].label = "Hospital Admin Id"
+       
        self.fields['shielding_score'].label = "Shielding"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -451,16 +473,25 @@ class FlouroscopyModelForm(forms.ModelForm):
        self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
        self.fields['flouroscopy_total'].label = "Total Score"
 
+    def save(self):
+      if not self.request.is_ajax():
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+          instance.save()
+      else:
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
 
-class CtscanModelForm(forms.ModelForm):
+      return instance
+
+
+class CtscanModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
 
     class Meta:
         model = Ctscan
-        fields = ('practice_manager', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'prmd_prpe_score', 'rso_rsa_score', 'water_supply_score', 'equipment_installation_location_score', 'equipment_certification_score', 'accessories_adequacy_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'ctscan_total')
+        fields = ('application_no', 'hospital_name', 'schedule', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'prmd_prpe_score', 'rso_rsa_score', 'water_supply_score', 'equipment_installation_location_score', 'equipment_certification_score', 'accessories_adequacy_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'ctscan_total')
 
           
         widgets = {
-        'practice_manager': forms.TextInput(attrs={'readonly': True}),
+       
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':15,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
         'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
@@ -488,7 +519,7 @@ class CtscanModelForm(forms.ModelForm):
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       self.fields['practice_manager'].label = "Hospital Admin Id"
+       
        self.fields['shielding_score'].label = "Shielding"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -527,16 +558,25 @@ class CtscanModelForm(forms.ModelForm):
        self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
        self.fields['ctscan_total'].label = "Total Score"
 
+    def save(self):
 
-class MriModelForm(forms.ModelForm):
+      if not self.request.is_ajax():
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+          instance.save()
+      else:
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+
+      return instance
+
+class MriModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
 
     class Meta:
         model = Mri
-        fields = ('practice_manager', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'mri_certification_score', 'metal_screening_device_score', 'screening_questionnaire_score', 'water_supply_score', 'accessories_adequacy_score', 'warning_signs_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'technical_room_adequacy_score', 'mri_total')
+        fields = ('application_no', 'hospital_name', 'schedule', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'mri_certification_score', 'metal_screening_device_score', 'screening_questionnaire_score', 'water_supply_score', 'accessories_adequacy_score', 'warning_signs_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'technical_room_adequacy_score', 'mri_total')
 
           
         widgets = {
-        'practice_manager': forms.TextInput(attrs={'readonly': True}),
+        
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
         'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
@@ -558,8 +598,6 @@ class MriModelForm(forms.ModelForm):
         }
 
 
-    
-
     def __init__(self, *args, **kwargs):
        super(MriModelForm, self).__init__(*args, **kwargs)
        
@@ -567,7 +605,7 @@ class MriModelForm(forms.ModelForm):
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       self.fields['practice_manager'].label = "Hospital Admin Id"
+       
        self.fields['shielding_score'].label = "Shielding/Faraday Cage"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -606,16 +644,25 @@ class MriModelForm(forms.ModelForm):
        self.fields['technical_room_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
        self.fields['mri_total'].label = "Total Score"
 
+    def save(self):
 
-class MamographyModelForm(forms.ModelForm):
+      if not self.request.is_ajax():
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+          instance.save()
+      else:
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+
+      return instance
+
+
+class MamographyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
 
     class Meta:
         model = Mamography
-        fields = ('practice_manager', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'mammography_certification_score', 'prmd_prpe_score', 'rso_rsa_score', 'water_supply_score', 'equipment_certification_score', 'accessories_adequacy_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'mamography_total')
-
+        fields = ('application_no', 'hospital_name', 'schedule', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'mammography_certification_score', 'prmd_prpe_score', 'rso_rsa_score', 'water_supply_score', 'equipment_certification_score', 'accessories_adequacy_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'mamography_total')
           
         widgets = {
-        'practice_manager': forms.TextInput(attrs={'readonly': True}),
+        
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
         'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
@@ -637,9 +684,6 @@ class MamographyModelForm(forms.ModelForm):
         'offices_adequacy_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),    
         }
 
-
-    
-
     def __init__(self, *args, **kwargs):
        super(MamographyModelForm, self).__init__(*args, **kwargs)
        
@@ -647,7 +691,7 @@ class MamographyModelForm(forms.ModelForm):
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       self.fields['practice_manager'].label = "Hospital Admin Id"
+       
        self.fields['shielding_score'].label = "Shielding"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -688,16 +732,25 @@ class MamographyModelForm(forms.ModelForm):
        self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
        self.fields['mamography_total'].label = "Total Score"
 
+    def save(self):
 
-class DentalXrayModelForm(forms.ModelForm):
+      if not self.request.is_ajax():
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+          instance.save()
+      else:
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+
+      return instance
+
+class DentalXrayModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
 
     class Meta:
         model = Dentalxray
-        fields = ('practice_manager', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'prmd_prpe_score', 'water_supply_score', 'equipment_certification_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'dentalxray_total')
+        fields = ('application_no', 'hospital_name', 'schedule', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'prmd_prpe_score', 'water_supply_score', 'equipment_certification_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'dentalxray_total')
 
           
         widgets = {
-        'practice_manager': forms.TextInput(attrs={'readonly': True}),
+        
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':15,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
         'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
@@ -723,7 +776,7 @@ class DentalXrayModelForm(forms.ModelForm):
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       self.fields['practice_manager'].label = "Hospital Admin Id"
+       
        self.fields['shielding_score'].label = "Shielding"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -758,16 +811,25 @@ class DentalXrayModelForm(forms.ModelForm):
        self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
        self.fields['dentalxray_total'].label = "Total Score"
 
+    def save(self):
 
-class EchocardiographyModelForm(forms.ModelForm):
+      if not self.request.is_ajax():
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+          instance.save()
+      else:
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+
+      return instance
+
+class EchocardiographyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
 
     class Meta:
         model = Echocardiography
-        fields = ('practice_manager', 'room_design_score', 'radiographers_no_score', 'radiographer_license_score', 'echocardiography_certification_score', 'water_supply_score', 'accessories_adequacy_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'support_staff_score', 'echocardiography_total')
+        fields = ('application_no', 'hospital_name', 'schedule', 'room_design_score', 'radiographers_no_score', 'radiographer_license_score', 'echocardiography_certification_score', 'water_supply_score', 'accessories_adequacy_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'support_staff_score', 'echocardiography_total')
 
           
         widgets = {
-        'practice_manager': forms.TextInput(attrs={'readonly': True}),
+       
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
         'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
         'radiographer_license_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
@@ -789,7 +851,7 @@ class EchocardiographyModelForm(forms.ModelForm):
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       self.fields['practice_manager'].label = "Hospital Admin Id"
+       
        self.fields['room_design_score'].label = "Room Design & Layout"
        self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
        self.fields['radiographers_no_score'].label = "No. of Radiographers"
@@ -816,16 +878,24 @@ class EchocardiographyModelForm(forms.ModelForm):
        self.fields['support_staff_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
        self.fields['echocardiography_total'].label = "Total Score"
 
+    def save(self):
+      if not self.request.is_ajax():
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+          instance.save()
+      else:
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
 
-class AngiographyModelForm(forms.ModelForm):
+      return instance
+
+class AngiographyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
 
     class Meta:
         model = Angiography
-        fields = ('practice_manager', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'angiography_certification_score', 'prmd_prpe_score', 'rso_rsa_score', 'water_supply_score', 'equipment_certification_score', 'accessories_adequacy_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'angiography_total')
+        fields = ('application_no', 'hospital_name', 'schedule', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'angiography_certification_score', 'prmd_prpe_score', 'rso_rsa_score', 'water_supply_score', 'equipment_certification_score', 'accessories_adequacy_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'angiography_total')
 
           
         widgets = {
-        'practice_manager': forms.TextInput(attrs={'readonly': True}),
+        
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':15,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
         'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
@@ -854,7 +924,7 @@ class AngiographyModelForm(forms.ModelForm):
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       self.fields['practice_manager'].label = "Hospital Admin Id"
+       
        self.fields['shielding_score'].label = "Shielding"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -895,17 +965,24 @@ class AngiographyModelForm(forms.ModelForm):
        self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
        self.fields['angiography_total'].label = "Total Score"
 
+    def save(self):
+      if not self.request.is_ajax():
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+          instance.save()
+      else:
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+      return instance
 
 
-class CarmModelForm(forms.ModelForm):
+class CarmModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
 
     class Meta:
         model = Carm
-        fields = ('practice_manager', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'prmd_prpe_score', 'water_supply_score', 'equipment_certification_score', 'accessories_adequacy_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'carm_total')
+        fields = ('application_no', 'hospital_name', 'schedule', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'prmd_prpe_score', 'water_supply_score', 'equipment_certification_score', 'accessories_adequacy_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'carm_total')
 
           
         widgets = {
-        'practice_manager': forms.TextInput(attrs={'readonly': True}),
+        
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
         'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
@@ -932,7 +1009,7 @@ class CarmModelForm(forms.ModelForm):
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       self.fields['practice_manager'].label = "Hospital Admin Id"
+       
        self.fields['shielding_score'].label = "Shielding"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -969,6 +1046,13 @@ class CarmModelForm(forms.ModelForm):
        self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
        self.fields['carm_total'].label = "Total Score"
 
+    def save(self):
+      if not self.request.is_ajax():
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+          instance.save()
+      else:
+          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+      return instance
 
 
 
@@ -976,8 +1060,7 @@ class AccreditationModelForm(forms.ModelForm):
 
     class Meta:
         model = Appraisal
-        fields = ('application_no', 'practice_manager','application_type', 'payment_amount', 'hospital_name', 'license_category', 'address', 'phone', 'email', 'radiographers', 'radiologists', 'inspection_zone',  'equipment', 'inspection_schedule_date', 'inspection_report_deadline', 'radiographers_score', 'radiologists_score', 'support_staff_score', 'offices_score', 'library_score', 'call_room_score', 'waiting_room_score', 'toilets_score', 'room_design_score', 'static_xray_score', 'mobile_xray_score', 'ct_score', 'mri_score', 'fluoroscopy_score', 'nuclear_medicine_score', 'radiation_therapy_score', 'ultrasound_score', 'mammography_score', 'dental_equipment_score', 'carm_score', 'processing_unit_score', 'diagnostic_room_score', 'personnel_score',  'cpds_score', 'departmental_seminars_score', 'licence_status_score', 'appraisal_total',  'appraisal_comments', 'photo_main', 'photo_1', 'photo_2', 'photo_3', 'photo_4', 'photo_5', 'photo_6',)
-            
+        fields = ('application_no', 'practice_manager','application_type', 'payment_amount', 'hospital_name', 'license_category', 'address', 'phone', 'email', 'radiographers', 'radiologists', 'inspection_zone',  'equipment', 'inspection_schedule_date', 'inspection_report_deadline', 'radiographers_score', 'radiologists_score', 'support_staff_score', 'offices_score', 'library_score', 'call_room_score', 'waiting_room_score', 'toilets_score', 'room_design_score', 'static_xray_score', 'mobile_xray_score', 'ct_score', 'mri_score', 'fluoroscopy_score', 'nuclear_medicine_score', 'radiation_therapy_score', 'ultrasound_score', 'mammography_score', 'dental_equipment_score', 'carm_score', 'processing_unit_score', 'diagnostic_room_score', 'personnel_score',  'cpds_score', 'departmental_seminars_score', 'licence_status_score', 'appraisal_total',  'appraisal_comments', 'photo_main', 'photo_1', 'photo_2', 'photo_3', 'photo_4', 'photo_5', 'photo_6',)      
         
         widgets = {
         'practice_manager': forms.HiddenInput(),
@@ -988,7 +1071,8 @@ class AccreditationModelForm(forms.ModelForm):
         'inspection_schedule_date': forms.HiddenInput(),
         'hospital_name': forms.TextInput(attrs={'readonly': True}),
         'application_no': forms.TextInput(attrs={'readonly': True}),
-        'appraisal_comments': forms.Textarea(attrs={'rows':6, 'cols':12}),'shielding_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
+        'appraisal_comments': forms.Textarea(attrs={'rows':6, 'cols':12}),
+        'shielding_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
         'radiographers_score': forms.NumberInput(attrs={'min':0,'max':6,'type': 'number'}),
         'radiologists_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}), 
         'support_staff_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}), 

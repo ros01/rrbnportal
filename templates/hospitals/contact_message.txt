@@ -7,11 +7,15 @@ Application Number: {{object.application_no}}
 
 Hospital Name: {{object.hospital_name}}
 
-Mobile Number: {{object.phone}}
+Application Type: {{object.application_type}}  {% for hospital in hospital %}
 
-Email Address: {{object.email}}
+Mobile Number: {{hospital.phone_no}}
 
-Submission Time: {{object.reg_date}}
+Email Address: {{hospital.hospital_admin}}
+
+License Type: {{hospital.license_type}}
+
+{% endfor %} Submission Time: {{object.submission_date}}
 
 Kindly proceed to pay your registration fee of N50,000 plus cost of available modalities by generating RRR on remita and either paying online or at any commercial bank of your choice.
 

@@ -44,43 +44,42 @@
     </div>
 </div>
 <div class="row mx-1 py-0 my-0">
-    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
-        <p class="lead text-secondary ml-1 my-0 mr-0">Application Number:</p>
+    <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mb-0">
+        <p class="lead text-secondary ml-1 mr-0 my-0">Application Number:</p>
         <p class="lead text-secondary m-0"><strong>{{object.application_no}}</strong></p>  
         <br>
         <br>
         <p class="lead text-secondary m-0">Available Modalities:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.equipment}}</strong></p>  
+        <p class="lead text-secondary m-0"><strong>{{object.hospital.equipment}}</strong></p>  
         <br> 
     </div>
 
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
-        <p class="lead text-secondary m-0">License Category:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.license_category}}</strong></p>
+        <p class="lead text-secondary m-0">License Type:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.hospital_name.license_type}}</strong></p>
         <br>
         <br>
         <p class="lead text-secondary m-0">Insepction Date:</p>
-        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.inspection_date_pretty}}</strong></p>  
+        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.schedule.inspection_date}}</strong></p>  
         <br> 
     </div>
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
-        <p class="lead text-secondary m-0">Facility Address/Location:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.address}}</strong></p>  
+        <p class="lead text-secondary m-0">Hospital/Centre Address:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.hospital_name.address}}</strong></p>  
         <br>
         <p class="lead text-secondary m-0">Inspection Zone:</p>
-        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.practice_manager.schedule.inspection_zone}}</strong></p>  
+        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.schedule.inspection_zone}}</strong></p>  
         <br>
     </div>
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
-        <p class="lead text-secondary m-0">Services:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.schedule.services}}</strong></p> 
-        <br>
-        <br>
-        <p class="lead text-secondary m-0">Inspection Score:</p>
-        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.inspection_total}}</strong></p>   
+    <br>
+    <br>
+    <p class="lead text-secondary m-0">Inspection Score:</p>
+     <p class="lead text-secondary text-capitalize m-0"><strong>{{object.inspection_total}}</strong></p>   
         
     </div>
     </div>
+    
     
 
     <hr>

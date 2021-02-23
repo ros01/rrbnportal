@@ -24,13 +24,12 @@
         <br>
         
                     
-
-                <div class="container">
+        <div class="container">
               
-                <div class="row mr-2 pl-3"> <p class="text-success display-4 paragraph3">Payment Records:</p>
-                <table class="table table-hover table-condensed"> 
-                <thead> 
-                <tr class="blackTr"> 
+        <div class="row mr-2 pl-3"> <p class="text-success display-4 paragraph3">Payment Records:</p>
+        <table class="table table-hover table-condensed"> 
+        <thead> 
+        <tr class="blackTr"> 
                 <th>SN</th> 
                 <th width="15%">Payment Date</th> 
                 <th width="18%">RRR No.</th> 
@@ -44,11 +43,11 @@
                 {% if object %}
                
                 <tr> <td width="2%">1.</td> 
-                <td width="15%">{{object.practice_manager.payment.payment_date_pretty}}</td> 
-                <td width="18%">{{object.practice_manager.payment.rrr_number}}</td> 
-                <td width="15%">{{object.practice_manager.payment.receipt_number}}</td> 
-                <td width="18%">{{object.practice_manager.payment.payment_method}}</td> 
-                <td width="15%">{{object.practice_manager.payment.payment_amount | intcomma}}</td> 
+                <td width="15%">{{object.payment_date}}</td> 
+                <td width="18%">{{object.rrr_number}}</td> 
+                <td width="15%">{{object.receipt_number}}</td> 
+                <td width="18%">{{object.payment_method}}</td> 
+                <td width="15%">{{object.payment_amount | intcomma}}</td> 
                 <td width="17%"> <span style="color:#080">PENDING</span> </td> 
                 </tr> </tbody> </table> </div> 
 

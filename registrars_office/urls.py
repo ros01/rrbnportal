@@ -4,6 +4,7 @@ from django.shortcuts import render
 from . import views
 from .views import (
     LicenseApprovalListView,
+    LicenseApprovalDetailView,
     IssuedLicensesListView,
     LicensePdfView,
     InspectionReportsView,
@@ -16,6 +17,7 @@ app_name = 'registrars_office'
 urlpatterns = [
     path('', views.index, name='registrar_dashboard'),
     path('license_approval_list/', LicenseApprovalListView.as_view(), name='license_approval_list'),
+    path('<uuid:id>/license_approval_details/', LicenseApprovalDetailView.as_view(), name='license_approval_details'),
     path('<uuid:id>/validate/', views.validate, name='validate'),
     path('<uuid:id>/validate_report/', views.validate_report, name='validate_report'),
     path('inspection_reports_list/', InspectionReportsView.as_view(), name='inspection_reports_list'),

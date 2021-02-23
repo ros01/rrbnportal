@@ -7,223 +7,187 @@
 
 
 {% block content %}
-   <!--main containere-->
+<!--main containere-->
 
-      <div class="container">
-        <h1 class="text-secondary mt-4" >Dashboard
-        <span style="float:right; font-size:14px"> 
-          <br/> License No: {% if hospitals %} {% for hospitals in hospitals %}<b>{{hospitals.license_no}}</b> {% endfor %} {% else %} <b>NOT ASSIGNED</b> {% endif %}</span> </h1> </div>
-
-
-
-       <div class="container">
-          
-           <br>
+<div class="container">
+<h1 class="text-secondary mt-4" >Dashboard
+<span style="float:right; font-size:14px"> 
+<br/> License No: {% if hospitals %} {% for hospitals in hospitals %}<b>{{hospitals.license_no}}</b> {% endfor %} {% else %} <b>NOT ASSIGNED</b> {% endif %}</span> </h1> </div>
 
 
-           <section>
+
+<div class="container">
+<br>
+<section>
     
-          <div class="row rounded justify-content-center align-items-center pt-4" style="background-color: #bfe3f8;">
-            
-            <div class="col-lg-1 col-md-2 col-sm-2 col-xs-3 pb-4">
-            <i class="fa fa-info icon text-white"></i>
-            </div>
+<div class="row rounded justify-content-center align-items-center pt-4" style="background-color: #bfe3f8;">
+<div class="col-lg-1 col-md-2 col-sm-2 col-xs-3 pb-4">
+<i class="fa fa-info icon text-white"></i>
+</div>
 
-            <div class="col-lg-11 col-md-10 col-sm-10 col-xs-9 text-justify">
-           <p class="lead" style="color: #05567b;">Welcome to RRBN Monitoring and Enforcement Portal.<br>
-                   The portal enables you the hospital admin to perform several Radiography Practice License Application processing operations online from the comfort of your hospital.</p>
+<div class="col-lg-11 col-md-10 col-sm-10 col-xs-9 text-justify">
+<p class="lead" style="color: #05567b;">Welcome to RRBN Monitoring and Enforcement Portal.<br>
+The portal enables you the hospital admin to perform several Radiography Practice License Application processing operations online from the comfort of your hospital.</p>
 
-            <span style="float:right;"> </span> </div></div>
-            </section>
-
+<span style="float:right;"> </span> </div></div>
+</section>
 
 
+<div class="row d-flex">
+<div class="negative-left col-md-8 col-sm-12 col-xs-12">
+<h4 class="text-md-center  text-sm-center  text-xs-center mt-3 ml-3">Online Self Service Center</h4>
 
+<div class="col-md-12 text-center btmMargin">
+<div class="row mb-2">
+{% if user.license_type == 'Radiography Practice' %}
 
-      <div class="row d-flex">
-      <div class="negative-left col-md-8 col-sm-12 col-xs-12">
-      <h4 class="text-md-center  text-sm-center  text-xs-center mt-3 ml-3">Online Self Service Center</h4>
+<div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='{% url 'hospitals:application_list' %}';" style="cursor: pointer;">
+<div class="card yellow">
 
-                   <div class="col-md-12 text-center btmMargin">
-                       <div class="row mb-2">
+<div class="card-body text-dark">
+<i class="fa fa-edit big text-dark ss-icon"></i><br>
+Continue New Application
+</div>
+</div>
+</div>
 
+{% else %}
+<div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='{% url 'hospitals:accreditation_list' %}';" style="cursor: pointer;">
+<div class="card yellow">
+<div class="card-body text-dark">
+<i class="fa fa-edit big text-dark ss-icon"></i><br>
+Continue New Application
+</div>
+</div>
+</div>
 
-                           
-                          {% if user.hospital_type == 'Radiography Practice' %}
+{% endif %}
+<div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='{% url 'hospitals:start_new_application' %}';" style="cursor: pointer;">
+<div class="card green">
+<div class="card-body text-white">
+<i class="fa fa-edit big text-white ss-icon"></i><br>
+Start New Application</div>
+</div>
+</div>
 
-                           <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='{% url 'hospitals:application_list' %}';" style="cursor: pointer;">
-                               <div class="card yellow">
-                                   <div class="card-body text-dark">
-                                       <i class="fa fa-edit big text-dark ss-icon"></i><br>
-                                        Continue New Application
-                                   </div>
-                               </div>
-                           </div>
-      
-                          {% else %}
+<div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='{% url 'hospitals:license_history' %}';" style="cursor: pointer;">
+<div class="card danger">
+                                   
+<div class="card-body text-white">
+<i class="fa fa-book big text-white ss-icon"></i><br>License History
+(Renew License)
+</div>
+</div>
+</div>
 
-                          <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='{% url 'hospitals:accreditation_list' %}';" style="cursor: pointer;">
-                               <div class="card yellow">
-                                   <div class="card-body text-dark">
-                                       <i class="fa fa-edit big text-dark ss-icon"></i><br>
-                                        Continue New Application
-                                   </div>
-                               </div>
-                           </div>
-
-
-
-
-
-                          {% endif %}
-
-
-                        <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='{% url 'hospitals:start_new_application' %}';" style="cursor: pointer;">
-                               <div class="card green">
-                                   <div class="card-body text-white">
-                                       <i class="fa fa-edit big text-white ss-icon"></i><br>
-                                       Start New Application
-                                   </div>
-                               </div>
-                           </div>
-
-                           <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='{% url 'hospitals:license_history' %}';" style="cursor: pointer;">
-                               <div class="card danger">
-                                   <div class="card-body text-white">
-                                       <i class="fa fa-book big text-white ss-icon"></i><br>
-                                      License History
-                                      (Renew License)
-                                   </div>
-                               </div>
-                           </div>
-
-                            <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
-                               <div class="card blue">
-                                   <div class="card-body text-white">
-                                       <i class="fa fa-credit-card big text-white ss-icon"></i><br>
-                                      My e-Payment History
-                                   </div>
-                               </div>
-                           </div>
-                           </div>
+<div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
+<div class="card blue">
+<div class="card-body text-white">
+<i class="fa fa-credit-card big text-white ss-icon"></i><br>
+My e-Payment History
+</div>
+</div>
+</div>
+</div>
                         
+<!-- Next Row -->
+<div class="row">
+<div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
+<div class="card">
+<div class="card-body text-dark">
+<i class="fa fa-edit big text-success ss-icon"></i><br>
+License Types & Fees
+</div>
+</div>
+</div>
 
-                       <!-- Next Row -->
-
-                       <div class="row">
-
-
-                        <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
-                               <div class="card">
-                                   <div class="card-body text-dark">
-                                       <i class="fa fa-edit big text-success ss-icon"></i><br>
-                                      License Types & Fees
-                                   </div>
-                               </div>
-                           </div>
-
-
-                            <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
-                               <div class="card">
-                                   <div class="card-body text-dark">
-                                       <i class="fa fa-book  big text-dark ss-icon"></i><br>
-                                      My Portal Account
-                                   </div>
-                               </div>
-                           </div>
+<div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
+<div class="card">
+<div class="card-body text-dark">
+<i class="fa fa-book  big text-dark ss-icon"></i><br>
+My Portal Account
+</div>
+</div>
+</div>
 
 
-                           <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
-                               <div class="card">
-                                   <div class="card-body text-dark">
-                                       <i class="fa fa-file-pdf  big text-danger ss-icon"></i><br>
-                                     Application Guidelines
-                                   </div>
-                               </div>
-                           </div>
+<div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
+<div class="card">
+<div class="card-body text-dark">
+<i class="fa fa-file-pdf  big text-danger ss-icon"></i><br>Application Guidelines</div></div>
+</div>
 
 
-                           <div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
-                               <div class="card">
-                                   <div class="card-body text-dark">
-                                       <i class="fa fa-file-pdf  big text-danger ss-icon"></i><br>
-                                     Download User Guide (PDF)
-                                   </div>
-                               </div>
-                           </div>
+<div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
+<div class="card">
+<div class="card-body text-dark">
+<i class="fa fa-file-pdf  big text-danger ss-icon"></i><br>
+Download User Guide (PDF)
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 
-
-                           
-
-                         
-                       </div>
-                   </div>
-               </div>
-
-               <div class="col-md-4">
-                   <h4 class="text-dark text-center mt-3">Important Metrics</h4>
-                   <table class="table border shadow-sm table-hover table-center table-md">
-                       <tbody>
-                      {% if hospitals %}
-                       {% for hospitals in hospitals %}
-                         <tr>
-                           <tr>
-                               <td>License No:</td>
-                               
-                               <td>{{hospitals.license_no}}</td>
-                               
-                           </tr>
-                           <tr>
-                               <td>Valid Licenses:</td>
-                               <td>1</td>
-                           </tr>
-                           <tr>
-                               <td>1st Application Date:</td>
-                               <td>{{hospitals.practice_manager.registration.reg_date_pretty}}</td>
-                           </tr>
-                           <tr>
-                               <td>Pending Applications:</td>
-                               <td>0</td>
-                           </tr>
-                           <tr class="border-bottom">
-                               <td>Upcoming Renewals:</td>
-                               <td>0</td>
-                           </tr>
-                           {% endfor %}
-                           {% else %}
-                           <tr>
-                           <tr>
-                               <td>License No:</td>
-                               
-                               <td>NOT ASSIGNED</td>
-                               
-                           </tr>
-                           <tr>
-                               <td>Valid Licenses:</td>
-                               <td>0</td>
-                           </tr>
-                           <tr>
-                               <td>1st Application Date:</td>
-                               <td>{{user.reg_date_pretty}}</td>
-                           </tr>
-                           <tr>
-                               <td>Pending Applications:</td>
-                               <td>1</td>
-                           </tr>
-                           <tr class="border-bottom">
-                               <td>Upcoming Renewals:</td>
-                               <td>0</td>
-                           </tr>
-                       
-
-                            {% endif %}
-                       </tbody>
-                   </table>
-               </div>
-           </div>
-           <br>
-       </div>
-       <!--main container ends-->
+<div class="col-md-4">
+<h4 class="text-dark text-center mt-3">Important Metrics</h4>
+<table class="table border shadow-sm table-hover table-center table-md">
+<tbody>
+{% if hospitals %}
+{% for hospitals in hospitals %}
+<tr>
+<tr>
+<td>License No:</td>
+<td>{{hospitals.license_no}}</td>
+</tr>
+<tr>
+<td>Valid Licenses:</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1st Application Date:</td>
+<td>{{hospitals.hospital.submission_date}}</td>
+</tr>
+<tr>
+<td>Pending Applications:</td>
+<td>0</td>
+</tr>
+<tr class="border-bottom">
+<td>Upcoming Renewals:</td>
+<td>0</td>
+</tr>
+{% endfor %}
+{% else %}
+<tr>
+<tr>
+<td>License No:</td>
+<td>NOT ASSIGNED</td>
+</tr>
+<tr>
+<td>Valid Licenses:</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1st Application Date:</td>
+<td>{{hospital.submission_date}}</td>
+</tr>
+<tr>
+<td>Pending Applications:</td>
+<td>1</td>
+</tr>
+<tr class="border-bottom">
+<td>Upcoming Renewals:</td>
+<td>0</td>
+</tr>
+{% endif %}
+</tbody>
+</table>
+</div>
+</div>
+<br>
+</div>
+<!--main container ends-->
 
 
 

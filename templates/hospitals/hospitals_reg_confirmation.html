@@ -1,4 +1,4 @@
-{% extends 'hospitals/hospitals_base.html'%}
+{% extends 'hospitals/hospital_base.html'%}
 {% load static %}
 {% block title%}| Welcome {% endblock %}
 
@@ -59,43 +59,19 @@
                     <span class="col-5" style="font-size:1.1em;">Application Type:</span>
                     <span class="col-6" style="font-size:1.1em;"><strong>{{object.application_type}}</strong></span>
                 </div>
+                 <div class="row">
+                    <span class="col-5" style="font-size:1.1em;">License Type:</span>
+                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.license_type}}</strong></span>
+                </div>
 
                 <div class="row">
                     <span class="col-5" style="font-size:1.1em;">Hospital Name:</span>
                     <span class="col-6" style="font-size:1.1em;"><strong>{{object.hospital_name}}</strong></span>
                 </div>
                 <div class="row">
-                    <span class="col-5" style="font-size:1.1em;">RC Number:</span>
-                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.rc_number}}</strong></span>
+                    <span class="col-5" style="font-size:1.1em;">Hospital Type:</span>
+                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.hospital_type}}</strong></span>
                 </div>
-                <div class="row">
-                    <span class="col-5" style="font-size:1.1em;">Phone:</span>
-                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.phone}}</strong></span>
-                </div>
-                <div class="row">
-                    <span class="col-5" style="font-size:1.1em;">Email:</span>
-                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.email}}</strong></span>
-                </div>
-                <div class="row">
-                    <span class="col-5" style="font-size:1.1em;">State:</span>
-                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.state}}</strong></span>
-                </div>
-                <div class="row">
-                    <span class="col-5" style="font-size:1.1em;">City:</span>
-                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.city}}</strong></span>
-                </div>
-                <div class="row">
-                    <span class="col-5" style="font-size:1.1em;">Address:</span>
-                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.address}}</strong></span>
-                </div>
-                <div class="row">
-                    <span class="col-5" style="font-size:1.1em;">Services:</span>
-                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.services}}</strong></span>
-                </div>
-                
-
-
-
                 <div class="row">
                     <span class="col-5" style="font-size:1.1em;">Equipment:</span>
                     <span class="col-6" style="font-size:1.1em;"><strong>{{object.equipment}}</strong></span>
@@ -104,11 +80,15 @@
                     <span class="col-5" style="font-size:1.1em;">Radiographers:</span>
                     <span class="col-6" style="font-size:1.1em;"><strong>{{object.radiographers}}</strong></span>
                 </div>
-
                 <div class="row">
                     <span class="col-5" style="font-size:1.1em;">Radiologists:</span>
                     <span class="col-6" style="font-size:1.1em;"><strong>{{object.radiologists}}</strong></span>
                 </div>
+                <div class="row">
+                    <span class="col-5" style="font-size:1.1em;">Application Date:</span>
+                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.submission_date}}</strong></span>
+                </div>
+                 
 </div>
          
       
@@ -127,7 +107,7 @@
     <a href="{% url 'hospitals:hospitals_dashboard' %}" class="btn btn-warning text-dark py-1 px-2 mr-3 mt-2 mb-4 "><i class="fa fa-times" aria-hidden="true"></i> Continue Later</a>
     
    
-    <a href="{% url 'hospitals:generate_invoice' id=object.id %}" class="text-success py-1 px-2 mt-2 mb-4 btn btn-outline-success"><i class="fa fa-play text-success"></i>Proceed to Payment</a>
+    <a href="{% url 'hospitals:generate_invoice' object.pk %}" class="text-success py-1 px-2 mt-2 mb-4 btn btn-outline-success"><i class="fa fa-play text-success"></i>Proceed to Payment</a>
     
    
     

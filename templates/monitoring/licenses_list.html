@@ -55,7 +55,7 @@
                         <td style="color: #fff;" class="small-text">S/N</td>
                           <td style="color: #fff;" class="small-text">Application No</td>
                           <td style="color: #fff;" class="small-text">Hospital Name</td>
-                          <td style="color: #fff;" class="small-text">License Category</td>
+                          <td style="color: #fff;" class="small-text">License Type</td>
                           <td style="color: #fff;" class="small-text">License No</td>
                           <td style="color: #fff;" class="small-text">Issue Date</td>
                           <td style="color: #fff;" class="small-text">Expiry Date</td>
@@ -70,13 +70,13 @@
                           <td>{{forloop.counter}}</td>
                            <td>{{object.application_no}}</td>
                            <td>{{object.hospital_name}}</td>
-                           <td>{{object.license_category}}</td>
+                           <td>{{object.hospital_name.license_type}}</td>
                            <td>{{object.license_no}}</td>
-                           <td>{{object.issue_date_pretty}}</td>
-                           <td>{{object.expiry_date_pretty}}</td>
+                           <td>{{object.issue_date}}</td>
+                           <td>{{object.expiry_date}}</td>
                           
 
-                            <td><a href="{% url 'monitoring:generate_license' id=object.id%}" target="_blank" class="btn btn-outline-warning btn-sm">View</a></td>
+          <td><a href="{% url 'monitoring:generate_license' id=object.id%}" target="_blank" class="btn btn-outline-warning btn-sm">View</a></td>
 
                           
                          

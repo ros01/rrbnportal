@@ -12,9 +12,7 @@
 
 <main class="container">
 
-{% for object in hospital %}
 
-{% if object.license_type == "Radiography Practice" %}
 <section class="pt-2 pl-3">
    
 <div class="row ">
@@ -26,20 +24,7 @@
 </div>
 </section>
 
-{% else %}
 
-<section class="pt-2 pl-3">
-   
-<div class="row ">
-<div class="col mb-0">
-<p class="text-info display-4 paragraph3">Internship Accreditation Applications Due for Inspection</p>
-<hr>
-</div>
-</div>
-</section>
-
-{% endif %}
-{% endfor %}
 
  <div class="row">
  <div class="col-md-7 mt-0">
@@ -140,9 +125,7 @@
 </div>
 <hr>
 
-{% for object in hospital %}
 
-{% if object.license_type == "Radiography Practice" %}
 <div class="d-flex justify-content-end">   
              
 <a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
@@ -151,19 +134,7 @@
        
 </div>
 
-{% else %}
 
-<div class="d-flex justify-content-end">   
-             
-<a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
-
-<a href="{% url 'zonal_offices:accreditation_report' id=object.pk %}" class="btn btn-success ml-4 px-3"><i class="fa fa-podcast text-white"></i>  Submit Accreditation Report</a>
-       
-</div>
-
-
-{% endif %}
-{% endfor %}
 
 </main>
 

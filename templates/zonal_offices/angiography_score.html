@@ -1,7 +1,9 @@
 {% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% load static %}
 
-<form method="post" action="">
-  {% csrf_token %}
+<form method="POST" action=".">
+{% csrf_token %}
 
  <div class="modal-header">
     <h5 class="modal-title text-success">Enter Angiography Scores</h5>
@@ -10,6 +12,7 @@
     </button>
   </div>
 
+  
   <div class="modal-body">
     <div class="row">
     {% for field in form %}
@@ -26,15 +29,15 @@
     </div>
   </div>
 
-
   <div class="modal-footer">
-    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-    <button type="button" class="submit-btn btn btn-success ml-2 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Submit Angiography Scores</button>
+  <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times text-white"></i>  Close</button>
+  <button type="button" class="submit-btn btn btn-success ml-2 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Angiography Scores</button>
 
   </div>
-</form>
-  <div class="container">
 
+</form>
+
+<div class="container">
 <p class="text-success m-0 p-0"> <b>Scoring Legend: </b></p>
 
 i.   Pass Mark is 50 <br>

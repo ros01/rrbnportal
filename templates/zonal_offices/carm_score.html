@@ -1,39 +1,215 @@
 {% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% load static %}
 
-<form method="post" action="">
-  {% csrf_token %}
+<form method="POST" action=".">
+{% csrf_token %}
 
- <div class="modal-header">
-    <h5 class="modal-title text-success">Enter C-Arm/O-HRM Scores</h5>
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
+<div class="modal-header">
+<h5 class="modal-title text-success">Enter C-Arm/O-HRM Scores</h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+
+  
+<div class="modal-body">
+<div class="{% if form.non_field_errors %}invalid{% endif %} mb-2">
+      {% for error in form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+</div>
+{{form.application_no|as_crispy_field }}
+{{form.hospital_name|as_crispy_field }}
+{{form.schedule|as_crispy_field }}
+
+<div class="row">
+<div class="form-group col-md-4">
+{{form.shielding_score|as_crispy_field }}
+<div class="{% if form.shielding_score.errors %} invalid{% endif %}">
+{% for error in field.errors %}
+<p class="help-block">{{ error }}</p>
+{% endfor %}
+</div>
+</div>
+    
+<div class="form-group col-md-4">
+{{ form.room_design_score|as_crispy_field }}
+<div class="{% if form.room_design_score.errors %} invalid{% endif %}">
+{% for error in field.errors %}
+<p class="help-block">{{ error }}</p>
+{% endfor %}
+</div>
+</div>
+    
+<div class="form-group col-md-4">
+{{ form.radiographers_no_score|as_crispy_field }}
+<div class="{% if form.radiographers_no_score.errors %} invalid{% endif %}">
+{% for error in field.errors %}
+<p class="help-block">{{ error }}</p>
+{% endfor %}
+</div>
+</div>
+</div>
+
+<div class="row">
+<div class="form-group col-md-4">
+{{form.radiologists_no_score|as_crispy_field }}
+<div class="{% if form.radiologists_no_score.errors %} invalid{% endif %}">
+{% for error in field.errors %}
+<p class="help-block">{{ error }}</p>
+{% endfor %}
+</div>
+</div>
+    
+<div class="form-group col-md-4">
+{{ form.radiographer_license_score|as_crispy_field }}
+<div class="{% if form.radiographer_license_score.errors %} invalid{% endif %}">
+{% for error in field.errors %}
+<p class="help-block">{{ error }}</p>
+{% endfor %}
+</div>
+</div>
+    
+<div class="form-group col-md-4">
+{{ form.prmd_prpe_score|as_crispy_field }}
+<div class="{% if form.prmd_prpe_score.errors %} invalid{% endif %}">
+{% for error in field.errors %}
+<p class="help-block">{{ error }}</p>
+{% endfor %}
+</div>
+</div>
+</div>
+
+<div class="row">
+<div class="form-group col-md-4">
+{{form.water_supply_score|as_crispy_field }}
+<div class="{% if form.water_supply_score.errors %} invalid{% endif %}">
+{% for error in field.errors %}
+<p class="help-block">{{ error }}</p>
+{% endfor %}
+</div>
+</div>
+    
+<div class="form-group col-md-4">
+{{ form.equipment_certification_score|as_crispy_field }}
+<div class="{% if form.equipment_certification_score.errors %} invalid{% endif %}">
+{% for error in field.errors %}
+<p class="help-block">{{ error }}</p>
+{% endfor %}
+</div>
+</div>
+    
+<div class="form-group col-md-4">
+{{ form.accessories_adequacy_score|as_crispy_field }}
+<div class="{% if form.accessories_adequacy_score.errors %} invalid{% endif %}">
+{% for error in field.errors %}
+<p class="help-block">{{ error }}</p>
+{% endfor %}
+</div>
+</div>
+</div>
+
+<div class="row">
+<div class="form-group col-md-4">
+{{form.warning_lights_score|as_crispy_field }}
+<div class="{% if form.warning_lights_score.errors %} invalid{% endif %}">
+{% for error in field.errors %}
+<p class="help-block">{{ error }}</p>
+{% endfor %}
+</div>
+</div>
+    
+<div class="form-group col-md-4">
+{{ form.warning_signs_score|as_crispy_field }}
+<div class="{% if form.warning_signs_score.errors %} invalid{% endif %}">
+{% for error in field.errors %}
+<p class="help-block">{{ error }}</p>
+{% endfor %}
+</div>
+</div>
+    
+<div class="form-group col-md-4">
+{{ form.C07_form_compliance_score|as_crispy_field }}
+<div class="{% if form.C07_form_compliance_score.errors %} invalid{% endif %}">
+{% for error in field.errors %}
+<p class="help-block">{{ error }}</p>
+{% endfor %}
+</div>
+</div>
+</div>
+
+<div class="row">
+<div class="form-group col-md-4">
+{{form.equipment_installation_location_score|as_crispy_field }}
+<div class="{% if form.equipment_installation_location_score.errors %} invalid{% endif %}">
+{% for error in field.errors %}
+<p class="help-block">{{ error }}</p>
+{% endfor %}
+</div>
+</div>
+    
+<div class="form-group col-md-4">
+{{ form.processing_unit_score|as_crispy_field }}
+<div class="{% if form.processing_unit_score.errors %} invalid{% endif %}">
+{% for error in field.errors %}
+<p class="help-block">{{ error }}</p>
+{% endfor %}
+</div>
+</div>
+    
+<div class="form-group col-md-4">
+{{ form.toilets_cleanliness_score|as_crispy_field }}
+<div class="{% if form.toilets_cleanliness_score.errors %} invalid{% endif %}">
+{% for error in field.errors %}
+<p class="help-block">{{ error }}</p>
+{% endfor %}
+</div>
+</div>
+</div>
+
+<div class="row">
+<div class="form-group col-md-4">
+{{form.waiting_room_score|as_crispy_field }}
+<div class="{% if form.waiting_room_score.errors %} invalid{% endif %}">
+{% for error in field.errors %}
+<p class="help-block">{{ error }}</p>
+{% endfor %}
+</div>
+</div>
+    
+<div class="form-group col-md-4">
+{{ form.offices_adequacy_score|as_crispy_field }}
+<div class="{% if form.offices_adequacy_score.errors %} invalid{% endif %}">
+{% for error in field.errors %}
+<p class="help-block">{{ error }}</p>
+{% endfor %}
+</div>
+</div>
+
+<div class="form-group col-md-4">
+  {{form.carm_total|as_crispy_field }}
+  <div class="{% if form.carm_total.errors %} invalid{% endif %}">
+  {% for error in field.errors %}
+  <p class="help-block">{{ error }}</p>
+  {% endfor %}
   </div>
-
-  <div class="modal-body">
-    <div class="row">
-    {% for field in form %}
-
-      <div class="form-group col-md-4{% if field.errors %} invalid{% endif %}">
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{ field }}
-        {% for error in field.errors %}
-          <p class="help-block">{{ error }}</p>
-        {% endfor %}
-      </div>
-      
-    {% endfor %}
-    </div>
   </div>
+</div>
 
+  
+
+  </div>
 
   <div class="modal-footer">
-    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-    <button type="button" class="submit-btn btn btn-success ml-2 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Submit C-Arm/O-HRM Scores</button>
+  <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times text-white"></i>  Close</button>
+  <button type="button" class="submit-btn btn btn-success ml-2 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i> Enter C-Arm/O-HRM Scores</button>
 
   </div>
+
 </form>
-  <div class="container">
+
+<div class="container">
 
 <p class="text-success m-0 p-0"> <b>Scoring Legend: </b></p>
 

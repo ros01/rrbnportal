@@ -14,9 +14,6 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 
 
-
-
-
 {% endblock %}
 
 
@@ -26,154 +23,148 @@
 
 
 <main class="container">
-       <div class="row">
-           <div class="col col-lg-12">
-            <p class="mt-2 text-info display-4 paragraph2">Radiography Practice License Inspection Report Submission</p>
-                <hr>
-          </div>
-           </div>
+<div class="row">
+<div class="col col-lg-12">
+<p class="mt-2 text-info display-4 paragraph2">Radiography Practice License Inspection Report Submission</p>
+<hr>
+</div>
+</div>
+<div class="row rounded ml-1 mr-0 pl-1 pr-0 mt-2 mb-3 justify-content-center align-items-center" style="background-color: #bfe3f8;">
+<div class="col-md-1 mt-1 pt-1">
+<i class="fa fa-info-circle fa-2x" aria-hidden="true"></i>
+</div>
 
-
-
-
-          <div class="row rounded ml-1 mr-0 pl-1 pr-0 mt-2 mb-3 justify-content-center align-items-center" style="background-color: #bfe3f8;">
-            <div class="col-md-1 mt-1 pt-1">
-               <i class="fa fa-info-circle fa-2x" aria-hidden="true"></i>
-                </div>
-
-               <div class="col-md-11 mt-1 pt-1 px-0">
-                <p class="lead" style="color: #05567b;">
-                   Enter Scores for Each Parameter Below.  Final Score is calculated automatically once input is complete</p>
-               </div>
-           </div>
+<div class="col-md-11 mt-1 pt-1 px-0">
+<p class="lead" style="color: #05567b;">
+Enter Scores for Each Parameter Below.  Final Score is calculated automatically once input is complete</p>
+</div>
+</div>
 
 
 <div class="container mt-5">
-    <form>
-      <div class="form-group">
-        <fieldset class="the-fieldset">
-            <legend class="the-legend text-info">Registered Modalities in License Application</legend>
-            <div class="col d-flex">
+<form>
+<div class="form-group">
+<fieldset class="the-fieldset">
+<legend class="the-legend text-info">Registered Modalities in License Application</legend>
 
-           
-              {% if "Ultrasound" in object.equipment %}
-                <div class="form-check mr-3">
-                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-ultrasound" data-form-url="{% url 'zonal_offices:ultrasound_score' object.id %}">
-                <label class="form-check-label" for="exampleRadios2">
-                 Ultrasound
-                </label>
-              </div>
+{% if schedule_qs %}
+{% for object in schedule_qs %}
+<div class="col d-flex">
+{% if "Ultrasound" in object.hospital.equipment %}
+<div class="form-check mr-3">
+<input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-ultrasound" data-form-url="{% url 'zonal_offices:ultrasound_score' object.pk %}">
+<label class="form-check-label" for="exampleRadios2">
+Ultrasound
+</label>
+</div>
 
-              {% endif %}
+{% endif %}
 
-              {% if "Conventional X-ray" in object.equipment %}
-              <div class="form-check mr-3">
-                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-xray" data-form-url="{% url 'zonal_offices:xray_score' object.id %}">
-                <label class="form-check-label" for="exampleRadios2">
-                 Conventional X-ray
-                </label>
-              </div>
+{% if "Conventional X-ray" in object.hospital.equipment %}
+<div class="form-check mr-3">
+ <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-xray" data-form-url="{% url 'zonal_offices:xray_score' object.pk %}">
+ <label class="form-check-label" for="exampleRadios2">
+ Conventional X-ray
+ </label>
+ </div>
 
-              {% endif %}
+ {% endif %}
+ {% if "Conventional X-ray with Fluoroscopy" in object.hospital.equipment %}
+ <div class="form-check mr-3">
+ <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-flouroscopy" data-form-url="{% url 'zonal_offices:flouroscopy_score' object.pk %}">
+ <label class="form-check-label" for="exampleRadios3">
+ Conventional X-ray with Flouroscopy
+ </label>
+ </div>
 
-              {% if "Conventional X-ray with Fluoroscopy" in object.equipment %}
+ {% endif %}
+ {% if "CT Scan" in object.hospital.equipment %}
+ <div class="form-check mr-3">
+  <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-ctscan" data-form-url="{% url 'zonal_offices:ctscan_score' object.pk %}">
+  <label class="form-check-label" for="exampleRadios3">
+  CT Scan
+  </label>
+  </div>
 
-              <div class="form-check mr-3">
-                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-flouroscopy" data-form-url="{% url 'zonal_offices:flouroscopy_score' object.id %}">
-                <label class="form-check-label" for="exampleRadios3">
-                  Conventional X-ray with Flouroscopy
-                </label>
-              </div>
+  {% endif %}
 
-              {% endif %}
+  {% if "MRI" in object.hospital.equipment %}
+  <div class="form-check mr-3">
+  <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-mri" data-form-url="{% url 'zonal_offices:mri_score' object.pk %}">
+  <label class="form-check-label" for="exampleRadios3">
+  MRI
+  </label>
+  </div>
+  {% endif %}
 
-              {% if "CT Scan" in object.equipment %}
-              <div class="form-check mr-3">
-                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-ctscan" data-form-url="{% url 'zonal_offices:ctscan_score' object.id %}">
-                <label class="form-check-label" for="exampleRadios3">
-                  CT Scan
-                </label>
-              </div>
+  {% if "Radiotherapy" in object.hospital.equipment %}
+  <div class="form-check mr-3">
+  <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-radiotherapy" data-form-url="{% url 'zonal_offices:radiotherapy_score' object.pk %}">
+  <label class="form-check-label" for="exampleRadios3">
+  Radiotherapy
+  </label>
+  </div>
+  {% endif %}
+  {% if "Nuclear Medicine" in object.hospital.equipment %}
+  <div class="form-check mr-3">
+  <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-nuclearmedicine" data-form-url="{% url 'zonal_offices:nuclear_medicine_score' object.pk %}">
+  <label class="form-check-label" for="exampleRadios3">
+  Nuclear Medicine
+  </label>
+  </div>
+  {% endif %}
 
-              {% endif %}
+  {% if "Mamography" in object.hospital.equipment %}
+  <div class="form-check mr-3">
+  <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-mamography" data-form-url="{% url 'zonal_offices:mamography_score' object.pk %}">
+  <label class="form-check-label" for="exampleRadios3">
+  Mamography
+  </label>
+  </div>
+  {% endif %}
 
-              {% if "MRI" in object.equipment %}
-              <div class="form-check mr-3">
-                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-mri" data-form-url="{% url 'zonal_offices:mri_score' object.id %}">
-                <label class="form-check-label" for="exampleRadios3">
-                  MRI
-                </label>
-              </div>
-              {% endif %}
+  {% if "Dental X-ray" in object.hospital.equipment %}
+  <div class="form-check mr-3">
+  <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-dentalxray" data-form-url="{% url 'zonal_offices:dental_xray_score' object.pk %}">
+  <label class="form-check-label" for="exampleRadios3">
+  Dental X-ray
+  </label>
+  </div>
+  {% endif %}
 
-              {% if "Radiotherapy" in object.equipment %}
-              <div class="form-check mr-3">
-                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-radiotherapy" data-form-url="{% url 'zonal_offices:radiotherapy_score' object.id %}">
-                <label class="form-check-label" for="exampleRadios3">
-                  Radiotherapy
-                </label>
-              </div>
-              {% endif %}
+  {% if "Echocardiography" in object.hospital.equipment %}
+  <div class="form-check mr-3">
+  <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-echocardiography" data-form-url="{% url 'zonal_offices:echocardiography_score' object.pk %}">
+   <label class="form-check-label" for="exampleRadios3">
+   Echocardiography
+   </label>
+   </div>
+   {% endif %}
 
-              {% if "Nuclear Medicine" in object.equipment %}
-              <div class="form-check mr-3">
-                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-nuclearmedicine" data-form-url="{% url 'zonal_offices:nuclear_medicine_score' object.id %}">
-                <label class="form-check-label" for="exampleRadios3">
-                  Nuclear Medicine
-                </label>
-              </div>
-              {% endif %}
+  {% if "Angiography" in object.hospital.equipment %}
+  <div class="form-check mr-3">
+  <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-angiography" data-form-url="{% url 'zonal_offices:angiography_score' object.pk %}">
+  <label class="form-check-label" for="exampleRadios3">
+  Angiography
+  </label>
+  </div>
+  {% endif %}
+  {% if "C-Arm/O-HRM" in object.hospital.equipment %}
+  <div class="form-check mr-3">
+  <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-carm" data-form-url="{% url 'zonal_offices:carm_score' object.pk %}">
+  <label class="form-check-label" for="exampleRadios3">
+  C-Arm/O-HRM
+  </label>
+  </div>
+  {% endif %}
+  
+  {% endfor %}
+  {% endif %}         
+  </div>
+  </fieldset>
+  </div>
 
-              {% if "Mamography" in object.equipment %}
-              <div class="form-check mr-3">
-                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-mamography" data-form-url="{% url 'zonal_offices:mamography_score' object.id %}">
-                <label class="form-check-label" for="exampleRadios3">
-                  Mamography
-                </label>
-              </div>
-              {% endif %}
-
-              {% if "Dental X-ray" in object.equipment %}
-              <div class="form-check mr-3">
-                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-dentalxray" data-form-url="{% url 'zonal_offices:dental_xray_score' object.id %}">
-                <label class="form-check-label" for="exampleRadios3">
-                  Dental X-ray
-                </label>
-              </div>
-              {% endif %}
-
-              {% if "Echocardiography" in object.equipment %}
-              <div class="form-check mr-3">
-                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-echocardiography" data-form-url="{% url 'zonal_offices:echocardiography_score' object.id %}">
-                <label class="form-check-label" for="exampleRadios3">
-                  Echocardiography
-                </label>
-              </div>
-              {% endif %}
-
-              {% if "Angiography" in object.equipment %}
-              <div class="form-check mr-3">
-                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-angiography" data-form-url="{% url 'zonal_offices:angiography_score' object.id %}">
-                <label class="form-check-label" for="exampleRadios3">
-                  Angiography
-                </label>
-              </div>
-              {% endif %}
-
-              {% if "C-Arm/O-HRM" in object.equipment %}
-              <div class="form-check mr-3">
-                <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-carm" data-form-url="{% url 'zonal_offices:carm_score' object.id %}">
-                <label class="form-check-label" for="exampleRadios3">
-                  C-Arm/O-HRM
-                </label>
-              </div>
-              {% endif %}
-             
-            </div>
-        </fieldset>
-      </div>
-
-    </form>
+  </form>
   </div>
 </div>
 
@@ -182,175 +173,100 @@
    
 <form method='POST' action="." enctype='multipart/form-data'>
          
-            {% csrf_token %}
+{% csrf_token %}
 
-            <input type="hidden" name="inspection_zone" {% if user.is_authenticated %} value="{{ user.module_name }}" {% endif %} required id="id_inspection_zone">
+<input type="hidden" name="inspection_zone" {% if user.is_authenticated %} value="{{ user.module_name }}" {% endif %} required id="id_inspection_zone">
 
-           
+<div class="row ml-2">
+<p class="col-12 text-success lead">Hospital Details</p>
+</div>
+<div class="row ml-2"> 
+{% if schedule_qs %}
+{% for object in schedule_qs %}
+<span class="col-2 text-info">Hospital Name:  </span>
+<span class="col-2">  {{object.hospital.hospital_name}}</span>
+</div>
+{% endfor %}
+{% endif %}
+<br>
+{{ form.hospital_name|as_crispy_field }}
+{{ form.hospital|as_crispy_field }}
+{{ form.schedule|as_crispy_field }}
+{{ form.payment|as_crispy_field }}
 
-            {{ form.practice_manager|as_crispy_field }}
+<div class="row px-4">             
+<div class="col-md-4"> 
+<div class="form-group"> 
+{{ form.application_no|as_crispy_field }}
+</div>
+</div>
 
-            {{ form.application_type|as_crispy_field }}
-
-            {{ form.payment_amount|as_crispy_field }}
-
-            {{ form.license_category|as_crispy_field }}
-
-            {{ form.inspection_schedule_date|as_crispy_field }}
-
-            {{ form.inspection_report_deadline|as_crispy_field }}
-
-              <div class="row ml-2">
-                <p class="col-12 text-success lead">Hospital Details</p>
-              </div>
-
-              <div class="row px-4"> 
-              
-              <div class="col-md-4"> 
-               <div class="form-group"> 
-               {{ form.application_no|as_crispy_field }}
-              </div>
-              </div>
-
-
-              <div class="col-md-4">
-              <div class="form-group">
-              {{ form.hospital_name|as_crispy_field }}
-              </div>
-              </div>
-
-              <div class="col-md-4">
-              <div class="form-group">
-              {{ form.email|as_crispy_field }}
-              </div>
-              </div>
-
-              </div>
+ <div class="col-md-4">
+ <div class="form-group">
+ {{ form.inspection_comments|as_crispy_field }}
+ </div>
+ </div>
+ </div>
              
+        
 
-              <div class="row px-4">
-          
-                <div class="col-md-4">
-                <div class="form-group">
-               {{ form.phone|as_crispy_field }}
-                </div>
-                </div>
+ <div class="row ml-2">
+ <p class="col-12 text-success lead">Picture Uploads</p>
+ </div>
+ <div class="row px-4">
+ <div class="col-md-3">
+ <div class="form-group">
+ {{ form.photo_main|as_crispy_field }}
+ </div>
+ </div>
 
-                <div class="col-md-4">
-                <div class="form-group">
-                {{ form.equipment|as_crispy_field }}
-                </div>
-                </div>
-
-                <div class="col-md-4">
-                <div class="form-group">
-                {{ form.address|as_crispy_field }}
-                </div>
-                </div>
-
-                </div>
-          
-
-                <div class="row px-4">
-             
-                </div>
-
-                <div class="row px-4">
-                <div class="col-md-4">
-                <div class="form-group">
-                {{ form.radiographers|as_crispy_field }}  
-                </div>
-                </div>
-      
-                <div class="col-md-4">
-                <div class="form-group">
-                 {{ form.radiologists|as_crispy_field }}    
-                </div>
-                </div>
-
-                 <div class="col-md-4">
-                 <div class="form-group">
-                 {{ form.inspection_comments|as_crispy_field }}   
-                 </div>
-                 </div>
-
-                 </div>
-                 
-         
-
-              <div class="row ml-2">
-                      <p class="col-12 text-success lead">Picture Uploads</p>
-                    </div>
-                <div class="row px-4">
-                <div class="col-md-3">
-                  <div class="form-group">
-                  {{ form.photo_main|as_crispy_field }}
-                  </div>
-                </div>
-
-                <div class="col-md-3">
-                  <div class="form-group">
-                   {{ form.photo_1|as_crispy_field }}  
-                      
-                  </div>
-                </div>
+ <div class="col-md-3">
+ <div class="form-group">
+ {{ form.photo_1|as_crispy_field }}  
+ </div>
+ </div>
               
-              
-                <div class="col-md-3">
-                <div class="form-group">
-                {{ form.photo_2|as_crispy_field }}       
-                  </div>
-                </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.photo_2|as_crispy_field }}       
+</div>
+</div>
 
-                <div class="col-md-3">
-                  <div class="form-group">
-                  {{ form.photo_3|as_crispy_field }}
-                  </div>
-                </div>
-                 </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.photo_3|as_crispy_field }}
+</div>
+</div>
+</div>
 
-                 <div class="row px-4">
-                <div class="col-md-3">
-                  <div class="form-group">
-                  {{ form.photo_4|as_crispy_field }}
-                  </div>
-                </div>
+<div class="row px-4">
+<div class="col-md-3">
+<div class="form-group">
+{{ form.photo_4|as_crispy_field }}
+</div>
+</div>
 
-                <div class="col-md-3">
-                  <div class="form-group">
-                   {{ form.photo_5|as_crispy_field }}  
-                      
-                  </div>
-                </div>
-              
-              
-                <div class="col-md-3">
-                <div class="form-group">
-                {{ form.photo_6|as_crispy_field }}       
-                  </div>
-                </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.photo_5|as_crispy_field }}  
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.photo_6|as_crispy_field }}       
+</div>
+</div>
 
                 
-                 </div>
-
-            
-
-
-              <hr>
-              <div class="d-flex justify-content-end">   
-             
-             <a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
-
-             
-
-              <button type="submit" class="btn btn btn-success ml-4 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Post Inspection Report</button>
-
-               </form>
-
-             
-        </div>
-
-        </main>
+</div>
+<hr>
+<div class="d-flex justify-content-end">   
+<a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
+<button type="submit" class="btn btn btn-success ml-4 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Post Inspection Report</button>
+</form>
+</div>
+</main>
       
 
 

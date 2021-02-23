@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test
 from accounts.decorators import zonaloffices_required
+from accounts.models import Hospital
 from hospitals.models import Schedule, Inspection, License, Records, Ultrasound, Xray, Nuclearmedicine, Radiotherapy, Mri, Ctscan, Xray, Flouroscopy, Mamography, Dentalxray, Echocardiography, Angiography, Carm
 from .forms import InspectionModelForm, RecordsModelForm, AccreditationModelForm, UltrasoundModelForm, XrayModelForm, FlouroscopyModelForm, CtscanModelForm, MriModelForm, NuclearMedicineModelForm, RadiotherapyModelForm,  MamographyModelForm, DentalXrayModelForm, EchocardiographyModelForm, AngiographyModelForm, CarmModelForm
 from django.views import View
@@ -23,6 +24,8 @@ from django.utils.decorators import method_decorator
 from django.urls import reverse, reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from bootstrap_modal_forms.generic import BSModalCreateView
+from bootstrap_modal_forms.mixins import PassRequestMixin, CreateUpdateAjaxMixin
+
 
 
 
@@ -77,7 +80,7 @@ class LagosScheduleListView(LoginRequiredMixin, ListView):
 
 class AbujaScheduleListView(LoginRequiredMixin, ListView):
     template_name = 'zonal_offices/abuja_schedule_list.html'
-    context_object_name = 'object'
+    #context_object_name = 'object'
 
     def get_queryset(self):
         return Schedule.objects.filter(inspection_zone="Abuja")
@@ -85,11 +88,11 @@ class AbujaScheduleListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         obj = super(AbujaScheduleListView, self).get_context_data(**kwargs)
-        obj['schedule_qs'] = Schedule.objects.filter(inspection_zone="Abuja", application_status=4)
+        obj['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(inspection_zone="Abuja", application_status=4)
         return obj
         
 
-class InspectionObjectMixin(object):
+class ScheduleObjectMixin(object):
     model = Schedule
     def get_object(self):
         id = self.kwargs.get('id')
@@ -99,12 +102,24 @@ class InspectionObjectMixin(object):
         return obj 
 
 
-class InspectionView(LoginRequiredMixin, InspectionObjectMixin, View):
-    template_name = "zonal_offices/inspection_detail.html" 
+class InspectionView(LoginRequiredMixin, ScheduleObjectMixin, View):
+    template_name = "zonal_offices/inspection_scheduled_details.html" 
+
+      
     def get(self, request, id=None, *args, **kwargs):
         context = {'object': self.get_object()}
         return render(request, self.template_name, context)
 
+    
+
+#class InspectionView(LoginRequiredMixin, DetailView):
+    #template_name = "zonal_offices/inspection_detail.html"
+    #model = Schedule
+    
+    #def get_context_data(self, **kwargs):
+        #context = super().get_context_data(**kwargs)
+        #context['hospital'] = Hospital.objects.filter(hospital_name=self.object)
+        #return context
 
 #class InspectionReportView(LoginRequiredMixin, InspectionObjectMixin, View):
     #template_name = "zonal_offices/inspection_report.html" 
@@ -113,45 +128,555 @@ class InspectionView(LoginRequiredMixin, InspectionObjectMixin, View):
         #return render(request, self.template_name, context)
 
 
-class InspectionReportView(LoginRequiredMixin, InspectionObjectMixin, View):
-    template_name = "zonal_offices/inspection_report.html"
-    template_name1 = "zonal_offices/inspection_report_confirmation.html"
-    def get(self, request,  *args, **kwargs):
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = InspectionModelForm(instance=obj)  
-            context['object'] = obj
-            context['form'] = form
+#class InspectionReportView(LoginRequiredMixin, InspectionObjectMixin, View):
+    #template_name = "zonal_offices/inspection_report.html"
+    #template_name1 = "zonal_offices/inspection_report_confirmation.html"
+    #def get(self, request,  *args, **kwargs):
+        #context = {}
+        #obj = self.get_object()
+        #if obj is not None:
+            #form = InspectionModelForm(instance=obj)  
+            #context['object'] = obj
+            #context['form'] = form
 
-        return render(request, self.template_name, context)
+        #return render(request, self.template_name, context)
 
 
-    def post(self, request,  *args, **kwargs):
-        form = InspectionModelForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
+    #def post(self, request,  *args, **kwargs):
+        #form = InspectionModelForm(request.POST, request.FILES)
+        #if form.is_valid():
+            #form.save()
+
+        #context = {}
+        #obj = self.get_object()
+        #if obj is not None:
+          
+           #context['object'] = obj
+           #context['form'] = form
+
+           #subject = 'Notice of Facility Inspection'
+           #from_email = settings.DEFAULT_FROM_EMAIL
+           #to_email = [form.cleaned_data.get('email')]
+
+           #context['form'] = form
+           #contact_message = get_template(
+               #'zonal_offices/inspection_report.txt').render(context)
+
+           #send_mail(subject, contact_message, from_email,
+                     #to_email, fail_silently=False)
+        #return render(request, self.template_name1, context)
+        
+class InspectionReportView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    model = Inspection
+    template_name = 'zonal_offices/inspection_report.html'
+    form_class = InspectionModelForm
+
+    def get_success_url(self):
+        return reverse("zonal_offices:inspection_complete_details", kwargs={"id": self.object.id})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name)
+        
+        #context = {'object': self.get_object()}
+        #context['payment'] = Payment.objects.get(pk=self.object)
+        #context['hospital'] = Hospital.objects.get(id=self.kwargs['id'])
+        #context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
+        #context['hospital_qs'] = Hospital.objects.filter(hospital_name=self.object)
+        return context
+
+    def get_initial(self):
+        # You could even get the Book model using Book.objects.get here!
+        return {
+            'schedule': self.kwargs["pk"],
+            #'license_type': self.kwargs["pk"]
+        }
+    
+    
+    def get_form_kwargs(self):
+        self.schedule = Schedule.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['hospital'] = self.schedule.hospital
+        kwargs['initial']['payment'] = self.schedule.payment
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        #kwargs['initial']['hospital'] = self.payment.hospital
+        
+        return kwargs
+      
+
+    def form_invalid(self, form):
+        form = self.get_form()
 
         context = {}
         obj = self.get_object()
         if obj is not None:
           
            context['object'] = obj
-           context['form'] = form
+           context['form'] = form 
+          
+        return self.render_to_response(context)
 
-           subject = 'Notice of Facility Inspection'
-           from_email = settings.DEFAULT_FROM_EMAIL
-           to_email = [form.cleaned_data.get('email')]
 
-           context['form'] = form
-           contact_message = get_template(
+class InspectionObjectMixin(object):
+    model = Inspection
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+
+
+class InspectionCompleteDetailView(LoginRequiredMixin, InspectionObjectMixin, View):
+    template_name = 'zonal_offices/inspection_report_confirmation.html' 
+    def get(self, request, id=None, *args, **kwargs):
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = InspectionModelForm(instance=obj)
+            context['object'] = obj
+            hospital_admin = obj.hospital_name.hospital_admin 
+           #context['hospital'] = Hospital.objects.filter(hospital_name=self.object)
+            subject = 'Hospital/Centre Inspection Report'
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to_email = [hospital_admin]
+
+            context['form'] = form
+            contact_message = get_template(
                'zonal_offices/inspection_report.txt').render(context)
 
-           send_mail(subject, contact_message, from_email,
+            send_mail(subject, contact_message, from_email,
                      to_email, fail_silently=False)
-        return render(request, self.template_name1, context)
+
+        return render(request, self.template_name, context)
+
+
+
+class UltrasoundScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/ultrasound_score2.html'
+    form_class = UltrasoundModelForm
+    success_message = 'Ultrasound Score Entered Successfully'
+     
+    def get_success_url(self):
+        return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name)      
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = Schedule.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+      
+    def form_invalid(self, form):
+        form = self.get_form()
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+          
+           context['object'] = obj
+           context['form'] = form 
+        return self.render_to_response(context)
+
+class NuclearMedicineScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/nuclear_medicine_score.html'
+    form_class = NuclearMedicineModelForm
+    success_message = 'Nuclear Medicine Score Entered Successfully'
+     
+    def get_success_url(self):
+        return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name)      
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = Schedule.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+      
+    def form_invalid(self, form):
+        form = self.get_form()
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+          
+           context['object'] = obj
+           context['form'] = form 
+        return self.render_to_response(context)
+
+class RadiotherapyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/radiotherapy_score.html'
+    form_class = RadiotherapyModelForm
+    success_message = 'Radiotherapy Score Entered Successfully'
+     
+    def get_success_url(self):
+        return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name)      
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = Schedule.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+      
+    def form_invalid(self, form):
+        form = self.get_form()
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+          
+           context['object'] = obj
+           context['form'] = form 
+        return self.render_to_response(context)
+
+class MriScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/mri_score.html'
+    form_class = MriModelForm
+    success_message = 'MRI Score Entered Successfully'
+     
+    def get_success_url(self):
+        return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name)      
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = Schedule.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+      
+    def form_invalid(self, form):
+        form = self.get_form()
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+          
+           context['object'] = obj
+           context['form'] = form 
+        return self.render_to_response(context)
+
+class CtscanScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/ctscan_score.html'
+    form_class = CtscanModelForm
+    success_message = 'CT Scan Score Entered Successfully'
+     
+    def get_success_url(self):
+        return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name)      
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = Schedule.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+      
+    def form_invalid(self, form):
+        form = self.get_form()
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+          
+           context['object'] = obj
+           context['form'] = form 
+        return self.render_to_response(context)
+
+class XrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/xray_score.html'
+    form_class = XrayModelForm
+    success_message = 'X-ray Score Entered Successfully'
+     
+    def get_success_url(self):
+        return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name)      
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = Schedule.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+      
+    def form_invalid(self, form):
+        form = self.get_form()
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+          
+           context['object'] = obj
+           context['form'] = form 
+        return self.render_to_response(context)
+
+
+class FlouroscopyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/flouroscopy_score.html'
+    form_class = FlouroscopyModelForm
+    success_message = 'Flouroscopy Score Entered Successfully'
+     
+    def get_success_url(self):
+        return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name)      
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = Schedule.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+      
+    def form_invalid(self, form):
+        form = self.get_form()
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+          
+           context['object'] = obj
+           context['form'] = form 
+        return self.render_to_response(context)
+
+class MamographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/mamography_score.html'
+    form_class = MamographyModelForm
+    success_message = 'Mamography Score Entered Successfully'
+     
+    def get_success_url(self):
+        return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name)      
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = Schedule.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+      
+    def form_invalid(self, form):
+        form = self.get_form()
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+          
+           context['object'] = obj
+           context['form'] = form 
+        return self.render_to_response(context)
+
+
+class DentalXrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/dental_xray_score.html'
+    form_class = DentalXrayModelForm
+    success_message = 'Dental X-ray Score Entered Successfully'
+     
+    def get_success_url(self):
+        return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name)      
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = Schedule.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+      
+    def form_invalid(self, form):
+        form = self.get_form()
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+          
+           context['object'] = obj
+           context['form'] = form 
+        return self.render_to_response(context)
+
+
+class EchocardiographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/echocardiography_score.html'
+    form_class = EchocardiographyModelForm
+    success_message = 'Echocardiography Score Entered Successfully'
+     
+    def get_success_url(self):
+        return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name)      
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = Schedule.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+      
+    def form_invalid(self, form):
+        form = self.get_form()
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+          
+           context['object'] = obj
+           context['form'] = form 
+        return self.render_to_response(context)
         
-        
+class AngiographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/angiography_score.html'
+    form_class = AngiographyModelForm
+    success_message = 'Angiography Score Entered Successfully'
+     
+    def get_success_url(self):
+        return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name)      
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = Schedule.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+      
+    def form_invalid(self, form):
+        form = self.get_form()
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+          
+           context['object'] = obj
+           context['form'] = form 
+        return self.render_to_response(context)
+
+
+class CarmScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/carm_score.html'
+    form_class = CarmModelForm
+    success_message = 'C-Arm Score Entered Successfully'
+     
+    def get_success_url(self):
+        return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name)      
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = Schedule.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+      
+    def form_invalid(self, form):
+        form = self.get_form()
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+          
+           context['object'] = obj
+           context['form'] = form 
+        return self.render_to_response(context)
 #class UltrasoundScore(BSModalCreateView):
     #template_name = 'zonal_offices/ultrasound_score.html'
     #form_class = UltrasoundModelForm
@@ -160,38 +685,6 @@ class InspectionReportView(LoginRequiredMixin, InspectionObjectMixin, View):
 
     #def get_success_url(self):
         #return reverse("zonal_offices:inspection_report", kwargs={"id": self.object.practice_manager.schedule.id})
-
-
-class UltrasoundScore(InspectionObjectMixin, View):
-    template_name = 'zonal_offices/ultrasound_score.html'
-    template_name1 = 'zonal_offices/ultrasound_score_details.html'
-    success_message = 'Ultrasound Score Entered Successfully'
-    def get(self, request,  *args, **kwargs):
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = UltrasoundModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name, context)
-
-    def post(self, request,  *args, **kwargs):
-        
-        form = UltrasoundModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-        
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = UltrasoundModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name1, context)
-        
-
 class UltrasoundObjectMixin(object):
     model = Ultrasound
     def get_object(self):
@@ -201,12 +694,22 @@ class UltrasoundObjectMixin(object):
             obj = get_object_or_404(self.model, id=id)
         return obj 
 
-class UltrasoundScoreDetail(UltrasoundObjectMixin, View):
-    template_name = "zonal_offices/ultrasound_score_details.html"
+#class UltrasoundScoreDetail(UltrasoundObjectMixin, View):
+    #template_name = "zonal_offices/ultrasound_score_details.html"
 
-    def get(self, request, id=None, *args, **kwargs):
-        context = {'object': self.get_object()}
-        return render(request, self.template_name, context)
+    #def get(self, request, id=None, *args, **kwargs):
+        #context = {'object': self.get_object()}
+        #return render(request, self.template_name, context)
+
+
+class UltrasoundScoreDetail(LoginRequiredMixin, DetailView):
+    template_name = "zonal_offices/ultrasound_score_details.html"
+    model = Ultrasound
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
 
  
 class UltrasoundScoreUpdate(UltrasoundObjectMixin, View):
@@ -243,34 +746,6 @@ class UltrasoundScoreUpdate(UltrasoundObjectMixin, View):
 
     #def get_success_url(self):
         #return reverse("zonal_offices:inspection_report", kwargs={"id": self.object.practice_manager.schedule.id})
-
-class NuclearMedicineScore(InspectionObjectMixin, View):
-    template_name = 'zonal_offices/nuclear_medicine_score.html'
-    template_name1 = 'zonal_offices/nuclear_medicine_score_details.html'
-    def get(self, request,  *args, **kwargs):
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = NuclearMedicineModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name, context)
-
-    def post(self, request,  *args, **kwargs):
-        
-        form = NuclearMedicineModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-        
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = NuclearMedicineModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name1, context)
         
 
 class NuclearMedicineObjectMixin(object):
@@ -324,37 +799,7 @@ class NuclearMedicineScoreUpdate(NuclearMedicineObjectMixin, View):
 
     #def get_success_url(self):
         #return reverse("zonal_offices:inspection_report", kwargs={"id": self.object.practice_manager.schedule.id})
-
-
-class RadiotherapyScore(InspectionObjectMixin, View):
-    template_name = 'zonal_offices/radiotherapy_score.html'
-    template_name1 = 'zonal_offices/radiotherapy_score_details.html'
-    def get(self, request,  *args, **kwargs):
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = RadiotherapyModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name, context)
-
-    def post(self, request,  *args, **kwargs):
         
-        form = RadiotherapyModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-        
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = RadiotherapyModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name1, context)
-        
-
 class RadiotherapyObjectMixin(object):
     model = Radiotherapy
     def get_object(self):
@@ -407,36 +852,7 @@ class RadiotherapyScoreUpdate(RadiotherapyObjectMixin, View):
     #success_message = 'MRI Score Entered Successfully.'
 
     #def get_success_url(self):
-        #return reverse("zonal_offices:inspection_report", kwargs={"id": self.object.practice_manager.schedule.id})
-
-class MriScore(InspectionObjectMixin, View):
-    template_name = 'zonal_offices/mri_score.html'
-    template_name1 = 'zonal_offices/mri_score_details.html'
-    def get(self, request,  *args, **kwargs):
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = MriModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name, context)
-
-    def post(self, request,  *args, **kwargs):
-        
-        form = MriModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-        
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = MriModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name1, context)
-        
+        #return reverse("zonal_offices:inspection_report", kwargs={"id": self.object.practice_manager.schedule.id})        
 
 class MriObjectMixin(object):
     model = Mri
@@ -494,35 +910,6 @@ class MriScoreUpdate(MriObjectMixin, View):
         #return reverse("zonal_offices:inspection_report", kwargs={"id": self.object.practice_manager.schedule.id})
 
 
-class CtscanScore(InspectionObjectMixin, View):
-    template_name = 'zonal_offices/ctscan_score.html'
-    template_name1 = 'zonal_offices/ctscan_score_details.html'
-    def get(self, request,  *args, **kwargs):
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = CtscanModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name, context)
-
-    def post(self, request,  *args, **kwargs):
-        
-        form = CtscanModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-        
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = CtscanModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name1, context)
-        
-
 class CtscanObjectMixin(object):
     model = Ctscan
     def get_object(self):
@@ -576,36 +963,6 @@ class CtscanScoreUpdate(CtscanObjectMixin, View):
     #def get_success_url(self):
         #return reverse("zonal_offices:inspection_report", kwargs={"id": self.object.practice_manager.schedule.id})
         #return reverse("zonal_offices:xray_detail", kwargs={"id": self.object.practice_manager.xray.id})
-
-
-class XrayScore(InspectionObjectMixin, View):
-    template_name = 'zonal_offices/xray_score.html'
-    template_name1 = 'zonal_offices/xray_score_details.html'
-    def get(self, request,  *args, **kwargs):
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = XrayModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name, context)
-
-    def post(self, request,  *args, **kwargs):
-        
-        form = XrayModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-        
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = XrayModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name1, context)
-        
 
 class XrayObjectMixin(object):
     model = Xray
@@ -662,36 +1019,6 @@ class XrayScoreUpdate(XrayObjectMixin, View):
         #return reverse("zonal_offices:inspection_report", kwargs={"id": self.object.practice_manager.schedule.id})
 
 
-
-class FlouroscopyScore(InspectionObjectMixin, View):
-    template_name = 'zonal_offices/flouroscopy_score.html'
-    template_name1 = 'zonal_offices/flouroscopy_score_details.html'
-    def get(self, request,  *args, **kwargs):
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = FlouroscopyModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name, context)
-
-    def post(self, request,  *args, **kwargs):
-        
-        form = FlouroscopyModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-        
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = FlouroscopyModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name1, context)
-        
-
 class FlouroscopyObjectMixin(object):
     model = Flouroscopy
     def get_object(self):
@@ -735,38 +1062,7 @@ class FlouroscopyScoreUpdate(FlouroscopyObjectMixin, View):
             context['object'] = obj
             context['form'] = form
         return render(request, self.template_name1, context)
-
-
-
-class MamographyScore(InspectionObjectMixin, View):
-    template_name = 'zonal_offices/mamography_score.html'
-    template_name1 = 'zonal_offices/mamography_score_details.html'
-    def get(self, request,  *args, **kwargs):
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = MamographyModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name, context)
-
-    def post(self, request,  *args, **kwargs):
         
-        form = MamographyModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-        
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = MamographyModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name1, context)
-        
-
 class MamographyObjectMixin(object):
     model = Mamography
     def get_object(self):
@@ -810,37 +1106,7 @@ class MamographyScoreUpdate(MamographyObjectMixin, View):
             context['object'] = obj
             context['form'] = form
         return render(request, self.template_name1, context)
-
-
-class DentalXrayScore(InspectionObjectMixin, View):
-    template_name = 'zonal_offices/dental_xray_score.html'
-    template_name1 = 'zonal_offices/dental_xray_score_details.html'
-    def get(self, request,  *args, **kwargs):
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = DentalXrayModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name, context)
-
-    def post(self, request,  *args, **kwargs):
         
-        form = DentalXrayModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-        
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = DentalXrayModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name1, context)
-        
-
 class DentalXrayObjectMixin(object):
     model = Dentalxray
     def get_object(self):
@@ -883,37 +1149,7 @@ class DentalXrayScoreUpdate(DentalXrayObjectMixin, View):
                 form.save()
             context['object'] = obj
             context['form'] = form
-        return render(request, self.template_name1, context)
-
-
-class EchocardiographyScore(InspectionObjectMixin, View):
-    template_name = 'zonal_offices/echocardiography_score.html'
-    template_name1 = 'zonal_offices/echocardiography_score_details.html'
-    def get(self, request,  *args, **kwargs):
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = EchocardiographyModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name, context)
-
-    def post(self, request,  *args, **kwargs):
-        
-        form = EchocardiographyModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-        
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = EchocardiographyModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name1, context)
-        
+        return render(request, self.template_name1, context)        
 
 class EchocardiographyObjectMixin(object):
     model = Echocardiography
@@ -960,36 +1196,7 @@ class EchocardiographyScoreUpdate(EchocardiographyObjectMixin, View):
         return render(request, self.template_name1, context)
 
 
-
-class AngiographyScore(InspectionObjectMixin, View):
-    template_name = 'zonal_offices/angiography_score.html'
-    template_name1 = 'zonal_offices/angiography_score_details.html'
-    def get(self, request,  *args, **kwargs):
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = AngiographyModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name, context)
-
-    def post(self, request,  *args, **kwargs):
         
-        form = AngiographyModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-        
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = AngiographyModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name1, context)
-        
-
 class AngiographyObjectMixin(object):
     model = Angiography
     def get_object(self):
@@ -1034,37 +1241,7 @@ class AngiographyScoreUpdate(AngiographyObjectMixin, View):
             context['form'] = form
         return render(request, self.template_name1, context)
 
-    
-
-class CarmScore(InspectionObjectMixin, View):
-    template_name = 'zonal_offices/carm_score.html'
-    template_name1 = 'zonal_offices/carm_score_details.html'
-    def get(self, request,  *args, **kwargs):
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = CarmModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name, context)
-
-    def post(self, request,  *args, **kwargs):
         
-        form = CarmModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-        
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = CarmModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
-
-        return render(request, self.template_name1, context)
-        
-
 class CarmObjectMixin(object):
     model = Carm
     def get_object(self):
@@ -1109,37 +1286,6 @@ class CarmScoreUpdate(CarmObjectMixin, View):
             context['form'] = form
         return render(request, self.template_name1, context)
 
-
-
-
-
-def mri(request, id):
-  if request.method == 'POST':
-    practice_manager = request.POST['practice_manager']
-    shielding_score = request.POST['shielding_score']
-    room_design_score = request.POST['room_design_score']
-    radiographers_no_score = request.POST['radiographers_no_score']
-    radiologists_no_score = request.POST['radiologists_no_score']
-    radiographer_license_score = request.POST['radiographer_license_score']
-    metal_screening_device_score = request.POST['metal_screening_device_score']
-    screening_questionnaire_score = request.POST['screening_questionnaire_score']
-    water_supply_score = request.POST['water_supply_score']
-    accessories_adequacy_score = request.POST['accessories_adequacy_score']
-    warning_signs_score = request.POST['warning_signs_score']
-    C07_form_compliance_score = request.POST['C07_form_compliance_score']
-    equipment_installation_location_score = request.POST['equipment_installation_location_score']
-    processing_unit_score = request.POST['processing_unit_score']
-    toilets_cleanliness_score = request.POST['toilets_cleanliness_score']
-    waiting_room_score = request.POST['waiting_room_score']
-    offices_adequacy_score = request.POST['offices_adequacy_score']
-    technical_room_adequacy_score = request.POST['technical_room_adequacy_score']
-    mri_total = request.POST['mri_total']
-
-
-
-    mri = Mri(practice_manager=practice_manager, shielding_score=shielding_score, room_design_score=room_design_score, radiographers_no_score=radiographers_no_score, radiologists_no_score=radiologists_no_score, radiographer_license_score=radiographer_license_score, metal_screening_device_score=metal_screening_device_score, screening_questionnaire_score=screening_questionnaire_score, water_supply_score=water_supply_score, accessories_adequacy_score=accessories_adequacy_score, warning_signs_score=warning_signs_score, C07_form_compliance_score=C07_form_compliance_score, equipment_installation_location_score=equipment_installation_location_score, processing_unit_score=processing_unit_score, toilets_cleanliness_score=toilets_cleanliness_score, waiting_room_score=waiting_room_score, offices_adequacy_score=offices_adequacy_score, technical_room_adequacy_score=technical_room_adequacy_score, mri_total=mri_total )
-
-    mri.save()
 
 
 

@@ -31,100 +31,91 @@
 </div>
 <div class="row">
 <span class="col-5"><strong>Application No:</strong></span>
-<span class="col-6 ">{{payment.application_no}}</span>
+<span class="col-6 ">{{object.application_no}}</span>
 </div>
 <div class="row">
 <span class="col-5"><strong>Hospital Name:</strong></span>
-<span class="col-6">{{payment.hospital_name}}</span>
+<span class="col-6">{{object.hospital_name}}</span>
 </div>
 
 
-{% for object in registration %}
+
 <div class="row">
 <span class="col-5"><strong>RC Number:</strong></span>
-<span class="col-6">{{object.rc_number}}</span>
+<span class="col-6">{{object.hospital_name.rc_number}}</span>
 </div>
-{% endfor %}
-
-
-
 
 <div class="row">
 <span class="col-5"><strong>Application Type:</strong></span>
-<span class="col-6">New Registration</span>
+<span class="col-6">{{object.hospital.application_type}}</span>
 </div>
+
+
 
 <div class="row">
 <span class="col-5"><strong>Telephone:</strong></span>
-<span class="col-6">{{payment.phone}}</span>
+<span class="col-6">{{object.hospital_name.phone_no}}</span>
 </div>
 
 <div class="row">
-<span class="col-5"><strong>Hospital Admin:</strong></span>       
-<span class="col-6">{{payment.practice_manager.first_name}} {{payment.practice_manager.last_name}}</span>
+<span class="col-5"><strong>Email:</strong></span>       
+<span class="col-6">{{object.hospital_name.hospital_admin}}</span>
 </div>  
 
-<div class="row">
-<span class="col-5"><strong>Email:</strong></span>
-<span class="col-6">{{payment.email}}</span>
-</div>
 
 <div class="row">
 <span class="col-5"><strong>Contact Address:</strong></span>
-<span class="col-6">{{payment.address}}</span>
+<span class="col-6">{{object.hospital_name.address}}</span>
 </div>
 
 <div class="row">
 <span class="col-5"><strong>City:</strong></span>
-<span class="col-6">{{payment.city}}</span>
+<span class="col-6">{{object.hospital_name.city}}</span>
 </div>
 
 <div class="row">
 <span class="col-5"><strong>State of Location:</strong></span>
-<span class="col-6">{{payment.state}}</span>
+<span class="col-6">{{object.hospital_name.state}}</span>
 </div>
 
 <div class="row">
-<span class="col-5"><strong>License Category:</strong></span>
-<span class="col-6">{{payment.license_category }}
+<span class="col-5"><strong>License Type:</strong></span>
+<span class="col-6">{{object.hospital_name.license_type }}
 </span>
 </div>
 
-<div class="row">
-<span class="col-5"><strong>Services:</strong></span>
-<span class="col-6">{{payment.practice_manager.registration.services}}</span>
-</div>
+
 
 <div class="row">
 <span class="col-5"><strong>Available Equipment:</strong></span>
-<span class="col-6">{{payment.practice_manager.registration.equipment}}</span>
+<span class="col-6">{{object.hospital.equipment}}</span>
 </div>
 
 <div class="row">
 <span class="col-5"><strong>Radiographers:</strong></span>
-<span class="col-6">{{payment.practice_manager.registration.radiographers}}</span>
+<span class="col-6">{{object.hospital.radiographers}}</span>
 </div>
 
 <div class="row">
 <span class="col-5"><strong>Radiologists:</strong></span>
-<span class="col-6">{{payment.practice_manager.registration.radiologists}}</span>
+<span class="col-6">{{object.hospital.radiologists}}</span>
 </div>
 
 <div class="row">
 <span class="col-5"><strong>Payment Amount:</strong></span>
-<span class="col-6">{{payment.payment_amount | intcomma}}
+<span class="col-6">{{object.payment_amount | intcomma}}
 </span>
 </div>
 
 <div class="row">
 <span class="col-5"><strong>RRR Number:</strong></span>
-<span class="col-6">{{payment.rrr_number}}
+<span class="col-6">{{object.rrr_number}}
 </span>
 </div>
 
 <div class="row">
 <span class="col-5"><strong>Payment Date:</strong></span>
-<span class="col-6">{{payment.payment_date_pretty}}
+<span class="col-6">{{object.payment_date}}
 </span>
 </div>
 </div><br>
@@ -133,7 +124,6 @@
               
 <div class="col-md-5 mt-0">
 <p class="text-success lead">Uploads</p>
-
 <div class="row py-0">
 <table class="table table-hover">
 <thead style="background-color: #bfe3f8;">
@@ -144,47 +134,52 @@
 </thead>
 
 <tbody>
-{% if payment.practice_manager.registration.cac_certificate %}
+
+{% if object.hospital.cac_certificate %}
 <tr> <td width="50%" scope="col">CAC Document:</td> 
 <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-<a class="text-danger" href="{{payment.practice_manager.registration.cac_certificate.url}}" target="_blank">&nbsp; View CAC Certificate</a></td>  
+<a class="text-danger" href="{{object.hospital.cac_certificate.url}}" target="_blank">&nbsp; View CAC Certificate</a></td>  
 </tr>
 {% endif %}
 
-{% if payment.practice_manager.registration.practice_license1 %}
+{% if object.hospital.practice_license1 %}
 <tr> <td width="50%" scope="col">Practice Licence:</td> 
 <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-<a class="text-danger" href="{{payment.practice_manager.registration.practice_license1.url}}"
+<a class="text-danger" href="{{object.hospital.practice_license1.url}}"
 target="_blank">&nbsp; View Practicing Licence</a></td>  
 </tr>
 {% endif %}
 
-{% if payment.practice_manager.registration.practice_license2 %}
+{% if object.hospital.practice_license2 %}
 <tr> <td width="50%" scope="col">Practice Licence:</td> 
 <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-<a class="text-danger" href="{{payment.practice_manager.registration.practice_license2.url}}"
+<a class="text-danger" href="{{object.hospital.practice_license2.url}}"
 target="_blank">&nbsp; View Practicing Licence</a></td>  
 </tr>
 {% endif %}
 
-{% if payment.practice_manager.registration.form_c07 %}
+{% if object.hospital.form_c07 %}
 <tr> <td width="50%" scope="col">Form C07:</td> 
 <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-<a class="text-danger" href="{{payment.practice_manager.registration.form_c07.url}}"
+<a class="text-danger" href="{{object.hospital.form_c07.url}}"
 target="_blank">&nbsp; View Form C07</a></td>  
 </tr>
 {% endif %}
 
-{% if payment.payment_receipt %}
+
+{% if object.hospital.payment_receipt %}
 <tr> <td width="50%" scope="col">Payment Receipt:</td> 
 <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-<a class="text-danger" href="{{payment.payment_receipt.url}}" target="_blank">&nbsp; View Payment Receipt</a></td>  
+<a class="text-danger" href="{{object.hospital.payment_receipt.url}}" target="_blank">&nbsp; View Payment Receipt</a></td>  
 </tr>
 {% endif %}
+
+
                        
 </tbody>
 </table>
-</div>     
+</div>  
+
             
             
 <div class="row">
@@ -193,13 +188,14 @@ target="_blank">&nbsp; View Form C07</a></td>
 
 <div class="row">
 <span class="col-6"><strong>Submitted on:</strong></span>
-<span class="col-6">{{payment.practice_manager.registration.reg_date_pretty}}</span>
+<span class="col-6">{{object.reg_date_pretty}}</span>
 </div>
+
                     
 <div class="row">
 <span class="col-6"><strong>Vetted on:</strong></span>
 {% if object.vet_date %}
-<span class="col-6">{{payment.vet_date_pretty}}</span>
+<span class="col-6">{{object.vet_date_pretty}}</span>
 {% else %} 
 <span class="col-6"></span>
 {% endif %}
@@ -208,25 +204,30 @@ target="_blank">&nbsp; View Form C07</a></td>
 <div class="row">
 <span class="col-6"><strong>Vetted by:</strong></span>
 {% if object.vetting_officer %}
-<span class="col-6">{{ vetting_officer.first_name }} {{ vetting_officer.last_name }}</span>
+<span class="col-6">{{ object.vetting_officer.first_name }} {{ object.vetting_officer.last_name }}</span>
 {% else %} 
 <span class="col-6"></span>
 {% endif %}
 </div>
-</div>
 
-</div>
+
+
 <hr>
 <div class="d-flex justify-content-end">   
-<a href="javascript:{document.getElementById('approve{{payment.id }}').submit()}"><button class="btn btn-success py-1 mr-4 mt-1 mb-3"> Approve for Inspection <i class="fa fa-check" aria-hidden="true"></i></button> </a>
-<a href="javascript:{document.getElementById('reject{{payment.id }}').submit()}"><button class="btn btn-danger py-1 mr-4 mt-1 mb-3"> Reject Submission <i class="fa fa-reply" aria-hidden="true"></i></button></a> 
-<a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-warning text-white py-1 px-3 mt-1 mb-3"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Return to Dashboard</a>  
+<a href="javascript:{document.getElementById('approve{{object.id }}').submit()}"><button class="btn btn-success py-1 mr-2 mt-1 mb-1"> Approve for Inspection <i class="fa fa-check" aria-hidden="true"></i></button> </a>
+<a href="javascript:{document.getElementById('reject{{object.id }}').submit()}"><button class="btn btn-danger py-1 mr-2 mt-1 mb-1"> Reject Submission <i class="fa fa-reply" aria-hidden="true"></i></button></a> 
+<a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-warning text-white py-1 px-1 mt-1 mb-1"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Return to Dashboard</a>  
 </div>
+</div>
+
+
+
+
 </main>
 
 <!--end Copy here-->
 
-<form id="approve{{payment.id }}" method="POST" action="{% url 'monitoring:approve' payment.id %}">
+<form id="approve{{object.id }}" method="POST" action="{% url 'monitoring:approve' object.id %}">
   {% csrf_token%}
 
  <input type="hidden" name="vetting_officer" {% if user.is_authenticated %} value="{{ request.user.first_name }} {{ request.user.last_name }}" {% endif %} required id="id_vetting_officer">
@@ -236,7 +237,7 @@ target="_blank">&nbsp; View Form C07</a></td>
 
 </form>
 
-<form id="reject{{payment.id }}" method="POST" action="{% url 'monitoring:reject' payment.id %}">
+<form id="reject{{object.id }}" method="POST" action="{% url 'monitoring:reject' object.id %}">
   {% csrf_token%}
   <input type="hidden">
 </form>

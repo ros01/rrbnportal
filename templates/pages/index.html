@@ -53,21 +53,18 @@
         <h4 style="color:#457341; font-size:15px"><b>Private Hospitals/Centers</b></h4> 
         <div class="row "> 
 
-
-
         <div class="col-lg-12 col-md-12"> <ul class="list-unstyled"> <li> <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a href="{% url 'accounts:start-reg' %}">Register New Practice</a> </li> <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="{% url 'accounts:activate_account' %}">Apply for Renewal of Practice</a> </li> <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="{% url 'verify_practice' %}">Check Practice Registration Status</a> </li></ul> 
         </div>
         </div>
         </div>
       
-
-
         <div class="col-lg-4 col-md-4 col-sm-12">
+        <!--{% url 'accounts:start_registration' %}-->
+        <!--{% url 'verify_practice' %}-->
        
-
         <h4 style="color:#457341; font-size:15px"><b>Teaching Hospitals,Specialist Hospitals, FMCs</b></h4> 
         <div class="row "> 
-        <div class="col-lg-12 col-md-12"><ul class="list-unstyled"> <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i>  <a class="blink" href="{% url 'accounts:start_registration' %}">Apply for Accreditation</a> </li> <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="#">Apply for Re-acccreditation</a> </li> <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="{% url 'verify_practice' %}">Check Accreditation Status</a> </li></ul> 
+        <div class="col-lg-12 col-md-12"><ul class="list-unstyled"> <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i>  <a class="blink" href="#">Apply for Accreditation</a> </li> <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="#">Apply for Re-acccreditation</a> </li> <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="#">Check Accreditation Status</a> </li></ul> 
         </div>
         </div>
        
@@ -75,13 +72,13 @@
 
 
         <div class="col-lg-4 col-md-4 col-sm-12">
-        
+        <!--{% url 'accounts:start-reg' %}-->
+        <!--{% url 'verify_practice' %}-->
 
         <h4 style="color:#457341; font-size:15px"><b>Neuropychiatric, General, Private Hospitals</b></h4> 
         <div class="row "> 
 
-
-        <div class="col-lg-12 col-md-12"> <ul class="list-unstyled"> <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="{% url 'accounts:start-reg' %}">Apply for Accreditation</a> </li> <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="#">Apply for Re-acccreditation</a> </li> <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="{% url 'verify_practice' %}">Check Accreditation Status</a> </li></ul> 
+        <div class="col-lg-12 col-md-12"> <ul class="list-unstyled"> <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="#">Apply for Accreditation</a> </li> <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="#">Apply for Re-acccreditation</a> </li> <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="#">Check Accreditation Status</a> </li></ul> 
         </div>
         
         </div>
@@ -93,27 +90,8 @@
          </div> 
 
 
-       
-
-
         <div class="light-gold mt-3 py-5"> <div class="container"> <div class="row"> <div class="col-md-6"> <div> <h3><i class="fa fa-info-circle"></i> About RRBN</h3> <p> The Radiographers Registration Boadr of Nigeria (RRBN) is a parastatal under the ministry of health.RRBN was established by Decree N0. 42 of 1987, now Cap R1 Laws of the Fedration of Nigeria 2004.RRBN key mandate is to regulate the price of Radiography in Nigeria. &nbsp; <br> <a href="{% url 'about' %}" style="color:#cb453f;">Read More</a> <i class="fa fa-caret-right" style="color:#F0D738"></i> </p> </div> </div> <div class="col-md-6"> <div class="features"> <h3><i class="fa fa-laptop"></i> Inspection & Monitoring Portal</h3> <p style="text-align:justify"> The RRBN Inspection & Mornitoring Portal is an Electronic platform for Data Consolidation of all major activities crried out by the Monitoring and Enforcement Department of the RRBN in its bid to uphold the mandate of the Board to regulate the Practice of radiography in Nigeria. <br> &nbsp;<a href="{% url 'about' %}" style="color:#cb453f;">Read More</a> <i class="fa fa-caret-right" style="color:#F0D738"></i> </p> </div> </div> </div> </div> </div> 
     
-
-
-
-
-        
-       
-
-
-
-
-
-
-        
-
-
-
 
   
   {% endblock %}

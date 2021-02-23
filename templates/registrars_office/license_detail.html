@@ -25,249 +25,217 @@
 </section>
 
  <div class="row">
-            <div class="col-md-7 mt-0">
-                <div class="col-md-12">
-                    <div class="row">
-                        <p class="col-12 text-success lead mb-0">Application Summary</p>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Application No:</strong></span>
-                        <span class="col-6 ">{{inspection.application_no}}</span>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Hospital Name:</strong></span>
-                        <span class="col-6 ">{{inspection.hospital_name}}</span>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Hospital Admin:</strong></span>
-                        <span class="col-6 ">{{inspection.practice_manager.first_name}} {{inspection.practice_manager.last_name}}</span>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>License Category:</strong></span>
-                        <span class="col-6">{{inspection.license_category}}</span>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Application Type:</strong></span>
-                        <span class="col-6">{{inspection.application_type}}</span>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Address:</strong></span>
-                        <span class="col-6">{{inspection.address}}</span>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Phone:</strong></span>
-                        <span class="col-6">{{inspection.phone}}</span>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Email:</strong></span>
-                        <span class="col-6">{{inspection.email}}</span>
-                     </div>
-                        <div class="row">
-                        <span class="col-5"><strong>Services:</strong></span>
-                        <span class="col-6">{{inspection.practice_manager.schedule.services}}</span>
-                   
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Available Equipment:</strong></span>
-                        <span class="col-6">{{inspection.equipment}}</span>
-                    </div>
-                     <div class="row">
-                        <span class="col-5"><strong>Radiographers:</strong></span>
-                        <span class="col-6">{{inspection.radiographers}}</span>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Covering Radiologist:</strong></span>
-                        <span class="col-6">{{inspection.radiologists}}</span>
-                    </div>
-                </div><br>
-                <div class="col-md-10">
-                    <div class="row">
-                        <p class="col-12 text-success lead mb-0">Initial Uploads</p>
-                    </div>
+ <div class="col-md-7 mt-0">
+ <div class="col-md-12">
+ <div class="row">
+ <p class="col-12 text-success lead mb-0">Application Summary</p>
+ </div>
+ <div class="row">
+ <span class="col-5"><strong>Application No:</strong></span>
+ <span class="col-6 ">{{object.application_no}}</span>
+ </div>
+ <div class="row">
+ <span class="col-5"><strong>Hospital Name:</strong></span>
+ <span class="col-6 ">{{object.hospital_name}}</span>
+ </div>
+ <div class="row">
+ <span class="col-5"><strong>Email:</strong></span>
+ <span class="col-6 ">{{object.hospital_name.hospital_admin}}</span>
+ </div>
+ <div class="row">
+<span class="col-5"><strong>License Type:</strong></span>
+<span class="col-6">{{object.hospital_name.license_type}}</span>
+</div>
+<div class="row">
+ <span class="col-5"><strong>Application Type:</strong></span>
+ <span class="col-6">{{object.hospital.application_type}}</span>
+ </div>
+ <div class="row">
+ <span class="col-5"><strong>Address:</strong></span>
+ <span class="col-6">{{object.hospital_name.address}}</span>
+ </div>
+ <div class="row">
+ <span class="col-5"><strong>Phone:</strong></span>
+ <span class="col-6">{{object.hospital_name.phone_no}}</span>
+ </div>
+ 
+ 
+ <div class="row">
+ <span class="col-5"><strong>Listed Modalities:</strong></span>
+ <span class="col-6">{{object.hospital.equipment}}</span>
+ </div>
+<div class="row">
+<span class="col-5"><strong>Radiographers:</strong></span>
+ <span class="col-6">{{object.hospital.radiologists}}</span>
+</div>
+<div class="row">
+<span class="col-5"><strong>Covering Radiologist:</strong></span>
+<span class="col-6">{{object.hospital.radiologists}}</span>
+</div>
+</div><br>
+<div class="col-md-10">
+<div class="row">
+<p class="col-12 text-success lead mb-0">Initial Uploads</p>
+</div>
 
-                     <div class="row py-0 pl-1">
-                    <table class="table table-hover table-borderless">
-
-                    <tbody>
-
-                        {% if inspection.practice_manager.registration.cac_certificate %}
-                        <tr> <td width="50%" scope="col">CAC Certificate:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{inspection.practice_manager.registration.cac_certificate.url}}"
-                        target="_blank">&nbsp; View CAC Certficiate</a></td> 
-                        </tr>
-                        {% endif %}
-
-                        {% if inspection.practice_manager.registration.practice_license1 %}
-                        <tr> <td width="50%" scope="col">Radiographer License:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{inspection.practice_manager.registration.practice_license1.url}}"
-                        target="_blank">&nbsp; View Radiographer License</a></td>  
-                        </tr>
-                        {% endif %}
-
-                        {% if inspection.practice_manager.registration.practice_license2 %}
-                        <tr> <td width="50%" scope="col">Radiographer License:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{inspection.practice_manager.registration.practice_license2.url}}"
-                        target="_blank">&nbsp; View Radiographer License</a></td>  
-                        </tr>
-                        {% endif %}
-
-                        {% if inspection.practice_manager.registration.form_c07 %}
-                        <tr> <td width="50%" scope="col">Form C07:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{inspection.practice_manager.registration.form_c07.url}}"
-                        target="_blank">&nbsp; View Form C07</a></td>  
-                        </tr>
-                        {% endif %}
-
-                        {% if inspection.practice_manager.payment.payment_receipt %}
-                        <tr> <td width="50%" scope="col">Payment Receipt:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{inspection.practice_manager.payment.payment_receipt.url}}"
-                        target="_blank">&nbsp; View Payment Receipt</a></td>  
-                        </tr>
-                        {% endif %}
-                       
-                    </tbody>
-                </table>
-                </div>
+<div class="row py-0 pl-1">
+<table class="table table-hover table-borderless">
+<tbody>
+{% if object.hospital.cac_certificate %}
+<tr> <td width="50%" scope="col">CAC Certificate:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.cac_certificate.url}}"
+ target="_blank">&nbsp; View CAC Certficiate</a></td> 
+ </tr>
+{% endif %}
+{% if object.hospital.practice_license1 %}
+ <tr> <td width="50%" scope="col">Radiographer License:</td> 
+ <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+ <a class="text-danger" href="{{object.hospital.practice_license1.url}}"
+ target="_blank">&nbsp; View Radiographer License</a></td>  
+ </tr>
+ {% endif %}
+{% if object.hospital.practice_license2 %}
+<tr> <td width="50%" scope="col">Radiographer License:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+ <a class="text-danger" href="{{object.hospital.practice_license2.url}}"
+ target="_blank">&nbsp; View Radiographer License</a></td>  
+ </tr>
+ {% endif %}
+{% if object.hospital.form_c07 %}
+<tr> <td width="50%" scope="col">Form C07:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.form_c07.url}}"
+target="_blank">&nbsp; View Form C07</a></td>  
+</tr>
+{% endif %}
+{% if object.payment.payment_receipt %}
+<tr> <td width="50%" scope="col">Payment Receipt:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+ <a class="text-danger" href="{{object.payment.payment_receipt.url}}"
+ target="_blank">&nbsp; View Payment Receipt</a></td>  
+ </tr>
+ {% endif %}
+  </tbody>
+  </table>
+  </div>
                 
+</div><br>
 
-                </div><br>
-
-                <div class="col-md-12">
-                    <div class="row">
-                        <p class="col-12 text-success lead">Control Details</p>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Inspection 
-                        Date:</strong></span>
-                        <span class="col-6">{{inspection.inspection_date_pretty}}</span>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Inspection Zone:</strong></span>
-                        <span class="col-6">{{inspection.practice_manager.schedule.inspection_zone}}</span>
-                    </div>
-                </div>
-
-            </div>
+ <div class="col-md-12">
+ <div class="row">
+ <p class="col-12 text-success lead">Control Details</p>
+ </div>
+ <div class="row">
+ <span class="col-5"><strong>Inspection 
+ Date:</strong></span>
+ <span class="col-6">{{object.schedule.inspection_date}}</span>
+ </div>
+ <div class="row">
+ <span class="col-5"><strong>Inspection Zone:</strong></span>
+ <span class="col-6">{{object.schedule.inspection_zone}}</span>
+  </div>
+  </div>
+</div>
 
 
 
-            <div class="col-md-5 mt-0">
-                <p class="text-success lead">Inspection Score</p>
-                <span><strong><mark>{{inspection.inspection_total}}</mark></strong></span>
+<div class="col-md-5 mt-0">
+<p class="text-success lead">Inspection Score</p>
+<span><strong><mark>{{object.inspection_total}}</mark></strong></span>
+<br>
+<br>
+<p class="text-success lead">Inspection Comments/Observations</p>
+<span><mark>{{object.inspection_comments}}</mark></span>
+<br>
+<br>
+<p class="text-success lead">Inspection Uploads</p>
+ <div class="row py-0">
+ <table class="table table-hover">
+ <thead style="background-color: #bfe3f8;">
+ <tr>
+ <th scope="col lead" style="color: #05567b;">Parameter</th>
+ <th scope="col lead" style="color: #05567b;">Value</th>
+ </tr>
+ </thead>
 
+ <tbody>
+{% if object.photo_main %}
+<tr> <td width="50%" scope="col">Photo Main:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.photo_main.url}}"
+target="_blank"> Main Photo</a></td> 
+</tr>
+{% endif %}
 
-               <br>
-               <br>
-               
-               <p class="text-success lead">Inspection Comments/Observations</p>
+{% if object.photo_1 %}
+<tr> <td width="50%" scope="col">Photo One:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.photo_1.url}}"
+target="_blank"> Photo One</a></td>  
+</tr>
+{% endif %}
 
-               <span><mark>{{inspection.inspection_comments}}</mark></span>
-               <br>
-               <br>
-                <p class="text-success lead">Inspection Uploads</p>
+{% if object.photo_2 %}
+<tr> <td width="50%" scope="col">Photo Two:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.photo_2.url}}"
+target="_blank"> Photo Two</a></td>  
+</tr>
+{% endif %}
 
-            <div class="row py-0">
-               <table class="table table-hover">
-                    <thead style="background-color: #bfe3f8;">
-                        <tr>
-                        <th scope="col lead" style="color: #05567b;">Parameter</th>
-                        <th scope="col lead" style="color: #05567b;">Value</th>
-                        </tr>
-                    </thead>
+{% if object.photo_3 %}
+<tr> <td width="50%" scope="col">Photo Three:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.photo_3.url}}"
+target="_blank"> Photo Three</a></td>  
+</tr>
+{% endif %}
 
-                    <tbody>
+{% if object.photo_4 %}
+<tr> <td width="50%" scope="col">Photo Four:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.photo_4.url}}"
+target="_blank"> Photo Four</a></td>  
+</tr>
+{% endif %}
+{% if object.photo_5 %}
+ <tr> <td width="50%" scope="col">Photo Five:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.photo_5.url}}"
+target="_blank"> Photo Five</a></td>  
+</tr>
+{% endif %}
 
-                        {% if inspection.photo_main %}
-                        <tr> <td width="50%" scope="col">Photo Main:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{inspection.photo_main.url}}"
-                        target="_blank"> Main Photo</a></td> 
-                        </tr>
-                        {% endif %}
-
-                        {% if inspection.photo_1 %}
-                        <tr> <td width="50%" scope="col">Photo One:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{inspection.photo_1.url}}"
-                        target="_blank"> Photo One</a></td>  
-                        </tr>
-                        {% endif %}
-
-                        {% if inspection.photo_2 %}
-                        <tr> <td width="50%" scope="col">Photo Two:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{inspection.photo_2.url}}"
-                        target="_blank"> Photo Two</a></td>  
-                        </tr>
-                        {% endif %}
-
-                        {% if inspection.photo_3 %}
-                        <tr> <td width="50%" scope="col">Photo Three:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{inspection.photo_3.url}}"
-                        target="_blank"> Photo Three</a></td>  
-                        </tr>
-                        {% endif %}
-
-                        {% if inspection.photo_4 %}
-                        <tr> <td width="50%" scope="col">Photo Four:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{inspection.photo_4.url}}"
-                        target="_blank"> Photo Four</a></td>  
-                        </tr>
-                        {% endif %}
-
-                        {% if inspection.photo_5 %}
-                        <tr> <td width="50%" scope="col">Photo Five:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{inspection.photo_5.url}}"
-                        target="_blank"> Photo Five</a></td>  
-                        </tr>
-                        {% endif %}
-
-                        {% if inspection.photo_6 %}
-                        <tr> <td width="50%" scope="col">Photo Six:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{inspection.photo_6.url}}"
-                        target="_blank"> Photo Six</a></td>  
-                        </tr>
-                        {% endif %}
+{% if object.photo_6 %}
+<tr> <td width="50%" scope="col">Photo Six:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+ <a class="text-danger" href="{{object.photo_6.url}}"
+ target="_blank"> Photo Six</a></td>  
+ </tr>
+{% endif %}
                         
                        
-                    </tbody>
-                </table>
-                </div>
+</tbody>
+</table>
+</div>
 
-                
+</div>
 
-
-                
-                
-            </div>
-
-        </div>
-        <hr>
-        <div class="d-flex justify-content-end">   
+</div>
+<hr>
+ <div class="d-flex justify-content-end">   
              
-             <a href="{% url 'registrars_office:registrar_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
+ <a href="{% url 'registrars_office:registrar_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
+ <a href="javascript:{document.getElementById('approve_license{{object.id }}').submit()}"><button class="btn btn-success ml-4 px-3"> Approve License Application<i class="fa fa-podcast text-white"></i></button> </a>
 
 
-            <a href="javascript:{document.getElementById('approve_license{{inspection.id }}').submit()}"><button class="btn btn-success ml-4 px-3"> Approve License Application<i class="fa fa-podcast text-white"></i></button> </a>
-
-
-            <a href="javascript:{document.getElementById('reject_license{{inspection.id }}').submit()}"><button class="btn btn-danger ml-4 px-3"> Reject License Application<i class="fa fa-podcast text-white"></i></button></a> 
+ <a href="javascript:{document.getElementById('reject_license{{object.id }}').submit()}"><button class="btn btn-danger ml-4 px-3"> Reject License Application<i class="fa fa-podcast text-white"></i></button></a> 
              
-
-             
-        </div>
+</div>
 
 
-    </main>
+</main>
 
 
 
@@ -281,7 +249,7 @@
 
 
 <!--end Copy here-->
-<form id="approve_license{{inspection.id }}" method="POST" action="{% url 'registrars_office:approve_license' inspection.id %}">
+<form id="approve_license{{object.id }}" method="POST" action="{% url 'registrars_office:approve_license' object.id %}">
   {% csrf_token%}
   <input type="hidden">
   
@@ -289,7 +257,7 @@
 
 </form>
 
-<form id="reject_license{{inspection.id }}" method="POST" action="{% url 'registrars_office:reject_license' inspection.id %}">
+<form id="reject_license{{object.id }}" method="POST" action="{% url 'registrars_office:reject_license' object.id %}">
   {% csrf_token%}
   <input type="hidden">
 </form>

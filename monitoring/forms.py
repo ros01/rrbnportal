@@ -2,7 +2,8 @@ from django import forms
 from django.utils import timezone
 from django.db.models import Q
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from hospitals.models import Schedule, Inspection, License, Records
+from hospitals.models import Schedule, Inspection, License, Payment, Records
+from accounts.models import Hospital
 from tempus_dominus.widgets import DatePicker
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field
@@ -50,10 +51,14 @@ class ScheduleModelForm(forms.ModelForm):
 
     class Meta:
         model = Schedule
-        fields = ('application_no', 'practice_manager',  'application_type', 'payment_amount', 'hospital_name', 'license_category', 'phone', 'email', 'address', 'state', 'city', 'services', 'equipment', 'radiographers', 'radiologists', 'inspection_date', 'inspection_report_deadline', 'inspection_zone', 'inspection_scheduler',)
-        widgets = {'application_no': forms.HiddenInput(), 'application_type': forms.HiddenInput(), 'payment_amount': forms.HiddenInput(), 'practice_manager': forms.HiddenInput(), 'hospital_name': forms.HiddenInput(), 'license_category': forms.HiddenInput(), 'phone': forms.HiddenInput(), 'email': forms.HiddenInput(), 'address': forms.HiddenInput(), 'state': forms.HiddenInput(), 'city': forms.HiddenInput(),  'services': forms.HiddenInput(), 'equipment': forms.HiddenInput(), 'radiographers': forms.HiddenInput(), 'radiologists': forms.HiddenInput(),}
-
-         
+        fields = ('application_no', 'hospital_name', 'hospital', 'payment',  'inspection_date', 'inspection_report_deadline', 'inspection_zone', 'inspection_scheduler')
+       
+        widgets = {
+         'application_no': forms.HiddenInput(),
+         'hospital_name': forms.HiddenInput(),
+         'hospital': forms.HiddenInput(),
+         'payment': forms.HiddenInput(),
+         } 
                                                                                                                                                                             
 
     def __init__(self, *args, **kwargs):
@@ -96,15 +101,17 @@ class LicenseModelForm(forms.ModelForm):
         )
     #license_status = forms.ChoiceField(choices = LICENSE_STATUS, widget=forms.Select(), required=True)
 
-    
-
     class Meta:
         model = License
-        fields = ('application_no', 'practice_manager', 'application_type', 'payment_amount', 'hospital_name', 'license_category', 'address', 'phone', 'email', 'inspection_date', 'issue_date', 'expiry_date', 'license_no', 'license_type')
-        widgets = {'application_no': forms.HiddenInput(), 'application_type': forms.HiddenInput(), 'payment_amount': forms.HiddenInput(), 'practice_manager': forms.HiddenInput(), 'hospital_name': forms.HiddenInput(), 'license_category': forms.HiddenInput(), 'phone': forms.HiddenInput(), 'email': forms.HiddenInput(), 'address': forms.HiddenInput(), 'inspection_date': forms.HiddenInput(),}
-
-
-    
+        fields = ('application_no', 'hospital_name', 'hospital', 'payment', 'schedule', 'inspection', 'issue_date', 'expiry_date', 'license_no')
+        widgets = {
+          'application_no': forms.HiddenInput(),
+          'hospital_name': forms.HiddenInput(),
+          'hospital': forms.HiddenInput(),
+          'payment': forms.HiddenInput(),
+          'schedule': forms.HiddenInput(),
+          'inspection': forms.HiddenInput(),
+        } 
       
        
     def __init__(self, *args, **kwargs):
@@ -114,22 +121,6 @@ class LicenseModelForm(forms.ModelForm):
        self.fields['license_no'].label = "License No"
        #self.fields['license_status'].label = "License Status"
     
-
-
-
-
-       
-    
-      
-
-    
-      
-       
-
-    
-
-
-
 
 class RecordsModelForm(forms.ModelForm):
     next_visitation_date = forms.DateField(

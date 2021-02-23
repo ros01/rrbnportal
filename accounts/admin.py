@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from .models import User
+from .models import User, Hospital
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django import forms
@@ -18,8 +18,7 @@ class AddUserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'phone_no',
-                  'hospital_name', 'password1', 'password2',  'hospital_type', 'module_name', 'role')
+        fields = ('email', 'first_name', 'last_name', 'password1', 'password2', 'module_name', 'role', 'license_type')
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -46,8 +45,8 @@ class UpdateUserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'password', 'first_name', 'last_name', 'phone_no', 'is_active',
-                  'is_staff', 'hospital_name', 'hospital_type', 'module_name', 'role'  
+        fields = ('email', 'password', 'first_name', 'last_name', 'is_active',
+                  'is_staff', 'module_name', 'role', 'license_type'  
         )
 
     def clean_password(self):
@@ -61,14 +60,13 @@ class UserAdmin(BaseUserAdmin):
     form = UpdateUserForm
     add_form = AddUserForm
 
-    list_display = ('email', 'first_name', 'last_name', 'phone_no',
-                    'hospital_name', 'hospital_type', 'role', 'is_staff')
+    list_display = ('email', 'first_name', 'last_name', 'role', 'is_staff')
     list_filter = ('email', 'is_staff',)
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'phone_no')}),
+        ('Personal info', {'fields': ('first_name', 'last_name')}),
         ('Permissions', {'fields': ('is_active', 'is_staff')}),
-        ('Profiles', {'fields': ('hospital_name', 'hospital_type', 'module_name', 'role')}),
+        ('Profiles', {'fields': ('module_name', 'role', 'license_type')}),
     )
     add_fieldsets = (
         (
@@ -82,10 +80,23 @@ class UserAdmin(BaseUserAdmin):
             }
         ),
     )
-    search_fields = ('email', 'first_name', 'last_name', 'hospital_name', 'hospital_type', 'role')
+    search_fields = ('email', 'first_name', 'last_name', 'role')
     ordering = ('email', 'first_name', 'last_name')
     filter_horizontal = ()
     list_per_page = 25
 
 
 admin.site.register(User, UserAdmin)
+
+
+
+
+class HospitalAdmin(admin.ModelAdmin):
+  list_display = ('hospital_name', 'rc_number', 'phone_no', 'reg_date')
+  list_display_links = ('hospital_name', 'rc_number' )
+  list_filter = ('hospital_name', 'rc_number' )
+  search_fields = ('hospital_name', 'rc_number')
+  list_per_page = 25
+
+
+admin.site.register(Hospital, HospitalAdmin)

@@ -8,11 +8,11 @@ Application Number: {{object.application_no}}
 
 Hospital Name: {{object.hospital_name}}
 
-Mobile Number: {{object.phone}}
+Mobile Number: {{object.hospital_name.phone_no}}
 
-Email Address: {{object.email}}
+Email Address: {{object.hospital_name.hospital_admin}}
 
-Submission Time: {{object.practice_manager.registration.reg_date_pretty}}
+Submission Time: {{object.hospital_name.reg_date}}
 
 
 You will subsequently be notified on the scheduled date for inspection of your facility.

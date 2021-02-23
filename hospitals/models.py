@@ -3,17 +3,20 @@ import uuid
 from multiselectfield import MultiSelectField
 from datetime import datetime
 from django.utils import timezone
-from django.conf import settings
 from django.urls import reverse
-from .choices import STATE_CHOICES, INSPECTION_ZONE, EQUIPMENT, SERVICES, PAYMENT_METHOD, LICENSE_STATUS, VISITATION_REASON, HOSPITAL_TYPE, APPLICATION_TYPE
+from .choices import STATE_CHOICES, EQUIPMENT, INSPECTION_ZONE, SERVICES, PAYMENT_METHOD, LICENSE_STATUS, VISITATION_REASON
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.exceptions import ObjectDoesNotExist
+from accounts.models import Hospital
+from django.conf import settings
+from datetime import datetime
+from datetime import date
 
 
 
 def increment_application_no():
-    last_application_no = Registration.objects.all().order_by('id').last()
+    last_application_no = Document.objects.all().order_by('id').last()
     if not last_application_no:
         return '1000'
     application_no = last_application_no.application_no
@@ -32,41 +35,58 @@ def increment_hospital_code():
     return new_hospital_code
 
 
+class Document(models.Model):
 
+    EQUIPMENT = (
+        ('Ultrasound', 'Ultrasound' ),
+        ('Conventional X-ray', 'Conventional X-ray'),
+        ('Conventional X-ray with Fluoroscopy', 'Conventional X-ray with Fluoroscopy' ),
+        ('CT Scan', 'CT Scan' ),
+        ('C-Arm/O-HRM', 'C-Arm/O-HRM' ),
+        ('MRI', 'MRI'),
+        ('Mamography', 'Mamography' ),
+        ('Angiography', 'Angiography'),
+        ('Dental X-ray', 'Dental X-ray' ),
+        ('Echocardiography', 'Echocardiography'),
+        ('Radiotherapy', 'Radiotherapy'),
+        ('Nuclear Medicine', 'Nuclear Medicine'),
+        )
 
-class Registration(models.Model):
+    HOSPITAL_TYPE = (
+        ('Diagnostic only', 'Diagnostic only' ),
+        ('Therapeutic only', 'Therapeutic only'),
+        ('Diagnostic and Therapeutic', 'Diagnostic and Therapeutic'),
+        )
+
+    APPLICATION_TYPE = (
+        ('New Registration', 'New Registration' ),
+        ('Renewal', 'Renewal'),
+        )
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    application_no = models.CharField(max_length=500, null=True, blank=True, 
+    application_no = models.CharField(max_length=500, unique=True, null=True, blank=True, 
         default=increment_application_no)
-    application_type = models.CharField(max_length=100, choices = APPLICATION_TYPE)
+    license_type = models.CharField(max_length=100)
+    application_type = models.CharField(max_length=100, choices = APPLICATION_TYPE, blank=True)
     application_status = models.IntegerField(default=1)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-    #practice_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-    hospital_name = models.CharField(max_length=200)
-    license_category = models.CharField(max_length=200)
-    rc_number = models.CharField(max_length=100)
-    phone = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
-    state = models.CharField(max_length=100, choices = STATE_CHOICES)
-    city = models.CharField(max_length=100)
-    address = models.CharField(max_length=200)
-    services = models.CharField(max_length=100, choices = SERVICES)
+    hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospitals', on_delete=models.CASCADE)
+    #hospital_admin = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)
+    hospital_type = models.CharField(max_length=100, choices = HOSPITAL_TYPE)
     equipment = MultiSelectField(choices = EQUIPMENT)
-    radiographers = models.TextField(blank=True)
-    radiologists = models.TextField(blank=True, null=
-        True)
-    reg_date = models.DateTimeField(default=datetime.now, blank=True)
+    radiographers = models.TextField(blank=True, null=True)
+    radiologists = models.TextField(blank=True, null=True)
     cac_certificate = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     practice_license1 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     practice_license2 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     form_c07 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
+    submission_date = models.DateField(default=date.today)
 
+    class Meta:
+        unique_together = ('application_no','hospital_name')
+       
 
     def __str__(self):
-        return  str (self.hospital_name)
-
-    def reg_date_pretty(self):
-        return self.reg_date.strftime('%b %e %Y')
+        return  str(self.hospital_name)
 
     def equipment_count(self):
         equipment_count = self.equipment
@@ -77,42 +97,28 @@ class Registration(models.Model):
 
 class Payment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    application_no = models.CharField(max_length=200)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-    #practice_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-    hospital_name = models.CharField(max_length=200)
-    application_type = models.CharField(max_length=100)
+    application_no = models.CharField(max_length=100)
+    hospital = models.ForeignKey(Document, null=True, related_name='hospital', on_delete=models.CASCADE)
+    hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospitals_py', on_delete=models.CASCADE)
+    #hospital_admin = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)
     application_status = models.IntegerField(default=2)
-    license_category = models.CharField(max_length=200)
-    phone = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
-    state = models.CharField(max_length=200)
-    city = models.CharField(max_length=100)
-    address = models.CharField(max_length=200)
-    services = models.CharField(max_length=200)
-    equipment = models.CharField(max_length=200)
-    radiographers = models.TextField(blank=True)
-    radiologists = models.TextField(blank=True, null=True)
     rrr_number = models.CharField(max_length=100)
     receipt_number = models.CharField(max_length=100)
     payment_amount = models.CharField(max_length=100)
     payment_method = models.CharField(max_length=10, choices = PAYMENT_METHOD)
     payment_receipt = models.FileField(upload_to='%Y/%m/%d/')
-    payment_date = models.DateTimeField(default=datetime.now, blank=True)  
+    payment_date = models.DateField(default=date.today)  
     vet_status = models.IntegerField(default=1)
     vetting_officer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, related_name='vetted_by', blank=True, null=True)
-    vet_date =models.DateTimeField(blank=True, null=True)
+    vet_date =models.DateField(default=date.today)
 
+
+    class Meta:
+        unique_together = ('application_no','hospital_name')
 
 
     def __str__(self):
-        return self.hospital_name
-
-    def payment_date_pretty(self):
-        return self.payment_date.strftime('%b %e %Y')
-
-   
-
+        return  str(self.hospital_name)
 
     def save(self, *args, **kwargs):
         
@@ -128,53 +134,80 @@ class Payment(models.Model):
 
 class Schedule(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    application_no = models.CharField(max_length=200)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-    #practice_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-    hospital_name = models.CharField(max_length=200)
-    license_category = models.CharField(max_length=200)
-    application_type = models.CharField(max_length=100)
+    application_no = models.CharField(max_length=100)
+    hospital = models.ForeignKey(Document, null=True, related_name='hospital_dc', on_delete=models.CASCADE)
+    hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospital_py', on_delete=models.CASCADE)
+    payment = models.ForeignKey(Payment, null=True, related_name='payment_py', on_delete=models.CASCADE)
     application_status = models.IntegerField(default=4)
-    phone = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
-    address = models.CharField(max_length=200)
-    state = models.CharField(max_length=200)
-    city = models.CharField(max_length=100)
-    services = models.CharField(max_length=300)
-    equipment = models.CharField(max_length=300)
-    vet_status = models.IntegerField(default=3)
-    payment_amount = models.CharField(max_length=100)
-    radiographers = models.CharField(max_length=300)
-    radiologists = models.CharField(max_length=300, blank=True, null=True)
     inspection_scheduler = models.CharField(max_length=300)
-    inspection_schedule_date = models.DateTimeField(default=datetime.now, blank=True)
-    inspection_date = models.DateTimeField(default=datetime.now, blank=True)
-    inspection_report_deadline = models.DateTimeField(default=datetime.now, blank=True)
+    inspection_schedule_date = models.DateField(default=date.today)
+    inspection_date = models.DateField(default=date.today)
+    inspection_report_deadline = models.DateField(default=date.today)
     inspection_zone = models.CharField(max_length=100, choices = INSPECTION_ZONE)
+    nuclear_medicine_total = models.IntegerField(blank=True, null=True)
+    carm_total = models.IntegerField(blank=True, null=True)
+    radiotherapy_total = models.IntegerField(blank=True, null=True)
+    mri_total = models.IntegerField(blank=True, null=True)
+    ultrasound_total = models.IntegerField(blank=True, null=True)
+    ctscan_total = models.IntegerField(blank=True, null=True)
+    xray_total = models.IntegerField(blank=True, null=True)
+    flouroscopy_total = models.IntegerField(blank=True, null=True)
+    mamography_total = models.IntegerField(blank=True, null=True)
+    echocardiography_total = models.IntegerField(blank=True, null=True)
+    dentalxray_total = models.IntegerField(blank=True, null=True)
+    angiography_total = models.IntegerField(blank=True, null=True)
+
+
+    class Meta:
+        unique_together = ('application_no','hospital_name')
 
     def __str__(self):
-        return self.hospital_name
-
-    def inspection_date_pretty(self):
-        return self.inspection_date.strftime('%b %e %Y')
-
-    def inspection_report_deadline_pretty(self):
-        return self.inspection_report_deadline.strftime('%b %e %Y')
-
-    def inspection_schedule_date_pretty(self):
-        return self.inspection_schedule_date.strftime('%b %e %Y')
+        return str(self.hospital_name)
 
     def save(self, *args, **kwargs):
         super(Schedule, self).save(*args, **kwargs)
-        self.practice_manager.payment.vet_status = 4
-        self.practice_manager.payment.save()
+        self.payment.vet_status = 4
+        self.payment.save()
 
 
-        
 
+class Ultrasound(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    application_no = models.CharField(max_length=100)
+    hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospital_3', on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, null=True, related_name='schedule_3', on_delete=models.CASCADE)
+    room_design_score = models.IntegerField()
+    radiographers_no_score = models.IntegerField()
+    radiographer_license_score = models.IntegerField()
+    ultrasound_qualification_score = models.IntegerField()
+    water_supply_score = models.IntegerField()
+    accessories_adequacy_score = models.IntegerField()
+    C07_form_compliance_score = models.IntegerField()
+    equipment_installation_location_score = models.IntegerField()
+    toilets_cleanliness_score = models.IntegerField()
+    waiting_room_score = models.IntegerField()
+    offices_adequacy_score = models.IntegerField()
+    support_staff_score = models.IntegerField()
+    ultrasound_total = models.IntegerField()
+
+    class Meta:
+        unique_together = ('application_no','hospital_name')
+
+
+    def __str__(self):
+        return str(self.hospital_name)
+
+
+    def save(self, *args, **kwargs):
+        super(Ultrasound, self).save(*args, **kwargs)
+        self.schedule.ultrasound_total = self.ultrasound_total
+        self.schedule.save()
+    
 class Nuclearmedicine(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    application_no = models.CharField(max_length=100)
+    hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospital_4', on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, null=True, related_name='schedule_4', on_delete=models.CASCADE)
     shielding_score = models.IntegerField()
     room_design_score = models.IntegerField()
     radiographers_no_score = models.IntegerField()
@@ -202,12 +235,24 @@ class Nuclearmedicine(models.Model):
     waiting_room_score = models.IntegerField() 
     nuclear_medicine_total = models.IntegerField() 
 
+
+    class Meta:
+        unique_together = ('application_no','hospital_name')
+
     def __str__(self):
-        return str(self.nuclear_medicine_total)
+        return str(self.hospital_name)
+
+
+    def save(self, *args, **kwargs):
+        super(Nuclearmedicine, self).save(*args, **kwargs)
+        self.schedule.nuclear_medicine_total = self.nuclear_medicine_total
+        self.schedule.save()
 
 class Radiotherapy(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    application_no = models.CharField(max_length=100)
+    hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospital_5', on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, null=True, related_name='schedule_5', on_delete=models.CASCADE)
     shielding_score = models.IntegerField()
     room_design_score = models.IntegerField()
     radiographers_no_score = models.IntegerField() 
@@ -230,12 +275,24 @@ class Radiotherapy(models.Model):
     offices_adequacy_score = models.IntegerField()
     radiotherapy_total = models.IntegerField()
 
+
+    class Meta:
+        unique_together = ('application_no','hospital_name')
+
     def __str__(self):
-        return str(self.radiotherapy_total)
+        return str(self.hospital_name)
+
+
+    def save(self, *args, **kwargs):
+        super(Radiotherapy, self).save(*args, **kwargs)
+        self.schedule.radiotherapy_total = self.radiotherapy_total
+        self.schedule.save()
 
 class Mri(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    application_no = models.CharField(max_length=100)
+    hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospital_6', on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, null=True, related_name='schedule_6', on_delete=models.CASCADE)
     shielding_score = models.IntegerField()
     room_design_score = models.IntegerField()
     radiographers_no_score = models.IntegerField()
@@ -256,36 +313,23 @@ class Mri(models.Model):
     technical_room_adequacy_score = models.IntegerField()
     mri_total = models.IntegerField()
 
-    def __str__(self):
-        return str(self.mri_total)
-
-
-
-class Ultrasound(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-    room_design_score = models.IntegerField()
-    radiographers_no_score = models.IntegerField()
-    radiographer_license_score = models.IntegerField()
-    ultrasound_qualification_score = models.IntegerField()
-    water_supply_score = models.IntegerField()
-    accessories_adequacy_score = models.IntegerField()
-    C07_form_compliance_score = models.IntegerField()
-    equipment_installation_location_score = models.IntegerField()
-    toilets_cleanliness_score = models.IntegerField()
-    waiting_room_score = models.IntegerField()
-    offices_adequacy_score = models.IntegerField()
-    support_staff_score = models.IntegerField()
-    ultrasound_total = models.IntegerField()
-
+    class Meta:
+        unique_together = ('application_no','hospital_name')
 
     def __str__(self):
-        return str(self.ultrasound_total)
-    
+        return str(self.hospital_name)
+
+    def save(self, *args, **kwargs):
+        super(Mri, self).save(*args, **kwargs)
+        self.schedule.mri_total = self.mri_total
+        self.schedule.save()
+
 
 class Ctscan(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    application_no = models.CharField(max_length=100)
+    hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospital_7', on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, null=True, related_name='schedule_7', on_delete=models.CASCADE)
     shielding_score = models.IntegerField()
     room_design_score = models.IntegerField()
     radiographers_no_score = models.IntegerField()
@@ -306,15 +350,24 @@ class Ctscan(models.Model):
     offices_adequacy_score = models.IntegerField()
     ctscan_total = models.IntegerField()
 
+    class Meta:
+        unique_together = ('application_no','hospital_name')
+
     def __str__(self):
-        return str(self.ctscan_total)
+        return str(self.hospital_name)
+
+
+    def save(self, *args, **kwargs):
+        super(Ctscan, self).save(*args, **kwargs)
+        self.schedule.ctscan_total = self.ctscan_total
+        self.schedule.save()
 
     
-
-
 class Xray(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    application_no = models.CharField(max_length=100)
+    hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospital_8', on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, null=True, related_name='schedule_8', on_delete=models.CASCADE)
     shielding_score = models.IntegerField()
     room_design_score = models.IntegerField()
     radiographers_no_score = models.IntegerField()
@@ -335,14 +388,25 @@ class Xray(models.Model):
     offices_adequacy_score = models.IntegerField()
     xray_total = models.IntegerField()
 
+    class Meta:
+        unique_together = ('application_no','hospital_name')
+
 
     def __str__(self):
-        return str(self.xray_total)
+        return str(self.hospital_name)
+
+
+    def save(self, *args, **kwargs):
+        super(Xray, self).save(*args, **kwargs)
+        self.schedule.xray_total = self.xray_total
+        self.schedule.save()
 
     
 class Flouroscopy(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    application_no = models.CharField(max_length=100)
+    hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospital_9', on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, null=True, related_name='schedule_9', on_delete=models.CASCADE)
     shielding_score = models.IntegerField()
     room_design_score = models.IntegerField()
     radiographers_no_score = models.IntegerField()
@@ -363,13 +427,23 @@ class Flouroscopy(models.Model):
     offices_adequacy_score = models.IntegerField()
     flouroscopy_total = models.IntegerField()
 
+    class Meta:
+        unique_together = ('application_no','hospital_name')
+
     
     def __str__(self):
-        return str(self.flouroscopy_total)
+        return str(self.hospital_name)
+
+    def save(self, *args, **kwargs):
+        super(Flouroscopy, self).save(*args, **kwargs)
+        self.schedule.flouroscopy_total = self.flouroscopy_total
+        self.schedule.save()
 
 class Mamography(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    application_no = models.CharField(max_length=100)
+    hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospital_10', on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, null=True, related_name='schedule_10', on_delete=models.CASCADE)
     shielding_score = models.IntegerField()
     room_design_score = models.IntegerField()
     radiographers_no_score = models.IntegerField()
@@ -391,14 +465,24 @@ class Mamography(models.Model):
     offices_adequacy_score = models.IntegerField()
     mamography_total = models.IntegerField()
 
+    class Meta:
+        unique_together = ('application_no','hospital_name')
+
     
     def __str__(self):
-        return str(self.mamography_total)
+        return str(self.hospital_name)
+
+    def save(self, *args, **kwargs):
+        super(Mamography, self).save(*args, **kwargs)
+        self.schedule.mamography_total = self.mamography_total
+        self.schedule.save()
 
 
 class Echocardiography(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    application_no = models.CharField(max_length=100)
+    hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospital_11', on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, null=True, related_name='schedule_11', on_delete=models.CASCADE)
     room_design_score = models.IntegerField()
     radiographers_no_score = models.IntegerField()
     radiographer_license_score = models.IntegerField()
@@ -413,14 +497,24 @@ class Echocardiography(models.Model):
     support_staff_score = models.IntegerField()
     echocardiography_total = models.IntegerField()
 
+    class Meta:
+        unique_together = ('application_no','hospital_name')
+
     
     def __str__(self):
-        return str(self.echocardiography_total)
+        return str(self.hospital_name)
+
+    def save(self, *args, **kwargs):
+        super(Echocardiography, self).save(*args, **kwargs)
+        self.schedule.echocardiography_total = self.echocardiography_total
+        self.schedule.save()
 
 
 class Dentalxray(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    application_no = models.CharField(max_length=100)
+    hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospital_12', on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, null=True, related_name='schedule_12', on_delete=models.CASCADE)
     shielding_score = models.IntegerField()
     room_design_score = models.IntegerField()
     radiographers_no_score = models.IntegerField()
@@ -439,14 +533,24 @@ class Dentalxray(models.Model):
     offices_adequacy_score = models.IntegerField()
     dentalxray_total = models.IntegerField()
 
+    class Meta:
+        unique_together = ('application_no','hospital_name')
+
     
     def __str__(self):
-        return str(self.dentalxray_total)
+        return str(self.hospital_name)
+
+    def save(self, *args, **kwargs):
+        super(Dentalxray, self).save(*args, **kwargs)
+        self.schedule.dentalxray_total = self.dentalxray_total
+        self.schedule.save()
 
 
 class Angiography(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    application_no = models.CharField(max_length=100)
+    hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospital_13', on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, null=True, related_name='schedule_13', on_delete=models.CASCADE)
     shielding_score = models.IntegerField()
     room_design_score = models.IntegerField()
     radiographers_no_score = models.IntegerField()
@@ -468,16 +572,24 @@ class Angiography(models.Model):
     offices_adequacy_score = models.IntegerField()
     angiography_total = models.IntegerField()
 
-    
+    class Meta:
+        unique_together = ('application_no','hospital_name')
+
     def __str__(self):
-        return str(self.angiography_total)
+        return str(self.hospital_name)
 
+    def save(self, *args, **kwargs):
+        super(Angiography, self).save(*args, **kwargs)
+        self.schedule.angiography_total = self.angiography_total
+        self.schedule.save()
 
-    
+   
 
 class Carm(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    application_no = models.CharField(max_length=100)
+    hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospital_14', on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, null=True, related_name='schedule_14', on_delete=models.CASCADE)
     shielding_score = models.IntegerField()
     room_design_score = models.IntegerField()
     radiographers_no_score = models.IntegerField()
@@ -497,32 +609,26 @@ class Carm(models.Model):
     offices_adequacy_score = models.IntegerField()
     carm_total = models.IntegerField()
 
+    class Meta:
+        unique_together = ('application_no','hospital_name')
+
     
     def __str__(self):
-        return str(self.carm_total)
+        return str(self.hospital_name)
 
+    def save(self, *args, **kwargs):
+        super(Carm, self).save(*args, **kwargs)
+        self.schedule.carm_total = self.carm_total
+        self.schedule.save()
 
 class Inspection(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     application_no = models.CharField(max_length=100)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-    #practice_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-    hospital_name = models.CharField(max_length=200)
-    equipment = models.CharField(max_length=300)
-    license_category = models.CharField(max_length=200)
+    hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospital_1', on_delete=models.CASCADE)
+    hospital = models.ForeignKey(Document, null=True, related_name='hospital_2', on_delete=models.CASCADE)
+    payment = models.ForeignKey(Payment, null=True, related_name='payment_2', on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, null=True, related_name='schedule_2', on_delete=models.CASCADE)
     application_status = models.IntegerField(default=5)
-    application_type = models.CharField(max_length=100)
-    address = models.CharField(max_length=200)
-    phone = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
-    radiographers = models.CharField(max_length=300)
-    radiologists = models.CharField(max_length=300)
-    payment_amount = models.CharField(max_length=100)
-    inspection_schedule_date = models.DateTimeField(default=datetime.now, blank=True)
-    inspection_date = models.DateTimeField(default=datetime.now, blank=True)
-    next_inspection_date = models.DateTimeField(default=datetime.now, blank=True)
-    inspection_report_deadline = models.DateTimeField(default=datetime.now, blank=True)
-    inspection_zone = models.CharField(max_length=100)
     vet_status = models.IntegerField(default=4)
     inspection_status = models.IntegerField(default=1)
     inspection_total = models.DecimalField(blank=True, max_digits=5, decimal_places=2)
@@ -535,16 +641,12 @@ class Inspection(models.Model):
     photo_5 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     photo_6 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
 
+    class Meta:
+        unique_together = ('application_no','hospital_name')
 
     def __str__(self):
-        return self.hospital_name
-
-    def inspection_date_pretty(self):
-        return self.inspection_date.strftime('%b %e %Y')
-
-    
-
-
+        return str (self.hospital_name)
+     
     def save(self, *args, **kwargs):
         #super(Inspection, self).save(*args, **kwargs)
         #self.practice_manager.schedule.application_status=5
@@ -560,72 +662,45 @@ class Inspection(models.Model):
         #score = [self.practice_manager.nuclearmedicine.nuclear_medicine_total, self.practice_manager.radiotherapy.radiotherapy_total, self.practice_manager.mri.mri_total, self.practice_manager.ultrasound.ultrasound_total, self.practice_manager.ctscan.ctscan_total, self.practice_manager.xray.xray_total, self.practice_manager.flouroscopy.flouroscopy_total]
         score = []
 
-       
-        try:
-            score.insert(0, self.practice_manager.nuclearmedicine.nuclear_medicine_total)
-        except Nuclearmedicine.DoesNotExist:
-            pass
+        if self.schedule.nuclear_medicine_total != None:
+            score.insert(0, self.schedule.nuclear_medicine_total)
+
+        if self.schedule.radiotherapy_total != None:
+            score.insert(0, self.schedule.radiotherapy_total)
         
-        try:
-            score.insert(0, self.practice_manager.radiotherapy.radiotherapy_total)
-        except Radiotherapy.DoesNotExist:
-            pass
+        if self.schedule.mri_total != None:
+            score.insert(0, self.schedule.mri_total)
 
-        try:
-            score.insert(0, self.practice_manager.mri.mri_total)
-        except Mri.DoesNotExist:
-            pass
+        if self.schedule.ctscan_total != None:
+            score.insert(0, self.schedule.ctscan_total)
 
-        try:
-            score.insert(0, self.practice_manager.ctscan.ctscan_total)
-        except Ctscan.DoesNotExist:
-            pass
+        if self.schedule.xray_total != None:
+            score.insert(0, self.schedule.xray_total)
 
-        try:
-            score.insert(0, self.practice_manager.ultrasound.ultrasound_total)
-        except Ultrasound.DoesNotExist:
-            pass
+        if self.schedule.flouroscopy_total != None:
+            score.insert(0, self.schedule.flouroscopy_total)
 
-        try:
-            score.insert(0, self.practice_manager.xray.xray_total)
-        except Xray.DoesNotExist:
-            pass
+        if self.schedule.mamography_total != None:
+            score.insert(0, self.schedule.mamography_total)
 
-        try:
-            score.insert(0, self.practice_manager.flouroscopy.flouroscopy_total)
-        except Flouroscopy.DoesNotExist:
-            pass
+        if self.schedule.angiography_total != None:
+            score.insert(0, self.schedule.angiography_total)
 
-        try:
-            score.insert(0, self.practice_manager.mamography.mamography_total)
-        except Mamography.DoesNotExist:
-            pass
+        if self.schedule.echocardiography_total != None:
+            score.insert(0, self.schedule.echocardiography_total)
+        
+        if self.schedule.dentalxray_total != None:
+            score.insert(0, self.schedule.dentalxray_total)
 
-        try:
-            score.insert(0, self.practice_manager.angiography.angiography_total)
-        except Angiography.DoesNotExist:
-            pass
-
-        try:
-            score.insert(0, self.practice_manager.echocardiography.echocardiography_total)
-        except Echocardiography.DoesNotExist:
-            pass
-
-        try:
-            score.insert(0, self.practice_manager.dentalxray.dentalxray_total)
-        except Dentalxray.DoesNotExist:
-            pass
-
-        try:
-            score.insert(0, self.practice_manager.carm.carm_total)
-        except Carm.DoesNotExist:
-            pass
-      
+        if self.schedule.carm_total != None:
+            score.insert(0, self.schedule.carm_total)
+        
+     
         
         self.inspection_total = sum(score)/len(score)
         super(Inspection, self).save(*args, **kwargs)
-        self.practice_manager.schedule.application_status = 5
-        self.practice_manager.schedule.save()
+        self.schedule.application_status = 5
+        self.schedule.save()
 
         
        
@@ -636,7 +711,7 @@ class Inspection(models.Model):
 class Appraisal(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     application_no = models.CharField(max_length=100)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    practice_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     #practice_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     hospital_name = models.CharField(max_length=200)
     license_category = models.CharField(max_length=200)
@@ -704,43 +779,25 @@ class Appraisal(models.Model):
 class License(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     application_no = models.CharField(max_length=100)
+    hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospital_15', on_delete=models.CASCADE)
+    hospital = models.ForeignKey(Document, null=True, related_name='hospital_15', on_delete=models.CASCADE)
+    payment = models.ForeignKey(Payment, null=True, related_name='payment_15', on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, null=True, related_name='schedule_15', on_delete=models.CASCADE)
+    inspection = models.ForeignKey(Inspection, null=True, related_name='inspection_15', on_delete=models.CASCADE)
     hospital_code = models.CharField(max_length=500, null=True, blank=True, 
         default=increment_hospital_code)
-    practice_manager = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-    #practice_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-    hospital_name = models.CharField(max_length=200)
-    license_category = models.CharField(max_length=200)
-    license_type = models.CharField(max_length=200)
     application_status = models.IntegerField(default=8)
-    application_type = models.CharField(max_length=100)
     license_no = models.CharField(max_length=200)
-    address = models.CharField(max_length=200)
-    phone = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
-    payment_amount = models.CharField(max_length=100)
-    inspection_date = models.DateTimeField(default=datetime.now, blank=True)
-    issue_date = models.DateTimeField(default=datetime.now, blank=True)
-    expiry_date = models.DateTimeField(default=datetime.now, blank=True)
+    issue_date = models.DateTimeField(default=date.today)
+    expiry_date = models.DateTimeField(default=date.today)
     license_status = models.CharField(max_length=10)
-
 
 
     def get_absolute_url(self):
         return reverse("monitoring:issued_license_details", kwargs={"id": self.id})
     
     def __str__(self):
-        return self.license_no
-
-    def inspection_date_pretty(self):
-        return self.inspection_date.strftime('%b %e %Y')
-
-
-    def issue_date_pretty(self):
-        return self.issue_date.strftime('%b %e %Y')
-
-
-    def expiry_date_pretty(self):
-        return self.expiry_date.strftime('%b %e %Y')
+        return str(self.hospital_name)
 
 
     def save(self, *args, **kwargs):
@@ -756,14 +813,8 @@ class License(models.Model):
     
         
         super(License, self).save(*args, **kwargs)
-        self.practice_manager.inspection.application_status = 8
-        self.practice_manager.inspection.save()
-
-
-
-
-
-    
+        self.inspection.application_status = 8
+        self.inspection.save() 
 
 
 class Records(models.Model):
@@ -800,15 +851,6 @@ class Records(models.Model):
 
     #def get_absolute_url(self):
         #return reverse("monitoring:hospital_record_details", kwargs={"id": self.id})
-
-
-
-
-
-
-
-
-
 
 
 

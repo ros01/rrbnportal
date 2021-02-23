@@ -23,12 +23,8 @@
 
 
 <div class="container">
-        
-
-
-
-                <div class="container mt-4"> 
-                {% if object.license_category == "Radiography Practice" %}
+<div class="container mt-4"> 
+                {% if object.license_category != "Radiography Practice" %}
 
                
                  
@@ -69,24 +65,20 @@
 
                 {% endif %}
 
-                <div class="row ml-1 mb-3">
-
-                 <div class="col-md-3"> <b>Application Number:</b> <br> {{object.application_no}}</div> <div class="col-md-3"> <b>Category:</b> <br> {{object.license_category}}</div> <div class="col-md-3"> <b>Application Type:</b><br> {{object.application_type}} </div> <div class="col-md-3"> <b>Hospital/Centre Address:</b><br> {{object.address}} </div> <br/> </div> 
-
-                <div class="row ml-1 mb-3"><div class="col-md-3">  <b>Phone:</b><br>{{object.phone}} </div> <div class="col-md-3"> <b> Email: </b><br> {{object.email}} </div> <div class="col-md-3">  <b>Last Inspection Date:</b><br>{{object.inspection_date}} </div> <div class="col-md-3"> <b>Hospital Code:</b><br/> {{object.hospital_code}}  </div><br/></div>
-
-
-                <div class="row ml-1"> <div class="col-md-3"> <b>License Issue Date:</b><br/> {{object.issue_date_pretty}}  </div><div class="col-md-3"> <b>License Expiry Date:</b><br/> {{object.expiry_date_pretty}} </div> <div class="col-md-3"> <b>License Number:</b><br/> {{object.license_no}}  </div> <div class="col-md-3"> <b>License Status:</b><br/> 
-                {% if object.license_status == "Expired" %}
+  <div class="row ml-1 mb-3">
+<div class="col-md-3"> <b>Application Number:</b> <br> {{object.application_no}}</div> <div class="col-md-3"> <b>License Type:</b> <br> {{object.hospital_name.license_type}}</div> <div class="col-md-3"> <b>Application Type:</b><br> {{object.hospital.application_type}} </div> <div class="col-md-3"> <b>Hospital/Centre Address:</b><br> {{object.hospital_name.address}}</div> <br/> </div> 
+<div class="row ml-1 mb-3"><div class="col-md-3">  <b>Phone:</b><br>{{object.hospital_name.phone_no}} </div> <div class="col-md-3"> <b> Email: </b><br> {{object.hospital_name.hospital_admin}} </div> <div class="col-md-3">  <b>Last Inspection Date:</b><br>{{object.schedule.inspection_date}} </div> <div class="col-md-3"> <b>Hospital Code:</b><br/> {{object.hospital_code}}  </div><br/></div>
+ <div class="row ml-1"> <div class="col-md-3"> <b>License Issue Date:</b><br/> {{object.issue_date}}  </div><div class="col-md-3"> <b>License Expiry Date:</b><br/> {{object.expiry_date}} </div> <div class="col-md-3"> <b>License Number:</b><br/> {{object.license_no}}  </div> <div class="col-md-3"> <b>License Status:</b><br/> 
+  {% if object.license_status == "Expired" %}
 
 
-                <span style="color:#F00"><b>{{object.license_status}}</b></span>  
+  <span style="color:#F00"><b>{{object.license_status}}</b></span>  
 
-                {% else %}
+  {% else %}
 
-                 <span style="color:#41963F"><b>{{object.license_status}}</b></span> 
+   <span style="color:#41963F"><b>{{object.license_status}}</b></span> 
 
-                {% endif %}
+     {% endif %}
 
 
                 </div> </div> <p></p> 

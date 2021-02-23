@@ -8,13 +8,13 @@ Application Number: {{object.application_no}}
 
 Hospital Name: {{object.hospital_name}}
 
-Facility Address: {{object.address}}
+Facility Address: {{object.hospital_name.address}}
 
-Radiography Services: {{object.services}}
+Listed Modalities: {{object.hospital.equipment}}
 
-Inspection Date: {{object.practice_manager.schedule.inspection_date_pretty}}
+Inspection Date: {{object.inspection_date}}
 
-Inspecting Zonal Office: {{object.practice_manager.schedule.inspection_zone}}
+Inspecting Zonal Office: {{object.inspection_zone}}
 
 
 Kindly ensure the Radiographer in charge of your facility is present for the inspection.
