@@ -158,7 +158,7 @@ class Hospital(models.Model):
     hospital_name = models.CharField(max_length=200, blank=True)
     hospital_admin = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)
     license_type = models.CharField (max_length=100, blank=True)
-    rc_number = models.CharField(max_length=100, blank=True)
+    rc_number = models.CharField(max_length=100, blank=True, null =True)
     phone_no = models.CharField(max_length=100, blank=True)
     state = models.CharField(max_length=100, choices = STATE_CHOICES)
     city = models.CharField(max_length=100)

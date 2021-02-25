@@ -58,37 +58,19 @@
           <form method="post" action=".">
             {% csrf_token %}
 
-            {% if object.practice_manager.appraisal.appraisal_total > 50 %}
+            {% if object.appraisal_total > 50 %}
               <input type="hidden" name="license_type" required id="id_license_type" value="Full Internship Accreditation">
             {% else %}
               <input type="hidden" name="license_type" required id="id_license_type" value="Provisional Radiography Practice Registration">
             {% endif %}
 
-            
-
-
-
-    
 
             {{ form.application_no|as_crispy_field }}
-
-            {{ form.application_type|as_crispy_field }}
-
-            {{ form.payment_amount|as_crispy_field }}
-
-            {{ form.practice_manager|as_crispy_field }}
-
             {{ form.hospital_name|as_crispy_field }}
-
-            {{ form.license_category|as_crispy_field }}
-
-            {{ form.address|as_crispy_field }}
-
-            {{ form.phone|as_crispy_field }}
-
-            {{ form.email|as_crispy_field }}
-
-            {{ form.inspection_date|as_crispy_field }}
+            {{ form.hospital|as_crispy_field }}
+            {{ form.payment|as_crispy_field }}
+            {{ form.schedule |as_crispy_field }}
+            {{ form.appraisal |as_crispy_field }}
 
            
             {{ form.issue_date|as_crispy_field }}
@@ -102,17 +84,14 @@
                 {{ form.license_no|as_crispy_field }}
             </div>
 
-             <div class="col-md-3">
-                {{ form.license_status|as_crispy_field }}
-            </div>
-
+            
          </div>
      
         
         <div class="d-flex justify-content-end">    
              <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
 
-             <button type="submit" class="btn btn-success ml-4 px-3"><i class="fa fa-podcast text-white"></i> Issue License</button>
+             <button type="submit" class="btn btn-success ml-4 px-3"><i class="fa fa-podcast text-white"></i> Issue Accreditation</button>
              
         </div>
         <hr>
@@ -138,13 +117,17 @@
 
                       
                          <tr>
+                          {% if accreditation_qs %}
+                          {% for object in accreditation_qs %}
                           <td>1</td>
                            <td>{{object.application_no}}</td>
-                           <td>{{object.hospital_name}}</td>
-                           <td>{{object.address}}</td>
-                           <td>{{object.license_category}}</td>
-                           <td>{{object.practice_manager.schedule.inspection_date_pretty}}</td>
+                           <td>{{object.hospital.hospital_name}}</td>
+                           <td>{{object.hospital_name.address}}</td>
+                           <td>{{object.hospital.license_type}}</td>
+                           <td>{{object.schedule.inspection_date}}</td>
                          </tr>
+                         {% endfor %}
+                    {% endif %}
                        
                      <!-- Insert Datepicker here -->  
                      

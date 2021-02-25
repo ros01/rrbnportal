@@ -113,13 +113,7 @@ class MyApplicationListView(LoginRequiredMixin, ListView):
         #hospital = Hospital.objects.filter(hospital_admin=self.request.user)
         return Document.objects.filter(hospital_name__hospital_admin=self.request.user)
    
-    
     def get_context_data(self, **kwargs):
-
-        #User = self.request.user
-        #voted_ids = Vote.objects.filter(user=User).values('object_id', flat=True) # Obtain the IDs for voted items.
-
-
 
         context = super(MyApplicationListView, self).get_context_data(**kwargs)
         context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
@@ -132,30 +126,28 @@ class MyApplicationListView(LoginRequiredMixin, ListView):
         context['inspection_approved_qs'] = Inspection.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=6)
         context['registrar_approval_qs'] = Inspection.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=7)
         context['license_issue_qs'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=8)
-
-
-        #context['hospital_qs'] = Hospital.objects.all().prefetch_related("hospital_admin")
-        #context['document_qs'] = Document.objects.all().prefetch_related("hospital_name")
-        #context['payment_qs'] = Payment.objects.all().prefetch_related("hospital_name")
-         #hospital_qs = Hospital.objects.select_related("hospital_admin")
-         #get(pk=self.request.user.pk)
-        #kwargs['comment'] = Comment.objects.get(pk=self.kwargs['pk'])
-        #comment = get_object_or_404(Comment, pk=comment_id)
-         #obj = MyModel.objects.get(pk=this_object_id)
-
-        
-        #obj['payment_verified_qs'] = Payment.objects.filter(email=self.request.user, application_status=3)
-        #obj['schedule_qs'] = Schedule.objects.filter(email=self.request.user, application_status=4)
-        #obj['inspection_qs'] = Inspection.objects.filter(email=self.request.user, application_status=5)
-        #obj['inspection_approved_qs'] = Inspection.objects.filter(email=self.request.user, application_status=6)
-        #obj['registrar_approval_qs'] = Inspection.objects.filter(email=self.request.user, application_status=7)
-        #obj['license_issue_qs'] = License.objects.filter(email=self.request.user, application_status=8)
-        #login_user_id = self.request.user.pk
-        #context = {'login_user_id': login_user_id}
-        #kwargs['hospital'] = Hospital.objects.get(pk=self.kwargs['pk'])
-        #hospital = Hospital.objects.get(id=pk)
-        #ros = hospital.document_set.all()
         return context 
+
+class MyAccreditationlListView(LoginRequiredMixin, ListView):
+    template_name = "hospitals/my_accreditation_table.html"
+    context_object_name = 'object'
+
+    def get_queryset(self):
+        return Document.objects.filter(hospital_name__hospital_admin=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super(MyAccreditationlListView, self).get_context_data(**kwargs)
+        context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
+        context['document_qs'] = Document.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user)
+        context['payment_qs'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user)
+        #context['payment'] = Payment.objects.select_related("request_no").filter(application_no=self.application_no)
+        context['payment_verified_qs'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=3)
+        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=4)
+        context['accreditation_qs'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=5)
+        context['accreditation_approved_qs'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=6)
+        context['registrar_approval_qs'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=7)
+        context['license_issue_qs'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=8)
+        return context    
 
 
 class HospitalObjectMixin(object):
@@ -172,8 +164,6 @@ class StartApplication(LoginRequiredMixin, HospitalObjectMixin, SuccessMessageMi
     template_name = 'hospitals/hospitals_register.html'
     form_class = HospitalDetailModelForm
 
-
-
     def get_success_url(self):
         return reverse("hospitals:hospital_details", kwargs={"id": self.object.id})
 
@@ -183,6 +173,10 @@ class StartApplication(LoginRequiredMixin, HospitalObjectMixin, SuccessMessageMi
             'hospital_name': self.kwargs["pk"],
             #'license_type': self.kwargs["pk"]
         }
+
+    def get_queryset(self):
+        #hospital = Hospital.objects.filter(hospital_admin=self.request.user)
+        return Document.objects.filter(hospital_name__hospital_admin=self.request.user)
    
      
     def get_context_data(self, **kwargs):
@@ -211,8 +205,6 @@ class StartApplication(LoginRequiredMixin, HospitalObjectMixin, SuccessMessageMi
            context['form'] = form 
           
         return self.render_to_response(context)
-
-
 
 
 class RegistrationObjectMixin(object):
@@ -251,7 +243,33 @@ class HospitalDetailView(LoginRequiredMixin, RegistrationObjectMixin, View):
         return render(request, self.template_name, context)
 
 
+class StartNewApplication(LoginRequiredMixin, ListView):
+    template_name = "hospitals/start_new_application.html"
+    context_object_name = 'object'
 
+    def get_queryset(self):
+        #hospital = Hospital.objects.filter(hospital_admin=self.request.user)
+        return License.objects.filter(hospital_name__hospital_admin=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        obj = super(StartNewApplication, self).get_context_data(**kwargs)
+        obj['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
+        
+        return obj  
+
+class MyLicenseApplicationsHistory(LoginRequiredMixin, ListView):
+    template_name = "hospitals/my_license_history.html"
+    context_object_name = 'object'
+
+
+    def get_queryset(self):
+        return License.objects.filter(hospital_name__hospital_admin=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        obj = super(MyLicenseApplicationsHistory, self).get_context_data(**kwargs)
+        obj['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
+        obj['license_history_qs'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user)
+        return obj  
 #class GenerateInvoiceView(LoginRequiredMixin, RegistrationObjectMixin, View):
     #template_name = "hospitals/generate_invoice.html" 
     #def get(self, request, id=None, *args, **kwargs):
@@ -442,7 +460,25 @@ class LicenseIssuanceView(LoginRequiredMixin, DetailView):
         return context
 
 
-             
+class InternshipLicenseIssuanceView(LoginRequiredMixin, DetailView):
+    template_name = "hospitals/internship_license_issuance.html" 
+    model = Appraisal
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        #context['register'] = Document.objects.filter(hospital_name__hospital_admin=self.request.user)
+        #context['payment'] = Payment.objects.filter(hospital_name__hospital_admin=self.request.user)
+        context['hospital'] = Hospital.objects.filter(hospital_name=self.object)
+        context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
+        return context 
+
+
+
+#class InternshipLicenseIssuanceView(LoginRequiredMixin, AppraisalObjectMixin, View):
+    #template_name = "hospitals/internship_license_issuance.html" 
+    #def get(self, request, id=None, *args, **kwargs):
+        #context = {'object': self.get_object()}
+        #return render(request, self.template_name, context)            
 
 #class InspectionView(LoginRequiredMixin, InspectionObjectMixin, View):
     #template_name = "hospitals/inspection_report_detail.html" 
@@ -463,38 +499,11 @@ class LicenseIssuanceView(LoginRequiredMixin, DetailView):
         #context = {'object': self.get_object()}
         #return render(request, self.template_name, context)
 
-class MyAccreditationlListView(LoginRequiredMixin, OwnObjectsMixin, ListView):
-    template_name = "hospitals/my_accreditation_table.html"
-    queryset = User.objects.all()
-    context_object_name = 'object'
-
-
-
-    def get_context_data(self, **kwargs):
-        obj = super(MyAccreditationlListView, self).get_context_data(**kwargs)
-        obj['registration_qs'] = Registration.objects.filter(application_status=1, practice_manager=self.request.user)
-        obj['payment_qs'] = Payment.objects.filter(application_status=2, practice_manager=self.request.user)
-        obj['payment_verified_qs'] = Payment.objects.filter(application_status=3, practice_manager=self.request.user)
-        obj['schedule_qs'] = Schedule.objects.filter(application_status=4, practice_manager=self.request.user)
-        obj['appraisal_qs'] = Appraisal.objects.filter(application_status=5, practice_manager=self.request.user)
-        obj['appraisal_approved_qs'] = Appraisal.objects.filter(application_status=6, practice_manager=self.request.user)
-        obj['registrar_approval_qs'] = Appraisal.objects.filter(application_status=7, practice_manager=self.request.user)
-        obj['license_issue_qs'] = License.objects.filter(application_status=8, practice_manager=self.request.user)
-        return obj      
 
 
 
 
-class MyLicenseApplicationsHistory(LoginRequiredMixin, OwnObjectsMixin, ListView):
-    template_name = "hospitals/my_license_history.html"
-    queryset = User.objects.all()
-    context_object_name = 'object'
 
-
-    def get_context_data(self, **kwargs):
-        obj = super(MyLicenseApplicationsHistory, self).get_context_data(**kwargs)
-        obj['license_history_qs'] = License.objects.filter(practice_manager=self.request.user)
-        return obj  
 
 
 class LicenseObjectMixin(object):
@@ -548,19 +557,7 @@ class FacilityDetailView(LoginRequiredMixin, RegistrationObjectMixin, View):
 
         return render(request, self.template_name, context)
 
-class StartNewApplication(LoginRequiredMixin, ListView):
-    template_name = "hospitals/start_new_application.html"
-    context_object_name = 'object'
 
-    def get_queryset(self):
-        queryset = self.request.user
-        return queryset
-
-
-    def get_context_data(self, **kwargs):
-        obj = super(StartNewApplication, self).get_context_data(**kwargs)
-        
-        return obj  
 
 
 #class StartApplication(LoginRequiredMixin, CreateView):
@@ -710,10 +707,6 @@ class InspectionApprovedView(LoginRequiredMixin, InspectionObjectMixin, View):
         context = {'object': self.get_object()}
         return render(request, self.template_name, context)
 
-
-
-
-
 class AppraisalObjectMixin(object):
     model = Appraisal
     def get_object(self):
@@ -723,6 +716,12 @@ class AppraisalObjectMixin(object):
             obj = get_object_or_404(self.model, id=id)
         return obj 
 
+
+class AccreditationInspectionApprovedView(LoginRequiredMixin, AppraisalObjectMixin, View):
+    template_name = "hospitals/accreditation_report_approved.html" 
+    def get(self, request, id=None, *args, **kwargs):
+        context = {'object': self.get_object()}
+        return render(request, self.template_name, context)
 
 class AppraisalView(LoginRequiredMixin, AppraisalObjectMixin, View):
     template_name = "hospitals/appraisal_report_detail.html" 
@@ -735,19 +734,11 @@ class AppraisalView(LoginRequiredMixin, AppraisalObjectMixin, View):
 
         
 
-class AccreditationInspectionApprovedView(LoginRequiredMixin, AppraisalObjectMixin, View):
-    template_name = "hospitals/accreditation_report_approved.html" 
-    def get(self, request, id=None, *args, **kwargs):
-        context = {'object': self.get_object()}
-        return render(request, self.template_name, context)
 
 
 
-class InternshipLicenseIssuanceView(LoginRequiredMixin, AppraisalObjectMixin, View):
-    template_name = "hospitals/internship_license_issuance.html" 
-    def get(self, request, id=None, *args, **kwargs):
-        context = {'object': self.get_object()}
-        return render(request, self.template_name, context)
+
+
 
 
 

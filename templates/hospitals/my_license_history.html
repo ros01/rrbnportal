@@ -14,66 +14,55 @@
 
 {% block content %}
 
+<div class="container">
+<div class="row">
+<div class="col col-lg-12">
+<div class="row mt-3 mb-2">
+<div class="col text-left mb-1">
+<p class="text-info display-4 paragraph2">My Radiography Practise License History</p>
+<hr>
+</div>
+</div>
+</div>
+</div>
+</div>
 
-        <div class="container">
-        <div class="row">
-        <div class="col col-lg-12">
-            
-       
-   
-        <div class="row mt-3 mb-2">
-        <div class="col text-left mb-1">
-        <p class="text-info display-4 paragraph2">My Radiography Practise License History</p>
-        <hr>
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-
-       
-
-
-    
-        <div class="container">
-            
-        <table width="100%" class="table table-hover" id="mydata"> 
-        <thead> 
-        <tr style="background: #41963F;">
-        
-        <th class="small-text" style="color: #fff;">SN</th> 
-        <th class="small-text" style="color: #fff;">License Number</th> 
-        <th class="small-text" style="color: #fff;">Category</th> 
-        <th class="small-text" style="color: #fff;">Issue Date</th> 
-        <th class="small-text" style="color: #fff;">Expiry Date</th> 
-        <th class="small-text" style="color: #fff;">Status</th> 
-        <th class="text-right" style="color: #fff;">&nbsp;</th> 
-        </tr> 
-        </thead>  
-        </tfoot>
-        <tbody> 
-        {% if license_history_qs %}
-        {% for object in license_history_qs %}
-        <tr> 
-        <td width="3%">1.</td> 
-        <td width="15%"> {{object.license_no}} </td> 
-        <td width="18%"> {{object.license_category}} </td>
-        <td width="13%"> {{object.issue_date_pretty}} </td> 
-        <td width="13%"> <span style="color:black"> {{object.expiry_date_pretty}} </span> </td> 
-        <td width="10%"> {% if object.license_status == "Active" %}<span class="text-success">{{object.license_status}} <i class="fa fa-check"></i></span>  {% else %}<span class="text-danger">{{object.license_status}} <i class="fa fa-times"></i></span>  {% endif %}</td> <td width="27%"> <a href="{% url 'hospitals:license_download' object.id %}" class="btn btn-outline-warning py-0" target="_blank"> <i class="fa fa-file"></i> License </a>
-        {% if object.license_status == "Active" %}
-        <a href="{% url 'hospitals:license_download' object.id %}" class="btn btn-outline-secondary disabled py-0"> <i class="fa fa-undo"></i> Start Renewal </a> 
-        {% else %}
-        <a href="{% url 'hospitals:start_renewal' object.id %}" class="btn btn-outline-success py-0"> <i class="fa fa-undo"></i> Start Renewal </a> 
-        {% endif %}
+<div class="container">
+<table width="100%" class="table table-hover" id="mydata"> 
+<thead> 
+<tr style="background: #41963F;">
+<th class="small-text" style="color: #fff;">SN</th> 
+<th class="small-text" style="color: #fff;">License Number</th> 
+<th class="small-text" style="color: #fff;">Category</th> 
+<th class="small-text" style="color: #fff;">Issue Date</th> 
+<th class="small-text" style="color: #fff;">Expiry Date</th> 
+<th class="small-text" style="color: #fff;">Status</th> 
+<th class="text-right" style="color: #fff;">&nbsp;</th> 
+</tr> 
+</thead>  
+</tfoot>
+<tbody> 
+{% for object in license_history_qs %}
+<tr> 
+<td width="3%">1.</td> 
+<td width="15%"> {{object.license_no}} </td> 
+<td width="18%"> {{object.hospital.license_type}} </td>
+<td width="13%"> {{object.issue_date}} </td> 
+<td width="13%"> <span style="color:black"> {{object.expiry_date}} </span> </td> 
+<td width="10%"> {% if object.license_status == "Active" %}<span class="text-success">{{object.license_status}} <i class="fa fa-check"></i></span>  {% else %}<span class="text-danger">{{object.license_status}} <i class="fa fa-times"></i></span>  {% endif %}</td> <td width="27%"> <a href="{% url 'hospitals:license_download' object.id %}" class="btn btn-outline-warning py-0" target="_blank"> <i class="fa fa-file"></i> License </a>
+{% if object.license_status == "Active" %}
+<a href="{% url 'hospitals:license_download' object.id %}" class="btn btn-outline-secondary disabled py-0"> <i class="fa fa-undo"></i> Start Renewal </a> 
+{% else %}
+<a href="{% url 'hospitals:start_renewal' object.id %}" class="btn btn-outline-success py-0"> <i class="fa fa-undo"></i> Start Renewal </a> 
+{% endif %}
 
 
-        </td>
-        </tr> 
-        {% endfor %}
-        {% endif %}
-        </tbody> </table>
-        </div>
+</td>
+</tr> 
+{% endfor %}
+
+</tbody> </table>
+</div>
         
        
        

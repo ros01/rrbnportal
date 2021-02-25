@@ -146,6 +146,58 @@ class CreateHospitalProfile(View):
 
 
 
+class CreateProfile(View):
+    user_form = SignupForm
+    hospital_form = HospitalModelForm
+    template_name = 'accounts/hospital_profile_creation.html'
+    template_name1 = 'accounts/profile-creation-confirmation.html'
+ 
+    def get(self, request, *args, **kwargs):
+        user_form = self.user_form()
+        hospital_form = self.hospital_form()
+        return render(request, self.template_name, {'user_form':user_form, 'hospital_form':hospital_form,})
+    def post(self, request, *args, **kwargs):
+        user_form = self.user_form(request.POST)
+        hospital_form = self.hospital_form(request.POST)
+
+        if user_form.is_valid() and hospital_form.is_valid():
+            user = user_form.save(commit=False)
+            user.is_active = False  # Deactivate account till it is confirmed
+            user.save()
+            hospital = hospital_form.save(commit=False)
+            Hospital.objects.create(
+                hospital_admin = user,
+                license_type = user.license_type,
+                hospital_name = hospital.hospital_name,
+                rc_number = hospital.rc_number,
+                phone_no = hospital.phone_no,
+                state = hospital.state,
+                city = hospital.city,
+                address = hospital.address,
+               
+                )
+            
+            current_site = get_current_site(request)
+            subject = 'Activate Your RRBN Portal Account'
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to_email = [user.email]
+            message = render_to_string('accounts/activation_request.html', {
+                'user': user,
+                'hospital': hospital,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            send_mail(subject, message, from_email, to_email, fail_silently=False)
+
+            messages.success(request, ('Please Confirm your email to complete registration.'))
+
+            return render(request, self.template_name1)
+
+             
+
+        return render(request, self.template_name, {'user_form':user_form, 'hospital_form':hospital_form,})
+
 #class SignUpView(View):
     #form_class = SignupForm
     #template_name = 'accounts/register.html'

@@ -19,7 +19,7 @@ from django.views.generic import (
      UpdateView,
      DeleteView
 )
-from .forms import ScheduleModelForm, LicenseModelForm
+from .forms import ScheduleModelForm, LicenseModelForm, AccreditationModelForm
 from django.template.loader import get_template
 from django.core.mail import send_mail
 from django.contrib import messages
@@ -318,8 +318,8 @@ class InspectionCompletedListView(LoginRequiredMixin, ListView):
 
         obj['inspection_qs'] = Inspection.objects.select_related("hospital_name").filter(vet_status=4)
         #obj['inspections_qs'] = Inspection.objects.all()
-        obj['appraisal_qs'] = Appraisal.objects.filter(appraisal_status=1)
-        obj['appraisals_qs'] = Appraisal.objects.all()
+        obj['appraisal_qs'] = Appraisal.objects.select_related("hospital_name").filter(vet_status=4)
+        #obj['appraisals_qs'] = Appraisal.objects.all()
         
         return obj                 
 
@@ -342,6 +342,27 @@ class InspectionCompletedDetailView(LoginRequiredMixin, InspectionObjectMixin, V
         context = {'object': self.get_object()}
         #context = {'object': self.get_object()}
         return render(request, self.template_name, context)
+
+
+
+class AccreditationObjectMixin(object):
+    model = Appraisal
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+
+class AccreditationCompletedDetailView(LoginRequiredMixin, AccreditationObjectMixin, View):
+    template_name = "monitoring/appraisals_detail.html" # DetailView
+    def get(self, request, id=None, *args, **kwargs):
+        # GET method
+        context = {'object': self.get_object()}
+        #context = {'object': self.get_object()}
+        return render(request, self.template_name, context)
+
 
 
 
@@ -373,46 +394,124 @@ def approve_report(request, id):
         messages.success(request, ('Inspection Report Validation Successful'))    
         return render(request, 'monitoring/inspection_successful.html',context)
     
+def approve_appraisal_report(request, id):
+    if request.method == 'POST':
+      object = get_object_or_404(Appraisal, pk=id)
+      object.appraisal_status = 2
+      object.application_status = 6
+      object.save()
+
+      context = {}
+      context['object'] = object
+      subject = 'Passed Facility Accreditation'
+      from_email = settings.DEFAULT_FROM_EMAIL
+      to_email = [object.hospital_name.hospital_admin]   
+      contact_message = get_template('monitoring/accreditation_passed.txt').render(context)
+      send_mail(subject, contact_message, from_email, to_email, fail_silently=False)
+      messages.success(request, ('Internship Accreditation Report Validation Successful'))    
+      return render(request, 'monitoring/appraisal_successful.html',context)
 
 
 def reject_report(request, id):
     if request.method == 'POST':
-        object = get_object_or_404(Inspection, pk=id)
-        object.inspection_status = 3
-        object.save()
+      object = get_object_or_404(Inspection, pk=id)
+      object.inspection_status = 3
+      object.save()
 
-        context = {}
-        context['object'] = object
-        subject = 'Failed Inpsection Report Validation'
-        from_email = settings.DEFAULT_FROM_EMAIL
-        to_email = [object.hospital_name.hospital_admin]    
-        contact_message = get_template('monitoring/inspection_failed.txt').render(context)
-        send_mail(subject, contact_message, from_email, to_email, fail_silently=False)
-        messages.error(request, ('Inspection failed.  Hospital will be contacted and guided on how to remedy inspection shortfalls.'))
-        return render(request, 'monitoring/inspection_failed.html',context)
+      context = {}
+      context['object'] = object
+      subject = 'Failed Inpsection Report Validation'
+      from_email = settings.DEFAULT_FROM_EMAIL
+      to_email = [object.hospital_name.hospital_admin]    
+      contact_message = get_template('monitoring/inspection_failed.txt').render(context)
+      send_mail(subject, contact_message, from_email, to_email, fail_silently=False)
+      messages.error(request, ('Inspection failed.  Hospital will be contacted and guided on how to remedy inspection shortfalls.'))
+      return render(request, 'monitoring/inspection_failed.html',context)
+
+
+def reject_appraisal_report(request, id):
+    if request.method == 'POST':
+      object = get_object_or_404(Appraisal, pk=id)
+      object.inspection_status = 3
+      object.save()
+
+      context = {}
+      context['object'] = object
+      subject = 'Failed Accreditation Report Validation'
+      from_email = settings.DEFAULT_FROM_EMAIL
+      to_email = [object.hospital_name.hospital_admin]    
+      contact_message = get_template('monitoring/inspection_failed.txt').render(context)
+      send_mail(subject, contact_message, from_email, to_email, fail_silently=False)
+      messages.error(request, ('Accreditation failed.  Hospital will be contacted and guided on how to remedy accreditation shortfalls.'))
+      return render(request, 'monitoring/inspection_failed.html',context)
+
+
+
+
+def validate(request, id):
+  appraisal = get_object_or_404(Appraisal, pk=id)
+  
+  context={'appraisal': appraisal,        
+           }
+  return render(request, 'monitoring/appraisals_detail.html', context)
+
+
+def view_appraisal_report(request, id):
+  appraisal = get_object_or_404(Appraisal, pk=id)
+  
+  context={'appraisal': appraisal,        
+           }
+  return render(request, 'monitoring/appraisals_report_detail.html', context)
+
+
+
+#class LicenseIssueListView(LoginRequiredMixin, ListView):
+    #template_name = "monitoring/license_issue_list.html"
+    #context_object_name = 'object'
+    #queryset = Inspection.objects.all().filter(application_status=7)
+    
+    #def get_context_data(self, **kwargs):
+        #obj = super(LicenseIssueListView, self).get_context_data(**kwargs)
+        #obj['inspection'] = self.queryset.filter(application_status=7).count()
+        #return obj
 
 
 class LicenseIssueListView(LoginRequiredMixin, ListView):
-    template_name = "monitoring/license_issue_list.html"
+    template_name = 'monitoring/license_issue_list.html'
     context_object_name = 'object'
-    queryset = Inspection.objects.all().filter(application_status=7)
-    
+
+    def get_queryset(self):
+        return Inspection.objects.all()
+
     def get_context_data(self, **kwargs):
         obj = super(LicenseIssueListView, self).get_context_data(**kwargs)
-        obj['inspection'] = self.queryset.filter(application_status=7).count()
-        return obj
 
+        obj['inspection'] = Inspection.objects.select_related("hospital_name").filter(application_status=7).count()
+        #obj['inspections_qs'] = Inspection.objects.all()
+        obj['appraisal'] = Appraisal.objects.select_related("hospital_name").filter(application_status=7).count()
+        #obj['appraisals_qs'] = Appraisal.objects.all()
+        
+        return obj   
 
 class LicenseIssueListTable(LoginRequiredMixin, ListView):
     template_name = "monitoring/license_list_table.html"
     context_object_name = 'object'
-    queryset = Inspection.objects.all()
+    
+    def get_queryset(self):
+        return Inspection.objects.all()
 
     
     def get_context_data(self, **kwargs):
         obj = super(LicenseIssueListTable, self).get_context_data(**kwargs)
-        obj['issue_license_qs'] = self.queryset.filter(application_status=7)
-        return obj       
+       
+
+        obj['issue_license_qs'] = Inspection.objects.select_related("hospital_name").filter(application_status=7)
+        #obj['inspections_qs'] = Inspection.objects.all()
+        obj['issue_appraisal_qs'] = Appraisal.objects.select_related("hospital_name").filter(application_status=7)
+        #obj['appraisals_qs'] = Appraisal.objects.all()
+        
+        return obj   
+   
 
 class RecordsCreateView(LoginRequiredMixin, CreateView):
     template_name = 'monitoring/create_hospital_records.html'
@@ -430,6 +529,25 @@ class LicenseDetailView(LoginRequiredMixin, InspectionObjectMixin, View):
         context = {'object': self.get_object()}
         return render(request, self.template_name, context)
 
+class AccreditationDetailView(LoginRequiredMixin, AccreditationObjectMixin, View):
+    template_name = "monitoring/accreditation_detail.html" # DetailView
+    def get(self, request, id=None, *args, **kwargs):
+        # GET method
+        context = {'object': self.get_object()}
+        return render(request, self.template_name, context)
+
+
+#class AccreditationDetailView(LoginRequiredMixin, DetailView):
+    #template_name = "monitoring/accreditation_detail.html"
+    #model = Appraisal
+    
+    #def get_context_data(self, **kwargs):
+        #context = super().get_context_data(**kwargs)
+        #context['register'] = Document.objects.filter(hospital_name__hospital_admin=self.request.user)
+        #context['payment'] = Payment.objects.filter(hospital_name__hospital_admin=self.request.user)
+        #context['hospital'] = Hospital.objects.filter(hospital_name=self.object)
+        #context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
+        #return context
 
 class RecordsObjectMixin(object):
     model = Records
@@ -470,88 +588,6 @@ class HospitalRecordsDetailView(LoginRequiredMixin, RecordsObjectMixin, View):
         return render(request, self.template_name, context)
 
 
-
-
-
-#class InspectionCompletedListView(LoginRequiredMixin, View):
-    #template_name = "monitoring/inspections_completed_list.html"
-    #queryset = Inspection.objects.all().order_by('-inspection_date')
-
-    #def get_queryset(self):
-        #return self.queryset.filter(inspection_status=1)
-        #return self.queryset
-        
-    #def get(self, request, *args, **kwargs):
-        #context = {'object': self.get_queryset()}
-        #return render(request, self.template_name, context)
-
-
-
-
-
-#def view_report(request, id):
-  #inspection = get_object_or_404(Inspection, pk=id)
-  
-  #context={'inspection': inspection,        
-          # }
- # return render(request, 'monitoring/inspections_report_detail.html', context)
-
-
-def validate(request, id):
-  appraisal = get_object_or_404(Appraisal, pk=id)
-  
-  context={'appraisal': appraisal,        
-           }
-  return render(request, 'monitoring/appraisals_detail.html', context)
-
-
-def view_appraisal_report(request, id):
-  appraisal = get_object_or_404(Appraisal, pk=id)
-  
-  context={'appraisal': appraisal,        
-           }
-  return render(request, 'monitoring/appraisals_report_detail.html', context)
-
-
-
-def approve_appraisal_report(request, id):
-  if request.method == 'POST':
-     appraisal = get_object_or_404(Appraisal, pk=id)
-     appraisal.appraisal_status = 2
-     appraisal.application_status = 6
-     appraisal.save()
-
-     context = {}
-     context['object'] = appraisal
-     subject = 'Passed Facility Accreditation'
-     from_email = settings.DEFAULT_FROM_EMAIL
-     to_email = [appraisal.email]   
-     contact_message = get_template('monitoring/accreditation_passed.txt').render(context)
-     send_mail(subject, contact_message, from_email, to_email, fail_silently=False)
-     messages.success(request, ('Internship Accreditation Report Validation Successful'))    
-     return render(request, 'monitoring/appraisal_successful.html',context)
-    
-
-
-def reject_appraisal_report(request, id):
-  if request.method == 'POST':
-     inspection = get_object_or_404(Inspection, pk=id)
-     inspection.inspection_status = 3
-     inspection.save()
-
-     context = {}
-     context['object'] = inspection
-     subject = 'Failed Inpsection Report Validation'
-     from_email = settings.DEFAULT_FROM_EMAIL
-     to_email = [inspection.email]    
-     contact_message = get_template('monitoring/inspection_failed.txt').render(context)
-     send_mail(subject, contact_message, from_email, to_email, fail_silently=False)
-     messages.error(request, ('Inspection failed.  Hospital will be contacted and guided on how to remedy inspection shortfalls.'))
-     return render(request, 'monitoring/inspection_failed.html',context)
-
-
-
-
 class InspectionObjectMixin(object):
     model = Inspection
     def get_object(self):
@@ -562,7 +598,6 @@ class InspectionObjectMixin(object):
         return obj 
 
 
-
 class AccreditationObjectMixin(object):
     model = Appraisal
     def get_object(self):
@@ -571,53 +606,6 @@ class AccreditationObjectMixin(object):
         if id is not None:
             obj = get_object_or_404(self.model, id=id)
         return obj 
-
-class AccreditationDetailView(LoginRequiredMixin, AccreditationObjectMixin, View):
-    template_name = "monitoring/accreditation_detail.html" # DetailView
-    def get(self, request, id=None, *args, **kwargs):
-        # GET method
-        context = {'object': self.get_object()}
-        return render(request, self.template_name, context)
-
-
-
-#class IssueLicenseView(LoginRequiredMixin, InspectionObjectMixin, View):
-    #template_name = "monitoring/issue_license.html"
-    #template_name1 = "monitoring/license_issued.html"
-
-    #def get(self, request,  *args, **kwargs):
-        #context = {}
-        #obj = self.get_object()
-        #if obj is not None:
-            #form = LicenseModelForm(instance=obj)  
-            #context['object'] = obj
-            #context['form'] = form
-        #return render(request, self.template_name, context)
-
-
-    #def post(self, request,  *args, **kwargs):
-        #form = LicenseModelForm(request.POST, request.FILES)
-        #if form.is_valid():
-            #form.save()
-        #context = {}
-        #obj = self.get_object()
-        #if obj is not None:        
-           #context['object'] = obj
-           #context['form'] = form
-
-           #subject = 'Notice of Radiography License Issuance'
-           #from_email = settings.DEFAULT_FROM_EMAIL
-           #to_email = [form.cleaned_data.get('email')]
-
-           #context['form'] = form
-           #contact_message = get_template(
-               #'monitoring/license_issued.txt').render(context)
-
-        #send_mail(subject, contact_message, from_email,
-                     #to_email, fail_silently=False)
-        
-        
-        #return render(request, self.template_name1, context)
 
 
 class IssueLicenseView(LoginRequiredMixin, InspectionObjectMixin, SuccessMessageMixin, CreateView):
@@ -632,18 +620,14 @@ class IssueLicenseView(LoginRequiredMixin, InspectionObjectMixin, SuccessMessage
         context = super().get_context_data(**kwargs)
         context['license_qs'] = Inspection.objects.select_related("hospital_name").filter(application_status=7, hospital_name=self.inspection.hospital_name)
         
-        #context = {'object': self.get_object()}
-        #context['payment'] = Payment.objects.get(pk=self.object)
-        #context['hospital'] = Hospital.objects.get(id=self.kwargs['id'])
-        #context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
-        #context['hospital_qs'] = Hospital.objects.filter(hospital_name=self.object)
+        
         return context
 
     def get_initial(self):
-        # You could even get the Book model using Book.objects.get here!
+       
         return {
             'inspection': self.kwargs["pk"],
-            #'license_type': self.kwargs["pk"]
+           
         }
     
     def get_form_kwargs(self):
@@ -660,15 +644,7 @@ class IssueLicenseView(LoginRequiredMixin, InspectionObjectMixin, SuccessMessage
         
         return kwargs
     
-    #def get_form_kwargs(self):
-        #self.payment = Payment.objects.get(pk=self.kwargs['pk'])
-        #kwargs = super().get_form_kwargs()
-        #kwargs['initial']['hospital_name'] = self.payment.hospital_name
-        #kwargs['initial']['hospital'] = self.payment.hospital
-        #kwargs['initial']['application_no'] = self.payment.application_no
-        #kwargs['initial']['hospital'] = self.payment.hospital
-        
-        #return kwargs
+    
       
 
     def form_invalid(self, form):
@@ -703,7 +679,7 @@ class LicenseIssuedDetailView(LoginRequiredMixin, LicenseObjectMixin, View):
             form = LicenseModelForm(instance=obj)
             context['object'] = obj
             hospital_admin = obj.hospital_name.hospital_admin 
-           #context['hospital'] = Hospital.objects.filter(hospital_name=self.object)
+           
 
             subject = 'Notice of Radiography License Issuance'
             from_email = settings.DEFAULT_FROM_EMAIL
@@ -717,6 +693,91 @@ class LicenseIssuedDetailView(LoginRequiredMixin, LicenseObjectMixin, View):
                      to_email, fail_silently=False)
 
         return render(request, self.template_name, context)
+
+
+
+class IssueAccreditationView(LoginRequiredMixin, AccreditationObjectMixin, SuccessMessageMixin, CreateView):
+    model = License
+    template_name = 'monitoring/issue_accreditation.html'
+    form_class = AccreditationModelForm
+
+    def get_success_url(self):
+        return reverse("monitoring:issued_accreditation_details", kwargs={"id": self.object.id})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['accreditation_qs'] = Appraisal.objects.select_related("hospital_name").filter(application_status=7, hospital_name=self.appraisal.hospital_name)
+        return context
+
+    def get_initial(self):
+        
+        return {
+            'appraisal': self.kwargs["pk"],
+            
+        }
+    
+    def get_form_kwargs(self):
+        self.appraisal = Appraisal.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        
+
+
+        kwargs['initial']['hospital_name'] = self.appraisal.hospital_name
+        kwargs['initial']['hospital'] = self.appraisal.hospital
+        kwargs['initial']['payment'] = self.appraisal.payment
+        kwargs['initial']['application_no'] = self.appraisal.application_no
+        kwargs['initial']['schedule'] = self.appraisal.schedule
+        
+        return kwargs
+    
+       
+
+    def form_invalid(self, form):
+        form = self.get_form()
+
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+          
+           context['object'] = obj
+           context['form'] = form 
+          
+        return self.render_to_response(context)
+
+
+
+
+class AccreditationIssuedDetailView(LoginRequiredMixin, LicenseObjectMixin, View):
+    template_name = 'monitoring/accreditation_issued.html' 
+    def get(self, request, id=None, *args, **kwargs):
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = AccreditationModelForm(instance=obj)
+            context['object'] = obj
+            hospital_admin = obj.hospital_name.hospital_admin 
+           #context['hospital'] = Hospital.objects.filter(hospital_name=self.object)
+
+            subject = 'Notice of Radiography Internship License Issuance'
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to_email = [hospital_admin]
+
+            context['form'] = form
+            contact_message = get_template(
+               'monitoring/accreditation_issued.txt').render(context)
+
+            send_mail(subject, contact_message, from_email,
+                     to_email, fail_silently=False)
+
+        return render(request, self.template_name, context)
+
+
+
+
+
+
+
+
 
 
 class LicensesListView(LoginRequiredMixin, ListView):
@@ -759,41 +820,7 @@ class LicensesListView(LoginRequiredMixin, ListView):
 
 
 
-class IssueAccreditationView(LoginRequiredMixin, AccreditationObjectMixin, View):
-    template_name = "monitoring/issue_accreditation.html"
-    template_name1 = "monitoring/accreditation_issued.html"
-    def get(self, request,  *args, **kwargs):
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = LicenseModelForm(instance=obj)  
-            context['object'] = obj
-            context['form'] = form
-        return render(request, self.template_name, context)
 
-    def post(self, request,  *args, **kwargs):
-        form = LicenseModelForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-        context = {}
-        obj = self.get_object()
-        if obj is not None:        
-           context['object'] = obj
-           context['form'] = form
-
-           subject = 'Notice of Radiography Internship License Issuance'
-           from_email = settings.DEFAULT_FROM_EMAIL
-           to_email = [form.cleaned_data.get('email')]
-
-           context['form'] = form
-           contact_message = get_template(
-               'monitoring/accreditation_issued.txt').render(context)
-
-           send_mail(subject, contact_message, from_email,
-                     to_email, fail_silently=False)
-        
-        
-        return render(request, self.template_name1, context)
 
 
 

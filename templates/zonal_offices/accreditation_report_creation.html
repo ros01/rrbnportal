@@ -23,107 +23,57 @@
 {% block content %}
 
 <main class="container">
-       <div class="row">
-           <div class="col col-lg-12">
-            <p class="mt-2 text-info display-4 paragraph2">Internship Accreditation Report Submission</p>
-                <hr>
-          </div>
-           </div>
-
-
-          <div class="row rounded ml-1 mr-0 pl-1 pr-0 mt-2 mb-3 justify-content-center align-items-center" style="background-color: #bfe3f8;">
-            <div class="col-md-1 mt-1 pt-1">
-               <i class="fa fa-info-circle fa-2x" aria-hidden="true"></i>
-                </div>
-
-               <div class="col-md-11 mt-1 pt-1 px-0">
-                <p class="lead" style="color: #05567b;">
-                   Enter Scores for Each Parameter Below.  Final Score is calculated automatically once input is complete</p>
-               </div>
-           </div>
+<div class="row">
+<div class="col col-lg-12">
+<p class="mt-2 text-info display-4 paragraph2">Internship Accreditation Report Submission</p>
+<hr>
+</div>
+</div>
+<div class="row rounded ml-1 mr-0 pl-1 pr-0 mt-2 mb-3 justify-content-center align-items-center" style="background-color: #bfe3f8;">
+<div class="col-md-1 mt-1 pt-1">
+<i class="fa fa-info-circle fa-2x" aria-hidden="true"></i>
+</div>
+<div class="col-md-11 mt-1 pt-1 px-0">
+<p class="lead" style="color: #05567b;">
+Enter Scores for Each Parameter Below.  Final Score is calculated automatically once input is complete</p>
+</div>
+</div>
 
   
-          <form method='POST' action="." enctype='multipart/form-data'>
+<form method='POST' action="." enctype='multipart/form-data'>
          
-            {% csrf_token %}
+{% csrf_token %}
 
-            <input type="hidden" name="inspection_zone" {% if user.is_authenticated %} value="{{ user.module_name }}" {% endif %} required id="id_inspection_zone">
+<input type="hidden" name="inspection_zone" {% if user.is_authenticated %} value="{{ user.module_name }}" {% endif %} required id="id_inspection_zone">
 
-           
+{{ form.hospital_name|as_crispy_field }}
+{{ form.hospital|as_crispy_field }}
+{{ form.schedule|as_crispy_field }}
+{{ form.payment|as_crispy_field }}
+<div class="row ml-2">
+<p class="col-12 text-success lead">Hospital Details</p>
+</div>
+<div class="row px-4"> 
+<div class="col-md-4"> <div class="form-group"> 
+{{ form.application_no|as_crispy_field }}
+</div>
+</div>
+<div class="col-md-8"><div class="form-group">
+{% if schedule_qs %}
+{% for object in schedule_qs %}
+<span class="col-2 text-info">Hospital Name:  </span>
+<span class="col-8">  {{object.hospital.hospital_name}}</span>
+</div>
+{% endfor %}
+{% endif %}
 
-            {{ form.practice_manager|as_crispy_field }}
+</div>
+</div>
 
-            {{ form.application_type|as_crispy_field }}
-
-            {{ form.payment_amount|as_crispy_field }}
-
-            {{ form.license_category|as_crispy_field }}
-
-            {{ form.inspection_schedule_date|as_crispy_field }}
-
-            {{ form.inspection_report_deadline|as_crispy_field }}
-
-              <div class="row ml-2">
-                <p class="col-12 text-success lead">Hospital Details</p>
-              </div>
-              <div class="row px-4"> 
-            <div class="col-md-4"> <div class="form-group"> 
-                {{ form.application_no|as_crispy_field }}
-            </div>
-          </div>
-          <div class="col-md-4"><div class="form-group">
-              {{ form.hospital_name|as_crispy_field }}
-              
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="form-group">
-              {{ form.equipment|as_crispy_field }}
-              
-              
-            </div>
-          </div>
-        </div>
-
-        <div class="row px-4">
-          
-          <div class="col-md-4">
-            <div class="form-group">
-               {{ form.phone|as_crispy_field }}
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="form-group">
-            {{ form.email|as_crispy_field }}
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="form-group">
-             {{ form.radiographers|as_crispy_field }}  
-                
-            </div>
-          </div>
-        </div>
-
-        <div class="row px-4">
-          <div class="col-md-4">
-          <div class="form-group">
-         {{ form.radiologists|as_crispy_field }}    
-            </div>
-          </div>
-          <div class="col-md-8">
-          <div class="form-group">
-         {{ form.address|as_crispy_field }}    
-            </div>
-          </div>
-           </div>
-
-           <div class="row ml-2">
-           <p class="col-12 text-success lead">Accreditation Scores</p>
-          </div>
+</div>
+<div class="row ml-2">
+<p class="col-12 text-success lead">Accreditation Scores</p>
+</div>
           <div class="row px-4">
           <div class="col-md-3">
             <div class="form-group">
@@ -414,7 +364,7 @@
 
              
 
-              <button type="submit" class="btn btn btn-success ml-4 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Post Inspection Report</button>
+              <button type="submit" class="btn btn btn-success ml-4 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Post Accreditation Report</button>
 
                </form>
 

@@ -4,7 +4,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test
 from accounts.decorators import zonaloffices_required
 from accounts.models import Hospital
-from hospitals.models import Schedule, Inspection, License, Records, Ultrasound, Xray, Nuclearmedicine, Radiotherapy, Mri, Ctscan, Xray, Flouroscopy, Mamography, Dentalxray, Echocardiography, Angiography, Carm
+from hospitals.models import Schedule, Inspection, License, Records, Ultrasound, Xray, Nuclearmedicine, Radiotherapy, Mri, Ctscan, Xray, Flouroscopy, Mamography, Dentalxray, Echocardiography, Angiography, Carm, Appraisal
 from .forms import InspectionModelForm, RecordsModelForm, AccreditationModelForm, UltrasoundModelForm, XrayModelForm, FlouroscopyModelForm, CtscanModelForm, MriModelForm, NuclearMedicineModelForm, RadiotherapyModelForm,  MamographyModelForm, DentalXrayModelForm, EchocardiographyModelForm, AngiographyModelForm, CarmModelForm
 from django.views import View
 from django.views.generic import (
@@ -101,6 +101,23 @@ class ScheduleObjectMixin(object):
             obj = get_object_or_404(self.model, id=id)
         return obj 
 
+class InspectionObjectMixin(object):
+    model = Inspection
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+class AccreditationObjectMixin(object):
+    model = Appraisal
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
 
 class InspectionView(LoginRequiredMixin, ScheduleObjectMixin, View):
     template_name = "zonal_offices/inspection_scheduled_details.html" 
@@ -110,7 +127,37 @@ class InspectionView(LoginRequiredMixin, ScheduleObjectMixin, View):
         context = {'object': self.get_object()}
         return render(request, self.template_name, context)
 
-    
+class InspectionReportsView(LoginRequiredMixin, ListView):
+    template_name = 'zonal_offices/inspection_reports_list.html'
+    #context_object_name = 'object'
+
+    def get_queryset(self):
+        return Inspection.objects.all()
+
+
+    def get_context_data(self, **kwargs):
+        obj = super(InspectionReportsView, self).get_context_data(**kwargs)
+        obj['inspection_qs'] = Inspection.objects.select_related("hospital_name")
+        return obj
+
+
+class InspectionReportDetailView(LoginRequiredMixin, InspectionObjectMixin, View):
+    template_name = "zonal_offices/inspection_details.html" 
+
+      
+    def get(self, request, id=None, *args, **kwargs):
+        context = {'object': self.get_object()}
+        return render(request, self.template_name, context)
+
+
+#def view_inspection_report(request, id):
+  #inspection = get_object_or_404(Inspection, pk=id)
+  
+  #context={'inspection': inspection,
+           
+          # }
+  #return render(request, 'zonal_offices/inspection_details.html', context)
+
 
 #class InspectionView(LoginRequiredMixin, DetailView):
     #template_name = "zonal_offices/inspection_detail.html"
@@ -218,17 +265,6 @@ class InspectionReportView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         return self.render_to_response(context)
 
 
-class InspectionObjectMixin(object):
-    model = Inspection
-    def get_object(self):
-        id = self.kwargs.get('id')
-        obj = None
-        if id is not None:
-            obj = get_object_or_404(self.model, id=id)
-        return obj 
-
-
-
 class InspectionCompleteDetailView(LoginRequiredMixin, InspectionObjectMixin, View):
     template_name = 'zonal_offices/inspection_report_confirmation.html' 
     def get(self, request, id=None, *args, **kwargs):
@@ -246,6 +282,121 @@ class InspectionCompleteDetailView(LoginRequiredMixin, InspectionObjectMixin, Vi
             context['form'] = form
             contact_message = get_template(
                'zonal_offices/inspection_report.txt').render(context)
+
+            send_mail(subject, contact_message, from_email,
+                     to_email, fail_silently=False)
+
+        return render(request, self.template_name, context)
+
+
+class AccreditationReportView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    model = Appraisal
+    template_name = 'zonal_offices/accreditation_report_creation.html'
+    form_class = AccreditationModelForm
+
+    def get_success_url(self):
+        return reverse("zonal_offices:accreditation_complete_details", kwargs={"id": self.object.id})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name)
+        
+        #context = {'object': self.get_object()}
+        #context['payment'] = Payment.objects.get(pk=self.object)
+        #context['hospital'] = Hospital.objects.get(id=self.kwargs['id'])
+        #context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
+        #context['hospital_qs'] = Hospital.objects.filter(hospital_name=self.object)
+        return context
+
+    def get_initial(self):
+        # You could even get the Book model using Book.objects.get here!
+        return {
+            'schedule': self.kwargs["pk"],
+            #'license_type': self.kwargs["pk"]
+        }
+    
+    
+    def get_form_kwargs(self):
+        self.schedule = Schedule.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['hospital'] = self.schedule.hospital
+        kwargs['initial']['payment'] = self.schedule.payment
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        #kwargs['initial']['hospital'] = self.payment.hospital
+        
+        return kwargs
+      
+
+    def form_invalid(self, form):
+        form = self.get_form()
+
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+          
+           context['object'] = obj
+           context['form'] = form 
+          
+        return self.render_to_response(context)
+
+#class AccreditationReportView(LoginRequiredMixin, InspectionObjectMixin, View):
+    #template_name = "zonal_offices/accreditation_report_creation.html"
+    #template_name1 = "zonal_offices/accreditation_report_confirmation.html"
+    #def get(self, request,  *args, **kwargs):
+        #context = {}
+        #obj = self.get_object()
+        #if obj is not None:
+            #form = AccreditationModelForm(instance=obj)  
+            #context['object'] = obj
+            #context['form'] = form
+
+        #return render(request, self.template_name, context)
+
+
+    #def post(self, request,  *args, **kwargs):
+        #form = AccreditationModelForm(request.POST, request.FILES)
+        #if form.is_valid():
+            #form.save()
+
+        #context = {}
+        #obj = self.get_object()
+        #if obj is not None:
+          
+           #context['object'] = obj
+           #context['form'] = form
+
+           #subject = 'Notice of Facility Inspection'
+           #from_email = settings.DEFAULT_FROM_EMAIL
+           #to_email = [form.cleaned_data.get('email')]
+
+           #context['form'] = form
+           #contact_message = get_template(
+               #'zonal_offices/accreditation_report.txt').render(context)
+
+           #send_mail(subject, contact_message, from_email,
+                     #to_email, fail_silently=False)
+        #return render(request, self.template_name1, context)
+        
+
+
+class AccreditationCompleteDetailView(LoginRequiredMixin, AccreditationObjectMixin, View):
+    template_name = 'zonal_offices/accreditation_report_confirmation.html' 
+    def get(self, request, id=None, *args, **kwargs):
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = AccreditationModelForm(instance=obj)
+            context['object'] = obj
+            hospital_admin = obj.hospital_name.hospital_admin 
+           #context['hospital'] = Hospital.objects.filter(hospital_name=self.object)
+            subject = 'Hospital/Centre Accreditation Report'
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to_email = [hospital_admin]
+
+            context['form'] = form
+            contact_message = get_template(
+               'zonal_offices/accreditation_report.txt').render(context)
 
             send_mail(subject, contact_message, from_email,
                      to_email, fail_silently=False)
@@ -1291,68 +1442,10 @@ class CarmScoreUpdate(CarmObjectMixin, View):
 
 
 
-class AccreditationReportView(LoginRequiredMixin, InspectionObjectMixin, View):
-    template_name = "zonal_offices/accreditation_report_creation.html"
-    template_name1 = "zonal_offices/accreditation_report_confirmation.html"
-    def get(self, request,  *args, **kwargs):
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = AccreditationModelForm(instance=obj)  
-            context['object'] = obj
-            context['form'] = form
 
-        return render(request, self.template_name, context)
-
-
-    def post(self, request,  *args, **kwargs):
-        form = AccreditationModelForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-          
-           context['object'] = obj
-           context['form'] = form
-
-           subject = 'Notice of Facility Inspection'
-           from_email = settings.DEFAULT_FROM_EMAIL
-           to_email = [form.cleaned_data.get('email')]
-
-           context['form'] = form
-           contact_message = get_template(
-               'zonal_offices/accreditation_report.txt').render(context)
-
-           send_mail(subject, contact_message, from_email,
-                     to_email, fail_silently=False)
-        return render(request, self.template_name1, context)
-        
         
 
-class InspectionReportsView(LoginRequiredMixin, View):
-    template_name = "zonal_offices/inspection_reports_list.html"
-    queryset = Inspection.objects.all()
 
-    def get_queryset(self):
-        return self.queryset
-        #return self.queryset
-        
-
-    def get(self, request, *args, **kwargs):
-        context = {'object': self.get_queryset()}
-        return render(request, self.template_name, context)
-
-
-
-def view_inspection_report(request, id):
-  inspection = get_object_or_404(Inspection, pk=id)
-  
-  context={'inspection': inspection,
-           
-           }
-  return render(request, 'zonal_offices/inspection_details.html', context)
 
 
 

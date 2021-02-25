@@ -42,7 +42,7 @@ class Document(models.Model):
         ('Conventional X-ray', 'Conventional X-ray'),
         ('Conventional X-ray with Fluoroscopy', 'Conventional X-ray with Fluoroscopy' ),
         ('CT Scan', 'CT Scan' ),
-        ('C-Arm/O-HRM', 'C-Arm/O-HRM' ),
+        ('C-Arm/O-ARM', 'C-Arm/O-ARM' ),
         ('MRI', 'MRI'),
         ('Mamography', 'Mamography' ),
         ('Angiography', 'Angiography'),
@@ -82,7 +82,7 @@ class Document(models.Model):
     submission_date = models.DateField(default=date.today)
 
     class Meta:
-        unique_together = ('application_no','hospital_name')
+        unique_together = ('application_no', 'hospital_name')
        
 
     def __str__(self):
@@ -710,28 +710,15 @@ class Inspection(models.Model):
 
 class Appraisal(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    application_no = models.CharField(max_length=100)
-    practice_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-    #practice_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-    hospital_name = models.CharField(max_length=200)
-    license_category = models.CharField(max_length=200)
     application_status = models.IntegerField(default=5)
-    application_type = models.CharField(max_length=100)
-    address = models.CharField(max_length=200)
-    phone = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
-    equipment = models.CharField(max_length=300)
-    radiographers = models.CharField(max_length=300)
-    radiologists = models.CharField(max_length=300, blank=True, null=
-        True)
     appraisal_status = models.IntegerField(default=1)
-    payment_amount = models.CharField(max_length=100)
-    inspection_schedule_date = models.DateTimeField(default=datetime.now, blank=True)
-    inspection_date = models.DateTimeField(default=datetime.now, blank=True)
-    inspection_report_deadline = models.DateTimeField(default=datetime.now, blank=True)
-    next_inspection_date = models.DateTimeField(default=datetime.now, blank=True)
+    application_no = models.CharField(max_length=100)
+    hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospital_16', on_delete=models.CASCADE)
+    hospital = models.ForeignKey(Document, null=True, related_name='hospital_16', on_delete=models.CASCADE)
+    payment = models.ForeignKey(Payment, null=True, related_name='payment_16', on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, null=True, related_name='schedule_16', on_delete=models.CASCADE)
+    vet_status = models.IntegerField(default=4)
     inspection_status = models.IntegerField(default=1)
-    inspection_zone = models.CharField(max_length=100)
     radiographers_score = models.IntegerField()
     radiologists_score = models.IntegerField()
     support_staff_score = models.IntegerField()
@@ -770,10 +757,9 @@ class Appraisal(models.Model):
 
 
     def __str__(self):
-        return self.hospital_name
+        return str (self.hospital_name)
 
-    def inspection_date_pretty(self):
-        return self.inspection_date.strftime('%b %e %Y')
+    
 
 
 class License(models.Model):
@@ -784,12 +770,13 @@ class License(models.Model):
     payment = models.ForeignKey(Payment, null=True, related_name='payment_15', on_delete=models.CASCADE)
     schedule = models.ForeignKey(Schedule, null=True, related_name='schedule_15', on_delete=models.CASCADE)
     inspection = models.ForeignKey(Inspection, null=True, related_name='inspection_15', on_delete=models.CASCADE)
+    appraisal = models.ForeignKey(Appraisal, null=True, related_name='appraisal_15', on_delete=models.CASCADE)
     hospital_code = models.CharField(max_length=500, null=True, blank=True, 
         default=increment_hospital_code)
     application_status = models.IntegerField(default=8)
     license_no = models.CharField(max_length=200)
-    issue_date = models.DateTimeField(default=date.today)
-    expiry_date = models.DateTimeField(default=date.today)
+    issue_date = models.DateField(default=date.today)
+    expiry_date = models.DateField(default=date.today)
     license_status = models.CharField(max_length=10)
 
 
@@ -802,9 +789,9 @@ class License(models.Model):
 
     def save(self, *args, **kwargs):
         
-        now = datetime.now(timezone.utc)
+        #now = datetime.now(timezone.utc)
         
-        if self.expiry_date > now:
+        if self.expiry_date  > date.today():
             self.license_status = "Active"
         else:
             self.license_status = "Expired"
@@ -813,8 +800,8 @@ class License(models.Model):
     
         
         super(License, self).save(*args, **kwargs)
-        self.inspection.application_status = 8
-        self.inspection.save() 
+        self.appraisal.application_status = 8
+        self.appraisal.save() 
 
 
 class Records(models.Model):

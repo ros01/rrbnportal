@@ -10,15 +10,15 @@ Application Number: {{object.application_no}}
 
 Hospital Name: {{object.hospital_name}}
 
-Category: {{object.license_category}}
+Category: {{object.hospital_name.license_type}}
 
-License No: {{object.practice_manager.license.license_no}}
+License No: {{object.license_no}}
 
-Registration Category: {{object.practice_manager.license.license_type}}
+Application Type: {{object.hospital.application_type}}
 
-License Issue Date: {{object.practice_manager.license.issue_date_pretty}}
+Issue Date: {{object.issue_date}}
 
-License Expiry Date: {{object.practice_manager.license.expiry_date_pretty}}
+Expiry Date: {{object.expiry_date}}
 
 
 

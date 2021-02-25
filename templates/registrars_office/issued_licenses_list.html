@@ -70,10 +70,10 @@
                           <td>{{forloop.counter}}</td>
                            <td>{{object.application_no}}</td>
                            <td>{{object.hospital_name}}</td>
-                           <td>{{object.license_category}}</td>
+                           <td>{{object.hospital_name.license_type}}</td>
                            <td>{{object.license_no}}</td>
-                           <td>{{object.issue_date_pretty}}</td>
-                           <td>{{object.expiry_date_pretty}}</td>
+                           <td>{{object.issue_date}}</td>
+                           <td>{{object.expiry_date}}</td>
                           
 
                             <td><a href="{% url 'registrars_office:generate_pdf' id=object.id%}" target="_blank" class="btn btn-outline-warning btn-sm">View</a></td>

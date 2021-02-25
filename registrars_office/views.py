@@ -81,6 +81,24 @@ class LicenseApprovalDetailView(LoginRequiredMixin, InspectionObjectMixin, View)
         return render(request, self.template_name, context)   
 
 
+class AccreditationObjectMixin(object):
+    model = Appraisal
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+
+class InternshipLicenseApprovalDetailView(LoginRequiredMixin, AccreditationObjectMixin, View):
+    template_name = "registrars_office/license_appraisal_detail.html" # DetailView
+    def get(self, request, id=None, *args, **kwargs):
+        # GET method
+        context = {'object': self.get_object()}
+        #context = {'object': self.get_object()}
+        return render(request, self.template_name, context)  
+
 
 def validate(request, id):
   inspection = get_object_or_404(Inspection, pk=id)
@@ -114,7 +132,30 @@ def approve_license(request, id):
      
      return render(request, 'registrars_office/license_approved.html',context)
     
+def approve_internship_license(request, id):
+  if request.method == 'POST':
+     object = get_object_or_404(Appraisal, pk=id)
+     object.appraisal_status = 4
+     object.application_status = 7
+     object.save()
 
+
+     context = {}
+     context['object'] = object
+     subject = 'Radiography Internship License Approval'
+     from_email = settings.DEFAULT_FROM_EMAIL
+     to_email = [object.hospital_name.hospital_admin]
+     
+
+     
+     contact_message = get_template('registrars_office/internship_license_approved.txt').render(context)
+
+     send_mail(subject, contact_message, from_email, to_email, fail_silently=False)
+
+     messages.success(request, ('Radiography Internship License Approval'))
+     
+     return render(request, 'registrars_office/internship_license_approved.html',context)
+    
 
 def reject_license(request, id):
   if request.method == 'POST':
@@ -137,51 +178,17 @@ def reject_license(request, id):
      messages.error(request, ('License Approval Issues.  Hospital will be contacted and guided on how to correct application errors.'))
      return render(request, 'registrars_office/license_rejected.html',context)
 
-def validate_report(request, id):
-  appraisal = get_object_or_404(Appraisal, pk=id)
-  
-  context={'appraisal': appraisal,
-           
-           }
-  return render(request, 'registrars_office/license_appraisal_detail.html', context)
-
-def approve_internship_license(request, id):
-  if request.method == 'POST':
-     appraisal = get_object_or_404(Appraisal, pk=id)
-     appraisal.appraisal_status = 4
-     appraisal.application_status = 7
-     appraisal.save()
-
-
-     context = {}
-     context['object'] = appraisal
-     subject = 'Radiography Internship License Approval'
-     from_email = settings.DEFAULT_FROM_EMAIL
-     to_email = [appraisal.email]
-     
-
-     
-     contact_message = get_template('registrars_office/internship_license_approved.txt').render(context)
-
-     send_mail(subject, contact_message, from_email, to_email, fail_silently=False)
-
-     messages.success(request, ('Radiography Internship License Approval'))
-     
-     return render(request, 'registrars_office/internship_license_approved.html',context)
-    
-
-
 def reject_internship_license(request, id):
   if request.method == 'POST':
-     appraisal = get_object_or_404(Appraisal, pk=id)
-     appraisal.appraisal_status = 5
-     appraisal.save()
+     object = get_object_or_404(Appraisal, pk=id)
+     object.appraisal_status = 5
+     object.save()
 
      context = {}
-     context['object'] = appraisal
+     context['object'] = object
      subject = 'Radiography Internship License Approval Issues'
      from_email = settings.DEFAULT_FROM_EMAIL
-     to_email = [appraisal.email]
+     to_email = [object.hospital_name.hospital_admin]
      
 
      
@@ -191,6 +198,17 @@ def reject_internship_license(request, id):
 
      messages.error(request, ('License Approval Issues.  Hospital will be contacted and guided on how to correct application errors.'))
      return render(request, 'registrars_office/internship_license_rejected.html',context)
+
+
+def validate_report(request, id):
+  appraisal = get_object_or_404(Appraisal, pk=id)
+  
+  context={'appraisal': appraisal,
+           
+           }
+  return render(request, 'registrars_office/license_appraisal_detail.html', context)
+
+
 
 
 

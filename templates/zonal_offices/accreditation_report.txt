@@ -8,15 +8,15 @@ Application Number: {{object.application_no}}
 
 Hospital Name: {{object.hospital_name}}
 
-Facility Address: {{object.practice_manager.appraisal.address}}
+Facility Address: {{object.hospital_name.address}}
 
-License Category: {{object.license_category}}
+License Type: {{object.hospital_name.license_type}}
 
-Available Equipment: {{object.practice_manager.appraisal.equipment}}
+Listed Modalities: {{object.hospital.equipment}}
 
-Accreditation Date: {{object.practice_manager.appraisal.inspection_date_pretty}}
+Accreditation Date: {{object.schedule.inspection_date}}
 
-Accreditation Score: {{object.practice_manager.appraisal.appraisal_total}}
+Accreditation Score: {{object.appraisal_total}}
 
 
 

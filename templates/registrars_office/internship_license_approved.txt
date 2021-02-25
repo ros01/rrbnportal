@@ -10,9 +10,9 @@ Application Number: {{object.application_no}}
 
 Hospital Name: {{object.hospital_name}}
 
-Category: {{object.license_category}}
+Category: {{object.hospital_name.license_type}}
 
-Inspection Date: {{object.appraisal_date_pretty}}
+Inspection Date: {{object.schedule.inspection_date}}
 
 Application Remark: PASSED 
 

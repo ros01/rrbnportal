@@ -15,211 +15,181 @@
 <!-- Banner -->
 <section class="pt-2 pl-3">
    
-        <div class="row ">
-            <div class="col mb-0">
-                <p class="text-info display-4 paragraph3">Hospital/Centre Internship Accreditation Details</p>
-                <hr>
-           
-        </div>
-    </div>
+<div class="row ">
+<div class="col mb-0">
+<p class="text-info display-4 paragraph3">Hospital/Centre Internship Accreditation Details</p>
+<hr>
+</div>
+</div>
 </section>
 
  <div class="row">
-            <div class="col-md-7 mt-0">
-                <div class="col-md-12">
-                    <div class="row">
-                        <p class="col-12 text-success lead">Application Summary</p>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Application No:</strong></span>
-                        <span class="col-6 ">{{appraisal.application_no}}</span>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Hospital Name:</strong></span>
-                        <span class="col-6 ">{{appraisal.hospital_name}}</span>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Hospital Admin:</strong></span>
-                        <span class="col-6 ">{{appraisal.practice_manager.first_name}} {{appraisal.practice_manager.last_name}}</span>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>License Category:</strong></span>
-                        <span class="col-6">{{appraisal.license_category}}</span>
-                    </div>
+ <div class="col-md-7 mt-0">
+  <div class="col-md-12">
+  <div class="row">
+ <span class="col-5"><strong>Application No:</strong></span>
+<span class="col-6 ">{{object.application_no}}</span>
+</div>
+<div class="row">
+<span class="col-5"><strong>Hospital Name:</strong></span>
+<span class="col-6 ">{{object.hospital_name}}</span>
+</div>
+<div class="row">
+<span class="col-5"><strong>Email:</strong></span>
+<span class="col-6 ">{{object.hospital_name.hospital_admin}}</span>
+</div>
 
-                    <div class="row">
-                        <span class="col-5"><strong>Application Type:</strong></span>
-                        <span class="col-6">{{appraisal.application_type}}</span>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Address:</strong></span>
-                        <span class="col-6">{{appraisal.address}}</span>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Phone:</strong></span>
-                        <span class="col-6">{{appraisal.phone}}</span>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Email:</strong></span>
-                        <span class="col-6">{{appraisal.email}}</span>
-                     </div>
-                        <div class="row">
-                        <span class="col-5"><strong>Services:</strong></span>
-                        <span class="col-6">{{appraisal.practice_manager.schedule.services}}</span>
-                   
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Available Equipment:</strong></span>
-                        <span class="col-6">{{appraisal.equipment}}</span>
-                    </div>
-                     <div class="row">
-                        <span class="col-5"><strong>Radiographers:</strong></span>
-                        <span class="col-6">{{appraisal.radiographers}}</span>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Radiologists:</strong></span>
-                        <span class="col-6">{{appraisal.radiologists}}</span>
-                    </div>
-                </div><br>
-                <div class="col-md-12">
-                    <div class="row">
-                        <p class="col-12 text-success lead">Control Details</p>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Appraisal 
-                        Date:</strong></span>
-                        <span class="col-6">{{appraisal.inspection_date_pretty}}</span>
-                    </div>
-                    <div class="row">
-                        <span class="col-5"><strong>Inspection Zone:</strong></span>
-                        <span class="col-6">{{appraisal.practice_manager.schedule.inspection_zone}}</span>
-                    </div>  
-                    
-                </div>
-            </div>
+<div class="row">
+<span class="col-5"><strong>License Type:</strong></span>
+<span class="col-6">{{object.hospital_name.license_type}}</span>
+</div>
 
 
+<div class="row">
+<span class="col-5"><strong>Application Type:</strong></span>
+<span class="col-6">{{object.hospital.application_type}}</span>
+</div>
 
+<div class="row">
+<span class="col-5"><strong>Address:</strong></span>
+<span class="col-6">{{object.hospital_name.address}}</span>
+</div>
+<div class="row">
+<span class="col-5"><strong>Phone:</strong></span>
+<span class="col-6">{{object.hospital_name.phone_no}}</span>
+</div>
 
+<div class="row">
+ <span class="col-5"><strong>Listed Modalities:</strong></span>
+ <span class="col-6">{{object.hospital.equipment}}</span>
+ </div>
+ <div class="row">
+ <span class="col-5"><strong>Radiographers:</strong></span>
+ <span class="col-6">{{object.hospital.radiographers}}</span>
+ </div>
+ <div class="row">
+ <span class="col-5"><strong>Radiologists:</strong></span>
+ <span class="col-6">{{object.hospital.radiologists}}</span>
+ </div>
+ </div><br>
+ <div class="col-md-12">
+  <div class="row">
+  <p class="col-12 text-success lead">Control Details</p>
+  </div>
+  <div class="row">
+  <span class="col-5"><strong>Inspection 
+  Date:</strong></span>
+ <span class="col-6">{{object.schedule.inspection_date}}</span>
+ </div>
+ <div class="row">
+ <span class="col-5"><strong>Inspection Zone:</strong></span>
+<span class="col-6">{{object.schedule.inspection_zone}}</span>
+</div>  
+</div>
+</div>
 
             
-            <div class="col-md-5 mt-0">
-                <p class="text-success lead">Appraisal Score</p>
-                <span><strong><mark>{{appraisal.appraisal_total}}</mark></strong></span>
+<div class="col-md-5 mt-0">
+<p class="text-success lead">Appraisal Score</p>
+<span><strong><mark>{{object.appraisal_total}}</mark></strong></span>
+<br>
+<br>
+<p class="text-success lead">Accreditation Comments/Observations</p>
+<span><mark>{{object.appraisal_comments}}</mark></span>
+<br>
+<br>
+<p class="text-success lead">Accreditation Uploads</p>
+<div class="row py-0">
+<table class="table table-hover">
+<thead style="background-color: #bfe3f8;">
+<tr>
+<th scope="col lead" style="color: #05567b;">Parameter</th>
+<th scope="col lead" style="color: #05567b;">Value</th>
+</tr>
+</thead>
+<tbody>
+ {% if object.photo_main %}
+ <tr> <td width="50%" scope="col">Photo Main:</td> 
+ <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+ <a class="text-danger" href="{{object.photo_main.url}}"
+ target="_blank"> Main Photo</a></td> 
+ </tr>
+ {% endif %}
+{% if object.photo_1 %}
+ <tr> <td width="50%" scope="col">Photo One:</td> 
+  <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.photo_1.url}}"
+ target="_blank"> Photo One</a></td>  
+</tr>
+{% endif %}
+{% if object.photo_2 %}
+<tr> <td width="50%" scope="col">Photo Two:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+ <a class="text-danger" href="{{object.photo_2.url}}"
+ target="_blank"> Photo Two</a></td>  
+ </tr>
+ {% endif %}
+{% if object.photo_3 %}
+<tr> <td width="50%" scope="col">Photo Three:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.photo_3.url}}"
+target="_blank"> Photo Three</a></td>  
+</tr>
+{% endif %}
+{% if object.photo_4 %}
+<tr> <td width="50%" scope="col">Photo Four:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.photo_4.url}}"
+target="_blank"> Photo Four</a></td>  
+</tr>
+{% endif %}
+{% if object.photo_5 %}
+<tr> <td width="50%" scope="col">Photo Five:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.photo_5.url}}"
+target="_blank"> Photo Five</a></td>  
+</tr>
+{% endif %}
+{% if object.photo_6 %}
+<tr> <td width="50%" scope="col">Photo Six:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.photo_6.url}}"
+target="_blank"> Photo Six</a></td>  
+</tr>
+{% endif %}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<hr>
 
 
-               <br>
-               <br>
-               
-               <p class="text-success lead">Accreditation Comments/Observations</p>
+{% if object.appraisal_status == 1 %}
+<div class="d-flex justify-content-end">   
+ <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
 
-               <span><mark>{{appraisal.appraisal_comments}}</mark></span>
-               <br>
-               <br>
+<a href="{% url 'monitoring:inspections_list' %}" class="btn btn-info ml-4 px-3"><i class="fa fa-window-close text-danger"></i> Return to Inspection Reports</a> 
+<a href="javascript:{document.getElementById('approve_appraisal_report{{object.id }}').submit()}"><button class="btn btn-success ml-4 px-3"> Approve Accreditation Report<i class="fa fa-podcast text-white"></i></button> </a>
+<a href="javascript:{document.getElementById('reject_appraisal_report{{object.id }}').submit()}"><button class="btn btn-danger ml-4 px-3"> Reject Accreditation Report<i class="fa fa-podcast text-white"></i></button></a> 
+</div>
 
+{% else %}
 
-
-
-
-                <p class="text-success lead">Accreditation Uploads</p>
-
-            <div class="row py-0">
-               <table class="table table-hover">
-                    <thead style="background-color: #bfe3f8;">
-                        <tr>
-                        <th scope="col lead" style="color: #05567b;">Parameter</th>
-                        <th scope="col lead" style="color: #05567b;">Value</th>
-                        </tr>
-                    </thead>
-
-
-                    <tbody>
-                       
-
-
-                        {% if appraisal.photo_main %}
-                        <tr> <td width="50%" scope="col">Photo Main:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{appraisal.photo_main.url}}"
-                        target="_blank"> Main Photo</a></td> 
-                        </tr>
-                         {% endif %}
-
-
-                        {% if appraisal.photo_1 %}
-                        <tr> <td width="50%" scope="col">Photo One:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{appraisal.photo_1.url}}"
-                        target="_blank"> Photo One</a></td>  
-                        </tr>
-                         {% endif %}
-
-
-                        {% if appraisal.photo_2 %}
-                        <tr> <td width="50%" scope="col">Photo Two:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{appraisal.photo_2.url}}"
-                        target="_blank"> Photo Two</a></td>  
-                        </tr>
-                         {% endif %}
-
-                        {% if appraisal.photo_3 %}
-                        <tr> <td width="50%" scope="col">Photo Three:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{appraisal.photo_3.url}}"
-                        target="_blank"> Photo Three</a></td>  
-                        </tr>
-                         {% endif %}
-
-                        {% if appraisal.photo_4 %}
-                        <tr> <td width="50%" scope="col">Photo Four:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{appraisal.photo_4.url}}"
-                        target="_blank"> Photo Four</a></td>  
-                        </tr>
-                         {% endif %}
-
-                        {% if appraisal.photo_5 %}
-                        <tr> <td width="50%" scope="col">Photo Five:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{appraisal.photo_5.url}}"
-                        target="_blank"> Photo Five</a></td>  
-                        </tr>
-                         {% endif %}
-
-                        {% if appraisal.photo_6 %}
-                        <tr> <td width="50%" scope="col">Photo Six:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{appraisal.photo_6.url}}"
-                        target="_blank"> Photo Six</a></td>  
-                        </tr>
-                         {% endif %}
-                        
-                       
-                    </tbody>
-                </table>
-                </div>
-
-                </div>
-
-        </div>
-        <hr>
-        <div class="d-flex justify-content-end">   
+<div class="d-flex justify-content-end">   
+<a href="{% url 'monitoring:inspections_list' %}" class="btn btn-info px-3"><i class="fa fa-window-close text-danger"></i> Return to Inspection Reports</a> 
              
-             <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
+<a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-dark px-3 ml-4"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>     
+</div>
+{% endif %}
 
 
-            <a href="javascript:{document.getElementById('approve_appraisal_report{{appraisal.id }}').submit()}"><button class="btn btn-success ml-4 px-3"> Approve Accreditation Report<i class="fa fa-podcast text-white"></i></button> </a>
 
 
-            <a href="javascript:{document.getElementById('reject_appraisal_report{{inspection.id }}').submit()}"><button class="btn btn-danger ml-4 px-3"> Reject Accreditation Report<i class="fa fa-podcast text-white"></i></button></a> 
-             
-
-             
-        </div>
 
 
-    </main>
+
+</main>
 
 
 
@@ -233,7 +203,7 @@
 
 
 <!--end Copy here-->
-<form id="approve_appraisal_report{{appraisal.id }}" method="POST" action="{% url 'monitoring:approve_appraisal_report' appraisal.id %}">
+<form id="approve_appraisal_report{{object.id }}" method="POST" action="{% url 'monitoring:approve_appraisal_report' object.id %}">
   {% csrf_token%}
   <input type="hidden">
   
@@ -241,7 +211,7 @@
 
 </form>
 
-<form id="reject_appraisal_report{{appraisal.id }}" method="POST" action="{% url 'monitoring:reject_appraisal_report' appraisal.id %}">
+<form id="reject_appraisal_report{{object.id }}" method="POST" action="{% url 'monitoring:reject_appraisal_report' object.id %}">
   {% csrf_token%}
   <input type="hidden">
 </form>

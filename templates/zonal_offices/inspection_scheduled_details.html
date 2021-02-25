@@ -130,7 +130,15 @@
              
 <a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
 
+
+{% if object.hospital_name.license_type == "Internship Accreditation" %}
+
+<a href="{% url 'zonal_offices:accreditation_report' object.pk %}" class="btn btn-success ml-4 px-3"><i class="fa fa-podcast text-white"></i>  Submit Accreditation Report</a>
+
+{% else %}
 <a href="{% url 'zonal_offices:inspection_report' object.pk %}" class="btn btn-success ml-4 px-3"><i class="fa fa-podcast text-white"></i>  Submit Inspection Report</a>
+
+{% endif %}
        
 </div>
 

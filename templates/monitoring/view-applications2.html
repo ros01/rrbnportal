@@ -167,10 +167,10 @@ target="_blank">&nbsp; View Form C07</a></td>
 {% endif %}
 
 
-{% if object.hospital.payment_receipt %}
+{% if object.payment_receipt %}
 <tr> <td width="50%" scope="col">Payment Receipt:</td> 
 <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-<a class="text-danger" href="{{object.hospital.payment_receipt.url}}" target="_blank">&nbsp; View Payment Receipt</a></td>  
+<a class="text-danger" href="{{object.payment_receipt.url}}" target="_blank">&nbsp; View Payment Receipt</a></td>  
 </tr>
 {% endif %}
 

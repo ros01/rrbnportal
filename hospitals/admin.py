@@ -187,10 +187,10 @@ class InspectionAdmin(admin.ModelAdmin):
 admin.site.register(Inspection, InspectionAdmin)
 
 class AppraisalAdmin(admin.ModelAdmin):
-  list_display = ('application_no', 'hospital_name', 'license_category', 'address', 'inspection_date', 'appraisal_total',)
+  list_display = ('application_no', 'hospital_name', 'appraisal_total',)
   list_display_links = ('hospital_name', 'application_no', 'appraisal_total')
   list_filter = ('hospital_name',)
-  search_fields = ('hospital_name', 'address', 'inspection_date', 'appraisal_total',)
+  search_fields = ('hospital_name', 'appraisal_total',)
   list_per_page = 25
 
 

@@ -54,7 +54,7 @@ EQUIPMENT = (
         ('Conventional X-ray', 'Conventional X-ray'),
         ('Conventional X-ray with Fluoroscopy', 'Conventional X-ray with Fluoroscopy' ),
         ('CT Scan', 'CT Scan' ),
-        ('C-Arm/O-HRM', 'C-Arm/O-HRM' ),
+        ('C-Arm/O-ARM', 'C-Arm/O-ARM' ),
         ('MRI', 'MRI'),
         ('Mamography', 'Mamography' ),
         ('Angiography', 'Angiography'),

@@ -11,7 +11,12 @@
    
     <div class="row mt-2 ">
     <div class="col text-left ml-2 mb-0">
+    {% if object.hospital.license_type == "Internship Accreditation" %}
+    <p class="text-success display-4 paragraph3">Internship Accreditation - Payment Submission Confirmation</p>
+    {% else %}
     <p class="text-success display-4 paragraph3">Radiography Practice License Application - Payment Submission Confirmation</p>
+    {% endif %}
+
     <hr>
     </div>
     </div>

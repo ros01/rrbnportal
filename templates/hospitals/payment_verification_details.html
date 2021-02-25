@@ -12,13 +12,45 @@
     
     <section class="p-2">
     <div class="container">
+
+    {% for payment in payment %}
+    {% if payment.license_type == "Internship Accreditation" %}
    
     <div class="row mt-2 ml-2">
     <div class="col text-left mb-2">
-    <p class="text-success display-4 paragraph3">Radiography Practice License Payment Processing</p>
+    <p class="text-success display-4 paragraph3">Internship Accreditation Payment Processing</p>
     <hr>
     </div>
     </div>
+
+
+     </div>
+
+    </section>
+
+    <section class="my-0">
+    <div class="container">
+    <div class="row rounded ml-3 pl-2 justify-content-center align-items-center" style="background-color: #bfe3f8;">
+    
+    <div class="col-md-12 pt-2 pb-0">
+    <p class="lead" style="color: #05567b;">
+    <strong>{{object.hospital_name}}</strong> Internship Accreditation Application is currently undergoing verifications</p>           
+    </div>
+    </div>
+    </div>
+    </section>
+
+    {% else %}
+
+
+    <div class="row mt-2 ml-2">
+    <div class="col text-left mb-2">
+    <p class="text-success display-4 paragraph3">Radiography Practise License Payment Processing</p>
+    <hr>
+    </div>
+    </div>
+
+
      </div>
 
     </section>
@@ -34,6 +66,11 @@
     </div>
     </div>
     </section>
+
+
+
+    {% endif %}
+    {% endfor %}
 
 <!-- Skills -->
 

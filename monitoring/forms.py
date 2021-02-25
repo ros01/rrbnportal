@@ -2,7 +2,7 @@ from django import forms
 from django.utils import timezone
 from django.db.models import Q
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from hospitals.models import Schedule, Inspection, License, Payment, Records
+from hospitals.models import Schedule, Inspection, License, Payment, Records, Appraisal
 from accounts.models import Hospital
 from tempus_dominus.widgets import DatePicker
 from crispy_forms.helper import FormHelper
@@ -121,6 +121,61 @@ class LicenseModelForm(forms.ModelForm):
        self.fields['license_no'].label = "License No"
        #self.fields['license_status'].label = "License Status"
     
+
+
+class AccreditationModelForm(forms.ModelForm):
+    issue_date = forms.DateField(
+        widget=DatePicker(
+            options={
+                'useCurrent': True,
+                'collapse': False,
+                'minDate': '2020-06-05',
+                'maxDate': '2025-12-31',
+            },
+            attrs={
+                'append': 'fa fa-calendar',
+                'icon_toggle': True,
+                }
+                )
+        )
+
+    expiry_date = forms.DateField(
+        widget=DatePicker(
+            options={
+                'useCurrent': True,
+                'collapse': False,
+                'minDate': '2020-06-05',
+                'maxDate': '2025-12-31',
+            },
+            attrs={
+                'append': 'fa fa-calendar',
+                'icon_toggle': True,
+                }
+                )
+        )
+    #license_status = forms.ChoiceField(choices = LICENSE_STATUS, widget=forms.Select(), required=True)
+
+    class Meta:
+        model = License
+        fields = ('application_no', 'hospital_name', 'hospital', 'payment', 'schedule', 'appraisal', 'issue_date', 'expiry_date', 'license_no')
+        widgets = {
+          #'application_no': forms.HiddenInput(),
+          #'hospital_name': forms.HiddenInput(),
+          #'hospital': forms.HiddenInput(),
+          #'payment': forms.HiddenInput(),
+          #'schedule': forms.HiddenInput(),
+          #'appraisal': forms.HiddenInput(),
+        } 
+      
+       
+    def __init__(self, *args, **kwargs):
+       super(AccreditationModelForm, self).__init__(*args, **kwargs)
+       self.fields['issue_date'].label = "Issue Date"
+       self.fields['expiry_date'].label = "Expiry Date"
+       self.fields['license_no'].label = "License No"
+       #self.fields['license_status'].label = "License Status"
+
+
 
 class RecordsModelForm(forms.ModelForm):
     next_visitation_date = forms.DateField(

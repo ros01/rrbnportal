@@ -9,6 +9,7 @@ from .views import (
     InspectionCreateDetailView,
     InspectionCompletedListView,
     InspectionCompletedDetailView,
+    AccreditationCompletedDetailView,
     LicenseIssueListView,
     LicenseIssueListTable,
     LicenseDetailView,
@@ -16,6 +17,7 @@ from .views import (
     IssueLicenseView,
     IssueAccreditationView,
     LicenseIssuedDetailView,
+    AccreditationIssuedDetailView,
     LicensesListView,
     GeneratePdfView,
     RegisteredHospitalsListView,
@@ -49,10 +51,14 @@ urlpatterns = [
     path('<uuid:id>/inspection_details/', InspectionCreateDetailView.as_view(), name='inspection_details'),
     path('inspections_list/', InspectionCompletedListView.as_view(), name='inspections_list'),
     path('<uuid:id>/inspection_report/', InspectionCompletedDetailView.as_view(), name='inspection_report'),
+    path('<uuid:id>/accreditation_report/', AccreditationCompletedDetailView.as_view(), name='accreditation_report'),
     path('license_list_table/', LicenseIssueListTable.as_view(), name='license_list_table'),
     path('<uuid:id>/license_detail/', LicenseDetailView.as_view(), name='license_detail'),
+    path('<uuid:id>/accreditation_detail/', AccreditationDetailView.as_view(), name='accreditation_detail'),
     path('<uuid:pk>/issue_license/', IssueLicenseView.as_view(), name='issue_license'),
+    path('<uuid:pk>/issue_accreditation/', IssueAccreditationView.as_view(), name='issue_accreditation'),
     path('<uuid:id>/issued_license_details/', LicenseIssuedDetailView.as_view(), name='issued_license_details'),
+    path('<uuid:id>/issued_accreditation_details/', AccreditationIssuedDetailView.as_view(), name='issued_accreditation_details'),
     path('license_list/', LicenseIssueListView.as_view(), name='license_list'),
     path('license_issued/', LicensesListView.as_view(), name='license_issued'),
     path('<uuid:id>/generate_license/', GeneratePdfView.as_view(), name='generate_license'),
@@ -68,10 +74,10 @@ urlpatterns = [
     
     
     
-    path('<uuid:id>/accreditation_detail/', AccreditationDetailView.as_view(), name='accreditation_detail'),
+    
     path('<uuid:id>/issue_license/', IssueLicenseView.as_view(), name='issue_license'),
     
-    path('<uuid:id>/issue_accreditation/', IssueAccreditationView.as_view(), name='issue_accreditation'),
+    
     
     
     path('hospitals_lookup/', RegisteredHospitalsListView.as_view(), name='hospitals_lookup'),

@@ -61,28 +61,28 @@
 
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
         <p class="lead text-secondary m-0">Facility Address:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.appraisal.address}}</strong></p>
+        <p class="lead text-secondary m-0"><strong>{{object.hospital_name.address}}</strong></p>
         <br>
        
-        <p class="lead text-secondary m-0">Category:</p>
-        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.license_category}}</strong></p>  
+        <p class="lead text-secondary m-0">License Type:</p>
+        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.hospital_name.license_type}}</strong></p>  
         <br> 
     </div>
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
-        <p class="lead text-secondary m-0">Available Equipment:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.appraisal.equipment}}</strong></p>  
+        <p class="lead text-secondary m-0">Listed Modalities:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.hospital.equipment}}</strong></p>  
         <br>
         <p class="lead text-secondary m-0">Radiographers:</p>
-        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.practice_manager.appraisal.radiographers}}</strong></p>  
+        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.hospital.radiographers}}</strong></p>  
         <br>
     </div>
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
         <p class="lead text-secondary m-0">Accreditation Date:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.practice_manager.appraisal.inspection_date_pretty}}</strong></p>  
+        <p class="lead text-secondary m-0"><strong>{{object.schedule.inspection_date}}</strong></p>  
         <br>
         <br>
         <p class="lead text-secondary m-0">Accreditaion Score:</p>
-        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.practice_manager.appraisal.appraisal_total}}</strong></p>  
+        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.appraisal_total}}</strong></p>  
         <br>
         
     </div>

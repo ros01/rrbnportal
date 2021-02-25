@@ -45,7 +45,7 @@ class HospitalModelForm(forms.ModelForm):
        self.fields['hospital_name'].label = "Hospital Name"
        self.fields['hospital_name'].widget.attrs['placeholder'] = "enter Hospital Name"
        self.fields['rc_number'].label = "RC Number"
-       self.fields['rc_number'].widget.attrs['placeholder'] = "enter RC Number"
+       self.fields['rc_number'].widget.attrs['placeholder'] = "leave Blank if unavailable"
        self.fields['phone_no'].label = "Mobile Telephone Number"
        self.fields['phone_no'].widget.attrs['placeholder'] = "enter GSM Number"
        self.fields['state'].label = "State of Location"
