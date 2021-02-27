@@ -657,6 +657,9 @@ class Inspection(models.Model):
         
         score = []
 
+        if self.schedule.ultrasound_total != None:
+            score.insert(0, self.schedule.ultrasound_total)
+
         if self.schedule.nuclear_medicine_total != None:
             score.insert(0, self.schedule.nuclear_medicine_total)
 
