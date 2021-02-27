@@ -42,6 +42,11 @@ class StartView(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'accounts/reg-start-details.html')
 
+class StartReg(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'accounts/start-accreditation.html')
+
+
 class LoginTemplateView(TemplateView):
     template_name = "accounts/login.html"
 
@@ -95,7 +100,7 @@ def activate_account(request):
 class CreateHospitalProfile(View):
     user_form = SignupForm
     hospital_form = HospitalModelForm
-    template_name = 'accounts/profile_creation.html'
+    template_name = 'accounts/radiography_profile_creation.html'
     template_name1 = 'accounts/profile-creation-confirmation.html'
  
     def get(self, request, *args, **kwargs):
@@ -109,11 +114,12 @@ class CreateHospitalProfile(View):
         if user_form.is_valid() and hospital_form.is_valid():
             user = user_form.save(commit=False)
             user.is_active = False  # Deactivate account till it is confirmed
+            user.hospital = True
             user.save()
             hospital = hospital_form.save(commit=False)
             Hospital.objects.create(
                 hospital_admin = user,
-                license_type = user.license_type,
+                #license_type = user.license_type,
                 hospital_name = hospital.hospital_name,
                 rc_number = hospital.rc_number,
                 phone_no = hospital.phone_no,
@@ -149,7 +155,7 @@ class CreateHospitalProfile(View):
 class CreateProfile(View):
     user_form = SignupForm
     hospital_form = HospitalModelForm
-    template_name = 'accounts/hospital_profile_creation.html'
+    template_name = 'accounts/gov_accreditation_profile_creation.html'
     template_name1 = 'accounts/profile-creation-confirmation.html'
  
     def get(self, request, *args, **kwargs):
@@ -163,11 +169,12 @@ class CreateProfile(View):
         if user_form.is_valid() and hospital_form.is_valid():
             user = user_form.save(commit=False)
             user.is_active = False  # Deactivate account till it is confirmed
+            user.hospital = True
             user.save()
             hospital = hospital_form.save(commit=False)
             Hospital.objects.create(
                 hospital_admin = user,
-                license_type = user.license_type,
+                #license_type = user.license_type,
                 hospital_name = hospital.hospital_name,
                 rc_number = hospital.rc_number,
                 phone_no = hospital.phone_no,
@@ -386,9 +393,7 @@ def login(request):
     if user is not None:
         auth_login(request, user)
         
-        if user.license_type == 'Radiography Practice':
-            return redirect('hospitals:hospitals_dashboard')
-        if user.license_type == 'Internship Accreditation':
+        if user.hospital == True:
             return redirect('hospitals:hospitals_dashboard')
         if user.role == 'Monitoring':
             return redirect('monitoring:monitoring_dashboard')
@@ -525,9 +530,7 @@ class ProfileDetailView(ProfileObjectMixin, View):
 
 
 
-class StartReg(View):
-    def get(self, request, *args, **kwargs):
-        return render(request, 'accounts/start-accreditation.html')
+
 
 
 def logout(request):

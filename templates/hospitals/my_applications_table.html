@@ -38,7 +38,7 @@
 <th class="small-text" style="color: #fff; "width="2%">SN</th>
 <th class="small-text" style="color: #fff; "width="13%">Application No</th>
 <th class="small-text" style="color: #fff; "width="15%">Submitted On</th>
-<th class="small-text" style="color: #fff; "width="20%">License Type</th>
+<th class="small-text" style="color: #fff; "width="20%">Application Category</th>
 <th class="small-text" style="color: #fff; "width="15%">Application Type</th>
 <th class="small-text" style="color: #fff; "width="17%">Stage</th>
 <th class="small-text" style="color: #fff; "width="15%">Action</th>
@@ -52,7 +52,7 @@
 <tr> 
 <td width="2%">{{forloop.counter}}</td> 
 <td width="13%">{{object.application_no}}</td><td width="15%">{{object.hospital_name.reg_date}}</td> 
-<td width="20%">{{object.hospital_name.license_type}}</td> 
+<td width="20%">{{object.hospital.license_type}}</td> 
 <td width="15%">{{object.hospital.application_type}}</td> 
 <td width="17%">Complete</td> 
 <td width="15%"><a href="{% url 'hospitals:license_details' object.id %}"class="btn btn-outline-warning btn-sm">View</a></td> 
@@ -68,7 +68,7 @@
 <td width="2%">{{forloop.counter}}</td> 
 <td width="13%">{{object.application_no}}</td> 
 <td width="15%">{{object.hospital_name.reg_date}}</td> 
-<td width="20%">{{object.hospital_name.license_type}}</td> 
+<td width="20%">{{object.hospital.license_type}}</td> 
 <td width="15%">{{object.hospital.application_type}}</td> 
 <td width="17%">License Issuance</td> 
 <td width="15%"><a href="{% url 'hospitals:license_issuance' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> view</a> </td> 
@@ -83,7 +83,7 @@
 <td width="2%">{{forloop.counter}}</td> 
 <td width="13%">{{object.application_no}}</td> 
 <td width="15%">{{object.hospital_name.reg_date}}</td> 
-<td width="20%">{{object.hospital_name.license_type}}</td> 
+<td width="20%">{{object.hospital.license_type}}</td> 
 <td width="15%">{{object.hospital.application_type}}</td> 
 <td width="17%">Final Approval</td> 
 <td width="15%"><a href="{% url 'hospitals:inspection_passed' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> view</a> </td> 
@@ -97,7 +97,7 @@
 <td width="2%">{{forloop.counter}}</td> 
 <td width="13%">{{object.application_no}}</td> 
 <td width="15%">{{object.hospital_name.reg_date}}</td> 
-<td width="20%">{{object.hospital_name.license_type}}</td> 
+<td width="20%">{{object.hospital.license_type}}</td> 
 <td width="15%">{{object.hospital.application_type}}</td> 
 <td width="17%">Facility Inspection</td> 
 <td width="15%"><a href="{% url 'hospitals:inspection_processing' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> view</a>  </td> 
@@ -112,7 +112,7 @@
 <td width="2%">{{forloop.counter}}</td> 
 <td width="13%">{{object.application_no}}</td> 
 <td width="15%">{{object.hospital_name.reg_date}}</td> 
-<td width="20%">{{object.hospital_name.license_type}}</td> 
+<td width="20%">{{object.hospital.license_type}}</td> 
 <td width="15%">{{object.hospital.application_type}}</td> 
 <td width="17%">Inspection Scheduled</td> 
 <td width="15%"><a href="{% url 'hospitals:schedule_detail' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> view</a> </td> 
@@ -128,7 +128,7 @@
 <td width="2%">{{forloop.counter}}</td> 
 <td width="13%">{{object.application_no}}</td> 
 <td width="15%">{{object.hospital_name.reg_date}}</td> 
- <td width="20%">{{object.hospital_name.license_type}}</td> 
+ <td width="20%">{{object.hospital.license_type}}</td> 
 <td width="15%">{{object.hospital.application_type}}</td> 
 <td width="17%">Payment Verified</td> 
 <td width="15%"><a href="{% url 'hospitals:verifications_successful' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
@@ -145,7 +145,7 @@
 <td width="2%">{{forloop.counter}}</td> 
 <td width="13%">{{object.application_no}}</td> 
 <td width="15%">{{object.hospital_name.reg_date}}</td> 
-<td width="20%">{{object.hospital_name.license_type}}</td>
+<td width="20%">{{object.hospital.license_type}}</td>
 <td width="15%">{{object.hospital.application_type}}</td> 
 
 
@@ -162,7 +162,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="13%">{{object.application_no}}</td> 
- <td width="15%">{{object.submission_date}}</td> 
+ <td width="15%">{{object.submission_date}}</td>
  <td width="20%">{{object.license_type}}</td> 
  <td width="15%">{{object.application_type}}</td> 
  <td width="17%">Payment Processing</td> 
@@ -177,10 +177,10 @@
  <td width="2%">{{forloop.counter}}</td> 
  <td width="17%">Not applicable</td> 
  <td width="17%">{{user.reg_date_pretty}}</td> 
- <td width="19%">{{user.license_type}}</td> 
+ <td width="19%">{{user.type}}</td> 
  <td width="15%">New Application</td> 
  <td width="15%">Start Application</td> 
- <td width="15%"><a href="{% url 'hospitals:start_application' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Register</a> </td> 
+ <td width="15%"><a href="{% url 'hospitals:start_new_radiography_license_application' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Register</a> </td> 
  </tr> 
  {% endfor %}
  {% endif %}

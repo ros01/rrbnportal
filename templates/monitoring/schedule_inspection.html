@@ -82,7 +82,7 @@ Facility Inspection is scheduled to the closest Zonal Office to the Hospital/Cen
 <td style="color: #fff;" class="small-text">Application No</td>
 <td style="color: #fff;" class="small-text">Hospital Name</td>
 <td style="color: #fff;" class="small-text">Application Date</td>
-<td style="color: #fff;" class="small-text">License Type</td>
+<td style="color: #fff;" class="small-text">Application Category</td>
 <td style="color: #fff;" class="small-text">Hospital Address</td>
 <td style="color: #fff;" class="small-text">Zonal Office</td>
 </tr>
@@ -96,7 +96,7 @@ Facility Inspection is scheduled to the closest Zonal Office to the Hospital/Cen
 <td>{{object.application_no}}</td>
 <td>{{object.hospital_name}}</td>
 <td>{{object.hospital_name.reg_date}}</td>
-<td>{{object.hospital_name.license_type}}</td>
+<td>{{object.hospital.license_type}}</td>
 <td>{{object.hospital_name.address}}</td>
 {% endfor %}
 {% endif %}

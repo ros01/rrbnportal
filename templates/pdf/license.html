@@ -191,10 +191,21 @@
   
       <hr class='hrItem' />
 
+      {% if object.hospital.license_type == "Radiography Practice" %}
+
       <div class="sections">
         <p class="green-color h2-text">CERTIFICATE OF REGISTRATION OF PRACTICE</p>
 
       </div>
+
+      {% else %}
+
+      <div class="sections">
+        <p class="green-color h2-text">CERTIFICATE OF INTERNSHIP ACCREDITATION</p>
+
+      </div>
+
+      {% endif %}
      
      
 
@@ -203,7 +214,7 @@
       </div>
 
       <div class="sections-div">
-        <p class="text-center tetx-fonts">License Type: &nbsp; &nbsp; <span class="blue tetx-fonts">{{object.hospital_name.license_type}}</span></p>
+        <p class="text-center tetx-fonts">License Type: &nbsp; &nbsp; <span class="blue tetx-fonts">{{object.hospital.license_type}}</span></p>
       </div>
 
       <div class="sections">
@@ -223,7 +234,7 @@
       <div class="sections lg-fonts">Having satisfied all laid down conditions of the Radiographers Registration Board of Nigeria </div>
 
       <div class="sections-div">
-        <p class="text-center tetx-fonts">Have been granted {{object.license_type}} Status</p>
+        <p class="text-center tetx-fonts">Have been granted {{object.license_class}} Status</p>
       </div>
       
       

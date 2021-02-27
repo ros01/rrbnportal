@@ -8,6 +8,8 @@ Application Number: {{object.application_no}}
 
 Hospital Name: {{object.hospital_name}}
 
+Application Category: {{object.hospital.license_type}}
+
 Facility Address: {{object.hospital_name.address}}
 
 Listed Modalities: {{object.hospital.equipment}}

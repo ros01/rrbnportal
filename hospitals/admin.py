@@ -36,9 +36,12 @@ class ScheduleAdmin(admin.ModelAdmin):
   list_display = ('application_no', 'hospital_name', 'inspection_date', 'inspection_report_deadline', 'inspection_zone',)
   list_display_links = ('application_no', 'hospital_name', 'inspection_date', 'inspection_zone',)
   list_filter = ('application_no', 'hospital_name', 'inspection_date', 'inspection_zone',)
+  fieldsets = (
+        (None, {'fields': ('application_no', 'hospital_name', 'inspection_date', 'inspection_report_deadline', 'inspection_zone',)}),
+        ('Inspection Scores', {'fields': ('nuclear_medicine_total', 'carm_total', 'radiotherapy_total', 'mri_total', 'ultrasound_total', 'ctscan_total', 'xray_total', 'flouroscopy_total',  'mamography_total', 'echocardiography_total', 'dentalxray_total', 'angiography_total',)}),
+    )
   search_fields = ('hospital_name', 'application_no', 'inspection_date', 'inspection_zone',)
   list_per_page = 25
-
 
 admin.site.register(Schedule, ScheduleAdmin)
 

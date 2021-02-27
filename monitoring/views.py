@@ -776,10 +776,6 @@ class AccreditationIssuedDetailView(LoginRequiredMixin, LicenseObjectMixin, View
 
 
 
-
-
-
-
 class LicensesListView(LoginRequiredMixin, ListView):
     template_name = "monitoring/licenses_list.html"
     context_object_name = 'object'   
@@ -816,14 +812,6 @@ class LicensesListView(LoginRequiredMixin, ListView):
                      #to_email, fail_silently=False)
 
         #return render(request, self.template_name, context)
-
-
-
-
-
-
-
-
 
 
 class GenerateObjectMixin(object):

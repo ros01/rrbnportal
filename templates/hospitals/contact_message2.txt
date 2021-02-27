@@ -7,15 +7,17 @@ Application Number: {{object.application_no}}
 
 Hospital Name: {{object.hospital_name}}
 
-Application Type: {{object.application_type}}
+Application Type: {{object.application_type}}  {% for hospital in hospital %}
 
-Category: {{object.license_category}}
+Mobile Number: {{hospital.phone_no}}
 
-Mobile Number: {{object.phone}}
+Email Address: {{hospital.hospital_admin}}
 
-Email Address: {{object.email}}
+{% endfor %} 
 
-Submission Time: {{object.reg_date}}
+Application Category: {{object.license_type}}
+
+Submission Time: {{object.submission_date}}
 
 Kindly proceed to pay your accreditation fee of N200,000 by generating RRR on remita and either paying online or at any commercial bank of your choice.
 

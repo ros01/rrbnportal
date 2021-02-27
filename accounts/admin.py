@@ -18,7 +18,7 @@ class AddUserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'password1', 'password2', 'module_name', 'role', 'license_type')
+        fields = ('email', 'first_name', 'last_name', 'password1', 'password2', 'module_name', 'role', 'hospital', 'type')
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -46,7 +46,7 @@ class UpdateUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('email', 'password', 'first_name', 'last_name', 'is_active',
-                  'is_staff', 'module_name', 'role', 'license_type'  
+                  'is_staff', 'module_name', 'role', 'hospital', 'type'  
         )
 
     def clean_password(self):
@@ -66,7 +66,7 @@ class UserAdmin(BaseUserAdmin):
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name')}),
         ('Permissions', {'fields': ('is_active', 'is_staff')}),
-        ('Profiles', {'fields': ('module_name', 'role', 'license_type')}),
+        ('Profiles', {'fields': ('module_name', 'role', 'hospital', 'type')}),
     )
     add_fieldsets = (
         (

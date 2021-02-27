@@ -11,73 +11,67 @@
 
 <div class="container mt-3">
 
-    {% for object in object %}
+{% for object in object %}
 
-    <p class="text-success display-4 paragraph2">My Radiography Practise License Applications<span style="float:right; font-size:14px"> 
-    <br/> Hospital Code: <b>{{object.hospital_code}}</b> 
-    </span> </p>
-    <hr>
-    </div> 
+<p class="text-success display-4 paragraph2">My Radiography Practise License Applications<span style="float:right; font-size:14px"> 
+<br/> Hospital Code: <b>{{object.hospital_code}}</b> 
+</span> </p>
+<hr>
+</div> 
 
-    <div class="container"> 
-    <div class="row"> 
+<div class="container"> 
+<div class="row"> 
 
     
 
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12"> 
-    <div class="alert" style="background-color: #f7dedd; font-size:18px"> Dear <b>{{object.hospital_name.hospital_name|upper}}</b>, please choose from the list below to start a new application for a Radiography License or Internship Accreditation Application. Kindly note that: <br> <b>1.</b> If you already have an on-going application for a particular license category, a new application will not be considered.<br/><b>2.</b> If you have an existing valid license for a category, a new license application under the same category will not be considered.</div> 
-     </div> 
-    </div> 
+<div class="col-lg-12 col-md-12 col-sm-12 col-12"> 
+<div class="alert" style="background-color: #f7dedd; font-size:18px"> Dear <b>{{object.hospital_name.hospital_name|upper}}</b>, please choose from the list below to start a new application for a Radiography License or Internship Accreditation Application. Kindly note that: <br> <b>1.</b> If you already have an on-going application for a particular license category, a new application will not be considered.<br/><b>2.</b> If you have an existing valid license for a category, a new license application under the same category will not be considered.</div> 
+</div> 
+</div> 
+   
 
-    {% endfor %}
+<div class="row"> 
+<div class="col-md-10 m-auto"> <div class="row"> <section class="portlet" style="background:#FFFFFF"> <div style="border-bottom:0;"> </div> </section> </div> 
 
-    <div class="row"> 
-    <div class="col-md-10 m-auto"> <div class="row"> <section class="portlet" style="background:#FFFFFF"> <div style="border-bottom:0;"> </div> </section> </div> 
+<table class="table table-hover"> 
+<thead> 
+<tr> <th width="2%">SN</th> 
+<th width="40%">LICENSE CATEGORY</th> 
+<th width="20%">PROCESSING FEE</th> 
+<th width="15%">VALIDITY</th> 
+<th width="10%">&nbsp;</th> 
+</tr> </thead> 
 
-               
+<tr> 
+<td width="2%">1.</td> 
+<td width="40%"><b>RADIOGRAPHY PRACTICE</b></td> 
+<td width="15%"> N50,000.00 </td> 
+<td width="15%"> 2 Year(s) </td> 
+<td width="18%"> 
+<a style="font-size:1.1em" class="btn btn-outline-success" href="{% url 'hospitals:start_application' object.pk %}">Start Now <i class="fa fa-play"></i>  </a> </td> 
+</tr> 
+<tr> 
+<td width="2%">2.</td> 
+<td width="40%"><b>INTERNSHIP ACCREDITATION</b> <br> <span style="font-size:14px">Government Hospitals (Teaching, Specialist, Neuropychiatric, Orthopedic, General Hospitals, Federal Medical Centers) </span></td> 
+<td width="15%"> N200,000.00 </td> 
+<td width="15%"> 2 Year(s) </td> 
+<td width="18%"> <a style="font-size:1.1em" class="btn btn-outline-success" href="{% url 'hospitals:start_application' object.pk %}">Start Now <i class="fa fa-play"></i>  </a>  </td> 
+</tr> 
 
-    <table class="table table-hover"> 
-    <thead> 
-    <tr> <th width="2%">SN</th> 
-    <th width="40%">LICENSE CATEGORY</th> 
-    <th width="20%">PROCESSING FEE</th> 
-    <th width="15%">VALIDITY</th> 
-    <th width="10%">&nbsp;</th> 
-    </tr> </thead> 
+<tr> 
+<td width="2%">3.</td> 
+<td width="40%"><b>INTERNSHIP ACCREDITATION</b><br><span style="font-size:14px"> Private Hospitals (Teaching Hospitals,Specialist Hospitals, Diagnostic Centers, Radiotherapy Centers)
+</span></td> 
+<td width="15%"> Minimum of N100,000.00 for two modalites, extra modalities attact N25,000 each</td> 
+<td width="15%"> 2 Year(s) </td> 
+<td width="18%"> <a style="font-size:1.1em" class="btn btn-outline-success" href="#">Start Now <i class="fa fa-play"></i>  </a> </td> 
+</tr> 
+</table> 
+</div>
+</div>
+</div>
 
-    <tr> 
-    <td width="2%">1.</td> 
-    <td width="40%"><b>RADIOGRAPHY PRACTICE</b></td> 
-    <td width="15%"> N50,000.00 </td> 
-    <td width="15%"> 2 Year(s) </td> 
-    <td width="18%"> 
-    <a style="font-size:1.1em" class="btn btn-outline-success" href="#">Start Now <i class="fa fa-play"></i>  </a> </td> 
-    </tr> 
-    <tr> 
-    <td width="2%">2.</td> 
-    <td width="40%"><b>INTERNSHIP ACCREDITATION</b> <br> <span style="font-size:14px">Government Hospitals (Teaching, Specialist, Neuropychiatric, Orthopedic, General Hospitals, Federal Medical Centers) </span></td> 
-    <td width="15%"> N200,000.00 </td> 
-    <td width="15%"> 2 Year(s) </td> 
-    <td width="18%"> <a style="font-size:1.1em" class="btn btn-outline-success" href="#">Start Now <i class="fa fa-play"></i>  </a>  </td> 
-    </tr> 
-
-    <tr> 
-    <td width="2%">3.</td> 
-    <td width="40%"><b>INTERNSHIP ACCREDITATION</b><br><span style="font-size:14px"> Private Hospitals (Teaching Hospitals,Specialist Hospitals, Diagnostic Centers, Radiotherapy Centers)
-    </span></td> 
-    <td width="15%"> Minimum of N100,000.00 for two modalites, extra modalities attact N25,000 each</td> 
-    <td width="15%"> 2 Year(s) </td> 
-    <td width="18%"> <a style="font-size:1.1em" class="btn btn-outline-success" href="#">Start Now <i class="fa fa-play"></i>  </a> </td> 
-    </tr> 
-    
-    </table> 
-
-    </div>
-    </div>
-
-
-
-    </div>
+{% endfor %}
                   
                 
 

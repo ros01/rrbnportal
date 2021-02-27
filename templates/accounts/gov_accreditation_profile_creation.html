@@ -1,4 +1,4 @@
-{% extends 'base-reg.html'%}
+\{% extends 'base-reg.html'%}
 {% load static %}
 {% load crispy_forms_tags %}
 {% block title%}| Create Profile {% endblock %}
@@ -13,13 +13,13 @@
 	<main class="container">
 	<div class="row" style="border-bottom:1px solid #ddd">
 	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-	<h3 class="text-success">New License Application - Profile Creation</h3>
+	<h3 class="text-success">New Hospital Profile Creation</h3>
 	</div>
 	
 	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-right">
 	<h3 class="text-default">
 	<span style="font-size:14px;"><b>Category:</b></span>
-	<span class="text-success">Radiography Practice</span>
+	<span class="text-success">Internship Accreditation</span>
 	</h3>
 	</div>
 	</div>
@@ -36,7 +36,7 @@
 	<form method="POST" action="." enctype="multipart/form-data">
      {% csrf_token %}
 
-     <input type="hidden" name="license_type" class="form-control" value="Radiography Practice" required id="id_license_type"  id="div_id_license_type">
+     <input type="hidden" name="type" class="form-control" value="Gov Internship Accreditation" required id="id_type"  id="div_id_type">
 
    	<div class="row"> 
 	<div class="col-md-4"> 

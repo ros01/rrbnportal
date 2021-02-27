@@ -3,6 +3,8 @@ from django.shortcuts import render
 from . import views
 
 from .views import (
+    StartNewRadApplication,
+    StartGovInternshipApplication,
     StartApplication,
     RegisterFacility,  
     HospitalDetailView,
@@ -45,9 +47,12 @@ urlpatterns = [
     path('', views.hospitals_dashboard, name='hospitals_dashboard'),
     path('status/', views.status, name='status'),
     path('application_list/', MyApplicationListView.as_view(), name='application_list'),
+    path('<uuid:pk>/start_new_radiography_license_application/', StartNewRadApplication.as_view(), name='start_new_radiography_license_application'),
+    path('<uuid:pk>/start_gov_internship_accreditation_application/', StartGovInternshipApplication.as_view(), name='start_gov_internship_accreditation_application'),
     path('<uuid:pk>/start_application/', StartApplication.as_view(), name='start_application'),
     path('start_new_application/', StartNewApplication.as_view(), name='start_new_application'),
     path('<uuid:id>/hospital_details/', HospitalDetailView.as_view(), name='hospital_details'),
+    path('<uuid:id>/facility_details/', FacilityDetailView.as_view(), name='facility_details'),
     path('<uuid:pk>/generate_invoice/', GenerateInvoiceView.as_view(), name='generate_invoice'),
     path('payment_table/', PaymentListView.as_view(), name='payment_table'),
     path('<uuid:pk>/payment_processing/', PaymentCreateView.as_view(), name='payment_processing'),
@@ -61,13 +66,13 @@ urlpatterns = [
     path('<uuid:id>/appraisal_passed/', AccreditationInspectionApprovedView.as_view(), name='appraisal_passed'),
     path('<uuid:pk>/license_issuance/', LicenseIssuanceView.as_view(), name='license_issuance'),
     path('<uuid:pk>/internship_license_issuance/', InternshipLicenseIssuanceView.as_view(), name='internship_license_issuance'),
-    path('<uuid:id>/license_details/', MyLicensesDetailView.as_view(), name='license_details'),
+    path('<uuid:pk>/license_details/', MyLicensesDetailView.as_view(), name='license_details'),
     path('license_history/', MyLicenseApplicationsHistory.as_view(), name='license_history'),
     path('accreditation_list/', MyAccreditationlListView.as_view(), name='accreditation_list'),
     path('<uuid:id>/start_renewal/', StartLicenseRenewal.as_view(), name='start_renewal'),
     path('hospital_renewal/', HospitalRenewView.as_view(), name='hospital_renewal'),
     path('start_registration/', RegisterFacility.as_view(), name='start_registration'),
-    path('<uuid:id>/facility_details/', FacilityDetailView.as_view(), name='facility_details'),
+    
     
     path('<uuid:id>/payment_confirmation/', PaymentConfirmation.as_view(), name='payment_confirmation'),
     

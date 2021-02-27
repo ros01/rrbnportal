@@ -30,11 +30,12 @@ urlpatterns = [
     #path('verify_practice', views.verify_practice, name='verify_practice'),
     #path('search/', SearchResultsView.as_view(), name='search_result'),
     path('start/', views.StartView.as_view(), name='start-reg'),
+    path('start_registration/', views.StartReg.as_view(), name='start_registration'),
     #path('new_hospital_creation/', views.CreateHospitalProfile, name='new_hospital_creation'),
     path('new_hospital_creation/', CreateHospitalProfile.as_view(), name='new_hospital_creation'),
     path('hospital_profile_creation/', CreateProfile.as_view(), name='hospital_profile_creation'),
     #path('signup/', SignUpView.as_view(), name='create_profile'),
-    path('start_registration/', views.StartReg.as_view(), name='start_registration'),
+    
     path('start_intership_application/', StartIntershipApplication.as_view(), name='create_manager_profile'),
     path('signin', LoginTemplateView.as_view(), name='signin'),
     #path('renewal/', views.renewal, name='renewal'),

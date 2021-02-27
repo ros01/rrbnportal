@@ -75,11 +75,11 @@ def hospitals_dashboard(request):
 
 
 def status(request, *args, **kwargs):
-    has_license = License.objects.filter(hospital_admin=request.user)
-    has_inspection = Inspection.objects.filter(hospital_admin=request.user)
-    has_schedule = Schedule.objects.filter(hospital_admin=request.user)
-    has_payment = Payment.objects.filter(hospital_admin=request.user)
-    has_registeration = Document.objects.filter(hospital_admin=self.request.user)
+    has_license = License.objects.filter(hospital_name__hospital_admin=request.user)
+    has_inspection = Inspection.objects.filter(hospital_name__hospital_admin=request.user)
+    has_schedule = Schedule.objects.filter(hospital_name__hospital_admin=request.user)
+    has_payment = Payment.objects.filter(hospital_name__hospital_admin=request.user)
+    has_registeration = Document.objects.filter(hospital_name__hospital_admin=self.request.user)
     has_hospital = Hospital.objects.filter(hospital_admin=self.request.user)
    
     if has_license:
@@ -100,9 +100,6 @@ class OwnObjectsMixin():
         email = self.request.user
         return super(OwnObjectsMixin, self).get_queryset().filter(email=email)
 
-#class OwnObjectsMixin():
-   #def get_queryset(self):
-        #return super(OwnObjectsMixin, self).get_queryset().filter(hospital_admin=self.request.user)
 
 class MyApplicationListView(LoginRequiredMixin, ListView):
     template_name = "hospitals/my_applications_table.html"
@@ -119,7 +116,6 @@ class MyApplicationListView(LoginRequiredMixin, ListView):
         context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
         context['document_qs'] = Document.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user)
         context['payment_qs'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user)
-        #context['payment'] = Payment.objects.select_related("request_no").filter(application_no=self.application_no)
         context['payment_verified_qs'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=3)
         context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=4)
         context['inspection_qs'] = Inspection.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=5)
@@ -159,6 +155,106 @@ class HospitalObjectMixin(object):
             obj = get_object_or_404(self.model, id=id)
         return obj 
 
+
+class StartNewRadApplication(LoginRequiredMixin, HospitalObjectMixin, SuccessMessageMixin, CreateView):
+    model = Document
+    template_name = 'hospitals/register_radiography_practice.html'
+    form_class = HospitalDetailModelForm
+
+    def get_success_url(self):
+        return reverse("hospitals:hospital_details", kwargs={"id": self.object.id})
+
+    def get_initial(self):
+        
+        return {
+            'hospital_name': self.kwargs["pk"],
+            
+        }
+
+    def get_queryset(self):
+        #hospital = Hospital.objects.filter(hospital_admin=self.request.user)
+        return Document.objects.filter(hospital_name__hospital_admin=self.request.user)
+   
+     
+    def get_context_data(self, **kwargs):
+        context = super(StartNewRadApplication, self).get_context_data(**kwargs)
+        context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
+       
+
+        return context
+
+    def get_form_kwargs(self):
+        self.hospital = Hospital.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        #kwargs['initial']['license_type'] = self.hospital.license_type
+        
+        return kwargs
+
+
+    def form_invalid(self, form):
+        form = self.get_form()
+
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+          
+           context['object'] = obj
+           context['form'] = form 
+          
+        return self.render_to_response(context)
+
+
+
+
+class StartGovInternshipApplication(LoginRequiredMixin, HospitalObjectMixin, SuccessMessageMixin, CreateView):
+    model = Document
+    template_name = 'hospitals/register_gov_internship_accreditation.html'
+    form_class = HospitalDetailModelForm
+
+    def get_success_url(self):
+        return reverse("hospitals:hospital_details", kwargs={"id": self.object.id})
+
+    def get_initial(self):
+        
+        return {
+            'hospital_name': self.kwargs["pk"],
+            
+        }
+
+    def get_queryset(self):
+        #hospital = Hospital.objects.filter(hospital_admin=self.request.user)
+        return Document.objects.filter(hospital_name__hospital_admin=self.request.user)
+   
+     
+    def get_context_data(self, **kwargs):
+        context = super(StartGovInternshipApplication, self).get_context_data(**kwargs)
+        context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
+       
+
+        return context
+
+    def get_form_kwargs(self):
+        self.hospital = Hospital.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        #kwargs['initial']['license_type'] = self.hospital.license_type
+        
+        return kwargs
+
+
+    def form_invalid(self, form):
+        form = self.get_form()
+
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+          
+           context['object'] = obj
+           context['form'] = form 
+          
+        return self.render_to_response(context)
+
+
+
 class StartApplication(LoginRequiredMixin, HospitalObjectMixin, SuccessMessageMixin, CreateView):
     model = Document
     template_name = 'hospitals/hospitals_register.html'
@@ -168,10 +264,10 @@ class StartApplication(LoginRequiredMixin, HospitalObjectMixin, SuccessMessageMi
         return reverse("hospitals:hospital_details", kwargs={"id": self.object.id})
 
     def get_initial(self):
-        # You could even get the Book model using Book.objects.get here!
+        
         return {
             'hospital_name': self.kwargs["pk"],
-            #'license_type': self.kwargs["pk"]
+            
         }
 
     def get_queryset(self):
@@ -182,14 +278,14 @@ class StartApplication(LoginRequiredMixin, HospitalObjectMixin, SuccessMessageMi
     def get_context_data(self, **kwargs):
         context = super(StartApplication, self).get_context_data(**kwargs)
         context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
-        #context['hospital_qs'] = Hospital.objects.filter(hospital_name=self.object)
+       
 
         return context
 
     def get_form_kwargs(self):
         self.hospital = Hospital.objects.get(pk=self.kwargs['pk'])
         kwargs = super().get_form_kwargs()
-        kwargs['initial']['license_type'] = self.hospital.license_type
+        #kwargs['initial']['license_type'] = self.hospital.license_type
         
         return kwargs
 
@@ -242,6 +338,57 @@ class HospitalDetailView(LoginRequiredMixin, RegistrationObjectMixin, View):
 
         return render(request, self.template_name, context)
 
+class FacilityDetailView(LoginRequiredMixin, RegistrationObjectMixin, View):
+    template_name = 'hospitals/hospitals_reg_confirmation.html' 
+    def get(self, request, id=None, *args, **kwargs):
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            form = HospitalDetailModelForm(instance=obj)
+            context['object'] = obj
+            context['form'] = form
+            context['hospital'] = Hospital.objects.filter(hospital_admin=self.request.user)
+            context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
+
+            subject = 'Acknowledgment of Interest to Register with RRBN'
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to_email = [request.user.email]
+
+            context['form'] = form
+            contact_message = get_template(
+               'hospitals/contact_message2.txt').render(context)
+
+            send_mail(subject, contact_message, from_email,
+                     to_email, fail_silently=False)
+
+        return render(request, self.template_name, context)
+
+
+
+#class FacilityDetailView(LoginRequiredMixin, RegistrationObjectMixin, View):
+    #template_name = 'hospitals/facility_reg_confirmation.html' 
+    #def get(self, request, id=None, *args, **kwargs):
+        #context = {}
+        #obj = self.get_object()
+        #if obj is not None:
+            #form = BasicDetailModelForm(instance=obj)
+            #context['object'] = obj
+            #context['form'] = form
+
+
+            #subject = 'Acknowledgment of Interest to Obtain Internship Accreditation'
+            #from_email = settings.DEFAULT_FROM_EMAIL
+            #to_email = [request.user.email]
+
+            #context['form'] = form
+            #contact_message = get_template(
+               #'hospitals/contact_message2.txt').render(context)
+
+            #send_mail(subject, contact_message, from_email,
+                     #to_email, fail_silently=False)
+
+        #return render(request, self.template_name, context)
+
 
 class StartNewApplication(LoginRequiredMixin, ListView):
     template_name = "hospitals/start_new_application.html"
@@ -249,7 +396,7 @@ class StartNewApplication(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         #hospital = Hospital.objects.filter(hospital_admin=self.request.user)
-        return License.objects.filter(hospital_name__hospital_admin=self.request.user)
+        return Hospital.objects.filter(hospital_admin=self.request.user)
 
     def get_context_data(self, **kwargs):
         obj = super(StartNewApplication, self).get_context_data(**kwargs)
@@ -415,7 +562,7 @@ class VerificationsSuccessfulView(LoginRequiredMixin, DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['payment'] = Document.objects.filter(hospital_name__hospital_admin=self.request.user)
+        context['application'] = Document.objects.filter(hospital_name__hospital_admin=self.request.user)
         context['hospital'] = Hospital.objects.filter(hospital_name=self.object)
         context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
         return context
@@ -526,36 +673,25 @@ class HospitalObjectMixin(object):
         return obj
 
 
-class MyLicensesDetailView(LoginRequiredMixin, LicenseObjectMixin, View):
-    template_name = "hospitals/license_application_summary.html" # DetailView
-    def get(self, request, id=None, *args, **kwargs):
+#class MyLicensesDetailView(LoginRequiredMixin, LicenseObjectMixin, View):
+    #template_name = "hospitals/license_application_summary.html" # DetailView
+    #def get(self, request, id=None, *args, **kwargs):
         # GET method
-        context = {'object': self.get_object()}
-        return render(request, self.template_name, context)
-
-class FacilityDetailView(LoginRequiredMixin, RegistrationObjectMixin, View):
-    template_name = 'hospitals/facility_reg_confirmation.html' 
-    def get(self, request, id=None, *args, **kwargs):
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-            form = BasicDetailModelForm(instance=obj)
-            context['object'] = obj
-            context['form'] = form
+        #context = {'object': self.get_object()}
+        #return render(request, self.template_name, context)
 
 
-            subject = 'Acknowledgment of Interest to Obtain Internship Accreditation'
-            from_email = settings.DEFAULT_FROM_EMAIL
-            to_email = [request.user.email]
 
-            context['form'] = form
-            contact_message = get_template(
-               'hospitals/contact_message2.txt').render(context)
+class MyLicensesDetailView(LoginRequiredMixin, DetailView):
+    template_name = "hospitals/license_application_summary.html"
+    model = License
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
+        return context
 
-            send_mail(subject, contact_message, from_email,
-                     to_email, fail_silently=False)
 
-        return render(request, self.template_name, context)
 
 
 

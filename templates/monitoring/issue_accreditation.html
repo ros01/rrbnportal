@@ -57,11 +57,15 @@
           
           <form method="post" action=".">
             {% csrf_token %}
+            {% if accreditation_qs %}
+            {% for object in accreditation_qs %}
 
             {% if object.appraisal_total > 50 %}
-              <input type="hidden" name="license_type" required id="id_license_type" value="Full Internship Accreditation">
+              <input type="hidden" name="license_class" required id="id_license_class" value="Full Internship Accreditation">
             {% else %}
-              <input type="hidden" name="license_type" required id="id_license_type" value="Provisional Radiography Practice Registration">
+              <input type="hidden" name="license_class" required id="id_license_class" value="Provisional Radiography Practice Registration">
+            {% endif %}
+            {% endfor %}
             {% endif %}
 
 

@@ -59,20 +59,17 @@ class User(AbstractBaseUser, PermissionsMixin):
         )
 
 
-    LICENSE_TYPE = (
-        ('Radiography Practice', 'Radiography Practice'),
-        ('Internship Accreditation', 'Internship Accreditation'),
-        )
-
-
-
+    
     email = models.EmailField(unique=True, null=False, blank=False)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
     module_name = models.CharField (max_length=20, choices = MODULE_NAME, blank=True)
     role = models.CharField (max_length=30, choices = ROLE, blank=True)
+    type = models.CharField(max_length=30, blank=True)
     #application_type = models.CharField (max_length=100, choices = APPLICATION_TYPE, blank=True)
-    license_type = models.CharField (max_length=100, blank=True)
+    
+    hospital = models.BooleanField(default=True,
+        help_text=_('Designates whether the user can log into hospital dashboard.'))
     date_joined = models.DateField(_('date joined'), auto_now_add=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
     is_staff = models.BooleanField(
@@ -156,8 +153,7 @@ class Hospital(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     hospital_name = models.CharField(max_length=200, blank=True)
-    hospital_admin = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)
-    license_type = models.CharField (max_length=100, blank=True)
+    hospital_admin = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='practice_manager', null=True, on_delete=models.CASCADE)
     rc_number = models.CharField(max_length=100, blank=True, null =True)
     phone_no = models.CharField(max_length=100, blank=True)
     state = models.CharField(max_length=100, choices = STATE_CHOICES)

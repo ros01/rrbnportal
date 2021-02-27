@@ -103,7 +103,7 @@ class LicenseModelForm(forms.ModelForm):
 
     class Meta:
         model = License
-        fields = ('application_no', 'hospital_name', 'hospital', 'payment', 'schedule', 'inspection', 'issue_date', 'expiry_date', 'license_no')
+        fields = ('application_no', 'hospital_name', 'hospital', 'payment', 'schedule', 'inspection', 'issue_date', 'expiry_date', 'license_class', 'license_no')
         widgets = {
           'application_no': forms.HiddenInput(),
           'hospital_name': forms.HiddenInput(),
@@ -157,14 +157,14 @@ class AccreditationModelForm(forms.ModelForm):
 
     class Meta:
         model = License
-        fields = ('application_no', 'hospital_name', 'hospital', 'payment', 'schedule', 'appraisal', 'issue_date', 'expiry_date', 'license_no')
+        fields = ('application_no', 'hospital_name', 'hospital', 'payment', 'schedule', 'appraisal', 'issue_date', 'expiry_date', 'license_class', 'license_no')
         widgets = {
-          #'application_no': forms.HiddenInput(),
-          #'hospital_name': forms.HiddenInput(),
-          #'hospital': forms.HiddenInput(),
-          #'payment': forms.HiddenInput(),
-          #'schedule': forms.HiddenInput(),
-          #'appraisal': forms.HiddenInput(),
+          'application_no': forms.HiddenInput(),
+          'hospital_name': forms.HiddenInput(),
+          'hospital': forms.HiddenInput(),
+          'payment': forms.HiddenInput(),
+          'schedule': forms.HiddenInput(),
+          'appraisal': forms.HiddenInput(),
         } 
       
        

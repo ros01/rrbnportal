@@ -16,7 +16,7 @@ from datetime import date
 
 
 def increment_application_no():
-    last_application_no = Document.objects.all().order_by('id').last()
+    last_application_no = Document.objects.all().order_by('application_no').last()
     if not last_application_no:
         return '1000'
     application_no = last_application_no.application_no
@@ -33,6 +33,7 @@ def increment_hospital_code():
     new_hospital_code = str(int(hospital_code) + 1)
     new_hospital_code = hospital_code[0:-(len(new_hospital_code))] + new_hospital_code
     return new_hospital_code
+
 
 
 class Document(models.Model):
@@ -63,6 +64,11 @@ class Document(models.Model):
         ('Renewal', 'Renewal'),
         )
 
+    #LICENSE_TYPE = (
+        #('Radiography Practice', 'Radiography Practice'),
+        #('Internship Accreditation', 'Internship Accreditation'),
+        #)
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     application_no = models.CharField(max_length=500, unique=True, null=True, blank=True, 
         default=increment_application_no)
@@ -70,7 +76,6 @@ class Document(models.Model):
     application_type = models.CharField(max_length=100, choices = APPLICATION_TYPE, blank=True)
     application_status = models.IntegerField(default=1)
     hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospitals', on_delete=models.CASCADE)
-    #hospital_admin = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)
     hospital_type = models.CharField(max_length=100, choices = HOSPITAL_TYPE)
     equipment = MultiSelectField(choices = EQUIPMENT)
     radiographers = models.TextField(blank=True, null=True)
@@ -93,7 +98,7 @@ class Document(models.Model):
         equipment_count = len(equipment_count)
         return equipment_count
 
-
+    
 
 class Payment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -110,7 +115,7 @@ class Payment(models.Model):
     payment_date = models.DateField(default=date.today)  
     vet_status = models.IntegerField(default=1)
     vetting_officer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, related_name='vetted_by', blank=True, null=True)
-    vet_date =models.DateField(default=date.today)
+    vet_date =models.DateField(auto_now_add=False, auto_now=True)
 
 
     class Meta:
@@ -649,17 +654,7 @@ class Inspection(models.Model):
      
     def save(self, *args, **kwargs):
         #super(Inspection, self).save(*args, **kwargs)
-        #self.practice_manager.schedule.application_status=5
-        #self.practice_manager.schedule.save()
-
-        #if self.practice_manager.nuclearmedicine.nuclear_medicine_total and self.practice_manager.nuclearmedicine.nuclear_medicine_total
-
-        #score = self.practice_manager.nuclearmedicine.nuclear_medicine_total + self.practice_manager.radiotherapy.radiotherapy_total + self.practice_manager.mri.mri_total + self.practice_manager.ultrasound.ultrasound_total + self.practice_manager.ctscan.ctscan_total + self.practice_manager.xray.xray_total + self.practice_manager.flouroscopy.flouroscopy_total 
-        #self.inspection_total = 99
         
-        #score = [self.practice_manager.nuclearmedicine.nuclear_medicine_total, self.practice_manager.radiotherapy.radiotherapy_total, self.practice_manager.mri.mri_total, self.practice_manager.ultrasound.ultrasound_total, self.practice_manager.ctscan.ctscan_total, self.practice_manager.xray.xray_total, self.practice_manager.flouroscopy.flouroscopy_total] 
-        
-        #score = [self.practice_manager.nuclearmedicine.nuclear_medicine_total, self.practice_manager.radiotherapy.radiotherapy_total, self.practice_manager.mri.mri_total, self.practice_manager.ultrasound.ultrasound_total, self.practice_manager.ctscan.ctscan_total, self.practice_manager.xray.xray_total, self.practice_manager.flouroscopy.flouroscopy_total]
         score = []
 
         if self.schedule.nuclear_medicine_total != None:
@@ -755,6 +750,9 @@ class Appraisal(models.Model):
     photo_5 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     photo_6 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
 
+    class Meta:
+        unique_together = ('application_no','hospital_name')
+
 
     def __str__(self):
         return str (self.hospital_name)
@@ -778,14 +776,17 @@ class License(models.Model):
     issue_date = models.DateField(default=date.today)
     expiry_date = models.DateField(default=date.today)
     license_status = models.CharField(max_length=10)
+    license_class = models.CharField(max_length=200)
 
 
-    def get_absolute_url(self):
-        return reverse("monitoring:issued_license_details", kwargs={"id": self.id})
-    
+    #def get_absolute_url(self):
+        #return reverse("monitoring:issued_license_details", kwargs={"id": self.id})
+
+    class Meta:
+        unique_together = (('application_no','hospital_name'), ('application_no','license_no'))
+        
     def __str__(self):
         return str(self.hospital_name)
-
 
     def save(self, *args, **kwargs):
         
@@ -795,13 +796,22 @@ class License(models.Model):
             self.license_status = "Active"
         else:
             self.license_status = "Expired"
-
+         
             
-    
-        
         super(License, self).save(*args, **kwargs)
-        self.appraisal.application_status = 8
-        self.appraisal.save() 
+
+        if self.appraisal:
+            self.appraisal.application_status = 8
+            self.appraisal.save()
+
+
+        if self.inspection:
+            self.inspection.application_status = 8
+            self.inspection.save()
+
+        
+
+        
 
 
 class Records(models.Model):

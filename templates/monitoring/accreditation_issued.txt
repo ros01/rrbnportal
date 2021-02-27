@@ -10,7 +10,9 @@ Application Number: {{object.application_no}}
 
 Hospital Name: {{object.hospital_name}}
 
-Category: {{object.hospital_name.license_type}}
+Application Category: {{object.hospital.license_type}}
+
+Class of License: {{object.license_class}}
 
 License No: {{object.license_no}}
 

@@ -152,7 +152,7 @@ def approve_internship_license(request, id):
 
      send_mail(subject, contact_message, from_email, to_email, fail_silently=False)
 
-     messages.success(request, ('Radiography Internship License Approval'))
+     messages.success(request, ('Radiography Internship Accreditation Approval'))
      
      return render(request, 'registrars_office/internship_license_approved.html',context)
     

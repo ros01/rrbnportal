@@ -149,7 +149,7 @@ Ultrasound
   </label>
   </div>
   {% endif %}
-  {% if "C-Arm/O-HRM" in object.hospital.equipment %}
+  {% if "C-Arm/O-ARM" in object.hospital.equipment %}
   <div class="form-check mr-3">
   <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-carm" data-form-url="{% url 'zonal_offices:carm_score' object.pk %}">
   <label class="form-check-label" for="exampleRadios3">

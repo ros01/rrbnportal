@@ -10,7 +10,7 @@ Hospital Name: {{object.hospital_name}}
 
 Facility Address: {{object.hospital_name.address}}
 
-License Type: {{object.hospital_name.license_type}}
+Application Category: {{object.hospital.license_type}}
 
 Listed Modalities: {{object.hospital.equipment}}
 

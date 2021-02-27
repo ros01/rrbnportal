@@ -21,7 +21,7 @@ class HospitalDetailModelForm(forms.ModelForm):
         widgets = {
             'radiographers': forms.Textarea(attrs={'rows':3, 'cols':5}), 
             'radiologists': forms.Textarea(attrs={'rows':3, 'cols':5}),
-            'license_type': forms.HiddenInput(),
+            #'license_type': forms.HiddenInput(),
             'hospital_name': forms.HiddenInput(),   
                                 
             }
@@ -38,7 +38,7 @@ class HospitalDetailModelForm(forms.ModelForm):
        self.fields['application_type'].widget.attrs['placeholder'] = "Enter Application Type"
        #self.fields['license_type'].widget.attrs['value'] = self.instance.license_type
        #self.fields['license_type'].widget.attrs['readonly'] = 'readonly'
-       #self.fields['license_type'].label = "License Type"
+       self.fields['license_type'].label = "License Type"
        #self.fields['license_type'].label = "License Type"
        #self.fields['license_type'].label_from_instance = lambda obj: "{}".format(obj.license_type)
        

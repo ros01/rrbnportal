@@ -12,6 +12,10 @@ Mobile Number: {{object.hospital_name.phone_no}}
 
 Email Address: {{object.hospital_name.hospital_admin}}
 
+Application Category: {{object.hospital.license_type}}
+
+Amount Paid: {{object.payment_amount}}
+
 Submission Time: {{object.hospital_name.reg_date}}
 
 

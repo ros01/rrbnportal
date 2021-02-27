@@ -43,15 +43,20 @@ urlpatterns = [
     path('<uuid:id>/approve/', views.approve, name='approve'),
     path('<uuid:id>/reject/', views.reject, name='reject'),
     path('inspection_list/', InspectionScheduleListView.as_view(), name='inspection_list'),
+    path('<uuid:pk>/inspection_schedule/', InspectionCreateView.as_view(), name='inspection_schedule'),
     path('create_hospital_record/', RecordsCreateView.as_view(), name='create_hospital_record'),
     path('<uuid:id>/hospital_record_details/', RecordsDetailView.as_view(), name='hospital_record_details'),
     path('hospital_records_list/', HospitalRecordsListView.as_view(), name='hospital_records_list'),
     path('<uuid:id>/view_records/', HospitalRecordsDetailView.as_view(), name='view_records'),
-    path('<uuid:pk>/inspection_schedule/', InspectionCreateView.as_view(), name='inspection_schedule'),
     path('<uuid:id>/inspection_details/', InspectionCreateDetailView.as_view(), name='inspection_details'),
     path('inspections_list/', InspectionCompletedListView.as_view(), name='inspections_list'),
     path('<uuid:id>/inspection_report/', InspectionCompletedDetailView.as_view(), name='inspection_report'),
+    path('license_list/', LicenseIssueListView.as_view(), name='license_list'),
     path('<uuid:id>/accreditation_report/', AccreditationCompletedDetailView.as_view(), name='accreditation_report'),
+    path('<uuid:id>/approve_appraisal_report/', views.approve_appraisal_report, name='approve_appraisal_report'),
+    path('<uuid:id>/reject_appraisal_report/', views.reject_appraisal_report, name='reject_appraisal_report'),
+    path('<uuid:id>/approve_report/', views.approve_report, name='approve_report'),
+    path('<uuid:id>/reject_report/', views.reject_report, name='reject_report'),
     path('license_list_table/', LicenseIssueListTable.as_view(), name='license_list_table'),
     path('<uuid:id>/license_detail/', LicenseDetailView.as_view(), name='license_detail'),
     path('<uuid:id>/accreditation_detail/', AccreditationDetailView.as_view(), name='accreditation_detail'),
@@ -59,7 +64,6 @@ urlpatterns = [
     path('<uuid:pk>/issue_accreditation/', IssueAccreditationView.as_view(), name='issue_accreditation'),
     path('<uuid:id>/issued_license_details/', LicenseIssuedDetailView.as_view(), name='issued_license_details'),
     path('<uuid:id>/issued_accreditation_details/', AccreditationIssuedDetailView.as_view(), name='issued_accreditation_details'),
-    path('license_list/', LicenseIssueListView.as_view(), name='license_list'),
     path('license_issued/', LicensesListView.as_view(), name='license_issued'),
     path('<uuid:id>/generate_license/', GeneratePdfView.as_view(), name='generate_license'),
     
@@ -67,10 +71,7 @@ urlpatterns = [
     path('<uuid:id>/validate/', views.validate, name='validate'),
     #path('<uuid:id>/view_report/', views.view_report, name='view_report'),
     path('<uuid:id>/view_appraisal_report/', views.view_appraisal_report, name='view_appraisal_report'),
-    path('<uuid:id>/approve_appraisal_report/', views.approve_appraisal_report, name='approve_appraisal_report'),
-    path('<uuid:id>/reject_appraisal_report/', views.reject_appraisal_report, name='reject_appraisal_report'),
-    path('<uuid:id>/approve_report/', views.approve_report, name='approve_report'),
-    path('<uuid:id>/reject_report/', views.reject_report, name='reject_report'),
+    
     
     
     
