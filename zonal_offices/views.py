@@ -62,7 +62,7 @@ class EnuguScheduleListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         obj = super(EnuguScheduleListView, self).get_context_data(**kwargs)
-        obj['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(inspection_zone="Enugu", application_status=4)
+        obj['schedule_qs'] = Schedule.objects.filter(inspection_zone="Enugu", application_status=4)
         return obj
 
 
@@ -76,7 +76,7 @@ class LagosScheduleListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         obj = super(LagosScheduleListView, self).get_context_data(**kwargs)
-        obj['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(inspection_zone="Lagos", application_status=4)
+        obj['schedule_qs'] = Schedule.objects.filter(inspection_zone="Lagos", application_status=4)
         return obj
 
 class AbujaScheduleListView(LoginRequiredMixin, ListView):
@@ -89,7 +89,7 @@ class AbujaScheduleListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         obj = super(AbujaScheduleListView, self).get_context_data(**kwargs)
-        obj['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(inspection_zone="Abuja", application_status=4)
+        obj['schedule_qs'] = Schedule.objects.filter(inspection_zone="Abuja", application_status=4)
         return obj
 
 
@@ -103,7 +103,7 @@ class PortHarcourtScheduleListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         obj = super(PortHarcourtScheduleListView, self).get_context_data(**kwargs)
-        obj['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(inspection_zone="Port Harcourt", application_status=4)
+        obj['schedule_qs'] = Schedule.objects.filter(inspection_zone="Port Harcourt", application_status=4)
         return obj
 
 class AsabaScheduleListView(LoginRequiredMixin, ListView):
@@ -116,7 +116,7 @@ class AsabaScheduleListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         obj = super(AsabaScheduleListView, self).get_context_data(**kwargs)
-        obj['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(inspection_zone="Asaba", application_status=4)
+        obj['schedule_qs'] = Schedule.objects.filter(inspection_zone="Asaba", application_status=4)
         return obj
 
 class CalabarScheduleListView(LoginRequiredMixin, ListView):
@@ -129,7 +129,7 @@ class CalabarScheduleListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         obj = super(CalabarScheduleListView, self).get_context_data(**kwargs)
-        obj['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(inspection_zone="Calabar", application_status=4)
+        obj['schedule_qs'] = Schedule.objects.filter(inspection_zone="Calabar", application_status=4)
         return obj
    
 class KanoScheduleListView(LoginRequiredMixin, ListView):
@@ -142,7 +142,7 @@ class KanoScheduleListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         obj = super(KanoScheduleListView, self).get_context_data(**kwargs)
-        obj['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(inspection_zone="Kano", application_status=4)
+        obj['schedule_qs'] = Schedule.objects.filter(inspection_zone="Kano", application_status=4)
         return obj
 
         
