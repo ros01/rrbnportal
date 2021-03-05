@@ -36,10 +36,10 @@ class ScheduleAdmin(admin.ModelAdmin):
   list_display = ('application_no', 'hospital_name', 'inspection_date', 'inspection_report_deadline', 'inspection_zone',)
   list_display_links = ('application_no', 'hospital_name', 'inspection_date', 'inspection_zone',)
   list_filter = ('application_no', 'hospital_name', 'inspection_date', 'inspection_zone',)
-  fieldsets = (
-        (None, {'fields': ('application_no', 'hospital_name', 'inspection_date', 'inspection_report_deadline', 'inspection_zone',)}),
-        ('Inspection Scores', {'fields': ('nuclear_medicine_total', 'carm_total', 'radiotherapy_total', 'mri_total', 'ultrasound_total', 'ctscan_total', 'xray_total', 'flouroscopy_total',  'mamography_total', 'echocardiography_total', 'dentalxray_total', 'angiography_total',)}),
-    )
+  #fieldsets = (
+        #(None, {'fields': ('application_no', 'hospital_name', 'inspection_date', 'inspection_report_deadline', 'inspection_zone',)}),
+        #('Inspection Scores', {'fields': ('nuclear_medicine_total', 'carm_total', 'radiotherapy_total', 'mri_total', 'ultrasound_total', 'ctscan_total', 'xray_total', 'flouroscopy_total',  'mamography_total', 'echocardiography_total', 'dentalxray_total', 'angiography_total',)}),
+    #)
   search_fields = ('hospital_name', 'application_no', 'inspection_date', 'inspection_zone',)
   list_per_page = 25
 
@@ -104,20 +104,20 @@ admin.site.register(Xray, XrayAdmin)
 
 
 class CtscanAdmin(admin.ModelAdmin):
-  list_display = ('id', 'ctscan_total')
-  list_display_links = ('id', 'ctscan_total')
-  list_filter = ('id', 'ctscan_total')
-  search_fields = ('id', 'ctscan_total')
+  list_display = ('hospital_name', 'application_no', 'ctscan_total')
+  list_display_links = ('hospital_name', 'application_no', 'ctscan_total')
+  list_filter = ('hospital_name', 'application_no', 'ctscan_total')
+  search_fields = ('hospital_name', 'application_no', 'ctscan_total')
   list_per_page = 25
 
 
 admin.site.register(Ctscan, CtscanAdmin)
 
 class FlouroscopyAdmin(admin.ModelAdmin):
-  list_display = ('id', 'flouroscopy_total')
-  list_display_links = ('id', 'flouroscopy_total')
-  list_filter = ('id', 'flouroscopy_total')
-  search_fields = ('id', 'flouroscopy_total')
+  list_display = ('hospital_name', 'application_no', 'flouroscopy_total')
+  list_display_links = ('hospital_name', 'application_no', 'flouroscopy_total')
+  list_filter = ('hospital_name', 'application_no', 'flouroscopy_total')
+  search_fields = ('hospital_name', 'application_no', 'flouroscopy_total')
   list_per_page = 25
 
 
@@ -126,10 +126,10 @@ admin.site.register(Flouroscopy, FlouroscopyAdmin)
 
 
 class MamographyAdmin(admin.ModelAdmin):
-  list_display = ('id', 'mamography_total')
-  list_display_links = ('id', 'mamography_total')
-  list_filter = ('id', 'mamography_total')
-  search_fields = ('id', 'mamography_total')
+  list_display = ('hospital_name', 'application_no', 'mamography_total')
+  list_display_links = ('hospital_name', 'application_no', 'mamography_total')
+  list_filter = ('hospital_name', 'application_no', 'mamography_total')
+  search_fields = ('hospital_name', 'application_no', 'mamography_total')
   list_per_page = 25
 
 
@@ -137,10 +137,10 @@ admin.site.register(Mamography, MamographyAdmin)
 
 
 class DentalxrayAdmin(admin.ModelAdmin):
-  list_display = ('id', 'dentalxray_total')
-  list_display_links = ('id', 'dentalxray_total')
-  list_filter = ('id', 'dentalxray_total')
-  search_fields = ('id', 'dentalxray_total')
+  list_display = ('hospital_name', 'application_no', 'dentalxray_total')
+  list_display_links = ('hospital_name', 'application_no', 'dentalxray_total')
+  list_filter = ('hospital_name', 'application_no', 'dentalxray_total')
+  search_fields = ('hospital_name', 'application_no', 'dentalxray_total')
   list_per_page = 25
 
 
@@ -148,20 +148,20 @@ admin.site.register(Dentalxray, DentalxrayAdmin)
 
 
 class AngiographyAdmin(admin.ModelAdmin):
-  list_display = ('id', 'angiography_total')
-  list_display_links = ('id', 'angiography_total')
-  list_filter = ('id', 'angiography_total')
-  search_fields = ('id', 'angiography_total')
+  list_display = ('hospital_name', 'application_no', 'angiography_total')
+  list_display_links = ('hospital_name', 'application_no', 'angiography_total')
+  list_filter = ('hospital_name', 'application_no', 'angiography_total')
+  search_fields = ('hospital_name', 'application_no', 'angiography_total')
   list_per_page = 25
 
 
 admin.site.register(Angiography, AngiographyAdmin)
 
 class EchocardiographyAdmin(admin.ModelAdmin):
-  list_display = ('id', 'echocardiography_total')
-  list_display_links = ('id', 'echocardiography_total')
-  list_filter = ('id', 'echocardiography_total')
-  search_fields = ('id', 'echocardiography_total')
+  list_display = ('hospital_name', 'application_no', 'echocardiography_total')
+  list_display_links = ('hospital_name', 'application_no', 'echocardiography_total')
+  list_filter = ('hospital_name', 'application_no', 'echocardiography_total')
+  search_fields = ('hospital_name', 'application_no', 'echocardiography_total')
   list_per_page = 25
 
 
@@ -169,10 +169,10 @@ admin.site.register(Echocardiography, EchocardiographyAdmin)
 
 
 class CarmAdmin(admin.ModelAdmin):
-  list_display = ('id', 'carm_total')
-  list_display_links = ('id', 'carm_total')
-  list_filter = ('id', 'carm_total')
-  search_fields = ('id', 'carm_total')
+  list_display = ('hospital_name', 'application_no', 'carm_total')
+  list_display_links = ('hospital_name', 'application_no', 'carm_total')
+  list_filter = ('hospital_name', 'application_no', 'carm_total')
+  search_fields = ('hospital_name', 'application_no', 'carm_total')
   list_per_page = 25
 
 

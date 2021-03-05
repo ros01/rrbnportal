@@ -1,0 +1,161 @@
+{% extends 'hospitals/hospital_base.html'%}
+{% load static %}
+{% load humanize %}
+{% block title%}| Welcome {% endblock %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/hospital_dashboard.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container">
+    <section class="p-2">
+   
+    <div class="row mt-2 ">
+    <div class="col text-left ml-2 mb-0">
+    <p class="text-success display-4 paragraph3">Private Hospital Internship Application - Payment Invoice</p>
+    <hr>
+    </div>
+    </div>
+
+    </section>
+    <section>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12"> 
+    <div class="alert" style="background-color: #f7dedd; font-size:18px"> Dear <b>{{object.hospital_name|upper}}</b>,<br/> Please find below your internship accreditationapplication payment invoice.  This includes registration fee of N50,000 and cost for registration of all available modalities (first two modalities attract a fee of N25,000 per modality while additional modalities attract N25,000 per modality). </br> </div> 
+     </div> 
+
+    </section>
+    <br>
+        
+       <div class="row justify-content-center mx-auto"> 
+
+        <div class="col-md-7 col-md text-center" style="background:#1ca8dd"> 
+        <h4 class="justify-content-center" style="font-size:30px; padding:10px; color:#fff"> Invoice </h4> 
+       </div> 
+
+       <div class="col-md-7 col-md"> 
+       <div class="row"> 
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <b>{{object.hospital_name|upper}}</b> <br/> 
+
+        
+        {{ object.hospital_name.address }}
+        <br/> {{object.hospital_name.phone_no}}
+        <br/>
+        {{object.hospital_name.hospital_admin}} </div> 
+        
+
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"> <b style="color:#888">Application Date: </b>{{object.submission_date}} <br/><br/> <b style="color:#888">Application #: </b> {{object.application_no}} 
+       </div>
+
+       </div> <br/> 
+
+       <div class="row" style="background: #efefef; color:#333; padding:8px;"> <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> Description </div> <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"> Amount (NGN) </div> 
+       </div> 
+       <br/> 
+
+      <div class="row"> 
+
+      <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> Registration Fee</span> <br/> <p class="help-block"> <b style="color:#888">Category:</b>{{object.license_type|upper}} <br/> <b style="color:#888">Type:</b> {{object.application_type|upper}} </p> </div> 
+
+
+      <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> N50,000.00 </span> </div>
+
+      </div> <!-- total --> 
+
+      <div class="row"> 
+
+      <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> Modalities</span>  </div> 
+
+
+      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> 
+
+      
+     
+      
+      {% if object.equipment_count == 13  %}
+      N325,000.00
+      {% elif object.equipment_count == 12  %}
+      N300,000.00
+      {% elif object.equipment_count == 11  %}
+      N275,000.00
+      {% elif object.equipment_count == 10  %}
+      N250,000.00
+      {% elif object.equipment_count == 9  %}
+      N225,000.00
+      {% elif object.equipment_count == 8  %}
+      N200,000.00
+      {% elif object.equipment_count == 7  %}
+      N175,000.00
+      {% elif object.equipment_count == 6  %}
+      N150,000.00
+      {% elif object.equipment_count == 5  %}
+      N125,000.00
+      {% elif object.equipment_count == 4  %}
+      N100,000.00
+      {% elif object.equipment_count == 3  %}
+      N75,000.00
+      {% else  %}
+      N50,000.00
+      {% endif %}
+      </span> </div></div>  
+      <div class="row" style="border-top:1px solid #555; border-bottom: 1px solid #555; padding:8px;"> 
+      <div class="col-lg6 col-md-6 col-sm-3 col-xs-12"> Payment Status: <b style="color:#dc3545">PENDING</b> </div> 
+      <div class="col-lg2 col-md-2 col-sm-3 col-xs-12 text-right"> <b>Total:</b> </div> 
+      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> 
+      {% if object.equipment_count == 13 %}   
+      N375,000.00
+      {% elif object.equipment_count == 12  %}
+      N350,000.00
+      {% elif object.equipment_count == 11  %}
+      N325,000.00
+      {% elif object.equipment_count == 10  %}
+      N300,000.00
+      {% elif object.equipment_count == 9  %}
+      N275,000.00
+      {% elif object.equipment_count == 8  %}
+      N250,000.00
+      {% elif object.equipment_count == 7  %}
+      N225,000.00
+      {% elif object.equipment_count == 6  %}
+      N200,000.00
+      {% elif object.equipment_count == 5  %}
+      N175,000.00
+      {% elif object.equipment_count == 4  %}
+      N150,000.00
+      {% elif object.equipment_count == 3  %}
+      N125,000.00
+      {% else  %}
+      N100,000.00
+      {% endif %} 
+      </span> </div> 
+      </div> <!-- buttons --> <br/> 
+
+
+      <div class="row"> 
+      <div class="col-lg-6 col-md-4 col-sm-12 hidden-xs"> 
+      <img class="img-fluid" src="{% static 'img/remita.png' %}" /> 
+      </div> 
+        
+      <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12 text-right"> 
+      <br/> <a href="{% url 'hospitals:hospitals_dashboard' %}" class="text-dark py-1 mr-3 mt-6 btn btn-outline-danger"><i class="fas fa-times"></i>  <br/>Close</a>    
+      <a href="{% url 'hospitals:payment_processing' object.pk %}" class="py-1 mr-3 mt-6 btn btn-warning"><i class="fa fa-check"></i> <br/>Proceed with Payment</a>
+      </div>
+      </div>
+      </div>
+      </div>
+        
+      <br>
+      <div class="row justify-content-center mx-auto"> 
+
+      <div class="col-md-8 col-md text-center" style="background:#f7dedd"> 
+      <p class="text-success text-left display-4 paragraph3 mb-0 mt-3">To Pay:</p>
+      <p class="ml-2 text-left" style="font-size:18px"><strong>Logon to www.remita.net, Click Pay Fed Govt Agency, </br> Choose Radiographers Registration Board of Nigeria from the list and complete the relevant fields, </br> Generate your RRR Number and pay with your credit/debit card or use the generated RRR to pay physically at any commercial bank. </br>
+      If you have ready at this time your remita payment receipt or your payment advise from the bank, Click Proceed to Payment to upload your payment details.</strong></p>
+
+
+      </div>
+
+      </div>
+      </br>
+      </div>
+
+
+      {% endblock %}

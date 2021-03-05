@@ -13,6 +13,7 @@
 <main class="container">
 
 <!-- Banner -->
+{% if object.hospital.license_type == "Radiography Practice" %}
 <section class="pt-2 pl-3">
 <div class="row ">
 <div class="col mb-0">
@@ -22,6 +23,21 @@
 </div>
 </div>
 </section>
+
+{% else %}
+<section class="pt-2 pl-3">
+<div class="row ">
+<div class="col mb-0">
+<p class="text-info display-4 paragraph2">Vet New Internship Accreditation Application</p>
+<hr>
+    
+</div>
+</div>
+</section>
+
+
+
+{% endif %}
 
 <div class="row">
 <div class="col-md-7 mt-0">

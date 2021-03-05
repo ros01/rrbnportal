@@ -65,6 +65,8 @@ class HospitalDetailModelForm(forms.ModelForm):
 
 
 
+
+
 class PaymentDetailsModelForm(forms.ModelForm):
     payment_method = forms.ChoiceField(choices = PAYMENT_METHOD, widget=forms.Select(), required=True)
 

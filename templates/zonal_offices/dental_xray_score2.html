@@ -1,0 +1,506 @@
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+<form method="post" action="">
+  {% csrf_token %}
+
+ <div class="modal-header">
+    <h5 class="modal-title text-success">Enter Dental X-ray Scores</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span> 
+    </button>
+  </div>
+
+ 
+  {{ form.hospital_name|as_crispy_field }}
+  {{ form.schedule|as_crispy_field }}
+
+  <div class="modal-body">
+
+
+  <div class="{% if form.non_field_errors %}invalid{% endif %} mb-2">
+      {% for error in form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+  </div>
+
+  
+  <div class="row">
+  <div class="form-group col-md-4">
+  {{ form.application_no|as_crispy_field }}
+  <div class="{% if form.application_no.errors %} invalid{% endif %}">
+  {% for error in field.errors %}
+  <p class="help-block">{{ error }}</p>
+  {% endfor %}
+  </div>
+  </div>
+    
+
+   
+   </div>
+
+  <div class="row">
+  <div class="form-group col-md-4">
+  {{ form.shielding_score|as_crispy_field }}
+  <div class="{% if form.shielding_score.errors %} invalid{% endif %}">
+  {% for error in field.errors %}
+  <p class="help-block">{{ error }}</p>
+  {% endfor %}
+  </div>
+  </div>
+    
+
+   <div class="form-group col-md-4">
+   {{ form.room_design_score|as_crispy_field }}
+   <div class="{% if form.room_design_score.errors %} invalid{% endif %}">
+   {% for error in field.errors %}
+   <p class="help-block">{{ error }}</p>
+   {% endfor %}
+   </div>
+   </div>
+    
+   <div class="form-group col-md-4">
+   {{ form.radiographers_no_score|as_crispy_field }}
+   <div class="{% if form.radiographers_no_score.errors %} invalid{% endif %}">
+   {% for error in field.errors %}
+   <p class="help-block">{{ error }}</p>
+   {% endfor %}
+   </div>
+   </div>
+
+   </div>
+
+   <div class="row">
+   <div class="form-group col-md-4">
+   {{ form.radiologists_no_score|as_crispy_field }}
+   <div class="{% if form.radiologists_no_score.errors %} invalid{% endif %}">
+   {% for error in field.errors %}
+   <p class="help-block">{{ error }}</p>
+   {% endfor %}
+   </div>
+   </div>
+
+   <div class="form-group col-md-4">
+   {{ form.radiographer_license_score|as_crispy_field }}
+   <div class="{% if form.radiographer_license_score.errors %} invalid{% endif %}">
+   {% for error in field.errors %}
+   <p class="help-block">{{ error }}</p>
+   {% endfor %}
+   </div>
+   </div>
+
+   <div class="form-group col-md-4">
+   {{ form.prmd_prpe_score|as_crispy_field }}
+   <div class="{% if form.prmd_prpe_score.errors %} invalid{% endif %}">
+   {% for error in field.errors %}
+   <p class="help-block">{{ error }}</p>
+   {% endfor %}
+   </div>
+   </div> 
+   </div>
+
+
+
+   <div class="row">
+   <div class="form-group col-md-4">
+   {{ form.water_supply_score|as_crispy_field }}
+   <div class="{% if form.water_supply_score.errors %} invalid{% endif %}">
+   {% for error in field.errors %}
+   <p class="help-block">{{ error }}</p>
+   {% endfor %}
+   </div>
+   </div>
+
+   <div class="form-group col-md-4">
+   {{ form.equipment_certification_score|as_crispy_field }}
+   <div class="{% if form.equipment_certification_score.errors %} invalid{% endif %}">
+   {% for error in field.errors %}
+   <p class="help-block">{{ error }}</p>
+   {% endfor %}
+   </div>
+   </div> 
+
+   <div class="form-group col-md-4">
+   {{ form.warning_lights_score|as_crispy_field }}
+   <div class="{% if form.warning_lights_score.errors %} invalid{% endif %}">
+   {% for error in field.errors %}
+   <p class="help-block">{{ error }}</p>
+   {% endfor %}
+   </div>
+   </div>
+
+   </div>
+
+   <div class="row">
+   <div class="form-group col-md-4">
+   {{ form.warning_signs_score|as_crispy_field }}
+   <div class="{% if form.warning_signs_score.errors %} invalid{% endif %}">
+   {% for error in field.errors %}
+   <p class="help-block">{{ error }}</p>
+   {% endfor %}
+   </div>
+   </div>
+
+   <div class="form-group col-md-4">
+   {{ form.C07_form_compliance_score|as_crispy_field }}
+   <div class="{% if form.C07_form_compliance_score.errors %} invalid{% endif %}">
+   {% for error in field.errors %}
+   <p class="help-block">{{ error }}</p>
+   {% endfor %}
+   </div>
+   </div>
+
+   <div class="form-group col-md-4">
+   {{ form.equipment_installation_location_score|as_crispy_field }}
+   <div class="{% if form.equipment_installation_location_score.errors %} invalid{% endif %}">
+   {% for error in field.errors %}
+   <p class="help-block">{{ error }}</p>
+   {% endfor %}
+   </div>
+   </div> 
+   </div>
+
+   <div class="row">
+   <div class="form-group col-md-4">
+   {{ form.processing_unit_score|as_crispy_field }}
+   <div class="{% if form.processing_unit_score.errors %} invalid{% endif %}">
+   {% for error in field.errors %}
+   <p class="help-block">{{ error }}</p>
+   {% endfor %}
+   </div>
+   </div>
+
+   <div class="form-group col-md-4">
+   {{ form.toilets_cleanliness_score|as_crispy_field }}
+   <div class="{% if form.toilets_cleanliness_score.errors %} invalid{% endif %}">
+   {% for error in field.errors %}
+   <p class="help-block">{{ error }}</p>
+   {% endfor %}
+   </div>
+   </div>
+
+   <div class="form-group col-md-4">
+   {{ form.waiting_room_score|as_crispy_field }}
+   <div class="{% if form.waiting_room_score.errors %} invalid{% endif %}">
+   {% for error in field.errors %}
+   <p class="help-block">{{ error }}</p>
+   {% endfor %}
+   </div>
+   </div> 
+   </div>
+
+   <div class="row">
+   <div class="form-group col-md-4">
+   {{ form.offices_adequacy_score|as_crispy_field }}
+   <div class="{% if form.offices_adequacy_score.errors %} invalid{% endif %}">
+   {% for error in field.errors %}
+   <p class="help-block">{{ error }}</p>
+   {% endfor %}
+   </div>
+   </div>
+
+   <div class="form-group col-md-4">
+   {{ form.dentalxray_total|as_crispy_field }}
+   <div class="{% if form.dentalxray_total.errors %} invalid{% endif %}">
+   {% for error in field.errors %}
+   <p class="help-block">{{ error }}</p>
+   {% endfor %}
+   </div>
+   </div>
+
+   
+   </div>
+   
+
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+    <button type="button" class="submit-btn btn btn-success ml-2 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Submit Dental X-ray Scores</button>
+
+  </div>
+</form>
+  <div class="container">
+
+<p class="text-success m-0 p-0"> <b>Scoring Legend: </b></p>
+
+
+i.  Pass Mark is 50 <br>
+ii. Score grade = (50 – 59 marks is for Provisional Registration, while above 60 marks is for Full Registration where one modality is considered); For a facility with more than one modality, failure in any of the modalities or score of 50 – 59 marks in all the modalities shall attract issuing of Provisional Registration of Practice Certificate pending the remedy of the defects. <br>
+iii.  Each modality should have at least 2 Radiographers (50 -59 marks for less than two per modality) <br>
+<br>
+1 Shielding of the Equipment room, door, window, and console area with lead, barium plaster or concrete of adequate thickness is considered as (wall = 5 marks, door/door & window = 5 marks, and console area = 5 marks). <br>
+2.  Room design and layout for all radiation emitting equipment should be in strict compliance to high radiation safety standards <br>
+3.  Each Radiographer attracts 5 marks <br>
+4.  Presence of Radiologist attracts 1 mark <br>
+5.  Each current licence is 5 marks <br>
+6.  PRMD (TLDs & Instadose) = 7.5 marks; PRPE (Lead apron, Lead Shield, Console Lead glass of adequate Lead equivalent, Lead glasses, Lead gloves etc) = 7.5 marks <br>
+7.  Running water (5 marks) is preferable source of water supply than stagnant water – water in reservoir or container (2 marks)  <br>
+8.  Equipment certification must be by authority recognizable in Nigeria  <br>
+9.  Warning light must be mounted on entrance to radiation equipment room.  <br>
+10. Warning signs must be placed on entrance to radiation equipment room. It must be in lingua franca and local dialect <br>
+11. The completed form CO7 should contain names of the directors and their contacts  <br>
+12. For Adequacy of Equipment, Installation & Location: Regular dental X-ray (intra-oral) machine with “cone” or panoramic x-ray or Cone Beam Dental C.T machine = 2marks, while any combination of the two or three types = 3marks.; Proper Installation (Where X-Ray tube is not directed to public/residential zone or such a way that radiation may seriously hit the console area) = 0.5 mark, & Proper Location (i.e. ground floor) = 0.5 mark. Only Functional Equipment is to be considered. <br>
+13. Processing unit includes Presence of processing equipment in the dental unit = 5, absence of processing equipment in the dental unit but in any other unit of radiodiagnostic department = 3  <br>
+14. Toilets include General Toilet (2.5 mark), & Staff Toilet (2.5 marks)
+15. Adequacy of waiting room should comprise of its cleanliness (1.5marks), ventilation/air conditioning (1.5 marks) and furnishing (2 marks) <br>
+16. Offices include Office of Radiographer-in-Charge (2 marks), & Radiographers’ Common Room (2 marks)  <br>
+
+
+
+
+</div>
+
+<script>
+$(function () {
+       $( "#id_shielding_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_room_design_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_radiographers_no_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_radiologists_no_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_radiographer_license_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_prmd_prpe_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+    
+$(function () {
+       $( "#id_water_supply_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_equipment_certification_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+
+$(function () {
+       $( "#id_warning_lights_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_warning_signs_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_C07_form_compliance_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_equipment_installation_location_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_processing_unit_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_toilets_cleanliness_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_waiting_room_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_offices_adequacy_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+</script>
+
+<script>
+  $('#id_shielding_score, #id_room_design_score, #id_radiographers_no_score, #id_radiologists_no_score, #id_radiographer_license_score, #id_prmd_prpe_score, #id_water_supply_score, #id_equipment_certification_score, #id_warning_lights_score,  #id_warning_signs_score, #id_C07_form_compliance_score, #id_equipment_installation_location_score, #id_processing_unit_score, #id_toilets_cleanliness_score, #id_waiting_room_score, #id_offices_adequacy_score').on('input',function(e){$('#id_dentalxray_total').val(parseInt($('#id_shielding_score').val()) + parseInt($('#id_room_design_score').val()) + parseInt($('#id_radiographers_no_score').val()) + parseInt($('#id_radiologists_no_score').val()) + parseInt($('#id_radiographer_license_score').val()) + parseInt($('#id_prmd_prpe_score').val()) + parseInt($('#id_water_supply_score').val()) + parseInt($('#id_equipment_certification_score').val()) + parseInt($('#id_warning_lights_score').val()) + parseInt($('#id_warning_signs_score').val()) + parseInt($('#id_C07_form_compliance_score').val()) + parseInt($('#id_equipment_installation_location_score').val()) + parseInt($('#id_processing_unit_score').val()) + parseInt($('#id_toilets_cleanliness_score').val()) + parseInt($('#id_waiting_room_score').val()) + parseInt($('#id_offices_adequacy_score').val()));
+        });
+
+  
+
+</script>
+

@@ -60,7 +60,9 @@ class Document(models.Model):
         )
 
     APPLICATION_TYPE = (
-        ('New Registration', 'New Registration' ),
+        ('New Registration - Radiography Practice', 'New Registration - Radiography Practice' ),
+        ('New Registration - Government Hospital Internship', 'New Registration - Government Hospital Internship' ),
+        ('New Registration - Private Hospital Internship', 'New Registration - Private Hospital Internship' ),
         ('Renewal', 'Renewal'),
         )
 
@@ -536,7 +538,7 @@ class Dentalxray(models.Model):
     toilets_cleanliness_score = models.IntegerField()
     waiting_room_score = models.IntegerField()
     offices_adequacy_score = models.IntegerField()
-    dentalxray_total = models.IntegerField()
+    dentalxray_total = models.IntegerField(blank=False, null=False)
 
     class Meta:
         unique_together = ('application_no','hospital_name')
@@ -575,7 +577,7 @@ class Angiography(models.Model):
     toilets_cleanliness_score = models.IntegerField()
     waiting_room_score = models.IntegerField()
     offices_adequacy_score = models.IntegerField()
-    angiography_total = models.IntegerField()
+    angiography_total = models.IntegerField(blank=False, null=False)
 
     class Meta:
         unique_together = ('application_no','hospital_name')
@@ -760,9 +762,12 @@ class Appraisal(models.Model):
     def __str__(self):
         return str (self.hospital_name)
 
-    
+    def save(self, *args, **kwargs):
+        super(Appraisal, self).save(*args, **kwargs)
+        self.schedule.application_status = 5
+        self.schedule.save()
 
-
+        
 class License(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     application_no = models.CharField(max_length=100)
@@ -770,8 +775,8 @@ class License(models.Model):
     hospital = models.ForeignKey(Document, null=True, related_name='hospital_15', on_delete=models.CASCADE)
     payment = models.ForeignKey(Payment, null=True, related_name='payment_15', on_delete=models.CASCADE)
     schedule = models.ForeignKey(Schedule, null=True, related_name='schedule_15', on_delete=models.CASCADE)
-    inspection = models.ForeignKey(Inspection, null=True, related_name='inspection_15', on_delete=models.CASCADE)
-    appraisal = models.ForeignKey(Appraisal, null=True, related_name='appraisal_15', on_delete=models.CASCADE)
+    inspection = models.ForeignKey(Inspection, null=True, blank=True, related_name='inspection_15', on_delete=models.CASCADE)
+    appraisal = models.ForeignKey(Appraisal, null=True, blank=True, related_name='appraisal_15', on_delete=models.CASCADE)
     hospital_code = models.CharField(max_length=500, null=True, blank=True, 
         default=increment_hospital_code)
     application_status = models.IntegerField(default=8)

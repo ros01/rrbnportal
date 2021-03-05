@@ -13,36 +13,8 @@
     <section class="p-2">
     <div class="container">
 
-    {% for payment in payment %}
-    {% if payment.license_type == "Internship Accreditation" %}
-   
-    <div class="row mt-2 ml-2">
-    <div class="col text-left mb-2">
-    <p class="text-success display-4 paragraph3">Internship Accreditation Payment Processing</p>
-    <hr>
-    </div>
-    </div>
-
-
-     </div>
-
-    </section>
-
-    <section class="my-0">
-    <div class="container">
-    <div class="row rounded ml-3 pl-2 justify-content-center align-items-center" style="background-color: #bfe3f8;">
     
-    <div class="col-md-12 pt-2 pb-0">
-    <p class="lead" style="color: #05567b;">
-    <strong>{{object.hospital_name}}</strong> Internship Accreditation Application is currently undergoing verifications</p>           
-    </div>
-    </div>
-    </div>
-    </section>
-
-    {% else %}
-
-
+   
     <div class="row mt-2 ml-2">
     <div class="col text-left mb-2">
     <p class="text-success display-4 paragraph3">Radiography Practise License Payment Processing</p>
@@ -61,16 +33,13 @@
     
     <div class="col-md-12 pt-2 pb-0">
     <p class="lead" style="color: #05567b;">
-    <strong>{{object.hospital_name}}</strong> Radiography Practice License Application currently undergoing verifications</p>           
+    <strong>{{object.hospital_name}}</strong> Radiography Practise License Application is currently undergoing verifications</p>           
     </div>
     </div>
     </div>
     </section>
 
-
-
-    {% endif %}
-    {% endfor %}
+    
 
 <!-- Skills -->
 
@@ -85,32 +54,30 @@
 <div class="row mx-2 py-0 my-0">
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
         <p class="lead text-secondary m-0">Application Number:</p>
-        {% for payment in payment %}
-        <p class="lead text-secondary m-0"><strong>{{payment.application_no}}</strong></p>  
+       
+        <p class="lead text-secondary m-0"><strong>{{object.application_no}}</strong></p>  
         <br>
         <br>
         <p class="lead text-secondary m-0">Radiography Examinations:</p>
-        <p class="lead text-secondary text-uppercase m-0"><strong>{{payment.equipment}}</strong></p>  
+        <p class="lead text-secondary text-uppercase m-0"><strong>{{object.hospital.equipment}}</strong></p>  
         <br> 
     </div>
 
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
         <p class="lead text-secondary m-0">License Type:</p>
-        <p class="lead text-secondary m-0"><strong>{{payment.license_type}}</strong></p>
+        <p class="lead text-secondary m-0"><strong>{{object.hospital.license_type}}</strong></p>
         <br>
         <br>
         <p class="lead text-secondary m-0">Application Start Date:</p>
-        <p class="lead text-secondary text-capitalize m-0"><strong>{{payment.submission_date}}</strong></p>  
+        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.hospital.submission_date}}</strong></p>  
         <br> 
     </div>
-    {% endfor %}
-
-    {% for hospital in hospital %}
+    
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
         <p class="lead text-secondary m-0">Facility Address/Location:</p>
-        <p class="lead text-secondary m-0"><strong>{{hospital.address}}</strong></p>  
+        <p class="lead text-secondary m-0"><strong>{{object.hospital_name.address}}</strong></p>  
         <br>
-    {% endfor %}
+    
 
         <p class="lead text-secondary m-0 mt-4">Vetted By:</p>
 
@@ -125,11 +92,11 @@
 
         <br>
     </div>
-    {% for hospital in hospital %}
+    
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
         <p class="lead text-secondary m-0">State of Location:</p>
-        <p class="lead text-secondary m-0"><strong>{{hospital.state}}</strong></p>
-        {% endfor %} 
+        <p class="lead text-secondary m-0"><strong>{{object.hospital_name.state}}</strong></p>
+        
         <br>
         <br>
         <p class="lead text-secondary m-0">Vetted On:</p>

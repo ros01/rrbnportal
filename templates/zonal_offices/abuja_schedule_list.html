@@ -35,9 +35,9 @@
 <td style="color: #fff;" class="small-text">S/N</td>
 <td style="color: #fff;" class="small-text">Application No</td>
 <td style="color: #fff;" class="small-text">Hospital Name</td>
+<td style="color: #fff;" class="small-text">Application Category</td>
 <td style="color: #fff;" class="small-text">Address</td>
 <td style="color: #fff;" class="small-text">Inspection Date</td>
-<td style="color: #fff;" class="small-text">Report Deadline</td>
 <td style="color: #fff;" class="small-text">Action</td>
 </tr>
 </thead>
@@ -46,9 +46,9 @@
 <td style="color: #fff;" class="small-text">S/N</td>
 <td style="color: #fff;" class="small-text">Application No</td>
 <td style="color: #fff;" class="small-text">Hospital Name</td>
+<td style="color: #fff;" class="small-text">Application Category</td>
 <td style="color: #fff;" class="small-text">Address</td>
 <td style="color: #fff;" class="small-text">Inspection Date</td>
-<td style="color: #fff;" class="small-text">Report Deadline</td>
 <td style="color: #fff;" class="small-text">Action</td>
 </tr>
 </tfoot>
@@ -59,9 +59,9 @@
 <td>{{forloop.counter}}</td>
 <td>{{object.application_no}}</td>
 <td>{{object.hospital_name}}</td>
+<td>{{object.hospital.license_type}}</td>
 <td>{{object.hospital_name.address}}</td>
 <td>{{object.inspection_date}}</td>
-<td>{{object.inspection_report_deadline}}</td>
 <td><a href="{% url 'zonal_offices:inspection_detail' object.pk %}" class="btn btn-outline-warning btn-sm">View</a></td>
 </tr>
 {% endfor %}

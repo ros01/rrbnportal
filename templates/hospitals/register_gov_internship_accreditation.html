@@ -17,7 +17,7 @@
 <div class="container">
 <div class="row mt-2 pt-2">
 <div class="col text-left p-0 m-0">
-<p class="text-success display-4 paragraph2">Start New Hospital Registration</p>
+<p class="text-success display-4 paragraph2">Hospital Details Submission</p>
 <hr>
 </div>
 </div>
@@ -32,7 +32,7 @@ Fill the Form below. All fields are required</p></div>
 <form method="POST" action="." enctype="multipart/form-data">
 {% csrf_token %}
 
- <input type="hidden" name="application_type" class="form-control" value="New Registration" required id="id_application_type"  id="div_id_application_type">
+ <input type="hidden" name="application_type" class="form-control" value="New Registration - Government Hospital Internship" required id="id_application_type"  id="div_id_application_type">
 
  <input type="hidden" name="license_type" class="form-control" value="Internship Accreditation" required id="id_license_type"  id="div_id_license_type">
 

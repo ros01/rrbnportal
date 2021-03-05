@@ -1,0 +1,55 @@
+{% extends 'base-reg.html'%}
+{% load static %}
+{% block title%}| Welcome {% endblock %}
+
+{% block styles %}
+
+{% endblock %}
+
+
+{% block content %}
+                <main class="container">
+
+
+                <section class="px-2 pt-3 pb-2">
+   
+                <div class="row mt-3 mb-2">
+                <div class="col text-left mb-1">
+                <p class="text-success display-4 paragraph2">Verify Internship Accreditation</p>
+                <hr>
+                </div>
+                </div>
+
+                </section>
+
+                 </main>
+        <!-- PAGE TITLE END -->
+
+        <!-- CONTENT START -->
+                    <section>
+                    <div id="" class="container padding35">
+                    <div class="row mb-3">
+                    <div class="col-md-12 wow fadeInLeft">
+                    <span style="color:#F00"></span>
+                    <table width="100%">
+                    <td width="45%">
+                    <form action="{% url 'search_internship_result' %}" method="get">
+                    <label>Enter License Number</label><br/>
+                    <div class="form-group">
+                    <input name="q" type="text" class="form-control input-lg" placeholder="Enter License Number or Hospital Name on your Certificate">
+                    </div>
+                    <button type="submit" class="btn btn-success btn-lg"><i class="fa fa-search fa-fw"></i> Verify Internship Accreditation</button>
+                     </div>
+                    </form>   
+                    </td>
+                    <td width="10%">&nbsp;</td>
+                    <td width="45%">             
+                    </td>
+                    </table>
+                    </div>        
+                    </div>
+                    </div>
+
+                    </section>
+        <!-- CONTENT END -->
+{% endblock %}

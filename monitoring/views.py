@@ -34,6 +34,8 @@ from operator import attrgetter
 from django.db.models import Count
 from django.db import models
 from django.contrib.messages.views import SuccessMessageMixin
+import itertools
+counter = itertools.count()
 
 
 
@@ -170,7 +172,8 @@ class InspectionScheduleListView(LoginRequiredMixin, ListView):
     
     def get_context_data(self, **kwargs):
         context = super(InspectionScheduleListView, self).get_context_data(**kwargs)
-        context['payment_qs'] = Payment.objects.select_related("hospital_name").filter(vet_status=2)
+        context['payment_qs'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital__license_type = 'Radiography Practice')
+        context['payment_qss'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital__license_type = 'Internship Accreditation')
         return context
 
 #class InspectionCreateView(LoginRequiredMixin, PaymentObjectMixin, View):
@@ -227,7 +230,7 @@ class InspectionCreateView(LoginRequiredMixin, PaymentObjectMixin, SuccessMessag
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['payment_qs'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital_name=self.payment.hospital_name)
+        context['payment_qs'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital_name=self.payment.hospital_name, hospital__license_type = 'Radiography Practice')
         
         #context = {'object': self.get_object()}
         #context['payment'] = Payment.objects.get(pk=self.object)
@@ -267,6 +270,57 @@ class InspectionCreateView(LoginRequiredMixin, PaymentObjectMixin, SuccessMessag
           
         return self.render_to_response(context)
 
+
+
+class AppraisalCreateView(LoginRequiredMixin, PaymentObjectMixin, SuccessMessageMixin, CreateView):
+    model = Schedule
+    template_name = 'monitoring/schedule_inspection.html'
+    form_class = ScheduleModelForm
+
+    def get_success_url(self):
+        return reverse("monitoring:inspection_details", kwargs={"id": self.object.id})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['payment_qs'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital_name=self.payment.hospital_name, hospital__license_type = 'Internship Accreditation')
+        
+        #context = {'object': self.get_object()}
+        #context['payment'] = Payment.objects.get(pk=self.object)
+        #context['hospital'] = Hospital.objects.get(id=self.kwargs['id'])
+        #context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
+        #context['hospital_qs'] = Hospital.objects.filter(hospital_name=self.object)
+        return context
+
+    def get_initial(self):
+        # You could even get the Book model using Book.objects.get here!
+        return {
+            'payment': self.kwargs["pk"],
+            #'license_type': self.kwargs["pk"]
+        }
+    
+    
+    def get_form_kwargs(self):
+        self.payment = Payment.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.payment.hospital_name
+        kwargs['initial']['hospital'] = self.payment.hospital
+        kwargs['initial']['application_no'] = self.payment.application_no
+        #kwargs['initial']['hospital'] = self.payment.hospital
+        
+        return kwargs
+      
+
+    def form_invalid(self, form):
+        form = self.get_form()
+
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+          
+           context['object'] = obj
+           context['form'] = form 
+          
+        return self.render_to_response(context)
 
 class ScheduleObjectMixin(object):
     model = Schedule
@@ -309,6 +363,8 @@ class InspectionCreateDetailView(LoginRequiredMixin, ScheduleObjectMixin, View):
 class InspectionCompletedListView(LoginRequiredMixin, ListView):
     template_name = 'monitoring/inspections_completed_list.html'
     context_object_name = 'object'
+
+
 
     def get_queryset(self):
         return Inspection.objects.all()
@@ -362,10 +418,6 @@ class AccreditationCompletedDetailView(LoginRequiredMixin, AccreditationObjectMi
         context = {'object': self.get_object()}
         #context = {'object': self.get_object()}
         return render(request, self.template_name, context)
-
-
-
-
 
 
 def inspection_report(request, id):
@@ -446,8 +498,6 @@ def reject_appraisal_report(request, id):
       return render(request, 'monitoring/inspection_failed.html',context)
 
 
-
-
 def validate(request, id):
   appraisal = get_object_or_404(Appraisal, pk=id)
   
@@ -462,8 +512,6 @@ def view_appraisal_report(request, id):
   context={'appraisal': appraisal,        
            }
   return render(request, 'monitoring/appraisals_report_detail.html', context)
-
-
 
 #class LicenseIssueListView(LoginRequiredMixin, ListView):
     #template_name = "monitoring/license_issue_list.html"
@@ -486,10 +534,11 @@ class LicenseIssueListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         obj = super(LicenseIssueListView, self).get_context_data(**kwargs)
 
-        obj['inspection'] = Inspection.objects.select_related("hospital_name").filter(application_status=7).count()
-        #obj['inspections_qs'] = Inspection.objects.all()
-        obj['appraisal'] = Appraisal.objects.select_related("hospital_name").filter(application_status=7).count()
-        #obj['appraisals_qs'] = Appraisal.objects.all()
+        
+        obj['inspection'] = Inspection.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Radiography Practice', hospital__application_type = 'New Registration - Radiography Practice').count()
+        obj['inspectionr'] = Inspection.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Radiography Practice', hospital__application_type = 'Renewal').count()
+        obj['appraisal'] = Appraisal.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Internship Accreditation').count()
+       
         
         return obj   
 
@@ -503,15 +552,37 @@ class LicenseIssueListTable(LoginRequiredMixin, ListView):
     
     def get_context_data(self, **kwargs):
         obj = super(LicenseIssueListTable, self).get_context_data(**kwargs)
-       
-
-        obj['issue_license_qs'] = Inspection.objects.select_related("hospital_name").filter(application_status=7)
-        #obj['inspections_qs'] = Inspection.objects.all()
-        obj['issue_appraisal_qs'] = Appraisal.objects.select_related("hospital_name").filter(application_status=7)
-        #obj['appraisals_qs'] = Appraisal.objects.all()
-        
+        obj['issue_license_qs'] = Inspection.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Radiography Practice', hospital__application_type = 'New Registration - Radiography Practice')  
         return obj   
-   
+
+class AccreditationIssueListTable(LoginRequiredMixin, ListView):
+    template_name = "monitoring/accreditation_list_table.html"
+    context_object_name = 'object'
+    
+    def get_queryset(self):
+        return Inspection.objects.all()
+
+    
+    def get_context_data(self, **kwargs):
+        obj = super(AccreditationIssueListTable, self).get_context_data(**kwargs)
+        obj['issue_appraisal_qs'] = Appraisal.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Internship Accreditation')
+         
+        return obj     
+
+
+class RenewalIssueListTable(LoginRequiredMixin, ListView):
+    template_name = "monitoring/renewal_list_table.html"
+    context_object_name = 'object'
+    
+    def get_queryset(self):
+        return Inspection.objects.all()
+
+    
+    def get_context_data(self, **kwargs):
+        obj = super(RenewalIssueListTable, self).get_context_data(**kwargs)
+ 
+        obj['issue_renewal_qs'] = Inspection.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Radiography Practice', hospital__application_type = 'Renewal')         
+        return obj   
 
 class RecordsCreateView(LoginRequiredMixin, CreateView):
     template_name = 'monitoring/create_hospital_records.html'

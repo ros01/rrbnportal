@@ -10,19 +10,17 @@
 {% block content %}
 
 <section class="p-2">
-   
     <div class="row mt-2 ">
     <div class="container mb-2">
     <p class="text-info display-4 paragraph3 ml-3">Facility Accreditation Report for {{object.hospital_name}}</p>
     <hr class="ml-3">
     </div>
     </div>
-
-    </section>
+</section>
 
 <section class="my-0">
-    <div class="container">
-   <div class="row rounded ml-3 mr-0 pl-1 pr-0 justify-content-center align-items-center" style="background-color: #bfe3f8;">
+<div class="container">
+<div class="row rounded ml-3 mr-0 pl-1 pr-0 justify-content-center align-items-center" style="background-color: #bfe3f8;">
             <div class="col-md-1 mt-1 pt-1 px-auto">
                <i class="fa fa-info-circle fa-2x" aria-hidden="true"></i>
                 </div>
@@ -52,22 +50,22 @@
         <br>
         <br>
         <p class="lead text-secondary m-0">Accreditation Date:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.inspection_date_pretty}}</strong></p>  
+        <p class="lead text-secondary m-0"><strong>{{object.schedule.inspection_date}}</strong></p>  
         <br> 
     </div>
 
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
         <p class="lead text-secondary m-0">Facility Inspected:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.address}}</strong></p>
+        <p class="lead text-secondary m-0"><strong>{{object.hospital_name.address}}</strong></p>
         <br>
        
         <p class="lead text-secondary m-0">Inspection Zone:</p>
-        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.inspection_zone}}</strong></p>  
+        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.schedule.inspection_zone}}</strong></p>  
         <br> 
     </div>
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
-        <p class="lead text-secondary m-0">Practice Category:</p>
-        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.license_category}}</strong></p>
+        <p class="lead text-secondary m-0">Application Category:</p>
+        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.hospital.license_type}}</strong></p>
         <br>
         <br>
         <p class="lead text-secondary m-0">Inspection Score:</p>
@@ -75,27 +73,17 @@
         <br>
     </div>
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
-        <p class="lead text-secondary m-0">Registered Services:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.equipment}}</strong></p>  
+        <p class="lead text-secondary m-0">Listed Modalities:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.hospital.equipment}}</strong></p>  
+        <br> 
         <br>
-        <p class="lead text-secondary m-0">Next Inspection Date:</p>
-        <p class="lead text-secondary text-capitalize m-0"><strong>{{object.next_inspection_date}}</strong></p>  
-        <br>
-        
     </div>
     </div>
     
 
     <hr>
     <div class="d-flex justify-content-end">   
-    
-    
-    
     <a href="{% url 'hospitals:hospitals_dashboard' %}" class="btn btn-warning text-white p-2 mr-3 mt-2 mb-5 "><i class="fa fa-angle-double-left" aria-hidden="true"></i> Return to Dashboard</a>
-    
-   
-    
-    
     </div> 
 
     </div>  

@@ -48,9 +48,9 @@ class UltrasoundModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelFor
             
         
         widgets = {
-        #'hospital_name': forms.HiddenInput(),
-        #'schedule': forms.HiddenInput(),
-        #'application_no': forms.TextInput(attrs={'readonly': True}),
+        'hospital_name': forms.HiddenInput(),
+        'schedule': forms.HiddenInput(),
+        'application_no': forms.TextInput(attrs={'readonly': True}),
         
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
         'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),  
@@ -73,7 +73,8 @@ class UltrasoundModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelFor
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       
+       self.fields['schedule'].label = ""
+       self.fields['hospital_name'].label = ""
        self.fields['room_design_score'].label = "Room Design"
        self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
        self.fields['radiographers_no_score'].label = "No of Radiographers"
@@ -120,10 +121,10 @@ class NuclearMedicineModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.Mod
 
           
         widgets = {
-        #'hospital_name': forms.HiddenInput(),
-        #'schedule': forms.HiddenInput(),
-        #'application_no': forms.TextInput(attrs={'readonly': True}),
-        
+        'hospital_name': forms.HiddenInput(),
+        'schedule': forms.HiddenInput(),
+        'application_no': forms.TextInput(attrs={'readonly': True}),
+
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':6,'type': 'number'}),
         'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
@@ -159,7 +160,9 @@ class NuclearMedicineModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.Mod
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-      
+
+       self.fields['schedule'].label = ""
+       self.fields['hospital_name'].label = ""
        self.fields['shielding_score'].label = "Shielding"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -231,9 +234,9 @@ class RadiotherapyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelF
 
           
         widgets = {
-        #'hospital_name': forms.HiddenInput(),
-        #'schedule': forms.HiddenInput(),
-        #'application_no': forms.TextInput(attrs={'readonly': True}),
+        'hospital_name': forms.HiddenInput(),
+        'schedule': forms.HiddenInput(),
+        'application_no': forms.TextInput(attrs={'readonly': True}),
         
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
@@ -267,7 +270,8 @@ class RadiotherapyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelF
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       
+       self.fields['schedule'].label = ""
+       self.fields['hospital_name'].label = ""
        self.fields['shielding_score'].label = "Shielding"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -328,9 +332,9 @@ class XrayModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
 
           
         widgets = {
-        #'hospital_name': forms.HiddenInput(),
-        #'schedule': forms.HiddenInput(),
-        #'application_no': forms.TextInput(attrs={'readonly': True}),
+        'hospital_name': forms.HiddenInput(),
+        'schedule': forms.HiddenInput(),
+        'application_no': forms.TextInput(attrs={'readonly': True}),
         
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':15,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
@@ -360,7 +364,8 @@ class XrayModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
                 'class': 'form-control',
             })
 
-       
+       self.fields['schedule'].label = ""
+       self.fields['hospital_name'].label = ""
        self.fields['shielding_score'].label = "Shielding"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -418,10 +423,9 @@ class FlouroscopyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelFo
 
           
         widgets = {
-        #'hospital_name': forms.HiddenInput(),
-        #'schedule': forms.HiddenInput(),
-        #'application_no': forms.TextInput(attrs={'readonly': True}),
-        
+        'hospital_name': forms.HiddenInput(),
+        'schedule': forms.HiddenInput(),
+        'application_no': forms.TextInput(attrs={'readonly': True}),
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':15,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
         'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
@@ -449,7 +453,8 @@ class FlouroscopyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelFo
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       
+       self.fields['schedule'].label = ""
+       self.fields['hospital_name'].label = ""
        self.fields['shielding_score'].label = "Shielding"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -506,10 +511,9 @@ class CtscanModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
 
           
         widgets = {
-        #'hospital_name': forms.HiddenInput(),
-        #'schedule': forms.HiddenInput(),
-        #'application_no': forms.TextInput(attrs={'readonly': True}),
-       
+        'hospital_name': forms.HiddenInput(),
+        'schedule': forms.HiddenInput(),
+        'application_no': forms.TextInput(attrs={'readonly': True}),
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':15,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
         'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
@@ -537,7 +541,8 @@ class CtscanModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       
+       self.fields['schedule'].label = ""
+       self.fields['hospital_name'].label = ""
        self.fields['shielding_score'].label = "Shielding"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -594,10 +599,9 @@ class MriModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
 
           
         widgets = {
-        #'hospital_name': forms.HiddenInput(),
-        #'schedule': forms.HiddenInput(),
-        #'application_no': forms.TextInput(attrs={'readonly': True}),
-        
+        'hospital_name': forms.HiddenInput(),
+        'schedule': forms.HiddenInput(),
+        'application_no': forms.TextInput(attrs={'readonly': True}),
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
         'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
@@ -626,7 +630,8 @@ class MriModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       
+       self.fields['schedule'].label = ""
+       self.fields['hospital_name'].label = ""
        self.fields['shielding_score'].label = "Shielding/Faraday Cage"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -683,9 +688,9 @@ class MamographyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelFor
         fields = ('application_no', 'hospital_name', 'schedule', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'mammography_certification_score', 'prmd_prpe_score', 'rso_rsa_score', 'water_supply_score', 'equipment_certification_score', 'accessories_adequacy_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'equipment_installation_location_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'mamography_total')
           
         widgets = {
-        #'hospital_name': forms.HiddenInput(),
-        #'schedule': forms.HiddenInput(),
-        #'application_no': forms.TextInput(attrs={'readonly': True}),
+        'hospital_name': forms.HiddenInput(),
+        'schedule': forms.HiddenInput(),
+        'application_no': forms.TextInput(attrs={'readonly': True}),
         
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
@@ -715,7 +720,8 @@ class MamographyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelFor
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       
+       self.fields['schedule'].label = ""
+       self.fields['hospital_name'].label = ""
        self.fields['shielding_score'].label = "Shielding"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -774,10 +780,9 @@ class DentalXrayModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelFor
 
           
         widgets = {
-        #'hospital_name': forms.HiddenInput(),
-        #'schedule': forms.HiddenInput(),
-        #'application_no': forms.TextInput(attrs={'readonly': True}),
-        
+        'hospital_name': forms.HiddenInput(),
+        'schedule': forms.HiddenInput(),
+        'application_no': forms.TextInput(attrs={'readonly': True}),
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':15,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
         'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
@@ -804,6 +809,8 @@ class DentalXrayModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelFor
                 'class': 'form-control',
             })
        
+       self.fields['schedule'].label = ""
+       self.fields['hospital_name'].label = ""
        self.fields['shielding_score'].label = "Shielding"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -856,9 +863,9 @@ class EchocardiographyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.Mo
 
           
         widgets = {
-        #'hospital_name': forms.HiddenInput(),
-        #'schedule': forms.HiddenInput(),
-        #'application_no': forms.TextInput(attrs={'readonly': True}),
+        'hospital_name': forms.HiddenInput(),
+        'schedule': forms.HiddenInput(),
+        'application_no': forms.TextInput(attrs={'readonly': True}),
        
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
         'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}), 
@@ -881,7 +888,8 @@ class EchocardiographyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.Mo
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       
+       self.fields['schedule'].label = ""
+       self.fields['hospital_name'].label = ""
        self.fields['room_design_score'].label = "Room Design & Layout"
        self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
        self.fields['radiographers_no_score'].label = "No. of Radiographers"
@@ -925,9 +933,9 @@ class AngiographyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelFo
 
           
         widgets = {
-        #'hospital_name': forms.HiddenInput(),
-        #'schedule': forms.HiddenInput(),
-        #'application_no': forms.TextInput(attrs={'readonly': True}),
+        'hospital_name': forms.HiddenInput(),
+        'schedule': forms.HiddenInput(),
+        'application_no': forms.TextInput(attrs={'readonly': True}),
         
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':15,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
@@ -958,6 +966,8 @@ class AngiographyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelFo
                 'class': 'form-control',
             })
        
+       self.fields['schedule'].label = ""
+       self.fields['hospital_name'].label = ""
        self.fields['shielding_score'].label = "Shielding"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -1015,9 +1025,9 @@ class CarmModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
 
           
         widgets = {
-        #'hospital_name': forms.HiddenInput(),
-        #'schedule': forms.HiddenInput(),
-        #'application_no': forms.TextInput(attrs={'readonly': True}),
+        'hospital_name': forms.HiddenInput(),
+        'schedule': forms.HiddenInput(),
+        'application_no': forms.TextInput(attrs={'readonly': True}),
         
         'shielding_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
@@ -1045,7 +1055,8 @@ class CarmModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       
+       self.fields['schedule'].label = ""
+       self.fields['hospital_name'].label = ""
        self.fields['shielding_score'].label = "Shielding"
        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
        self.fields['room_design_score'].label = "Room Design & Layout"
@@ -1099,12 +1110,7 @@ class AccreditationModelForm(forms.ModelForm):
         fields = ('application_no', 'hospital_name', 'hospital', 'payment', 'schedule', 'radiographers_score', 'radiologists_score', 'support_staff_score', 'offices_score', 'library_score', 'call_room_score', 'waiting_room_score', 'toilets_score', 'room_design_score', 'static_xray_score', 'mobile_xray_score', 'ct_score', 'mri_score', 'fluoroscopy_score', 'nuclear_medicine_score', 'radiation_therapy_score', 'ultrasound_score', 'mammography_score', 'dental_equipment_score', 'carm_score', 'processing_unit_score', 'diagnostic_room_score', 'personnel_score',  'cpds_score', 'departmental_seminars_score', 'licence_status_score', 'appraisal_total',  'appraisal_comments', 'photo_main', 'photo_1', 'photo_2', 'photo_3', 'photo_4', 'photo_5', 'photo_6',)      
         
         widgets = {
-        #'practice_manager': forms.HiddenInput(),
-        #'license_category': forms.HiddenInput(),
-        #'application_type': forms.HiddenInput(),
-        #'payment_amount': forms.HiddenInput(),
-        #'inspection_report_deadline': forms.HiddenInput(),
-        #'inspection_schedule_date': forms.HiddenInput(),
+        
         'hospital_name': forms.HiddenInput(),
         'hospital': forms.HiddenInput(),
         'payment': forms.HiddenInput(),

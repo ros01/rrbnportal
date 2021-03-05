@@ -1,0 +1,112 @@
+{% extends 'hospitals/hospital_base.html'%}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title%}| Welcome {% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/hospital_dashboard.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+
+<div class="row my-2">
+<div class="col-lg-7 col-md-9 col-sm-12 col-12 m-auto" style= "border-right:2px solid #eaecef; border-left:2px solid #eaecef; border-top:2px solid #eaecef; border-bottom:2px solid #eaecef">
+
+<div class="container">
+<div class="row mt-2 pt-2">
+<div class="col text-left p-0 m-0">
+<p class="text-success display-4 paragraph2">Hospital Details Submission</p>
+<hr>
+</div>
+</div>
+</div>
+<div class="container">
+<div class="row mt-0 pl-1 mb-3" style="background-color: #eaecef; border-right:4px solid #eaecef; border-left:4px solid #eaecef; border-top: :4px solid #eaecef; border-bottom: :4px solid #eaecef">
+<i class="fas fa-info fa-2x py-2 pl-3"></i>      
+<p class="lead ml-3 pl-3 py-2 my-auto">
+Fill the Form below. All fields are required</p></div>
+</div>
+
+<form method="POST" action="." enctype="multipart/form-data">
+{% csrf_token %}
+
+ <input type="hidden" name="application_type" class="form-control" value="Renewal" required id="id_application_type"  id="div_id_application_type">
+
+ <input type="hidden" name="license_type" class="form-control" value="Internship Accreditation" required id="id_license_type"  id="div_id_license_type">
+
+{{ form.hospital_name |as_crispy_field }}                  
+<div class="form-row">
+<div class="form-group col-md-6 mb-0">
+{{ form.hospital_type|as_crispy_field }}
+</div>    
+
+<div class="form-group col-md-6 mb-0">
+{{ form.equipment |as_crispy_field }}
+</div>                       
+</div>
+  
+
+<div class="form-row">
+<div class="form-group col-md-6 mb-0">
+{{ form.radiographers|as_crispy_field }}
+</div>
+<div class="form-group col-md-6 mb-0">
+{{ form.radiologists|as_crispy_field }}
+</div>             
+</div>
+
+
+<div class="col text-left p-0 mb-3 mx-0">
+<p class="text-success display-4 paragraph3">Uploads</p>
+<hr>
+</div>
+
+<div class="form-row">
+<div class="form-group col-md-6 mb-0">
+{{ form.practice_license1|as_crispy_field }}
+</div>
+
+<div class="form-group col-md-6 mb-0">
+{{ form.practice_license2|as_crispy_field }}
+</div>
+</div>
+
+<div class="form-group col-md-12 mb-0">
+<input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+<label class="form-check-label" for="invalidCheck">
+I agree that all my details are correct!
+</label>
+<div class="invalid-feedback">
+You must agree before submitting.
+</div>
+</div>
+
+     
+<hr>
+<div class="d-flex justify-content-end">   
+    
+    
+<a href="{% url 'hospitals:hospitals_dashboard' %}" class="text-dark py-1 mr-3 mt-2 mb-4 btn btn-outline-dark"><i class="fas fa-times"></i> Cancel</a>
+
+<a href="{% url 'hospitals:hospitals_dashboard' %}" class="text-white py-1 mr-3 mt-2 mb-4 btn btn-warning"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Go Back</a>
+    
+<button type="submit" class="btn btn-success py-1 mt-2 mb-4" name="_save"> Proceed &#x21E8;</button>
+
+
+
+</form>
+
+   
+  
+    </div>
+
+
+           
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

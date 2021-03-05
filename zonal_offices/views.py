@@ -25,6 +25,7 @@ from django.urls import reverse, reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from bootstrap_modal_forms.generic import BSModalCreateView
 from bootstrap_modal_forms.mixins import PassRequestMixin, CreateUpdateAjaxMixin
+from django.contrib import messages
 
 
 
@@ -90,6 +91,60 @@ class AbujaScheduleListView(LoginRequiredMixin, ListView):
         obj = super(AbujaScheduleListView, self).get_context_data(**kwargs)
         obj['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(inspection_zone="Abuja", application_status=4)
         return obj
+
+
+class PortHarcourtScheduleListView(LoginRequiredMixin, ListView):
+    template_name = 'zonal_offices/ph_schedule_list.html'
+    #context_object_name = 'object'
+
+    def get_queryset(self):
+        return Schedule.objects.filter(inspection_zone="Abuja")
+
+
+    def get_context_data(self, **kwargs):
+        obj = super(PortHarcourtScheduleListView, self).get_context_data(**kwargs)
+        obj['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(inspection_zone="Abuja", application_status=4)
+        return obj
+
+class AsabaScheduleListView(LoginRequiredMixin, ListView):
+    template_name = 'zonal_offices/asaba_schedule_list.html'
+    #context_object_name = 'object'
+
+    def get_queryset(self):
+        return Schedule.objects.filter(inspection_zone="Abuja")
+
+
+    def get_context_data(self, **kwargs):
+        obj = super(AsabaScheduleListView, self).get_context_data(**kwargs)
+        obj['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(inspection_zone="Abuja", application_status=4)
+        return obj
+
+class CalabarScheduleListView(LoginRequiredMixin, ListView):
+    template_name = 'zonal_offices/calabar_schedule_list.html'
+    #context_object_name = 'object'
+
+    def get_queryset(self):
+        return Schedule.objects.filter(inspection_zone="Abuja")
+
+
+    def get_context_data(self, **kwargs):
+        obj = super(CalabarScheduleListView, self).get_context_data(**kwargs)
+        obj['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(inspection_zone="Abuja", application_status=4)
+        return obj
+   
+class KanoScheduleListView(LoginRequiredMixin, ListView):
+    template_name = 'zonal_offices/kano_schedule_list.html'
+    #context_object_name = 'object'
+
+    def get_queryset(self):
+        return Schedule.objects.filter(inspection_zone="Abuja")
+
+
+    def get_context_data(self, **kwargs):
+        obj = super(KanoScheduleListView, self).get_context_data(**kwargs)
+        obj['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(inspection_zone="Abuja", application_status=4)
+        return obj
+
         
 
 class ScheduleObjectMixin(object):
@@ -138,6 +193,7 @@ class InspectionReportsView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         obj = super(InspectionReportsView, self).get_context_data(**kwargs)
         obj['inspection_qs'] = Inspection.objects.select_related("hospital_name")
+        obj['accreditation_qs'] = Appraisal.objects.select_related("hospital_name")
         return obj
 
 
@@ -150,6 +206,14 @@ class InspectionReportDetailView(LoginRequiredMixin, InspectionObjectMixin, View
         return render(request, self.template_name, context)
 
 
+
+class AccreditationReportDetailView(LoginRequiredMixin, AccreditationObjectMixin, View):
+    template_name = "zonal_offices/appraisal_details.html" 
+
+      
+    def get(self, request, id=None, *args, **kwargs):
+        context = {'object': self.get_object()}
+        return render(request, self.template_name, context)
 #def view_inspection_report(request, id):
   #inspection = get_object_or_404(Inspection, pk=id)
   
@@ -223,7 +287,7 @@ class InspectionReportView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name)
+        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Radiography Practice')
         
         #context = {'object': self.get_object()}
         #context['payment'] = Payment.objects.get(pk=self.object)
@@ -299,7 +363,7 @@ class AccreditationReportView(LoginRequiredMixin, SuccessMessageMixin, CreateVie
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name)
+        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Internship Accreditation')
         
         #context = {'object': self.get_object()}
         #context['payment'] = Payment.objects.get(pk=self.object)
@@ -431,14 +495,7 @@ class UltrasoundScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin,
         return kwargs
       
     def form_invalid(self, form):
-        form = self.get_form()
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-          
-           context['object'] = obj
-           context['form'] = form 
-        return self.render_to_response(context)
+        return self.render_to_response(self.get_context_data())
 
 class NuclearMedicineScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/nuclear_medicine_score.html'
@@ -465,15 +522,18 @@ class NuclearMedicineScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestM
         kwargs['initial']['application_no'] = self.schedule.application_no
         return kwargs
       
-    def form_invalid(self, form):
-        form = self.get_form()
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
+    #def form_invalid(self, form):
+        #form = self.get_form()
+        #context = {}
+        #obj = self.get_object()
+        #if obj is not None:
           
-           context['object'] = obj
-           context['form'] = form 
-        return self.render_to_response(context)
+           #context['object'] = obj
+           #context['form'] = form 
+        #return self.render_to_response(context)
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data())
 
 class RadiotherapyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/radiotherapy_score.html'
@@ -501,14 +561,7 @@ class RadiotherapyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixi
         return kwargs
       
     def form_invalid(self, form):
-        form = self.get_form()
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-          
-           context['object'] = obj
-           context['form'] = form 
-        return self.render_to_response(context)
+        return self.render_to_response(self.get_context_data())
 
 class MriScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/mri_score.html'
@@ -536,14 +589,7 @@ class MriScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Succes
         return kwargs
       
     def form_invalid(self, form):
-        form = self.get_form()
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-          
-           context['object'] = obj
-           context['form'] = form 
-        return self.render_to_response(context)
+        return self.render_to_response(self.get_context_data())
 
 class CtscanScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/ctscan_score.html'
@@ -571,14 +617,7 @@ class CtscanScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Suc
         return kwargs
       
     def form_invalid(self, form):
-        form = self.get_form()
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-          
-           context['object'] = obj
-           context['form'] = form 
-        return self.render_to_response(context)
+        return self.render_to_response(self.get_context_data())
 
 class XrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/xray_score.html'
@@ -606,15 +645,7 @@ class XrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Succe
         return kwargs
       
     def form_invalid(self, form):
-        form = self.get_form()
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-          
-           context['object'] = obj
-           context['form'] = form 
-        return self.render_to_response(context)
-
+        return self.render_to_response(self.get_context_data())
 
 class FlouroscopyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/flouroscopy_score.html'
@@ -642,14 +673,7 @@ class FlouroscopyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin
         return kwargs
       
     def form_invalid(self, form):
-        form = self.get_form()
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-          
-           context['object'] = obj
-           context['form'] = form 
-        return self.render_to_response(context)
+        return self.render_to_response(self.get_context_data())
 
 class MamographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/mamography_score.html'
@@ -677,14 +701,7 @@ class MamographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin,
         return kwargs
       
     def form_invalid(self, form):
-        form = self.get_form()
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-          
-           context['object'] = obj
-           context['form'] = form 
-        return self.render_to_response(context)
+        return self.render_to_response(self.get_context_data())
 
 
 class DentalXrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
@@ -712,15 +729,11 @@ class DentalXrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin,
         kwargs['initial']['application_no'] = self.schedule.application_no
         return kwargs
       
+    
     def form_invalid(self, form):
-        form = self.get_form()
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-          
-           context['object'] = obj
-           context['form'] = form 
-        return self.render_to_response(context)
+        return self.render_to_response(self.get_context_data())
+
+    
 
 
 class EchocardiographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
@@ -749,14 +762,7 @@ class EchocardiographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequest
         return kwargs
       
     def form_invalid(self, form):
-        form = self.get_form()
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-          
-           context['object'] = obj
-           context['form'] = form 
-        return self.render_to_response(context)
+        return self.render_to_response(self.get_context_data())
         
 class AngiographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/angiography_score.html'
@@ -784,14 +790,7 @@ class AngiographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin
         return kwargs
       
     def form_invalid(self, form):
-        form = self.get_form()
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-          
-           context['object'] = obj
-           context['form'] = form 
-        return self.render_to_response(context)
+        return self.render_to_response(self.get_context_data())
 
 
 class CarmScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
@@ -820,14 +819,8 @@ class CarmScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Succe
         return kwargs
       
     def form_invalid(self, form):
-        form = self.get_form()
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-          
-           context['object'] = obj
-           context['form'] = form 
-        return self.render_to_response(context)
+        return self.render_to_response(self.get_context_data())
+
 #class UltrasoundScore(BSModalCreateView):
     #template_name = 'zonal_offices/ultrasound_score.html'
     #form_class = UltrasoundModelForm

@@ -11,9 +11,9 @@
 {% block content %}
 <main class="container">
 
-{% for object in hospital %}
 
-{% if object.license_type == "Radiography Practice" %}
+
+{% if object.hospital.license_type == "Radiography Practice" %}
 <section class="pt-2 pl-3">
 <div class="row ">
 <div class="col mb-0">
@@ -35,9 +35,8 @@
 </div>
 </section>
 
-
 {% endif %}
-{% endfor %}
+
 
  <div class="row">
  <div class="col-md-7 mt-0">
@@ -55,7 +54,7 @@
  </div>
  <div class="row">
  <span class="col-5"><strong>License Type:</strong></span>
- <span class="col-6">{{object.hospital_name.license_type}}</span>
+ <span class="col-6">{{object.hospital.license_type}}</span>
  </div>
  <div class="row">
  <span class="col-5"><strong>Application Type:</strong></span>

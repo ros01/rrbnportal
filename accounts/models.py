@@ -54,6 +54,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('Enugu Office', 'Enugu Office'),
         ('Lagos Office', 'Lagos Office'),
         ('Abuja Office', 'Abuja Office'),
+        ('Asaba Office', 'Asaba Office'),
+        ('Calabar Office', 'Calabar Office'),
+        ('Port Harcourt Office', 'Port Harcourt Office'),
+        ('Kano Office', 'Kano Office'),
         ('Registrars Office', 'CEO'),
         ('Accounts HQ', 'FAH'),
         )
@@ -61,13 +65,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     
     email = models.EmailField(unique=True, null=False, blank=False)
-    first_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=30, blank=True)
+    first_name = models.CharField(max_length=30, blank=True, null=True)
+    last_name = models.CharField(max_length=30, blank=True, null=True)
     module_name = models.CharField (max_length=20, choices = MODULE_NAME, blank=True)
     role = models.CharField (max_length=30, choices = ROLE, blank=True)
     type = models.CharField(max_length=30, blank=True)
-    #application_type = models.CharField (max_length=100, choices = APPLICATION_TYPE, blank=True)
-    
     hospital = models.BooleanField(default=True,
         help_text=_('Designates whether the user can log into hospital dashboard.'))
     date_joined = models.DateField(_('date joined'), auto_now_add=True)
@@ -89,8 +91,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     objects = MyUserManager()
 
-    def get_absolute_url(self):
-        return reverse("accounts:profile_detail", kwargs={"id": self.id})
+    #def get_absolute_url(self):
+        #return reverse("accounts:profile_detail", kwargs={"id": self.id})
 
     def __str__(self):
         return self.email

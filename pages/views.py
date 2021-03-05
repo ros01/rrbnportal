@@ -10,6 +10,10 @@ def index(request):
 def verify_practice(request):
     return render(request, 'pages/verify_practice.html')
 
+
+def verify_internship_accreditation(request):
+    return render(request, 'pages/verify_internship_accreditation.html')
+
 class SearchResultsView(ListView):
     model = License
     template_name = 'search_result.html'
@@ -22,6 +26,18 @@ class SearchResultsView(ListView):
         )
         return object_list
 
+
+class SearchInternshipResults(ListView):
+    model = License
+    template_name = 'search_internship_result.html'
+    
+    def get_queryset(self): 
+        query = self.request.GET.get('q')
+        object_list = License.objects.filter(
+            Q(license_no__iexact=query) | Q(hospital_name__hospital_name__iexact=query)
+            #Q(license_no__iexact=query)
+        )
+        return object_list
 
 
 def about(request):

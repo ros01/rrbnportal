@@ -8,58 +8,36 @@
 {% endblock %}
 
 {% block content %}
+<div class="container">
+<div class="container mt-4"> 
+<p class="display-4 paragraph2" style="color: #05567b;">
+Start License Renewal
+<span style="float:right; font-size:14px"> 
+<br/> License Number: <b>{{object.license_no}}</b> </span> </p> </div> 
+<hr>
+<div class="alert" style="background-color: #f7dedd; font-size:18px"> Dear <b>{{object.hospital_name|upper}}</b>, <br/>Your Radiography Practice License has expired.  Kindly follow the steps below to renew your license, thank you. </div> 
+<div class="container">
+<p class="display-4 paragraph3" style="color: #05567b;">Details of License Due for Renewal</p></div>
+<div class="row ml-1 mb-3">
+<div class="col-md-3"> <b>License Number:</b> <br> {{object.license_no}}</div> <div class="col-md-3"> <b>License Type:</b> <br> {{object.hospital.license_type}}</div> <div class="col-md-3"> <b>Expiry Date:</b><br> {{object.expiry_date}} </div> <div class="col-md-3 mb-3">  <b>License Status:</b><br><span style="color:#F00">{{object.license_status}}</span>  </div> <br/> </div> 
+</div> 
+<div class="container">
+<div class="row pl-1 mx-1 my-3" style="background-color: #eaecef; border-right:4px solid #eaecef; border-left:4px solid #eaecef; border-top: :4px solid #eaecef; border-bottom: :4px solid #eaecef">
+ <i class="fas fa-info fa-2x py-2 pl-3"></i>      
+ <p class="lead ml-3 pl-3 py-2 my-auto">
+ Select all the radiography services you offer in your hospital/centre from the list on the next page to start your renewal:</p>
+ </div>
+ <hr>
 
-
-
-                <div class="container">
-        
-
-
-
-                <div class="container mt-4"> 
-                 
-                <p class="display-4 paragraph2" style="color: #05567b;">
-                Start Radiography Practise License Renewal
-                
-                <span style="float:right; font-size:14px"> 
-                <br/> License Number: <b>{{object.license_no}}</b> </span> </p> </div> 
-
-                <hr>
-
-                <div class="alert" style="background-color: #f7dedd; font-size:18px"> Dear <b>{{object.hospital_name|upper}}</b>, <br/>Your Radiography Practice License has expired.  Kindly follow the steps below to renew your license, thank you. </div> 
-
-    
-                 <div class="container">
-
-                 <p class="display-4 paragraph3" style="color: #05567b;">Details of License Due for Renewal</p></div>
-
-                <div class="row ml-1 mb-3">
-
-                 <div class="col-md-3"> <b>License Number:</b> <br> {{object.license_no}}</div> <div class="col-md-3"> <b>License Category:</b> <br> {{object.license_category}}</div> <div class="col-md-3"> <b>Expiry Date:</b><br> {{object.expiry_date_pretty}} </div> <div class="col-md-3 mb-3">  <b>License Status:</b><br><span style="color:#F00">{{object.license_status}}</span>  </div> <br/> </div> 
-
-                
-
-                </div> 
-
-                <div class="container">
-
-                <div class="row pl-1 mx-1 my-3" style="background-color: #eaecef; border-right:4px solid #eaecef; border-left:4px solid #eaecef; border-top: :4px solid #eaecef; border-bottom: :4px solid #eaecef">
-        
-               <i class="fas fa-info fa-2x py-2 pl-3"></i>      
-                <p class="lead ml-3 pl-3 py-2 my-auto">
-                Select all the radiography services you offer in your hospital/centre from the list on the next page to start your renewal:</p>
-       
-                </div>
-
-
-
-                <hr>
-
-                <div class="d-flex justify-content-end mb-3">   
-             
-                <a href="{% url 'hospitals:hospitals_dashboard' %}" class="btn btn-outline-success px-3"><i class="fa fa-play text-success"></i>  Proceed to Renewal</a>
-             
-                </div>
+ {% if object.hospital_name.hospital_admin.type == "Gov Internship Accreditation" %}
+ <div class="d-flex justify-content-end mb-3">   
+ <a href="{% url 'hospitals:start_gov_internship_accreditation_renewal' object.pk %}" class="btn btn-outline-success px-3"><i class="fa fa-play text-success"></i>  Proceed to Renewal</a>
+ </div>
+ {% else %}
+ <div class="d-flex justify-content-end mb-3">   
+ <a href="{% url 'hospitals:start_radiography_license_renewal' object.pk %}" class="btn btn-outline-success px-3"><i class="fa fa-play text-success"></i>  Proceed to Renewal</a>
+ </div>
+ {% endif %}
 
 
 

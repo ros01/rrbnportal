@@ -1,6 +1,6 @@
 {% extends 'monitoring/monitoring_base.html'%}
 {% load static %}
-{% block title%}| Radiography Practice License Applications Due for Inspection Report Approval{% endblock %}
+{% block title%}| Radiography Practice License Renewals Due for License Issue{% endblock %}
 {% block styles %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'fontawesome-free-5.8.2-web/css/allt.css' %}">
@@ -38,6 +38,7 @@
  <td style="color: #fff;" class="small-text">S/N</td>
  <td style="color: #fff;" class="small-text">Application No</td>
  <td style="color: #fff;" class="small-text">Hospital Name</td>
+ <td style="color: #fff;" class="small-text">Application Category</td>
   <td style="color: #fff;" class="small-text">Address</td>
  <td style="color: #fff;" class="small-text">Inspection Date</td>
  <td style="color: #fff;" class="small-text">Inspection Zone</td>
@@ -49,6 +50,7 @@
  <td style="color: #fff;" class="small-text">S/N</td>
  <td style="color: #fff;" class="small-text">Application No</td>
  <td style="color: #fff;" class="small-text">Hospital Name</td>
+ <td style="color: #fff;" class="small-text">Application Category</td>
  <td style="color: #fff;" class="small-text">Address</td>
  <td style="color: #fff;" class="small-text">Inspection Date</td>
   <td style="color: #fff;" class="small-text">Inspection Zone</td>
@@ -63,24 +65,11 @@
  <td>{{forloop.counter}}</td>
  <td>{{object.application_no}}</td>
  <td>{{object.hospital_name}}</td>
+ <td>{{object.hospital.license_type}}</td>
  <td>{{object.hospital_name.address}}</td>
  <td>{{object.schedule.inspection_date}}</td>
  <td>{{object.schedule.inspection_zone}}</td>
  <td><a href="{% url 'monitoring:license_detail' id=object.id %}" class="btn btn-outline-warning btn-sm"> View</a></td>
- </tr>
- {% endfor %}
-{% endif %}
-
-{% if issue_appraisal_qs %}
- {% for object in issue_appraisal_qs %}
- <tr>
- <td>{{forloop.counter}}</td>
- <td>{{object.application_no}}</td>
- <td>{{object.hospital_name}}</td>
- <td>{{object.hospital_name.address}}</td>
- <td>{{object.schedule.inspection_date}}</td>
- <td>{{object.schedule.inspection_zone}}</td>
- <td><a href="{% url 'monitoring:accreditation_detail' id=object.id %}" class="btn btn-outline-warning btn-sm"> View</a></td>
  </tr>
  {% endfor %}
 {% endif %}
