@@ -44,12 +44,7 @@ from reportlab.lib.pagesizes import landscape, portrait
 
 
 from django.contrib import admin
-#from models import LatestRsl    
 
-
-#from StringIO import StringIO
-from rlextra.rml2pdf import rml2pdf
-#from io import StringIO
 
 import io
 from django.http import FileResponse
