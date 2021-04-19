@@ -9,48 +9,35 @@
 {% endblock %}
 
 {% block content %}
-
 <main class="container">
-
 {% if object.hospital.license_type == "Internship Accreditation" %}
-<section class="pt-2 pl-3">
-   
+<section class="pt-2 pl-3">   
 <div class="row ">
 <div class="col mb-0">
 <p class="text-info display-4 paragraph3">Internship Accreditation Applications Due for Inspection</p>
-<hr>
-           
+<hr>           
 </div>
 </div>
 </section>
-
 {% else %}
-<section class="pt-2 pl-3">
-   
+<section class="pt-2 pl-3">  
 <div class="row ">
 <div class="col mb-0">
 <p class="text-info display-4 paragraph3">Radiography Practice License Applications Due for Inspection</p>
-<hr>
-           
+<hr>           
 </div>
 </div>
 </section>
-
-
-
 {% endif %}
-
-
-
- <div class="row">
- <div class="col-md-7 mt-0">
- <div class="col-md-12">
- <div class="row">
- <p class="col-12 text-success lead">Application Summary</p>
- </div>
- <div class="row">
- <span class="col-5"><strong>Application No:</strong></span>
- <span class="col-6 ">{{object.application_no}}</span>  </div>
+<div class="row">
+<div class="col-md-7 mt-0">
+<div class="col-md-12">
+<div class="row">
+<p class="col-12 text-success lead">Application Summary</p>
+</div>
+<div class="row">
+<span class="col-5"><strong>Application No:</strong></span>
+<span class="col-6 ">{{object.application_no}}</span>  </div>
 <div class="row">
 <span class="col-5"><strong>Hospital Name:</strong></span>
 <span class="col-6 ">{{object.hospital_name}}</span>
@@ -58,6 +45,10 @@
 <div class="row">
 <span class="col-5"><strong>Application Category:</strong></span>
 <span class="col-6">{{object.hospital.license_type}}</span>
+</div>
+<div class="row">
+<span class="col-5"><strong>Application Type:</strong></span>
+<span class="col-6">{{object.hospital.application_type}}</span>
 </div>
 <div class="row">
 <span class="col-5"><strong>Phone:</strong></span>
@@ -69,11 +60,7 @@
 </div>
 <div class="row">
 <span class="col-5"><strong>Address:</strong></span>
-<span class="col-6">{{object.hospital_name.address}}</span>
-</div>
-<div class="row">
-<span class="col-5"><strong>City:</strong></span>
-<span class="col-6">{{object.hospital_name.city}}</span>
+<span class="col-6">{{object.hospital.facility_address}}</span>
 </div>
 <div class="row">
 <span class="col-5"><strong>State:</strong></span>
@@ -84,14 +71,133 @@
 <span class="col-5"><strong>Listed Modalities:</strong></span>
 <span class="col-6">{{object.hospital.equipment}}</span>
 </div>
+
 <div class="row">
-<span class="col-5"><strong>Radiographers:</strong></span>
-<span class="col-6">{{object.hospital.radiographers}}</span>
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer In Charge:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer_in_charge}}</span>
 </div>
+
 <div class="row">
-<span class="col-5"><strong>Radiologists:</strong></span>
-<span class="col-6">{{object.hospital.radiologists}}</span>
+<span class="col-5" style="font-size:1.1em;"><strong>R-I-C License No:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer_in_charge_license_no}}</span>
 </div>
+
+
+{% if object.hospital.radiographer1 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 1:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer1}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer1_license_no  %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 1 License No:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer1_license_no }}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer2 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 2:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer2}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer2_license_no  %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 2 License No:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer2_license_no }}</span>
+</div>
+{% endif %}
+                
+{% if object.hospital.radiographer3 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 3:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer3}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer3_license_no  %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 3 License No:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer3_license_no }}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname1 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 1 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname1}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation1 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 1 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation1}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname2 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 2 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname2}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation2 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 2 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation2}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname3 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 3 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname3}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation3 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 3 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation3}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname4 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 4 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname4}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation4 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 4 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation4}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname5 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 5 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname5}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation5 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 5 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation5}}</span>
+</div>
+{% endif %}
+
+
+
+
 </div><br>
 <div class="col-md-12">
 <div class="row">
@@ -110,7 +216,7 @@
 </div>
 <div class="col-md-5 mt-0">
 <p class="text-success lead">Inspection Facility Address</p>
-<span>{{object.hospital_name.address}}</span>
+<span>{{object.hospital.facility_address}}</span>
 
 <br>
 <br>

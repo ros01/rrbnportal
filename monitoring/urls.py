@@ -2,7 +2,6 @@ from django.urls import path
 from django.shortcuts import render
 from . import views
 from .views import (
-    
     RegistrationListView,
     InspectionScheduleListView,
     InspectionCreateView,
@@ -16,12 +15,21 @@ from .views import (
     AccreditationIssueListTable,
     RenewalIssueListTable,
     LicenseDetailView,
+    PermitRenewalDetails,
     AccreditationDetailView,
     IssueLicenseView,
+    IssueRadCertPermitView,
+    IssueRadPracticePermitView,
+    IssueRadPracticePermitRenewal,
     IssueAccreditationView,
     LicenseIssuedDetailView,
+    RegPermitCertDetailView,
+    RadPracticePermitDetailView,
     AccreditationIssuedDetailView,
-    LicensesListView,
+    #LicensesListView,
+    RadRegCerttificateListView,
+    RadPracticePermitListView,
+    AccreditationCertificateListView,
     GeneratePdfView,
     RegisteredHospitalsListView,
     RegisterdHospitalsDetailView,
@@ -33,10 +41,7 @@ from .views import (
 )
 
 # Create your views here.
-
-
 app_name = 'monitoring'
-
 
 urlpatterns = [
     path('', views.monitoring_dashboard, name='monitoring_dashboard'),
@@ -45,6 +50,12 @@ urlpatterns = [
     #path('<uuid:id>', views.vet_application, name='vet_application'),
     path('<uuid:id>/approve/', views.approve, name='approve'),
     path('<uuid:id>/reject/', views.reject, name='reject'),
+    path('rad_cert_reg_list/', RadRegCerttificateListView.as_view(), name='rad_cert_reg_list'),
+    path('rad_practice_permit_list/', RadPracticePermitListView.as_view(), name='rad_practice_permit_list'),
+    path('accreditation_cert_list/', AccreditationCertificateListView.as_view(), name='accreditation_cert_list'),
+    path('<uuid:id>/download_rad_cert_reg/', views.download_rad_cert_reg, name='download_rad_cert_reg'),
+    path('<uuid:id>/download_rad_practice_permit/', views.download_rad_practice_permit, name='download_rad_practice_permit'),
+    path('<uuid:id>/download_accreditation_cert/', views.download_accreditation_cert, name='download_accreditation_cert'),
     path('inspection_list/', InspectionScheduleListView.as_view(), name='inspection_list'),
     path('<uuid:pk>/inspection_schedule/', InspectionCreateView.as_view(), name='inspection_schedule'),
     path('<uuid:pk>/appraisal_schedule/', AppraisalCreateView.as_view(), name='appraisal_schedule'),
@@ -65,28 +76,24 @@ urlpatterns = [
     path('accreditation_list_table/', AccreditationIssueListTable.as_view(), name='accreditation_list_table'),
     path('renewal_list_table/', RenewalIssueListTable.as_view(), name='renewal_list_table'),
     path('<uuid:id>/license_detail/', LicenseDetailView.as_view(), name='license_detail'),
+    path('<uuid:id>/practice_permit_renewal_details/', PermitRenewalDetails.as_view(), name='practice_permit_renewal_details'),
     path('<uuid:id>/accreditation_detail/', AccreditationDetailView.as_view(), name='accreditation_detail'),
-    path('<uuid:pk>/issue_license/', IssueLicenseView.as_view(), name='issue_license'),
+    #path('<uuid:pk>/issue_license/', IssueLicenseView.as_view(), name='issue_license'),
+    path('<uuid:pk>/issue_reg_cert_permit/', IssueRadCertPermitView.as_view(), name='issue_reg_cert_permit'),
+    path('<uuid:pk>/issue_rad_practice_permit/', IssueRadPracticePermitView.as_view(), name='issue_rad_practice_permit'),
+    path('<uuid:pk>/issue_rad_practice_permit_renewal/', IssueRadPracticePermitRenewal.as_view(), name='issue_rad_practice_permit_renewal'),
     path('<uuid:pk>/issue_accreditation/', IssueAccreditationView.as_view(), name='issue_accreditation'),
+    path('<uuid:id>/reg_permit_cert_details/', RegPermitCertDetailView.as_view(), name='reg_permit_cert_details'),
+    path('<uuid:id>/rad_practice_permit_details/', RadPracticePermitDetailView.as_view(), name='rad_practice_permit_details'),
     path('<uuid:id>/issued_license_details/', LicenseIssuedDetailView.as_view(), name='issued_license_details'),
     path('<uuid:id>/issued_accreditation_details/', AccreditationIssuedDetailView.as_view(), name='issued_accreditation_details'),
-    path('license_issued/', LicensesListView.as_view(), name='license_issued'),
     path('<uuid:id>/generate_license/', GeneratePdfView.as_view(), name='generate_license'),
-    
+    path('<uuid:id>/generate_license_pdf/', views.getPDF, name='generate_license_pdf'),
     #path('<uuid:id>/inspection_report/', views.inspection_report, name='inspection_report'),
     path('<uuid:id>/validate/', views.validate, name='validate'),
     #path('<uuid:id>/view_report/', views.view_report, name='view_report'),
     path('<uuid:id>/view_appraisal_report/', views.view_appraisal_report, name='view_appraisal_report'),
-    
-    
-    
-    
-    
     path('<uuid:id>/issue_license/', IssueLicenseView.as_view(), name='issue_license'),
-    
-    
-    
-    
     path('hospitals_lookup/', RegisteredHospitalsListView.as_view(), name='hospitals_lookup'),
     path('<uuid:id>/hospital_details/', RegisterdHospitalsDetailView.as_view(), name='hospital_details'),
 ]

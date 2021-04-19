@@ -16,7 +16,7 @@
    
 <div class="container mt-2 ">
 <div class="col mb-2">
-<p class="text-success display-4 paragraph3"> License Application Scheduled for Inspection</p>
+<p class="text-success display-4 paragraph3"> Application Inspection Schedule Details</p>
 <hr>
 </div>
 </div>
@@ -42,7 +42,7 @@
         <!-- Title -->
 <div class="row">
 <div class="col mb-0">
-<p class="text-success lead pt-4 pl-3"><strong>Inspection Details</strong></p>
+<p class="text-success lead pt-4 pl-3"><strong>Inspection Schedule Details:</strong></p>
 </div>
 </div>
 <div class="row mx-1 py-0 my-0">
@@ -51,7 +51,7 @@
 <p class="lead text-secondary m-0"><strong>{{object.application_no}}</strong></p>  
 <br>
 <br>
-<p class="lead text-secondary m-0">Payment Date:</p>
+<p class="lead text-secondary m-0 mt-4">Payment Date:</p>
 <p class="lead text-secondary text-capitalize m-0"><strong>{{object.payment.payment_date}}</strong></p>  
 <br> 
 </div>
@@ -61,13 +61,13 @@
 <p class="lead text-secondary m-0"><strong>{{object.hospital.license_type}}</strong></p>
 <br>
 <br>
-<p class="lead text-secondary m-0">Inspection Date:</p>
+<p class="lead text-secondary m-0 mt-4">Inspection Date:</p>
 <p class="lead text-secondary text-capitalize m-0"><strong>{{object.inspection_date}}</strong></p>  
 <br> 
 </div>
 <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
 <p class="lead text-secondary m-0">Facility Address/Location:</p>
-<p class="lead text-secondary m-0"><strong>{{object.hospital_name.address}}</strong></p>  
+<p class="lead text-secondary m-0"><strong>{{object.hospital.facility_address}}</strong></p>  
 <br>
 <p class="lead text-secondary m-0 mt-4">Inspecting Zonal Office:</p>
 <p class="lead text-secondary text-capitalize m-0"><strong>{{object.inspection_zone}}</strong></p>  

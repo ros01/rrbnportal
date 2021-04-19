@@ -16,11 +16,11 @@ User = get_user_model()
 class HospitalDetailModelForm(forms.ModelForm):
     class Meta:
         model = Document
-        fields = ('license_type', 'application_type', 'hospital_name', 'hospital_type', 'equipment', 'radiographers', 'radiologists', 'cac_certificate', 'practice_license1', 'practice_license2', 'form_c07')
+        fields = ('license_type', 'application_type', 'hospital_name', 'hospital_type', 'facility_address', 'facility_state_of_location', 'equipment', 'radiographer_in_charge', 'radiographer1', 'radiographer2', 'radiographer3', 'radiographer_in_charge_license_no', 'radiographer1_license_no', 'radiographer2_license_no', 'radiographer3_license_no', 'staffname1', 'staffname2', 'staffname3', 'staffname4', 'staffname5', 'staffdesignation1', 'staffdesignation2', 'staffdesignation3', 'staffdesignation4', 'staffdesignation5', 'radiographer_in_charge_passport', 'radiographer_in_charge_nysc', 'radiographer_in_charge_practice_license', 'radiographer1_practice_license', 'radiographer2_practice_license', 'radiographer3_practice_license', 'cac_certificate', 'form_c07')
 
         widgets = {
-            'radiographers': forms.Textarea(attrs={'rows':3, 'cols':5}), 
-            'radiologists': forms.Textarea(attrs={'rows':3, 'cols':5}),
+            'facility_address': forms.Textarea(attrs={'rows':3, 'cols':5}), 
+            #'radiologists': forms.Textarea(attrs={'rows':3, 'cols':5}),
             #'license_type': forms.HiddenInput(),
             'hospital_name': forms.HiddenInput(),   
                                 
@@ -48,19 +48,67 @@ class HospitalDetailModelForm(forms.ModelForm):
        #self.fields['hospital_name'].initial = hospital_name.hospital_name
        #self.fields['hospital_name'].widget.attrs['readonly'] = 'readonly'
        #self.fields['hospital_name'].label = "Hospital Name"
+       self.fields['facility_address'].label = "Hospital/Centre Address*"
+       self.fields['facility_address'].widget.attrs['placeholder'] = "Enter Address of Hospital/Centre"
+       self.fields['facility_state_of_location'].label = "State of Location of Hospital/Centre"
+       self.fields['facility_state_of_location'].widget.attrs['placeholder'] = "Enter State of Location of Hospital/Centre"
        self.fields['equipment'].label = "Available Equipment"
        self.fields['equipment'].widget = CheckboxSelectMultiple()
-       self.fields['radiographers'].label = "Radiographers"
-       self.fields['radiographers'].widget.attrs['placeholder'] = "Enter Radiographers"
-       self.fields['radiologists'].label = "Radiologists"
-       self.fields['radiologists'].widget.attrs['placeholder'] = "Enter Radiologists"
-       self.fields['cac_certificate'].label = "CAC Certificate"
+       self.fields['radiographer_in_charge'].label = "Radiographer In Charge"
+       self.fields['radiographer_in_charge'].widget.attrs['placeholder'] = "Enter Name of R.I.Charge (Required) "
+       self.fields['radiographer1'].label = "Radiographer 1"
+       self.fields['radiographer1'].widget.attrs['placeholder'] = "Radiographer 1 Name (Optional)"
+       self.fields['radiographer2'].label = "Radiographer 2"
+       self.fields['radiographer2'].widget.attrs['placeholder'] = "Radiographer 2 Name (Optional)"
+       self.fields['radiographer3'].label = "Radiographer 3"
+       self.fields['radiographer3'].widget.attrs['placeholder'] = "Radiographer 3 Name (Optional)"
+       self.fields['staffname1'].label = "Staff 1 Name"
+       self.fields['staffname1'].widget.attrs['placeholder'] = "Staff 1 Name (Optional)"
+       self.fields['staffname2'].label = "Staff 2 Name"
+       self.fields['staffname2'].widget.attrs['placeholder'] = "Staff 2 Name (Optional)"
+       self.fields['staffname3'].label = "Staff 3 Name"
+       self.fields['staffname3'].widget.attrs['placeholder'] = "Staff 3 Name (Optional)"
+       self.fields['staffname4'].label = "Staff 4 Name"
+       self.fields['staffname4'].widget.attrs['placeholder'] = "Staff 4 Name (Optional)"
+       self.fields['staffname5'].label = "Staff 5 Name"
+       self.fields['staffname5'].widget.attrs['placeholder'] = "Staff 5 Name (Optional)"
+       self.fields['staffdesignation1'].label = "Staff 1 Designation"
+       self.fields['staffdesignation1'].widget.attrs['placeholder'] = "Staff 1 Designation (Optional)"
+       self.fields['staffdesignation2'].label = "Staff 2 Designation"
+       self.fields['staffdesignation2'].widget.attrs['placeholder'] = "Staff 2 Designation (Optional)"
+       self.fields['staffdesignation3'].label = "Staff 3 Designation"
+       self.fields['staffdesignation3'].widget.attrs['placeholder'] = "Staff 3 Designation (Optional)"
+       self.fields['staffdesignation4'].label = "Staff 4 Designation"
+       self.fields['staffdesignation4'].widget.attrs['placeholder'] = "Staff 4 Designation (Optional)"
+       self.fields['staffdesignation5'].label = "Staff 5 Designation"
+       self.fields['staffdesignation5'].widget.attrs['placeholder'] = "Staff 5 Designation (Optional)"
+       self.fields['radiographer_in_charge_license_no'].label = "R.I.C License No"
+       self.fields['radiographer_in_charge_license_no'].widget.attrs['placeholder'] = "R.I.C License No (Required)"
+       self.fields['radiographer1_license_no'].label = "Radiographer 1 License No"
+       self.fields['radiographer1_license_no'].widget.attrs['placeholder'] = "Radiographer 1 License No (Optional)"
+       self.fields['radiographer2_license_no'].label = "Radiographer 2 License No"
+       self.fields['radiographer2_license_no'].widget.attrs['placeholder'] = "Radiographer 2 License No (Optional)"
+       self.fields['radiographer3_license_no'].label = "Radiographer 3 License No"
+       self.fields['radiographer3_license_no'].widget.attrs['placeholder'] = "Radiographer 3 License No (Optional)"
+       self.fields['radiographer_in_charge_passport'].label = "R.I.C Passport* (Required)"
+       self.fields['radiographer_in_charge_passport'].widget.attrs['placeholder'] = "Upload Passport of Radiographer In Charge"
+       self.fields['radiographer_in_charge_nysc'].label = "R.I.C NYSC Certificate (Optional)"
+       self.fields['radiographer_in_charge_nysc'].widget.attrs['placeholder'] = "Upload NYSC Certificate of Radiographer In Charge"
+       self.fields['radiographer_in_charge_practice_license'].label = "R.I.C Practice License* (Required)"
+       self.fields['radiographer_in_charge_practice_license'].widget.attrs['placeholder'] = "Upload Practice License of Radiographer In Charge"
+       self.fields['radiographer1_practice_license'].label = "Radiographer 1 Practice License (Optional)"
+       self.fields['radiographer1_practice_license'].widget.attrs['placeholder'] = "Upload Radiographer 1 Practice License"
+       self.fields['radiographer2_practice_license'].label = "Radiographer 2 Practice License(Optional)"
+       self.fields['radiographer2_practice_license'].widget.attrs['placeholder'] = "Upload Radiographer 2 Practice License"
+       self.fields['radiographer3_practice_license'].label = "Radiographer 3 Practice License(Optional)"
+       self.fields['radiographer3_practice_license'].widget.attrs['placeholder'] = "Upload Radiographer 3 Practice License"
+       self.fields['cac_certificate'].label = "CAC Certificate* (Required)"
        self.fields['cac_certificate'].widget.attrs['placeholder'] = "Enter CAC Certificate"
-       self.fields['practice_license1'].label = "Practice License"
-       self.fields['practice_license1'].widget.attrs['placeholder'] = "Enter Practice License"
-       self.fields['practice_license2'].label = "Practice License"
-       self.fields['practice_license2'].widget.attrs['placeholder'] = "Enter Practice License"
-       self.fields['form_c07'].label = "Form C07"
+       #self.fields['practice_license1'].label = "Practice License"
+       #self.fields['practice_license1'].widget.attrs['placeholder'] = "Enter Practice License"
+       #self.fields['practice_license2'].label = "Practice License"
+       #self.fields['practice_license2'].widget.attrs['placeholder'] = "Enter Practice License"
+       self.fields['form_c07'].label = "Form C07* (Required)"
        self.fields['form_c07'].widget.attrs['placeholder'] = "Enter Form C07"
 
 

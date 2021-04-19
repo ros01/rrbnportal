@@ -1,0 +1,262 @@
+{% load static %} 
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Radiography Practice License</title>
+        <style type="text/css">
+
+            
+
+            body {
+                font-weight: 200;
+                font-size: 14px;
+                
+                 
+            }
+
+            div {
+                font-weight: 200;
+                font-size: 14px;
+                border: none;
+                margin:0; /* If you want no margin */
+                padding:0;    
+            }
+
+            .header {
+                font-size: 20px;
+                font-weight: 100;
+                text-align: center;
+                color: #007cae;
+            }
+            .title {
+                font-size: 22px;
+                font-weight: 100;
+               /* text-align: right;*/
+               padding: 10px 20px 0px 20px;  
+            }
+            .title span {
+                color: #007cae;
+            }
+            .details {
+                padding: 10px 20px 0px 20px;
+                text-align: left !important;
+                /*margin-left: 40%;*/
+            }
+            .hrItem {
+                border: none;
+                height: 1px;
+                /* Set the hr color */
+                color: #333; /* old IE */
+                background-color: #fff; /* Modern Browsers */
+            }
+
+          .wrapper-div{
+              width:800px;
+              height:auto;
+              padding:0px;
+              margin: 10px auto;
+              text-align:center; 
+              border: 6px solid #787878;
+
+          }
+
+          .inner-div{
+              width:780px;
+              height:autox;
+              padding:5px;
+              text-align:center;
+              border: 5px solid #787878;
+          }
+
+          .logo-div{
+              float: left; 
+              width: 34%; 
+              margin: 10px 0 5px 0;
+              width:100px; /*width of your image*/
+              height:100px; /*height of your image*/
+              background-image:url('/images/rrbn-logo.png');
+              margin:0; /* If you want no margin */
+              padding:0; /*if your want to padding */
+              text-align: left;
+          }
+
+          .address-div{
+              float: right;
+              width: 63%;
+              margin: 10px 1% 5px 0 ;
+          }
+
+          .address-text{
+              font-size:12px;
+              text-align: right;
+              font-family: Arial, Helvetica, sans-serif;
+              line-height: 1.2rem;
+          }
+
+          .clear-div{
+              width: 100%; margin: 0px 0; clear:both; text-align: right; background-color:#bfe3f8;
+          }
+
+          .sections-div{
+              width:70%;
+              margin:0; /* If you want no margin */
+              padding:10px 0px 10px 0px;
+              font-family: Arial, Helvetica, sans-serif;
+          }
+
+          .sections{
+              width:70%;
+            
+          }
+
+          .green-color{
+              color:#28A74A;
+          }
+
+          .text-center{
+              text-align: center;
+          }
+
+
+          .tetx-fonts{
+              
+              font-size: 20px;
+          }
+
+          .text-fonts{
+              
+              font-size: 16px;
+          }
+
+          .lg-fonts{
+              
+              font-size: 24px;
+              font-style: italic;
+              font-family: Arial, Helvetica, sans-serif;
+          }
+
+          .box-div{
+              border: 4px dotted black; margin: 30px 200px 15px 200px; padding: 20px 0px 15px 0px; background-color:#bfe3f8; 
+          }
+
+          .small-text{
+              font-size: small;
+          }
+
+          .h2-text{
+              font-size:28px;
+              font-weight: bolder;
+          }
+
+          .h3-text{
+              font-size: 24px;
+              font-weight: bolder;
+          }
+
+          .lx-fonts{
+              
+              font-size: 30px;
+              font-style: italic;
+              font-weight: bolder;
+          }
+
+          .h4-text{
+              font-size: 1em;
+              font-weight: bolder;
+              text-align: right;
+          }
+
+          .blue{
+              color:#05567b;
+          }
+        </style>
+    </head>
+    <body>
+    
+    
+    
+    <div class="wrapper-div">
+
+    <div class="inner-div">
+
+       <div class="clear-div"></div>
+
+       <div class="logo-div">
+        
+        
+      <img src="{% static 'img/log_add2.jpg' %}" alt="image" width="959px" height="117px"/>
+      </div>
+
+  
+      <hr class='hrItem' />
+
+      {% if object.hospital.license_type == "Radiography Practice" %}
+
+      <div class="sections">
+        <p class="green-color h2-text">CERTIFICATE OF REGISTRATION OF PRACTICE</p>
+
+      </div>
+
+      {% else %}
+
+      <div class="sections">
+        <p class="green-color h2-text">CERTIFICATE OF INTERNSHIP ACCREDITATION</p>
+
+      </div>
+
+      {% endif %}
+     
+     
+
+      <div class="sections tetx-fonts">License No: &nbsp; &nbsp;<span class="tetx-fonts h4-text">{{object.license_no}}</span>
+
+      </div>
+
+      <div class="sections-div">
+        <p class="text-center tetx-fonts">License Type: &nbsp; &nbsp; <span class="blue tetx-fonts">{{object.hospital.license_type}}</span></p>
+      </div>
+
+      <div class="sections">
+        <p class="lx-fonts">This is to certify that</p>
+      </div>
+
+      <div class="sections-div">
+        <p class="h3-text">{{object.hospital_name}}</p>
+      </div>
+
+      <div class="sections-div tetx-fonts">Address: &nbsp;<span class="tetx-fonts h4-text">{{object.hospital_name.address}}</span>
+
+
+      </div>
+
+      
+      <div class="sections lg-fonts">Having satisfied all laid down conditions of the Radiographers Registration Board of Nigeria </div>
+
+      <div class="sections-div">
+        <p class="text-center tetx-fonts">Have been granted {{object.license_class}} Status</p>
+      </div>
+      
+      
+      <div class="box-div text-fonts">
+        Issue Date:&nbsp;&nbsp; <span class="h4-text">{{object.issue_date}}</span><br>
+        Processing Fee Paid:&nbsp;&nbsp;<span class="h4-text">N{{object.payment.payment_amount}}</span><br>
+        Expiry Date:&nbsp;&nbsp; <span class="h4-text">{{object.expiry_date}}</span><br>
+
+      </div>
+
+      <div>  <br></div>
+
+      <hr class='hrItem' />
+      <div class="clear-div">
+
+       <p class="address-text text-center">Generated from RRBN Inspection and Monitoring Portal (www.monitoring.rrbn.gov.ng)
+      </p>
+
+      </div>
+
+    </div>
+    
+  </div>
+    </body>
+</html>

@@ -29,33 +29,34 @@ Start License Renewal
  </div>
  <hr>
 
- {% if object.hospital_name.hospital_admin.type == "Gov Internship Accreditation" %}
+ {% if object.hospital.application_type == "New Registration - Private Hospital Internship" %}
  <div class="d-flex justify-content-end mb-3">   
- <a href="{% url 'hospitals:start_gov_internship_accreditation_renewal' object.pk %}" class="btn btn-outline-success px-3"><i class="fa fa-play text-success"></i>  Proceed to Renewal</a>
+ <a href="{% url 'hospitals:start_pri_internship_renewal' object.pk %}" class="btn btn-outline-success px-3"><i class="fa fa-play text-success"></i>  Proceed to Renewal</a>
  </div>
+
+ {% elif object.hospital.application_type == "Renewal - Private Hospital Internship" %}
+ <div class="d-flex justify-content-end mb-3">   
+ <a href="{% url 'hospitals:start_pri_internship_renewal' object.pk %}" class="btn btn-outline-success px-3"><i class="fa fa-play text-success"></i>  Proceed to Renewal</a>
+ </div>
+
+
+ {% elif object.hospital.application_type == "New Registration - Government Hospital Internship" %}
+ <div class="d-flex justify-content-end mb-3">   
+ <a href="{% url 'hospitals:start_gov_internship_renewal' object.pk %}" class="btn btn-outline-success px-3"><i class="fa fa-play text-success"></i>  Proceed to Renewal</a>
+ </div>
+
+ {% elif object.hospital.application_type == "Renewal - Government Hospital Internship" %}
+ <div class="d-flex justify-content-end mb-3">   
+ <a href="{% url 'hospitals:start_gov_internship_renewal' object.pk %}" class="btn btn-outline-success px-3"><i class="fa fa-play text-success"></i>  Proceed to Renewal</a>
+ </div>
+
  {% else %}
  <div class="d-flex justify-content-end mb-3">   
  <a href="{% url 'hospitals:start_radiography_license_renewal' object.pk %}" class="btn btn-outline-success px-3"><i class="fa fa-play text-success"></i>  Proceed to Renewal</a>
  </div>
  {% endif %}
 
-
-
-
-
-
-                </div>
-
-
-
-               
-
-                
-
-
-                
-
-    
+ </div>
 
 
 <!-- End of Skills -->

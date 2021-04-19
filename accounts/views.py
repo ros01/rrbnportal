@@ -64,7 +64,7 @@ class CreateHospitalProfile(View):
     hospital_form = HospitalModelForm
     template_name = 'accounts/radiography_profile_creation.html'
     template_name1 = 'accounts/profile-creation-confirmation.html'
- 
+    
     def get(self, request, *args, **kwargs):
         user_form = self.user_form()
         hospital_form = self.hospital_form()
@@ -75,7 +75,7 @@ class CreateHospitalProfile(View):
 
         if user_form.is_valid() and hospital_form.is_valid():
             user = user_form.save(commit=False)
-            user.is_active = False  # Deactivate account till it is confirmed
+            user.is_active = True  # Deactivate account till it is confirmed
             user.hospital = True
             user.save()
             hospital = hospital_form.save(commit=False)
@@ -87,10 +87,8 @@ class CreateHospitalProfile(View):
                 phone_no = hospital.phone_no,
                 state = hospital.state,
                 city = hospital.city,
-                address = hospital.address,
-               
+                contact_address = hospital.contact_address,
                 )
-            
             current_site = get_current_site(request)
             subject = 'Activate Your RRBN Portal Account'
             from_email = settings.DEFAULT_FROM_EMAIL
@@ -102,14 +100,10 @@ class CreateHospitalProfile(View):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
-            send_mail(subject, message, from_email, to_email, fail_silently=False)
+            send_mail(subject, message, from_email, to_email, fail_silently=True)
 
-            messages.success(request, ('Please Confirm your email to complete registration.'))
-
+            messages.success(request, ('Please Sign in to with your email and password to continue'))
             return render(request, self.template_name1)
-
-             
-
         return render(request, self.template_name, {'user_form':user_form, 'hospital_form':hospital_form,})
 
 
@@ -156,7 +150,7 @@ class CreateProfile(View):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
-            send_mail(subject, message, from_email, to_email, fail_silently=False)
+            send_mail(subject, message, from_email, to_email, fail_silently=True)
 
             messages.success(request, ('Please Confirm your email to complete registration.'))
 
@@ -192,7 +186,7 @@ class CreateProfilePrivate(View):
                 phone_no = hospital.phone_no,
                 state = hospital.state,
                 city = hospital.city,
-                address = hospital.address,
+                contact_address = hospital.contact_address,
                 )   
             current_site = get_current_site(request)
             subject = 'Activate Your RRBN Portal Account'
@@ -205,7 +199,7 @@ class CreateProfilePrivate(View):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
-            send_mail(subject, message, from_email, to_email, fail_silently=False)
+            send_mail(subject, message, from_email, to_email, fail_silently=True)
             messages.success(request, ('Please Confirm your email to complete registration.'))
             return render(request, self.template_name1)
         return render(request, self.template_name, {'user_form':user_form, 'hospital_form':hospital_form,})
@@ -324,10 +318,7 @@ class RenewalView(RenewalObjectMixin, View):
           
            context['object'] = obj
            context['form'] = form
-
            
-        
-        
         return render(request, self.template_name1, context)
 
 class RenewalView(ListView):
@@ -385,8 +376,6 @@ def login(request):
 
 
 
-
-
 class ActivateAccount(View):
 
     def get(self, request, uidb64, token, *args, **kwargs):
@@ -433,7 +422,7 @@ class SignUpView(View):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
-            send_mail(subject, message, from_email, to_email, fail_silently=False)
+            send_mail(subject, message, from_email, to_email, fail_silently=True)
 
             messages.success(
                 request, ('Please Confirm your email to complete registration.'))
@@ -470,7 +459,7 @@ class StartIntershipApplication(View):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
-            send_mail(subject, message, from_email, to_email, fail_silently=False)
+            send_mail(subject, message, from_email, to_email, fail_silently=True)
 
             messages.success(
                 request, ('Please Confirm your email to complete registration.'))

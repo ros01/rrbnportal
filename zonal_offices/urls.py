@@ -114,7 +114,6 @@ urlpatterns = [
     path('<uuid:id>/angiography_update/', AngiographyScoreUpdate.as_view(), name='angiography_update'),
     path('<uuid:pk>/carm_score/', CarmScore.as_view(), name='carm_score'),
     path('<uuid:id>/carm_update/', CarmScoreUpdate.as_view(), name='carm_update'),
-    
     path('hospitals_lookup/', RegisteredHospitalsListView.as_view(), name='hospitals_lookup'),
     path('<uuid:id>/hospital_details/', RegisterdHospitalsDetailView.as_view(), name='hospital_details'),
     path('create_hospital_record/', RecordsCreate.as_view(), name='create_hospital_record'),

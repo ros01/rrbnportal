@@ -1,7 +1,7 @@
 {% extends 'monitoring/monitoring_base.html'%}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title%}| Welcome {% endblock %}
+{% block title%}| Inspection Details {% endblock %}
 
 
 {% block styles %}
@@ -14,108 +14,276 @@
 
 <!-- Banner -->
 <section class="pt-2 pl-3">
-   
-        <div class="row ">
-            <div class="col mb-0">
-                <p class="text-info display-4 paragraph3">Hospitals/Centre Application and Inspection Details</p>
-                <hr>
-           
-        </div>
-    </div>
+<div class="row ">
+<div class="col mb-0">
+<p class="text-info display-4 paragraph3">Radiography Practice Permit Inspection Report Details</p>
+<hr>
+</div>
+</div>
 </section>
 
- <div class="row">
- <div class="col-md-7 mt-0">
- <div class="col-md-12">
- <div class="row">
- <p class="col-12 text-success lead">Application Summary</p>
- </div>
- <div class="row">
- <span class="col-5"><strong>Application No:</strong></span>
- <span class="col-6 ">{{object.application_no}}</span>
- </div>
- <div class="row">
- <span class="col-5"><strong>Hospital Name:</strong></span>
- <span class="col-6 ">{{object.hospital_name}}</span>
- </div>
- <div class="row">
- <span class="col-5"><strong>Hospital Email:</strong></span>
- <span class="col-6 ">{{object.hospital_name.hospital_admin}}</span></div>
- <div class="row">
- <span class="col-5"><strong>Application Category:</strong></span>
- <span class="col-6">{{object.hospital.license_type}}</span>
- </div>
- <div class="row">
- <span class="col-5"><strong>Application Type:</strong></span>
- <span class="col-6">{{object.hospital.application_type}}</span>
- </div>
- <div class="row">
- <span class="col-5"><strong>Address:</strong></span>
- <span class="col-6">{{object.hospital_name.address}}</span></div>
- <div class="row">
- <span class="col-5"><strong>Phone:</strong></span>
- <span class="col-6">{{object.hospital_name.phone_no}}</span>
- </div>
- <div class="row">
- </div>
- <div class="row">
- <span class="col-5"><strong>Available Equipment:</strong></span>
- <span class="col-6">{{object.hospital.equipment}}</span>
- </div>
- <div class="row">
- <span class="col-5"><strong>Radiographers:</strong></span>
- <span class="col-6">{{object.hospital.radiographers}}</span>
- </div>
- <div class="row">
- <span class="col-5"><strong>Radiologists:</strong></span>
- <span class="col-6">{{object.hospital.radiologists}}</span>
- </div>
- </div><br>
- <div class="col-md-10">
- <div class="row">
- <p class="col-12 text-success lead">Initial Uploads</p>
- </div>
+<div class="row">
+<div class="col-md-7 mt-0">
+<div class="col-md-12">
+<div class="row">
+<p class="col-12 text-success lead">Application Summary</p>
+</div>
+<div class="row">
+<span class="col-5"><strong>Application No:</strong></span>
+<span class="col-6 ">{{object.application_no}}</span>
+</div>
+<div class="row">
+<span class="col-5"><strong>Hospital Name:</strong></span>
+<span class="col-6 ">{{object.hospital_name}}</span>
+</div>
+<div class="row">
+<span class="col-5"><strong>Hospital Email:</strong></span>
+<span class="col-6 ">{{object.hospital_name.hospital_admin}}</span></div>
+<div class="row">
+<span class="col-5"><strong>Application Category:</strong></span>
+<span class="col-6">{{object.hospital.license_type}}</span>
+</div>
+<div class="row">
+<span class="col-5"><strong>Application Type:</strong></span>
+<span class="col-6">{{object.hospital.application_type}}</span>
+</div>
+<div class="row">
+<span class="col-5"><strong>Address:</strong></span>
+<span class="col-6">{{object.hospital.facility_address}}</span></div>
+<div class="row">
+<span class="col-5"><strong>Phone:</strong></span>
+<span class="col-6">{{object.hospital_name.phone_no}}</span>
+</div>
+<div class="row">
+</div>
+<div class="row">
+<span class="col-5"><strong>Available Equipment:</strong></span>
+<span class="col-6">{{object.hospital.equipment}}</span>
+</div>
+
+{% if object.hospital.radiographer_in_charge %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer In Charge:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer_in_charge}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer_in_charge_license_no %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>R-I-C License No:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer_in_charge_license_no}}</span>
+</div>
+{% endif %}
+
+
+{% if object.hospital.radiographer1 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 1:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer1}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer1_license_no  %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 1 License No:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer1_license_no }}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer2 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 2:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer2}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer2_license_no  %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 2 License No:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer2_license_no }}</span>
+</div>
+{% endif %}
+                
+{% if object.hospital.radiographer3 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 3:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer3}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer3_license_no  %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 3 License No:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer3_license_no }}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname1 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 1 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname1}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation1 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 1 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation1}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname2 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 2 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname2}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation2 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 2 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation2}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname3 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 3 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname3}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation3 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 3 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation3}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname4 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 4 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname4}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation4 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 4 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation4}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname5 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 5 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname5}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation5 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 5 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation5}}</span>
+</div>
+{% endif %}
+
+
+</div>
+<br>
+<div class="col-md-10">
+<div class="row">
+<p class="col-12 text-success lead">Initial Uploads</p>
+</div>
 <div class="row py-0 pl-1">
-<table class="table table-hover table-borderless">
+<table class="table table-hover table-borderless my-0">
 <tbody>
-{% if object.hospital.cac_certificate %}
-<tr> <td width="50%" scope="col">CAC Certificate:</td> 
+
+{% if object.hospital.radiographer_in_charge_passport  %}
+<tr> <td width="50%" scope="col">R.I.C Passport Photo:</td> 
 <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-<a class="text-danger" href="{{object.hospital.cac_certificate.url}}"
-target="_blank">&nbsp; View CAC Certficiate</a></td> 
+<a class="text-danger" href="{{object.hospital.radiographer_in_charge_passport.url}}" target="_blank">&nbsp; View R.I.C Passport Photo</a></td>  
 </tr>
 {% endif %}
+
+{% if object.hospital.radiographer_in_charge_nysc  %}
+<tr> <td width="50%" scope="col">R.I.C NYSC Certificate:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.radiographer_in_charge_nysc.url}}" target="_blank">&nbsp; View R.I.C NYSC Certificate</a></td>  
+</tr>
+{% endif %}
+
+{% if object.hospital.radiographer_in_charge_practice_license  %}
+<tr> <td width="50%" scope="col">R.I.C Practice License:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.radiographer_in_charge_practice_license.url}}" target="_blank">&nbsp; View R.I.C Practice License</a></td>  
+</tr>
+{% endif %}
+
+{% if object.hospital.radiographer1_practice_license  %}
+<tr> <td width="50%" scope="col">Radiographer 1 Practice License:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.radiographer1_practice_license.url}}" target="_blank">&nbsp; View Radiographer 1 Practice License</a></td>  
+</tr>
+{% endif %}
+
+{% if object.hospital.radiographer2_practice_license  %}
+<tr> <td width="50%" scope="col">Radiographer 2 Practice License:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.radiographer2_practice_license.url}}" target="_blank">&nbsp; View Radiographer 2 Practice License</a></td>  
+</tr>
+{% endif %}
+
+{% if object.hospital.radiographer3_practice_license  %}
+<tr> <td width="50%" scope="col">Radiographer 3 Practice License:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.radiographer3_practice_license.url}}" target="_blank">&nbsp; View Radiographer 3 Practice License</a></td>  
+</tr>
+{% endif %}
+
+
+{% if object.hospital.cac_certificate %}
+<tr> <td width="50%" scope="col">CAC Document:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.cac_certificate.url}}" target="_blank">&nbsp; View CAC Certificate</a></td>  
+</tr>
+{% endif %}
+
 {% if object.hospital.practice_license1 %}
-<tr> <td width="50%" scope="col">Radiographer License:</td> 
+<tr> <td width="50%" scope="col">Practice Licence:</td> 
 <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
 <a class="text-danger" href="{{object.hospital.practice_license1.url}}"
- target="_blank">&nbsp; View Radiographer License</a></td>  
- </tr>
- 
- {% endif %}
- {% if object.hospital.practice_license2 %}
- <tr> <td width="50%" scope="col">Radiographer License:</td> 
- <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
- <a class="text-danger" href="{{object.hospital.practice_license2.url}}"
- target="_blank">&nbsp; View Radiographer License</a></td>  
- </tr>
- {% endif %}
+target="_blank">&nbsp; View Practicing Licence</a></td>  
+</tr>
+{% endif %}
 
- {% if object.hospital.form_c07 %}
- <tr> <td width="50%" scope="col">Form C07:</td> 
- <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
- <a class="text-danger" href="{{object.hospital.form_c07.url}}"
- target="_blank">&nbsp; View Form C07</a></td></tr> {% endif %}
+{% if object.hospital.practice_license2 %}
+<tr> <td width="50%" scope="col">Practice Licence:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.practice_license2.url}}"
+target="_blank">&nbsp; View Practicing Licence</a></td>  
+</tr>
+{% endif %}
 
- {% if object.payment.payment_receipt %}
-  <tr> <td width="50%" scope="col">Payment Receipt:</td> 
-  <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-  <a class="text-danger" href="{{object.payment.payment_receipt.url}}"
-  target="_blank">&nbsp; View Payment Receipt</a></td>  
-  </tr>
-  {% endif %}
+{% if object.hospital.form_c07 %}
+<tr> <td width="50%" scope="col">Form C07:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.form_c07.url}}"
+target="_blank">&nbsp; View Form C07</a></td>  
+</tr>
+{% endif %}
+
+
+{% if object.payment_receipt %}
+<tr> <td width="50%" scope="col">Payment Receipt:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.payment_receipt.url}}" target="_blank">&nbsp; View Payment Receipt</a></td>  
+</tr>
+{% endif %}
+
+
                        
-   </tbody>
+</tbody>
    </table>
    </div>
                 

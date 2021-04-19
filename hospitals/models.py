@@ -61,9 +61,50 @@ class Document(models.Model):
 
     APPLICATION_TYPE = (
         ('New Registration - Radiography Practice', 'New Registration - Radiography Practice' ),
-        ('New Registration - Government Hospital Internship', 'New Registration - Government Hospital Internship' ),
         ('New Registration - Private Hospital Internship', 'New Registration - Private Hospital Internship' ),
-        ('Renewal', 'Renewal'),
+        ('New Registration - Government Hospital Internship', 'New Registration - Government Hospital Internship' ),
+        ('Renewal - Radiography Practice', 'Renewal - Radiography Practice'),
+        ('Renewal - Private Hospital Internship', 'Renewal - Private Hospital Internship'),
+        ('Renewal - Government Hospital Internship', 'Renewal - Government Hospital Internship'),
+        )
+
+    STATE_CHOICES = (
+        ('Abia', 'Abia' ),
+        ('Adamawa', 'Adamawa'),
+        ('Akwa Ibom', 'Akwa Ibom'),
+        ('Anambra', 'Anambra'),
+        ('Bauchi', 'Bauchi'),
+        ('Bayelsa', 'Bayelsa'),
+        ('Benue', 'Benue'),
+        ('Borno', 'Borno'),
+        ('Cross River', 'Cross River'),
+        ('Delta', 'Delta'),
+        ('Ebonyi', 'Ebonyi'),
+        ('Enugu', 'Enugu'),
+        ('Edo' , 'Edo'),
+        ('Ekiti', 'Ekiti'),
+        ('FCT', 'FCT'),
+        ('Gombe', 'Gombe'),
+        ('Imo', 'Imo'),
+        ('Jigawa', 'Jigawa'),
+        ('Kaduna', 'Kaduna'),
+        ('Kano', 'Kano'),
+        ('Kebbi', 'Kebbi'),
+        ('Kogi' , 'Kogi'),
+        ('Kwara', 'Kwara'),
+        ('Lagos', 'Lagos'),
+        ('Nasarawa', 'Nasarawa'),
+        ('Niger', 'Niger'),
+        ('Ogun', 'Ogun'),
+        ('Ondo', 'Ondo'),
+        ('Osun', 'Osun'),
+        ('Oyo', 'Oyo'),
+        ('Plateau', 'Plateau'),
+        ('Rivers', 'Rivers'),
+        ('Sokoto', 'Sokoto'),
+        ('Taraba', 'Taraba'),
+        ('Yobe', 'Yobe'),
+        ('Zamfara', 'Zamfara'),
         )
 
     #LICENSE_TYPE = (
@@ -79,12 +120,34 @@ class Document(models.Model):
     application_status = models.IntegerField(default=1)
     hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospitals', on_delete=models.CASCADE)
     hospital_type = models.CharField(max_length=100, choices = HOSPITAL_TYPE)
+    facility_address = models.TextField(blank=True)
+    facility_state_of_location = models.CharField(max_length=100, choices = STATE_CHOICES)
     equipment = MultiSelectField(choices = EQUIPMENT)
-    radiographers = models.TextField(blank=True, null=True)
-    radiologists = models.TextField(blank=True, null=True)
+    radiographer_in_charge = models.CharField(max_length=100)
+    radiographer1 = models.CharField(max_length=100, blank=True, null =True)
+    radiographer2 = models.CharField(max_length=100, blank=True, null =True)
+    radiographer3 = models.CharField(max_length=100, blank=True, null =True)
+    radiographer_in_charge_license_no = models.CharField(max_length=100)
+    radiographer1_license_no = models.CharField(max_length=100, blank=True, null =True)
+    radiographer2_license_no = models.CharField(max_length=100, blank=True, null =True)
+    radiographer3_license_no = models.CharField(max_length=100, blank=True, null =True)
+    staffname1 = models.CharField(max_length=100, blank=True, null =True)
+    staffname2 = models.CharField(max_length=100, blank=True, null =True)
+    staffname3 = models.CharField(max_length=100, blank=True, null =True)
+    staffname4 = models.CharField(max_length=100, blank=True, null =True)
+    staffname5 = models.CharField(max_length=100, blank=True, null =True)
+    staffdesignation1 = models.CharField(max_length=100, blank=True, null =True)
+    staffdesignation2 = models.CharField(max_length=100, blank=True, null =True)
+    staffdesignation3 = models.CharField(max_length=100, blank=True, null =True)
+    staffdesignation4 = models.CharField(max_length=100, blank=True, null =True)
+    staffdesignation5 = models.CharField(max_length=100, blank=True, null =True)
+    radiographer_in_charge_passport = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
+    radiographer_in_charge_nysc = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
+    radiographer_in_charge_practice_license = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
+    radiographer1_practice_license = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
+    radiographer2_practice_license = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
+    radiographer3_practice_license = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     cac_certificate = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
-    practice_license1 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
-    practice_license2 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     form_c07 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     submission_date = models.DateField(default=date.today)
 
@@ -117,7 +180,7 @@ class Payment(models.Model):
     payment_date = models.DateField(default=date.today)  
     vet_status = models.IntegerField(default=1)
     vetting_officer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, related_name='vetted_by', blank=True, null=True)
-    vet_date =models.DateField(auto_now_add=False, auto_now=True)
+    vet_date =models.DateField(null=True, blank=True, auto_now=True, auto_now_add=False)
 
 
     class Meta:
@@ -780,7 +843,7 @@ class License(models.Model):
     hospital_code = models.CharField(max_length=500, null=True, blank=True, 
         default=increment_hospital_code)
     application_status = models.IntegerField(default=8)
-    license_no = models.CharField(max_length=200)
+    license_no = models.CharField(max_length=500, unique=True, null=True, blank=True)
     issue_date = models.DateField(default=date.today)
     expiry_date = models.DateField(default=date.today)
     license_status = models.CharField(max_length=10)
@@ -794,7 +857,8 @@ class License(models.Model):
         unique_together = (('application_no','hospital_name'), ('application_no','license_no'))
         
     def __str__(self):
-        return str(self.hospital_name)
+        return str(self.application_no)
+
 
     def save(self, *args, **kwargs):
         
@@ -816,6 +880,11 @@ class License(models.Model):
         if self.inspection:
             self.inspection.application_status = 8
             self.inspection.save()
+
+
+        if self.payment:
+            self.payment.application_status = 8
+            self.payment.save()
 
         
 

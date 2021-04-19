@@ -9,16 +9,40 @@
 
 {% block content %}
 
+
+{% if object.hospital.application_type == "Renewal - Radiography Practice" %}
+
 <section class="p-2">
-   
+    <div class="container mt-2 ">
+    <div class="col mb-2">
+    <p class="text-info display-4 paragraph3">Applications Due for Registrar's Approval</p>
+    <hr>
+    </div>
+    </div>
+</section>
+
+<section class="my-0">
+    <div class="container">
+    <div class="row rounded pl-3 mx-3" style="background-color: #bfe3f8;">
+    <div class="col-md-12 pt-2 pb-0 mx-auto">
+    <p class="lead" style="color: #05567b;">
+    <strong>{{object.hospital_name}}</strong> Radiography Practice Permit is due for Registrar's final approval.  See brief details of application below:</p>           
+    </div>
+    </div>
+    </div>
+</section>
+
+
+{% else %}
+
+<section class="p-2">
     <div class="container mt-2 ">
     <div class="col mb-2">
     <p class="text-info display-4 paragraph3">Applications Due for Inspection Scheduling</p>
     <hr>
     </div>
     </div>
-
-    </section>
+</section>
 
 <section class="my-0">
     <div class="container">
@@ -29,7 +53,10 @@
     </div>
     </div>
     </div>
-    </section>
+</section>
+
+
+{% endif %}
 
 <!-- Skills -->
 
@@ -65,15 +92,15 @@
     </div>
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
         <p class="lead text-secondary m-0">Facility Address/Location:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.hospital_name.address}}</strong></p>  
+        <p class="lead text-secondary m-0"><strong>{{object.hospital.facility_address}}</strong></p>  
         <br>
         <p class="lead text-secondary m-0">Vetted By:</p>
         <p class="lead text-secondary text-capitalize m-0"><strong>{{object.vetting_officer.first_name}} {{object.vetting_officer.last_name}}</strong></p>  
         <br>
     </div>
     <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
-        <p class="lead text-secondary m-0">State of Location:</p>
-        <p class="lead text-secondary m-0"><strong>{{object.hospital_name.state}}</strong></p> 
+        <p class="lead text-secondary m-0">Radiographer In Charge:</p>
+        <p class="lead text-secondary m-0"><strong>{{object.hospital.radiographer_in_charge}}</strong></p> 
         <br>
         <br>
         <p class="lead text-secondary m-0">Vetted On:</p>

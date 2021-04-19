@@ -150,9 +150,7 @@ class Hospital(models.Model):
         ('Yobe', 'Yobe'),
         ('Zamfara', 'Zamfara'),
         )
-
     
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     hospital_name = models.CharField(max_length=200, blank=True)
     hospital_admin = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='practice_manager', null=True, on_delete=models.CASCADE)
@@ -160,7 +158,7 @@ class Hospital(models.Model):
     phone_no = models.CharField(max_length=100, blank=True)
     state = models.CharField(max_length=100, choices = STATE_CHOICES)
     city = models.CharField(max_length=100)
-    address = models.TextField(blank=True)
+    contact_address = models.TextField(blank=True)
     reg_date = models.DateField(default=date.today)
     
 

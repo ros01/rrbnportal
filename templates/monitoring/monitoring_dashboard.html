@@ -10,58 +10,59 @@
 <!--main containere-->
 
 <main class="container">
-    <div class="row mobile-top">
-        <div class="col-md-12 col-lg-3 p-1 magin-right">
-            <div class="card card-style">
-                <div class="card-body">
-                    <p class="card-title text-center"><i class="fa fa-hourglass-half text-warning"></i> Pending Doc
-                        verification</p>
-                    <h3 class="mt-3 text-center">21</h3>
-                    <p class="mt-3 text-center small-text">6 Applications[Yr 2019]&nbsp;&nbsp;&nbsp;</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 col-lg-3 p-1 magin-right">
-            <div class="card card-style">
-                <div class="card-body">
-                    <p class="card-title text-center"><i class="fa fa-money-bill text-warning"></i> Due for Payment</p>
-                    <h3 class="mt-3 text-center">21</h3>
-                    <p class="mt-3 text-center small-text">2
-                        Payments [2019]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 col-lg-3 p-1 magin-right">
-            <div class="card card-style">
-                <div class="card-body">
-                    <p class="card-title text-center"><i class="fa fa-clock text-warning"></i> Due for Inspection</p>
-                    <h3 class="mt-3 text-center">21</h3>
-                    <p class="mt-3 text-center small-text">&nbsp;&nbsp;&nbsp;0 Inspections[Yr 2019]</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 col-lg-3 p-1 magin-right">
-            <div class="card card-style">
-                <div class="card-body">
-                    <p class="card-title text-center"><i class="fa fa-lightbulb text-warning"></i> Pending inspections
-                    </p>
-                    <h3 class="mt-3 text-center">21</h3>
-                    <p class="mt-3 text-center small-text">0 Completed Inspections[2019]</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 col-lg-3 p-1 magin-right">
-            <div class="card card-style">
-                <div class="card-body">
-                    <p class="card-title text-center"><i class="fa fa-share-square text-warning"></i> Awaiting inc.
-                        Approval</p>
-                    <h3 class="mt-3 text-center">21</h3>
-                    <p class="mt-3 text-center small-text">0 Approved inspections[2019]</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--utility items-->
+<div class="row mobile-top">
+<div class="col-md-12 col-lg-3 p-1 magin-right">
+<div class="card card-style">
+<div class="card-body">
+<p class="card-title text-center"><i class="fa fa-hourglass-half text-warning"></i> Pending Doc Verification</p>
+<h3 class="mt-3 text-center">21</h3>
+<p class="mt-3 text-center small-text">6 Applications[Yr 2021]&nbsp;&nbsp;&nbsp;</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-12 col-lg-3 p-1 magin-right">
+<div class="card card-style">
+<div class="card-body">
+<p class="card-title text-center"><i class="fa fa-money-bill text-warning"></i> Due for Payment</p>
+<h3 class="mt-3 text-center">21</h3>
+<p class="mt-3 text-center small-text">2 Payments [2021]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+</div>
+</div>
+
+</div>
+<div class="col-md-12 col-lg-3 p-1 magin-right">
+<div class="card card-style">
+<div class="card-body">
+<p class="card-title text-center"><i class="fa fa-clock text-warning"></i> Due for Inspection</p>
+<h3 class="mt-3 text-center">21</h3>
+<p class="mt-3 text-center small-text">&nbsp;&nbsp;&nbsp;0 Inspections[Yr 2021]</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-12 col-lg-3 p-1 magin-right">
+<div class="card card-style">
+<div class="card-body">
+<p class="card-title text-center"><i class="fa fa-lightbulb text-warning"></i> Pending inspections
+</p>
+<h3 class="mt-3 text-center">21</h3>
+<p class="mt-3 text-center small-text">0 Completed Inspections[2021]</p>
+</div>
+</div>
+</div>
+<div class="col-md-12 col-lg-3 p-1 magin-right">
+<div class="card card-style">
+<div class="card-body">
+<p class="card-title text-center"><i class="fa fa-share-square text-warning"></i> Awaiting Approval</p>
+<h3 class="mt-3 text-center">21</h3>
+<p class="mt-3 text-center small-text">0 Approved Inspections[2021]</p>
+</div>
+</div>
+</div>
+</div>
+    
+<!--utility items-->
     <div class="row mt-5 mobile-top2">
         <div class="col-md-12 col-lg-4">
             <div class="card card-style-2">
@@ -108,17 +109,30 @@
             <div class="card card-style-2">
                 <div class="card-body">
                     <i class="fa fa-wrench" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
-                    <h5 class="pb-2" style="margin: -50px 0 0 60px; font-weight: bold;">Licenses</h5>
+                    <h5 class="pb-2" style="margin: -50px 0 0 60px; font-weight: bold;">Certificates & Permits</h5>
                     <ul class="list-unstyled d-flex">
                         <i class="fa fa-check-circle text-success mt-1"
-                            style="font-size: 15px; margin:0 7px 0 60px;"></i>
-                        <li><a class="text-dark" href="{% url 'monitoring:license_list' %}"> Issue Licenses</a></li>
+                            style="font-size: 15px; margin:0 5px 0 60px;"></i>
+                        <li><a class="text-dark" href="{% url 'monitoring:license_list' %}"> Issue Certificates & Permits</a></li>
                     </ul>
                     <ul class="list-unstyled d-flex m-up">
                         <i class="fa fa-check-circle text-success mt-1"
-                            style="font-size: 15px; margin:0 7px 0 60px;"></i>
-                        <li><a class="text-dark" href="{% url 'monitoring:license_issued' %}"> View Licenses</a></li>
+                            style="font-size: 15px; margin:0 5px 0 60px;"></i>
+                        <li><a class="text-dark" href="{% url 'monitoring:rad_cert_reg_list' %}">Certificates of Registration</a></li>
                     </ul>
+
+                    <ul class="list-unstyled d-flex m-up">
+                        <i class="fa fa-check-circle text-success mt-1"
+                            style="font-size: 15px; margin:0 5px 0 60px;"></i>
+                        <li><a class="text-dark" href="{% url 'monitoring:rad_practice_permit_list' %}">Practice Permits</a></li>
+                    </ul>
+
+                    <ul class="list-unstyled d-flex m-up">
+                        <i class="fa fa-check-circle text-success mt-1"
+                            style="font-size: 15px; margin:0 7px 0 60px;"></i>
+                        <li><a class="text-dark" href="{% url 'monitoring:accreditation_cert_list' %}">Accreditation Certificates</a></li>
+                    </ul>
+
                 </div>
             </div>
         </div>

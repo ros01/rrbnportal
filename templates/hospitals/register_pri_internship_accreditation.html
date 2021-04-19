@@ -7,7 +7,6 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/hospital_dashboard.css' %}">
 {% endblock %}
 
-
 {% block content %}
 <div class="container">
 
@@ -26,7 +25,7 @@
 <div class="row mt-0 pl-1 mb-3" style="background-color: #eaecef; border-right:4px solid #eaecef; border-left:4px solid #eaecef; border-top: :4px solid #eaecef; border-bottom: :4px solid #eaecef">
 <i class="fas fa-info fa-2x py-2 pl-3"></i>      
 <p class="lead ml-3 pl-3 py-2 my-auto">
-Fill the Form below. All fields are required</p></div>
+Fill the Form below. Fields marked Optional may be left blank</p></div>
 </div>
 
 <form method="POST" action="." enctype="multipart/form-data">
@@ -36,24 +35,113 @@ Fill the Form below. All fields are required</p></div>
 
  <input type="hidden" name="license_type" class="form-control" value="Internship Accreditation" required id="id_license_type"  id="div_id_license_type">
 
-{{ form.hospital_name |as_crispy_field }}                  
+{{ form.hospital_name |as_crispy_field }}   
+
+
 <div class="form-row">
 <div class="form-group col-md-6 mb-0">
 {{ form.hospital_type|as_crispy_field }}
 </div>    
 
 <div class="form-group col-md-6 mb-0">
-{{ form.equipment |as_crispy_field }}
+{{ form.facility_address |as_crispy_field }}
 </div>                       
-</div>
+</div>                    
   
 
 <div class="form-row">
 <div class="form-group col-md-6 mb-0">
-{{ form.radiographers|as_crispy_field }}
+{{ form.facility_state_of_location|as_crispy_field }}
+</div>    
+
+<div class="form-group col-md-6 mb-0">
+{{ form.equipment |as_crispy_field }}
+</div>                       
+</div>
+
+<div class="form-row">
+<div class="form-group col-md-6 mb-0">
+{{ form.radiographer_in_charge|as_crispy_field }}
 </div>
 <div class="form-group col-md-6 mb-0">
-{{ form.radiologists|as_crispy_field }}
+{{ form.radiographer_in_charge_license_no|as_crispy_field }}
+</div>             
+</div>
+
+<div class="form-row">
+<div class="form-group col-md-6 mb-0">
+{{ form.radiographer1|as_crispy_field }}
+</div>
+<div class="form-group col-md-6 mb-0">
+{{ form.radiographer1_license_no|as_crispy_field }}
+</div>             
+</div>
+
+<div class="form-row">
+<div class="form-group col-md-6 mb-0">
+{{ form.radiographer2|as_crispy_field }}
+</div>
+<div class="form-group col-md-6 mb-0">
+{{ form.radiographer2_license_no|as_crispy_field }}
+</div>             
+</div>
+
+<div class="form-row">
+<div class="form-group col-md-6 mb-0">
+{{ form.radiographer3|as_crispy_field }}
+</div>
+<div class="form-group col-md-6 mb-0">
+{{ form.radiographer3_license_no|as_crispy_field }}
+</div>             
+</div>
+
+<div class="col text-left p-0 mb-3 mx-0">
+<p class="text-success display-4 paragraph3">Other Staff Details</p>
+<hr>
+</div>
+
+<div class="form-row">
+<div class="form-group col-md-6 mb-0">
+{{ form.staffname1|as_crispy_field }}
+</div>
+<div class="form-group col-md-6 mb-0">
+{{ form.staffdesignation1|as_crispy_field }}
+</div>             
+</div>
+
+<div class="form-row">
+<div class="form-group col-md-6 mb-0">
+{{ form.staffname2|as_crispy_field }}
+</div>
+<div class="form-group col-md-6 mb-0">
+{{ form.staffdesignation2|as_crispy_field }}
+</div>             
+</div>
+
+<div class="form-row">
+<div class="form-group col-md-6 mb-0">
+{{ form.staffname3|as_crispy_field }}
+</div>
+<div class="form-group col-md-6 mb-0">
+{{ form.staffdesignation3|as_crispy_field }}
+</div>             
+</div>
+
+<div class="form-row">
+<div class="form-group col-md-6 mb-0">
+{{ form.staffname4|as_crispy_field }}
+</div>
+<div class="form-group col-md-6 mb-0">
+{{ form.staffdesignation4|as_crispy_field }}
+</div>             
+</div>
+
+<div class="form-row">
+<div class="form-group col-md-6 mb-0">
+{{ form.staffname5|as_crispy_field }}
+</div>
+<div class="form-group col-md-6 mb-0">
+{{ form.staffdesignation5|as_crispy_field }}
 </div>             
 </div>
 
@@ -65,11 +153,31 @@ Fill the Form below. All fields are required</p></div>
 
 <div class="form-row">
 <div class="form-group col-md-6 mb-0">
-{{ form.practice_license1|as_crispy_field }}
+{{ form.radiographer_in_charge_passport|as_crispy_field }}
 </div>
 
 <div class="form-group col-md-6 mb-0">
-{{ form.practice_license2|as_crispy_field }}
+{{ form.radiographer_in_charge_practice_license|as_crispy_field }}
+</div>
+</div>
+
+<div class="form-row">
+<div class="form-group col-md-6 mb-0">
+{{ form.radiographer_in_charge_nysc|as_crispy_field }}
+</div>
+
+<div class="form-group col-md-6 mb-0">
+{{ form.radiographer1_practice_license|as_crispy_field }}
+</div>
+</div>
+
+<div class="form-row">
+<div class="form-group col-md-6 mb-0">
+{{ form.radiographer2_practice_license|as_crispy_field }}
+</div>
+
+<div class="form-group col-md-6 mb-0">
+{{ form.radiographer3_practice_license|as_crispy_field }}
 </div>
 </div>
 

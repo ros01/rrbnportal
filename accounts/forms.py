@@ -25,7 +25,7 @@ class SignupForm(UserCreationForm):
        self.fields['first_name'].label = "First Name"
        self.fields['last_name'].label = "Last Name"
        self.fields['email'].label = "Email Address"
-       self.fields['email'].widget.attrs['placeholder'] = "enter Email Address"
+       self.fields['email'].widget.attrs['placeholder'] = "enter email that will serve as your username"
        #self.fields['application_type'].label = "Application Type"
        #self.fields['application_type'].widget.attrs['placeholder'] = "Select Application Type"
        
@@ -33,7 +33,7 @@ class HospitalModelForm(forms.ModelForm):
       
     class Meta:
          model = Hospital
-         fields = ('hospital_name', 'rc_number', 'phone_no', 'state', 'city', 'address')
+         fields = ('hospital_name', 'rc_number', 'phone_no', 'state', 'city', 'contact_address')
          
 
          widgets = {
@@ -52,8 +52,8 @@ class HospitalModelForm(forms.ModelForm):
        self.fields['state'].widget.attrs['placeholder'] = "enter State of Location"
        self.fields['city'].label = "City of Location"
        self.fields['city'].widget.attrs['placeholder'] = "Enter City of Location"
-       self.fields['address'].label = "Address"
-       self.fields['address'].widget.attrs['placeholder'] = "Enter Address"
+       self.fields['contact_address'].label = "Contact Address"
+       self.fields['contact_address'].widget.attrs['placeholder'] = "Enter Contact Address"
        
         
 

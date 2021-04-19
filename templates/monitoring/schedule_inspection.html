@@ -78,30 +78,112 @@ Facility Inspection is scheduled to the closest Zonal Office to the Hospital/Cen
 <table class="table table-bordered">
 <thead>  
 <tr class="bg-secondary">
-<td style="color: #fff;" class="small-text">S/N</td>
-<td style="color: #fff;" class="small-text">Application No</td>
-<td style="color: #fff;" class="small-text">Hospital Name</td>
-<td style="color: #fff;" class="small-text">Application Date</td>
-<td style="color: #fff;" class="small-text">Application Category</td>
-<td style="color: #fff;" class="small-text">Hospital Address</td>
-<td style="color: #fff;" class="small-text">Zonal Office</td>
+
+<th class="small-text" style="color: #fff; "width="2%">SN</th>
+<th class="small-text" style="color: #fff; "width="12%">Application No</th>
+<th class="small-text" style="color: #fff; "width="17%">Hospital Name</th>
+<th class="small-text" style="color: #fff; "width="12%">Application Date</th>
+<th class="small-text" style="color: #fff; "width="18%">Application Type</th>
+<th class="small-text" style="color: #fff; "width="17%">Hospital Address</th>
+<th class="small-text" style="color: #fff; "width="12%">Zonal Office</th>
+
 </tr>
 </thead> 
 <tbody>
-<tr>
-
-<td>1</td>
 {% if payment_qs %}
 {% for object in payment_qs %}
+
+<tr>
+<td>{{forloop.counter}}</td>
 <td>{{object.application_no}}</td>
 <td>{{object.hospital_name}}</td>
 <td>{{object.hospital_name.reg_date}}</td>
-<td>{{object.hospital.license_type}}</td>
-<td>{{object.hospital_name.address}}</td>
+<td>{{object.hospital.application_type}}</td>
+<td>{{object.hospital.facility_address}}</td>
+<td>{{form.inspection_zone|as_crispy_field }}</td>
 {% endfor %}
 {% endif %}
+</tr>  
+
+{% if payment_qss %}
+{% for object in payment_qss %}
+
+<tr>
+<td>{{forloop.counter}}</td>
+<td>{{object.application_no}}</td>
+<td>{{object.hospital_name}}</td>
+<td>{{object.hospital_name.reg_date}}</td>
+<td>{{object.hospital.application_type}}</td>
+<td>{{object.hospital.facility_address}}</td>
 <td>{{form.inspection_zone|as_crispy_field }}</td>
-</tr>           
+{% endfor %}
+{% endif %}
+
+</tr>  
+
+{% if payment_qsss %}
+{% for object in payment_qsss %}
+
+<tr>
+<td>{{forloop.counter}}</td>
+<td>{{object.application_no}}</td>
+<td>{{object.hospital_name}}</td>
+<td>{{object.hospital_name.reg_date}}</td>
+<td>{{object.hospital.application_type}}</td>
+<td>{{object.hospital.facility_address}}</td>
+<td>{{form.inspection_zone|as_crispy_field }}</td>
+{% endfor %}
+{% endif %}
+</tr>  
+
+
+{% if payment_qsr %}
+{% for object in payment_qsr %}
+
+<tr>
+<td>{{forloop.counter}}</td>
+<td>{{object.application_no}}</td>
+<td>{{object.hospital_name}}</td>
+<td>{{object.hospital_name.reg_date}}</td>
+<td>{{object.hospital.application_type}}</td>
+<td>{{object.hospital.facility_address}}</td>
+<td>{{form.inspection_zone|as_crispy_field }}</td>
+{% endfor %}
+{% endif %}
+</tr>  
+
+{% if payment_qssr %}
+{% for object in payment_qssr %}
+
+<tr>
+<td>{{forloop.counter}}</td>
+<td>{{object.application_no}}</td>
+<td>{{object.hospital_name}}</td>
+<td>{{object.hospital_name.reg_date}}</td>
+<td>{{object.hospital.application_type}}</td>
+<td>{{object.hospital.facility_address}}</td>
+<td>{{form.inspection_zone|as_crispy_field }}</td>
+{% endfor %}
+{% endif %}
+</tr>  
+
+{% if payment_qgssr %}
+{% for object in payment_qgssr %}
+
+<tr>
+<td>{{forloop.counter}}</td>
+<td>{{object.application_no}}</td>
+<td>{{object.hospital_name}}</td>
+<td>{{object.hospital_name.reg_date}}</td>
+<td>{{object.hospital.application_type}}</td>
+<td>{{object.hospital.facility_address}}</td>
+<td>{{form.inspection_zone|as_crispy_field }}</td>
+{% endfor %}
+{% endif %}
+</tr>  
+
+
+
 <!-- Insert Datepicker here -->  
 </tbody>
 </table>

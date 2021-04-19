@@ -67,16 +67,14 @@
     <div class="card-body bg-white mt-0 p-0 mb-3">
     {% if inspection %}
     <ul class="list-unstyled mb-5 position-relative">
-    <li><b>
-    {{ inspection }}
-    </b> <span class="text-dark">Due for License Issuance</span> </li>
+    <li><b>{{ inspection }}</b> <span class="text-dark">Due for Practice Permit Issuance</span> </li>
     </ul>
     {% else %}
     <ul class="list-unstyled mb-5 position-relative">
-    <li><b>0</b> <span class="text-dark">Due for License Issuance</span> </li>
+    <li><b>0</b> <span class="text-dark">Due for Practice Permit Issuance</span> </li>
     </ul>
     {% endif %}
-    <a href="{% url 'monitoring:license_list_table' %}" class="btn btn-outline-success btn-block p-1 rounded-0">Proceed to issue <br>New Hospital License</a>
+    <a href="{% url 'monitoring:license_list_table' %}" class="btn btn-outline-success btn-block p-1 rounded-0">Proceed to issue <br>New Hospital Practice Permit</a>
     </div>
     </div>
 
@@ -97,8 +95,9 @@
   <path class='deco-layer deco-layer--4' d='M-34.667,62.998c0,0,56-45.667,120.316-27.839C167.484,57.842,197,41.332,232.286,30.428
   c53.07-16.399,104.047,36.903,104.047,36.903l1.333,36.667l-372-2.954L-34.667,62.998z' fill='#FFFFFF'>      </path>
  </svg></div>
- {% if appraisal %}
+ 
  <div class="card-body bg-white mt-0 p-0 mb-3">
+ {% if appraisal %}
  <ul class="list-unstyled mb-5 position-relative">
  <li><b>{{ appraisal }}</b> <span class="text-dark">Due for Internship Accreditation</span> </li>
  </ul>
@@ -113,9 +112,9 @@
 
              
  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 princing-item green text-center">
- <div class="pricing-divider "> <h4 class="display-paragraph2 text-light">License Renewals</h4>
- {% if inspectionr %}
- <h4 class="my-0 display-paragraph2 text-light font-weight-normal mb-3">{{ inspectionr }}</h4>
+ <div class="pricing-divider "> <h4 class="display-paragraph2 text-light">Permit Renewals</h4>
+ {% if permitr %}
+ <h4 class="my-0 display-paragraph2 text-light font-weight-normal mb-3">{{ permitr }}</h4>
  {% else %}
  <h4 class="my-0 display-paragraph2 text-light font-weight-normal mb-3">0</h4>
  {% endif %}
@@ -131,17 +130,18 @@
   </svg>
   </div>
 
-  {% if inspectionr %} 
+   
   <div class="card-body bg-white mt-0 p-0 mb-3">
+  {% if permitr %}
   <ul class="list-unstyled mb-5 position-relative">
-  <li><b>{{ inspectionr }}</b> <span class="text-dark">Due for License Renewal</span> </li>
+  <li><b>{{ permitr }}</b> <span class="text-dark">Due for Permit Renewal</span> </li>
   </ul>
   {% else %}
   <ul class="list-unstyled mb-5 position-relative">
-  <li><b>0</b> <span class="text-dark">Due for License Renewal</span> </li>
+  <li><b>0</b> <span class="text-dark">Due for Permit Renewal</span> </li>
   </ul>
   {% endif %}
-  <a href="{% url 'monitoring:renewal_list_table' %}" class="btn btn-outline-success btn-block p-1 rounded-0">Proceed to Issue <br>License Renewal</a>
+  <a href="{% url 'monitoring:renewal_list_table' %}" class="btn btn-outline-success btn-block p-1 rounded-0">Proceed to Renew <br>Practice Permit</a>
   </div>
   
   </div>

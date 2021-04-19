@@ -69,71 +69,187 @@
  <span class="col-6">{{object.hospital_name.hospital_admin}}</span>
  </div>
  <div class="row">
- <span class="col-5"><strong>Address:</strong></span>
- <span class="col-6">{{object.hospital_name.address}}</span>
+ <span class="col-5"><strong>Hospital/Centre Address:</strong></span>
+ <span class="col-6">{{object.hospital.facility_address}}</span>
  </div>
- <div class="row">
- <span class="col-5"><strong>City:</strong></span>
- <span class="col-6">{{object.hospital_name.city}}</span>
- </div>
- <div class="row">
- <span class="col-5"><strong>State:</strong></span>
- <span class="col-6">{{object.hospital_name.state}}</span>
- </div>
+ 
  <div class="row">
  <span class="col-5"><strong>Listed Modalities:</strong></span>
  <span class="col-6">{{object.hospital.equipment}}</span>
  </div>
- <div class="row">
- <span class="col-5"><strong>Radiographers:</strong></span>
- <span class="col-6">{{object.hospital.radiographers}}</span>
- </div>
- <div class="row">
- <span class="col-5"><strong>Radiologists:</strong></span>
- <span class="col-6">{{object.hospital.radiologists}}</span>
- </div>
- </div><br>
- <div class="col-md-12">
- <div class="row">
- <p class="col-12 text-success lead">Control Details</p>
- </div>
- <div class="row">
- <span class="col-5"><strong>Inspection Schedule On:</strong></span>
- <span class="col-6">{{object.inspection_schedule_date}}</span>
- </div>
- <div class="row">
- <span class="col-5"><strong>Inspection Schedule By:</strong></span>
- <span class="col-6">{{object.inspection_scheduler}}</span>
- </div>
- </div>
- </div>
- <div class="col-md-5 mt-0">
- <p class="text-success lead">Inspection Facility Address</p>
- <span>{{object.hospital_name.address}}</span>
- <br>
- <br>
- <p class="text-success lead">Inspection Schedule Details</p>
- <div class="row py-0">
- <table class="table table-hover">
- <thead style="background-color: #bfe3f8;">
- <tr>
- <th scope="col lead" style="color: #05567b;">Parameter</th>
- <th scope="col lead" style="color: #05567b;">Value</th>
- </tr>
- </thead>
- <tbody>
- <tr> <td width="50%" scope="col">Area Office:</td> <td width="50%" scope="col">{{object.inspection_zone}} </td> </tr> 
- <tr> <td width="50%" scope="col">Inspection Date:</td> <td width="50%" scope="col">{{object.inspection_date}} </td> </tr> 
- <tr> <td width="50%" scope="col">Inspection Report Deadline:</td> <td width="50%" scope="col">{{object.inspection_report_deadline}}</td> </tr> 
- </tbody>
- </table>
- </div>
- </div>
- </div>
- <hr>
- <div class="d-flex justify-content-end">   
- <a href="{% url 'hospitals:hospitals_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
- </div>
- </main>
+
+
+{% if object.hospital.radiographer_in_charge %}
+<div class="row">
+<span class="col-5"><strong>Radiographer In Charge:</strong></span>
+<span class="col-6">{{object.hospital.radiographer_in_charge}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer_in_charge_license_no %}
+<div class="row">
+<span class="col-5"><strong>R-I-C License No:</strong></span>
+<span class="col-6">{{object.hospital.radiographer_in_charge_license_no}}</span>
+</div>
+{% endif %}
+
+
+{% if object.hospital.radiographer1 %}
+<div class="row">
+<span class="col-5"><strong>Radiographer 1:</strong></span>
+<span class="col-6">{{object.hospital.radiographer1}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer1_license_no  %}
+<div class="row">
+<span class="col-5"><strong>Radiographer 1 License No:</strong></span>
+<span class="col-6">{{object.hospital.radiographer1_license_no }}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer2 %}
+<div class="row">
+<span class="col-5"><strong>Radiographer 2:</strong></span>
+<span class="col-6">{{object.hospital.radiographer2}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer2_license_no  %}
+<div class="row">
+<span class="col-5"><strong>Radiographer 2 License No:</strong></span>
+<span class="col-6">{{object.hospital.radiographer2_license_no }}</span>
+</div>
+{% endif %}
+                
+{% if object.hospital.radiographer3 %}
+<div class="row">
+<span class="col-5"><strong>Radiographer 3:</strong></span>
+<span class="col-6">{{object.hospital.radiographer3}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer3_license_no  %}
+<div class="row">
+<span class="col-5"><strong>Radiographer 3 License No:</strong></span>
+<span class="col-6">{{object.hospital.radiographer3_license_no }}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname1 %}
+<div class="row">
+<span class="col-5"><strong>Staff 1 Name:</strong></span>
+<span class="col-6">{{object.hospital.staffname1}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation1 %}
+<div class="row">
+<span class="col-5"><strong>Staff 1 Designation:</strong></span>
+<span class="col-6">{{object.hospital.staffdesignation1}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname2 %}
+<div class="row">
+<span class="col-5"><strong>Staff 2 Name:</strong></span>
+<span class="col-6">{{object.hospital.staffname2}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation2 %}
+<div class="row">
+<span class="col-5"><strong>Staff 2 Designation:</strong></span>
+<span class="col-6">{{object.hospital.staffdesignation2}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname3 %}
+<div class="row">
+<span class="col-5"><strong>Staff 3 Name:</strong></span>
+<span class="col-6">{{object.hospital.staffname3}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation3 %}
+<div class="row">
+<span class="col-5"><strong>Staff 3 Designation:</strong></span>
+<span class="col-6">{{object.hospital.staffdesignation3}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname4 %}
+<div class="row">
+<span class="col-5"><strong>Staff 4 Name:</strong></span>
+<span class="col-6">{{object.hospital.staffname4}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation4 %}
+<div class="row">
+<span class="col-5"><strong>Staff 4 Designation:</strong></span>
+<span class="col-6">{{object.hospital.staffdesignation4}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname5 %}
+<div class="row">
+<span class="col-5"><strong>Staff 5 Name:</strong></span>
+<span class="col-6">{{object.hospital.staffname5}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation5 %}
+<div class="row">
+<span class="col-5"><strong>Staff 5 Designation:</strong></span>
+<span class="col-6">{{object.hospital.staffdesignation5}}</span>
+</div>
+{% endif %}
+
+
+
+</div><br>
+<div class="col-md-12">
+<div class="row">
+<p class="col-12 text-success lead">Control Details</p>
+</div>
+<div class="row">
+<span class="col-5"><strong>Inspection Schedule On:</strong></span>
+<span class="col-6">{{object.inspection_schedule_date}}</span>
+</div>
+<div class="row">
+<span class="col-5"><strong>Inspection Schedule By:</strong></span>
+<span class="col-6">{{object.inspection_scheduler}}</span>
+</div>
+</div>
+</div>
+<div class="col-md-5 mt-0">
+<p class="text-success lead">Inspection Facility Address</p>
+<span>{{object.hospital.facility_address}}</span>
+<br>
+<br>
+<p class="text-success lead">Inspection Schedule Details</p>
+<div class="row py-0">
+<table class="table table-hover">
+<thead style="background-color: #bfe3f8;">
+<tr>
+<th scope="col lead" style="color: #05567b;">Parameter</th>
+<th scope="col lead" style="color: #05567b;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr> <td width="50%" scope="col">Area Office:</td> <td width="50%" scope="col">{{object.inspection_zone}} </td> </tr> 
+<tr> <td width="50%" scope="col">Inspection Date:</td> <td width="50%" scope="col">{{object.inspection_date}} </td> </tr> 
+<tr> <td width="50%" scope="col">Inspection Report Deadline:</td> <td width="50%" scope="col">{{object.inspection_report_deadline}}</td> </tr> 
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<hr>
+<div class="d-flex justify-content-end">   
+<a href="{% url 'hospitals:hospitals_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
+</div>
+</main>
 
 {% endblock %}

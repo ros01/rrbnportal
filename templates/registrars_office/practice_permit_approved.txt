@@ -1,0 +1,26 @@
+Dear {{object.hospital_name|upper }},
+
+This is an auto-generated email informing you that your Radiography Practice Permit Renewal Application has PASSED final validation by the Registrar/CEO of RRBN.
+
+An electronic copy of your Radiography Practice Permit will become available for download on your dashboard shortly.
+
+See brief details below:
+
+Application Number: {{object.application_no}}
+
+Hospital Name: {{object.hospital_name}}
+
+Application Category: {{object.hospital.license_type}}
+
+
+Application Remark: APPROVED 
+
+
+Congratulations!
+
+
+
+Sincerely,
+
+Radiographers Registration Board of Nigeria (RRBN)
+monitoring.rrbn.gov.ng

@@ -14,80 +14,209 @@
 
 <!-- Banner -->
 <section>
-    <div class="container">
-        <div class="row mt-2 pt-2 pl-3">
-             <div class="col text-left p-0 m-0">
-                <p class="text-success display-4 paragraph3">HOSPITAL INFO SUBMISSION CONFIRMATION</p>
-                <hr>
-   
-
-    </div>
-    </div>
-    </div>
-
-
+<div class="container">
+<div class="row mt-2 pt-2 pl-3">
+<div class="col text-left p-0 m-0">
+<p class="text-success display-4 paragraph3">HOSPITAL INFO SUBMISSION CONFIRMATION</p>
+<hr>
+</div>
+</div>
+</div>
 </section>
 
 <!-- End of Banner -->
 
 <section>
-    <div class="container">
-        <div class="row px-md-3 px-sm-2 px-xs-2 rounded " style="background-color: #bfe3f8;">
-            <div class="mb-3 pt-3">
-                <p class="lead text-justify px-xs-2" style="color: #05567b;">Dear <strong>{{object.hospital_name}}</strong> your hospital information has been submitted successfully to RRBN.  Your Application Number is <strong>{{object.application_no}}</strong>. Brief details of your registration are as follows:</p>    
-        </div>
-     </div>
-    </div>
+<div class="container">
+<div class="row px-md-3 px-sm-2 px-xs-2 rounded " style="background-color: #bfe3f8;">
+<div class="mb-3 pt-3">
+<p class="lead text-justify px-xs-2" style="color: #05567b;">Dear <strong>{{object.hospital_name}}</strong> your hospital information has been submitted successfully to RRBN.  Your Application Number is <strong>{{object.application_no}}</strong>. Brief details of your registration are as follows:</p>    
+</div>
+</div>
+</div>
 
 </section>
 
 
-    
-       <div class="row mx-2 py-2 my-2"> 
+<div class="row mx-2 py-2 my-2"> 
+<div class="col-lg-7 col-md-12 col-sm-12 col-xs-12" style="border-right:1px solid #ddd"> <p class="lead text-success">Application Summary</p> 
+<p class="lead" style="color: #05567b;"><strong>Kindly find below your a summary of your submission:</strong></p>
 
-        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" style="border-right:1px solid #ddd"> <p class="lead text-success">Application Summary</p> 
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Application Number:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.application_no}}</strong></span>
+</div>
 
-            <p class="lead" style="color: #05567b;"><strong>Kindly find below your a summary of your submission:</strong></p>
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Application Type:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.application_type}}</strong></span>
+</div>
+
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">License Type:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.license_type}}</strong></span>
+</div>
+
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Hospital Name:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.hospital_name}}</strong></span>
+</div>
+
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Hospital Type:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.hospital_type}}</strong></span>
+</div>
+
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Hospital Address:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.facility_address}}</strong></span>
+</div>
 
 
-                <div class="row">
-                    <span class="col-5" style="font-size:1.1em;">Application Number:</span>
-                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.application_no}}</strong></span>
-                </div>
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">State of Location:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.facility_state_of_location}}</strong></span>
+</div>
 
-                <div class="row">
-                    <span class="col-5" style="font-size:1.1em;">Application Type:</span>
-                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.application_type}}</strong></span>
-                </div>
-                 <div class="row">
-                    <span class="col-5" style="font-size:1.1em;">License Type:</span>
-                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.license_type}}</strong></span>
-                </div>
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Equipment:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.equipment}}</strong></span>
+</div>
 
-                <div class="row">
-                    <span class="col-5" style="font-size:1.1em;">Hospital Name:</span>
-                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.hospital_name}}</strong></span>
-                </div>
-                <div class="row">
-                    <span class="col-5" style="font-size:1.1em;">Hospital Type:</span>
-                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.hospital_type}}</strong></span>
-                </div>
-                <div class="row">
-                    <span class="col-5" style="font-size:1.1em;">Equipment:</span>
-                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.equipment}}</strong></span>
-                </div>
-                <div class="row">
-                    <span class="col-5" style="font-size:1.1em;">Radiographers:</span>
-                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.radiographers}}</strong></span>
-                </div>
-                <div class="row">
-                    <span class="col-5" style="font-size:1.1em;">Radiologists:</span>
-                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.radiologists}}</strong></span>
-                </div>
-                <div class="row">
-                    <span class="col-5" style="font-size:1.1em;">Application Date:</span>
-                    <span class="col-6" style="font-size:1.1em;"><strong>{{object.submission_date}}</strong></span>
-                </div>
+
+{% if object.radiographer_in_charge %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Radiographer In Charge:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.radiographer_in_charge}}</strong></span>
+</div>
+{% endif %}
+
+{% if object.radiographer_in_charge_license_no %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">R-I-C License No:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.radiographer_in_charge_license_no}}</strong></span>
+</div>
+{% endif %}
+
+
+
+{% if object.radiographer1 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Radiographer 1:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.radiographer1}}</strong></span>
+</div>
+{% endif %}
+
+{% if object.radiographer1_license_no  %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Radiographer 1 License No:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.radiographer1_license_no }}</strong></span>
+</div>
+{% endif %}
+
+{% if object.radiographer2 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Radiographer 2:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.radiographer2}}</strong></span>
+</div>
+{% endif %}
+
+{% if object.radiographer2_license_no  %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Radiographer 2 License No:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.radiographer2_license_no }}</strong></span>
+</div>
+{% endif %}
+                
+{% if object.radiographer3 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Radiographer 3:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.radiographer3}}</strong></span>
+</div>
+{% endif %}
+
+{% if object.radiographer3_license_no  %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Radiographer 3 License No:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.radiographer3_license_no }}</strong></span>
+</div>
+{% endif %}
+
+
+{% if object.staffname1 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Staff 1 Name:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.staffname1}}</strong></span>
+</div>
+{% endif %}
+
+{% if object.staffdesignation1 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Staff 1 Designation:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.staffdesignation1}}</strong></span>
+</div>
+{% endif %}
+
+{% if object.staffname2 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Staff 2 Name:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.staffname2}}</strong></span>
+</div>
+{% endif %}
+
+{% if object.staffdesignation2 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Staff 2 Designation:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.staffdesignation2}}</strong></span>
+</div>
+{% endif %}
+
+{% if object.staffname3 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Staff 3 Name:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.staffname3}}</strong></span>
+</div>
+{% endif %}
+
+{% if object.staffdesignation3 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Staff 3 Designation:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.staffdesignation3}}</strong></span>
+</div>
+{% endif %}
+
+{% if object.staffname4 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Staff 4 Name:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.staffname4}}</strong></span>
+</div>
+{% endif %}
+
+{% if object.staffdesignation4 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Staff 4 Designation:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.staffdesignation4}}</strong></span>
+</div>
+{% endif %}
+
+{% if object.staffname5 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Staff 5 Name:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.staffname5}}</strong></span>
+</div>
+{% endif %}
+
+{% if object.staffdesignation5 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Staff 5 Designation:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.staffdesignation5}}</strong></span>
+</div>
+{% endif %}
+                
+<div class="row">
+<span class="col-5" style="font-size:1.1em;">Application Date:</span>
+<span class="col-6" style="font-size:1.1em;"><strong>{{object.submission_date}}</strong></span>
+</div>
                  
 </div>
          
@@ -98,52 +227,35 @@
     
 
 
-    {% if object.license_type == "Radiography Practice" %}
-    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" > <p class="lead text-success">Next step is Payment of N50,000 registration fee plus cost of available modalities</p> <p class="lead" style="color: #05567b;"><strong>To pay and obtain your receipt, kindly follow the instructions below:</strong></p>
-    <ol class="unstyled" style="font-size:1em; text-align:justify"> <li><b>STAGE 1:</b> Logon to www.remita.net</li> <li><b>STAGE 2:</b> Click Pay Fed Govt Agency</li> <li><b>STAGE 3:</b> Choose Radiographers Registration Board of Nigeria from the list and complete the relevant fields. <li><b>STAGE 4:</b> Generate your RRR Number and pay with your credit/debit card or </li> <li><b>STAGE 5:</b>Use the generated RRR to pay physically at any commercial bank</li> </ol>
-    To start the payment process, Click Proceed to Payment to generate an invoice of total fees payable for your application. 
-    </div>
+{% if object.license_type == "Radiography Practice" %}
+<div class="col-lg-5 col-md-12 col-sm-12 col-xs-12" > <p class="lead text-success">Next step is Payment of N50,000 registration fee plus cost of available modalities</p> <p class="lead" style="color: #05567b;"><strong>To pay and obtain your receipt, kindly follow the instructions below:</strong></p>
+<ol class="unstyled" style="font-size:1em; text-align:justify"> <li><b>STAGE 1:</b> Logon to www.remita.net</li> <li><b>STAGE 2:</b> Click Pay Fed Govt Agency</li> <li><b>STAGE 3:</b> Choose Radiographers Registration Board of Nigeria from the list and complete the relevant fields. <li><b>STAGE 4:</b> Generate your RRR Number and pay with your credit/debit card or </li> <li><b>STAGE 5:</b>Use the generated RRR to pay physically at any commercial bank</li> </ol>
+To start the payment process, Click Proceed to Payment to generate an invoice of total fees payable for your application. 
+</div>
 
-    {% else %}
+{% else %}
 
-    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" > <p class="lead text-success">Next step is Payment of N200,000 Internship Accreditation Fee</p> <p class="lead" style="color: #05567b;"><strong>To pay and obtain your receipt, kindly follow the instructions below:</strong></p>
-    <ol class="unstyled" style="font-size:1em; text-align:justify"> <li><b>STAGE 1:</b> Logon to www.remita.net</li> <li><b>STAGE 2:</b> Click Pay Fed Govt Agency</li> <li><b>STAGE 3:</b> Choose Radiographers Registration Board of Nigeria from the list and complete the relevant fields. <li><b>STAGE 4:</b> Generate your RRR Number and pay with your credit/debit card or </li> <li><b>STAGE 5:</b>Use the generated RRR to pay physically at any commercial bank</li> </ol>
-    To start the payment process, Click Proceed to Payment to generate an invoice of total fees payable for your application. 
-    </div>
+<div class="col-lg-5 col-md-12 col-sm-12 col-xs-12" > <p class="lead text-success">Next step is Payment of N200,000 Internship Accreditation Fee</p> <p class="lead" style="color: #05567b;"><strong>To pay and obtain your receipt, kindly follow the instructions below:</strong></p>
+<ol class="unstyled" style="font-size:1em; text-align:justify"> <li><b>STAGE 1:</b> Logon to www.remita.net</li> <li><b>STAGE 2:</b> Click Pay Fed Govt Agency</li> <li><b>STAGE 3:</b> Choose Radiographers Registration Board of Nigeria from the list and complete the relevant fields. <li><b>STAGE 4:</b> Generate your RRR Number and pay with your credit/debit card or </li> <li><b>STAGE 5:</b>Use the generated RRR to pay physically at any commercial bank</li> </ol>
+To start the payment process, Click Proceed to Payment to generate an invoice of total fees payable for your application. 
+</div>
+{% endif %}
 
-    {% endif %}
-
-
-
+</div>
 
 
-
-
-    </div>
-
-
-    <hr>
-    <div class="d-flex justify-content-end">   
+<hr>
+<div class="d-flex justify-content-end">   
+<a href="{% url 'hospitals:hospitals_dashboard' %}" class="btn btn-warning text-dark py-1 px-2 mr-3 mt-2 mb-4 "><i class="fa fa-times" aria-hidden="true"></i> Continue Later</a>
+{% if object.license_type == "Radiography Practice" %}
+<a href="{% url 'hospitals:generate_invoice' object.pk %}" class="text-success py-1 px-2 mt-2 mb-4 btn btn-outline-success"><i class="fa fa-play text-success"></i>Proceed to Payment</a>
+{% else %}
     
-    <a href="{% url 'hospitals:hospitals_dashboard' %}" class="btn btn-warning text-dark py-1 px-2 mr-3 mt-2 mb-4 "><i class="fa fa-times" aria-hidden="true"></i> Continue Later</a>
-    
-    {% if object.license_type == "Radiography Practice" %}
-    <a href="{% url 'hospitals:generate_invoice' object.pk %}" class="text-success py-1 px-2 mt-2 mb-4 btn btn-outline-success"><i class="fa fa-play text-success"></i>Proceed to Payment</a>
-    {% else %}
-    
-    <a href="{% url 'hospitals:payment_processing' object.pk %}" class="text-success py-1 px-2 mt-2 mb-4 btn btn-outline-success"><i class="fa fa-play text-success"></i>Proceed to Payment</a>
-    {% endif %}
-    
-   
-    
-    </div>
+<a href="{% url 'hospitals:generate_accreditation_payment_details' object.pk %}" class="text-success py-1 px-2 mt-2 mb-4 btn btn-outline-success"><i class="fa fa-play text-success"></i>Proceed to Payment</a>
+{% endif %}
+</div>
                         
-    
-                   
-         <!-- end of banner -->  
+<!-- end of banner -->  
 
-
-
-
-    </main>
+</main>
 {% endblock %}

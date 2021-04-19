@@ -118,9 +118,62 @@ class LicenseModelForm(forms.ModelForm):
        super(LicenseModelForm, self).__init__(*args, **kwargs)
        self.fields['issue_date'].label = "Issue Date"
        self.fields['expiry_date'].label = "Expiry Date"
-       self.fields['license_no'].label = "License No"
+       self.fields['license_no'].label = "Permit No"
        #self.fields['license_status'].label = "License Status"
     
+
+class PermitRenewalModelForm(forms.ModelForm):
+    issue_date = forms.DateField(
+        widget=DatePicker(
+            options={
+                'useCurrent': True,
+                'collapse': False,
+                'minDate': '2020-06-05',
+                'maxDate': '2025-12-31',
+            },
+            attrs={
+                'append': 'fa fa-calendar',
+                'icon_toggle': True,
+                }
+                )
+        )
+
+    expiry_date = forms.DateField(
+        widget=DatePicker(
+            options={
+                'useCurrent': True,
+                'collapse': False,
+                'minDate': '2020-06-05',
+                'maxDate': '2025-12-31',
+            },
+            attrs={
+                'append': 'fa fa-calendar',
+                'icon_toggle': True,
+                }
+                )
+        )
+    #license_status = forms.ChoiceField(choices = LICENSE_STATUS, widget=forms.Select(), required=True)
+
+    class Meta:
+        model = License
+        fields = ('application_no', 'hospital_name', 'hospital', 'payment', 'issue_date', 'expiry_date', 'license_class', 'license_no')
+        widgets = {
+          'application_no': forms.HiddenInput(),
+          'hospital_name': forms.HiddenInput(),
+          'hospital': forms.HiddenInput(),
+          'payment': forms.HiddenInput(),
+          #'schedule': forms.HiddenInput(),
+          #'inspection': forms.HiddenInput(),
+        } 
+      
+       
+    def __init__(self, *args, **kwargs):
+       super(PermitRenewalModelForm, self).__init__(*args, **kwargs)
+       self.fields['issue_date'].label = "Issue Date"
+       self.fields['expiry_date'].label = "Expiry Date"
+       self.fields['license_no'].label = "Permit No"
+       self.fields['license_class'].label = "Class of Permit"
+       #self.fields['license_status'].label = "License Status"
 
 
 class AccreditationModelForm(forms.ModelForm):
@@ -172,7 +225,7 @@ class AccreditationModelForm(forms.ModelForm):
        super(AccreditationModelForm, self).__init__(*args, **kwargs)
        self.fields['issue_date'].label = "Issue Date"
        self.fields['expiry_date'].label = "Expiry Date"
-       self.fields['license_no'].label = "License No"
+       self.fields['license_no'].label = "Certificate No"
        #self.fields['license_status'].label = "License Status"
 
 

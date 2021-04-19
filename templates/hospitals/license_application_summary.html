@@ -24,27 +24,41 @@
 <div class="container mt-4"> 
 {% if object.hospital.license_type == "Radiography Practice" %}
 <p class="text-secondary display-4 paragraph2">
-Radiography License Application Details
+Radiography Practice Permit Application Details
 <span style="float:right; font-size:14px"> 
-<br/> License Number: <b>{{object.license_no}}</b> </span> </p> </div> 
+<br/> Permit Number: <b>{{object.license_no}}</b> </span> </p> </div> 
 <hr>
-<div class="alert text-success" style="background-color: #fffed6; font-size:18px"> Dear <b>{{object.hospital_name|upper}}</b>, <br/>Your Radiography Practice License Application has been successfully processed. You can download an electronic copy of the license below. Congratulations! <br/><br/> <a style="font-size:1.1em" class="btn btn-outline-success" href="{% url 'hospitals:license_download' id=object.id %}" target="_blank"> <i class="fa fa-download"></i> Download License </a></div> 
+<div class="alert text-success" style="background-color: #fffed6; font-size:18px"> Dear <b>{{object.hospital_name|upper}}</b>, <br/>Your Radiography Practice Permit Application has been successfully processed. You can download an electronic copy of the license below. Congratulations! <br/><br/> 
+
+{% if object.hospital.application_type == "New Registration - Radiography Practice" %}
+<a style="font-size:1.1em" class="btn btn-outline-success mr-3" href="{% url 'hospitals:download_rad_cert_reg' id=object.id %}" target="_blank"> <i class="fa fa-download"></i> Download Registration of Practice Certifcate</a>
+
+<a style="font-size:1.1em" class="btn btn-outline-success" href="{% url 'hospitals:download_rad_practice_permit' id=object.id %}" target="_blank"> <i class="fa fa-download"></i> Download Practice Permit</a>
+
+{% else %}
+
+<a style="font-size:1.1em" class="btn btn-outline-success" href="{% url 'hospitals:download_rad_practice_permit' id=object.id %}" target="_blank"> <i class="fa fa-download"></i> Download Practice Permit</a>
+
+{% endif %}
+
+
+</div> 
 <div class="container">
 <p class="display-4 paragraph3" style="color: #05567b;">Summary Details of Radiography Practice License Application </p></div>
 {% else %}
 <p class="text-secondary display-4 paragraph2">
-Radiography Internship Accreditation Application License Details
+Radiography Internship Accreditation Application Details
 <span style="float:right; font-size:14px"> 
-<br/> License Number: <b>{{object.license_no}}</b> </span> </p> </div> 
+<br/> Certificate Number: <b>{{object.license_no}}</b> </span> </p> </div> 
 <hr>
-<div class="alert text-success" style="background-color: #fffed6; font-size:18px"> Dear <b>{{object.hospital_name|upper}}</b>, <br/>Your Radiography Internship License Application has been successfully processed. You can download an electronic copy of the license below. Congratulations! <br/><br/> <a style="font-size:1.1em" class="btn btn-outline-success" href="{% url 'hospitals:license_download' id=object.id %}" target="_blank"> <i class="fa fa-download"></i> Download License </a></div> 
+<div class="alert text-success" style="background-color: #fffed6; font-size:18px"> Dear <b>{{object.hospital_name|upper}}</b>, <br/>Your Radiography Internship Accreditation Application has been successfully processed. You can download an electronic copy of your Certificate below. Congratulations! <br/><br/> <a style="font-size:1.1em" class="btn btn-outline-success" href="{% url 'hospitals:download_accreditation_cert' id=object.id %}" target="_blank"> <i class="fa fa-download"></i> Download Certificate </a></div> 
 <div class="container">
-<p class="display-4 paragraph3" style="color: #05567b;">Summary Details of Radiography Internship License Application </p></div>
+<p class="display-4 paragraph3" style="color: #05567b;">Summary of Radiography Internship Accreditation Application </p></div>
 {% endif %}
 <div class="row ml-1 mb-3">
-<div class="col-md-3"> <b>Application Number:</b> <br> {{object.application_no}}</div> <div class="col-md-3"> <b>Application Type:</b><br> {{object.hospital.application_type}}</div> <div class="col-md-3"> <b>License Type:</b> <br> {{object.hospital.license_type}}   </div> <div class="col-md-3"> <b>Class of License:</b><br> {{object.license_class}}</div> <br/> </div> 
-<div class="row ml-1 mb-3"><div class="col-md-3">  <b>Hospital/Centre Address:</b><br> {{object.hospital_name.address}}  </div> <div class="col-md-3"> <b> Phone:</b><br> {{object.hospital_name.phone_no}} </div> <div class="col-md-3">  <b>Email:</b><br>{{object.hospital_name.hospital_admin}}</div> <div class="col-md-3"> <b>Last Inspection Date:</b><br/> {{object.schedule.inspection_date}} </div><br/></div>
- <div class="row ml-1"> <div class="col-md-3"> <b>License Issue Date:</b><br/> {{object.issue_date}}  </div><div class="col-md-3"> <b>License Expiry Date:</b><br/> {{object.expiry_date}} </div> <div class="col-md-3"> <b>License Number:</b><br/> {{object.license_no}}  </div> <div class="col-md-3"> <b>License Status:</b><br/> 
+<div class="col-md-3"> <b>Application Number:</b> <br> {{object.application_no}}</div> <div class="col-md-3"> <b>Application Type:</b><br> {{object.hospital.application_type}}</div> <div class="col-md-3"> <b>Certificate Type:</b> <br> {{object.hospital.license_type}}   </div> <div class="col-md-3"> <b>Class of Certificate:</b><br> {{object.license_class}}</div> <br/> </div> 
+<div class="row ml-1 mb-3"><div class="col-md-3">  <b>Hospital/Centre Address:</b><br> {{object.hospital.facility_address}}  </div> <div class="col-md-3"> <b> Phone:</b><br> {{object.hospital_name.phone_no}} </div> <div class="col-md-3">  <b>Email:</b><br>{{object.hospital_name.hospital_admin}}</div> <div class="col-md-3"> <b>Last Inspection Date:</b><br/> {{object.schedule.inspection_date}} </div><br/></div>
+ <div class="row ml-1"> <div class="col-md-3"> <b>Certificate Issue Date:</b><br/> {{object.issue_date}}  </div><div class="col-md-3"> <b>Certificate Expiry Date:</b><br/> {{object.expiry_date}} </div> <div class="col-md-3"> <b>Certificate Number:</b><br/> {{object.license_no}}  </div> <div class="col-md-3"> <b>Certificate Status:</b><br/> 
   {% if object.license_status == "Expired" %}
 
 

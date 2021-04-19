@@ -144,8 +144,7 @@ class KanoScheduleListView(LoginRequiredMixin, ListView):
         obj = super(KanoScheduleListView, self).get_context_data(**kwargs)
         obj['schedule_qs'] = Schedule.objects.filter(inspection_zone="Kano", application_status=4)
         return obj
-
-        
+   
 
 class ScheduleObjectMixin(object):
     model = Schedule
@@ -288,6 +287,7 @@ class InspectionReportView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Radiography Practice')
+
         
         #context = {'object': self.get_object()}
         #context['payment'] = Payment.objects.get(pk=self.object)
@@ -317,16 +317,7 @@ class InspectionReportView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
       
 
     def form_invalid(self, form):
-        form = self.get_form()
-
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-          
-           context['object'] = obj
-           context['form'] = form 
-          
-        return self.render_to_response(context)
+        return self.render_to_response(self.get_context_data())
 
 
 class InspectionCompleteDetailView(LoginRequiredMixin, InspectionObjectMixin, View):
@@ -348,9 +339,10 @@ class InspectionCompleteDetailView(LoginRequiredMixin, InspectionObjectMixin, Vi
                'zonal_offices/inspection_report.txt').render(context)
 
             send_mail(subject, contact_message, from_email,
-                     to_email, fail_silently=False)
+                     to_email, fail_silently=True)
 
         return render(request, self.template_name, context)
+
 
 
 class AccreditationReportView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
@@ -361,21 +353,28 @@ class AccreditationReportView(LoginRequiredMixin, SuccessMessageMixin, CreateVie
     def get_success_url(self):
         return reverse("zonal_offices:accreditation_complete_details", kwargs={"id": self.object.id})
 
+
+    #def get(self, *args, **kwargs):
+        #hospital_name = get_object_or_404(Schedule, pk=kwargs.get('pk'))
+
+        #return super().get(self)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Internship Accreditation')
-        
-        #context = {'object': self.get_object()}
-        #context['payment'] = Payment.objects.get(pk=self.object)
-        #context['hospital'] = Hospital.objects.get(id=self.kwargs['id'])
-        #context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
-        #context['hospital_qs'] = Hospital.objects.filter(hospital_name=self.object)
+        #context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Radiography Practice', hospital__application_type = 'New Registration - Radiography Practice')
+        context['schedule_qss'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship', application_no=self.schedule.application_no)
+        context['schedule_qsss'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship', application_no=self.schedule.application_no)
+        #context['schedule_qsr'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Radiography Practice', hospital__application_type = 'Renewal')
+        context['schedule_qssr'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship', application_no=self.schedule.application_no)
+        context['schedule_qgssr'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship', application_no=self.schedule.application_no)
         return context
 
-    def get_initial(self):
+    def get_initial(self, *args, **kwargs):
         # You could even get the Book model using Book.objects.get here!
+        
         return {
             'schedule': self.kwargs["pk"],
+            #'hospital_name':hospital_name,
             #'license_type': self.kwargs["pk"]
         }
     
@@ -390,60 +389,12 @@ class AccreditationReportView(LoginRequiredMixin, SuccessMessageMixin, CreateVie
         #kwargs['initial']['hospital'] = self.payment.hospital
         
         return kwargs
-      
 
     def form_invalid(self, form):
-        form = self.get_form()
+        return self.render_to_response(self.get_context_data())
+      
 
-        context = {}
-        obj = self.get_object()
-        if obj is not None:
-          
-           context['object'] = obj
-           context['form'] = form 
-          
-        return self.render_to_response(context)
-
-#class AccreditationReportView(LoginRequiredMixin, InspectionObjectMixin, View):
-    #template_name = "zonal_offices/accreditation_report_creation.html"
-    #template_name1 = "zonal_offices/accreditation_report_confirmation.html"
-    #def get(self, request,  *args, **kwargs):
-        #context = {}
-        #obj = self.get_object()
-        #if obj is not None:
-            #form = AccreditationModelForm(instance=obj)  
-            #context['object'] = obj
-            #context['form'] = form
-
-        #return render(request, self.template_name, context)
-
-
-    #def post(self, request,  *args, **kwargs):
-        #form = AccreditationModelForm(request.POST, request.FILES)
-        #if form.is_valid():
-            #form.save()
-
-        #context = {}
-        #obj = self.get_object()
-        #if obj is not None:
-          
-           #context['object'] = obj
-           #context['form'] = form
-
-           #subject = 'Notice of Facility Inspection'
-           #from_email = settings.DEFAULT_FROM_EMAIL
-           #to_email = [form.cleaned_data.get('email')]
-
-           #context['form'] = form
-           #contact_message = get_template(
-               #'zonal_offices/accreditation_report.txt').render(context)
-
-           #send_mail(subject, contact_message, from_email,
-                     #to_email, fail_silently=False)
-        #return render(request, self.template_name1, context)
-        
-
-
+    
 class AccreditationCompleteDetailView(LoginRequiredMixin, AccreditationObjectMixin, View):
     template_name = 'zonal_offices/accreditation_report_confirmation.html' 
     def get(self, request, id=None, *args, **kwargs):
@@ -463,7 +414,7 @@ class AccreditationCompleteDetailView(LoginRequiredMixin, AccreditationObjectMix
                'zonal_offices/accreditation_report.txt').render(context)
 
             send_mail(subject, contact_message, from_email,
-                     to_email, fail_silently=False)
+                     to_email, fail_silently=True)
 
         return render(request, self.template_name, context)
 
@@ -732,9 +683,6 @@ class DentalXrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin,
     
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data())
-
-    
-
 
 class EchocardiographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/echocardiography_score.html'
@@ -1431,17 +1379,7 @@ class CarmScoreUpdate(CarmObjectMixin, View):
         return render(request, self.template_name1, context)
 
 
-
-
-
-
-
-        
-
-
-
-
-
+    
 class RecordsCreate(LoginRequiredMixin, CreateView):
     template_name = 'zonal_offices/create_hospital_records.html'
 
@@ -1494,12 +1432,6 @@ class HospitalRecordsDetail(LoginRequiredMixin, RecordsObjectMixin, View):
         return render(request, self.template_name, context)
 
 
-
-
-
-
-
-
 class RegisteredHospitalsListView(LoginRequiredMixin, View):
     template_name = "zonal_offices/registered_hospitals_list.html"
     queryset = License.objects.all()
@@ -1529,8 +1461,6 @@ class RegisterdHospitalsDetailView(LoginRequiredMixin, RegisteredObjectMixin, Vi
         # GET method
         context = {'object': self.get_object()}
         return render(request, self.template_name, context)
-
-
 
 
 

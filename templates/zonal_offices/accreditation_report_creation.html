@@ -5,23 +5,11 @@
 
 {% block title%}| Facility Inspection {% endblock %}
 {% block styles %}
-
-
 <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
 <link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
-
-
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-
-
-
-
-
 {% endblock %}
-
-
 {% block content %}
-
 <main class="container">
 <div class="row">
 <div class="col col-lg-12">
@@ -59,8 +47,32 @@ Enter Scores for Each Parameter Below.  Final Score is calculated automatically 
 </div>
 </div>
 <div class="col-md-8"><div class="form-group">
-{% if schedule_qs %}
-{% for object in schedule_qs %}
+{% if schedule_qss %}
+{% for object in schedule_qss %}
+<span class="col-2 text-info">Hospital Name:  </span>
+<span class="col-8">  {{object.hospital.hospital_name}}</span>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if schedule_qsss %}
+{% for object in schedule_qsss %}
+<span class="col-2 text-info">Hospital Name:  </span>
+<span class="col-8">  {{object.hospital.hospital_name}}</span>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if schedule_qssr %}
+{% for object in schedule_qssr %}
+<span class="col-2 text-info">Hospital Name:  </span>
+<span class="col-8">  {{object.hospital.hospital_name}}</span>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if schedule_qgssr %}
+{% for object in schedule_qgssr %}
 <span class="col-2 text-info">Hospital Name:  </span>
 <span class="col-8">  {{object.hospital.hospital_name}}</span>
 </div>
@@ -68,325 +80,292 @@ Enter Scores for Each Parameter Below.  Final Score is calculated automatically 
 {% endif %}
 
 </div>
+
+
 </div>
 
 </div>
 <div class="row ml-2">
 <p class="col-12 text-success lead">Accreditation Scores</p>
 </div>
-          <div class="row px-4">
-          <div class="col-md-3">
-            <div class="form-group">
-            {{ form.radiographers_score|as_crispy_field }}
-            </div>
-          </div>
+<div class="row px-4">
+<div class="col-md-3">
+<div class="form-group">
+{{ form.radiographers_score|as_crispy_field }}
+</div>
+</div>
 
-          <div class="col-md-3">
-            <div class="form-group">
-             {{ form.radiologists_score|as_crispy_field }}  
-                
-            </div>
-          </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.radiologists_score|as_crispy_field }}  
+</div>
+</div>
         
-        
-          <div class="col-md-3">
-          <div class="form-group">
-          {{ form.support_staff_score|as_crispy_field }}       
-            </div>
-          </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.support_staff_score|as_crispy_field }}       
+</div>
+</div>
 
-          <div class="col-md-3">
-            <div class="form-group">
-            {{ form.offices_score|as_crispy_field }}
-            </div>
-          </div>
-           </div>
-
+<div class="col-md-3">
+<div class="form-group">
+{{ form.offices_score|as_crispy_field }}
+</div>
+</div>
+</div>
 
 
-           <div class="row px-4">
-          <div class="col-md-3">
-            <div class="form-group">
-             {{ form.library_score|as_crispy_field }}  
-                
-            </div>
-          </div>
+<div class="row px-4">
+<div class="col-md-3">
+<div class="form-group">
+{{ form.library_score|as_crispy_field }}  
+</div>
+</div>
        
+<div class="col-md-3">
+<div class="form-group">
+{{ form.call_room_score|as_crispy_field }}       
+</div>
+</div>
 
-          <div class="col-md-3">
-          <div class="form-group">
-          {{ form.call_room_score|as_crispy_field }}       
-            </div>
-          </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.waiting_room_score|as_crispy_field }}
+</div>
+</div>
 
-          <div class="col-md-3">
-            <div class="form-group">
-            {{ form.waiting_room_score|as_crispy_field }}
-            </div>
-          </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.toilets_score|as_crispy_field }}  
+</div>
+</div>
+</div>
 
-          <div class="col-md-3">
-            <div class="form-group">
-             {{ form.toilets_score|as_crispy_field }}  
-                
-            </div>
-          </div>
-        </div>
+<div class="row px-4">
 
-         <div class="row px-4">
-
-         <div class="col-md-3">
-         <div class="form-group">
-         {{ form.static_xray_score|as_crispy_field }}       
-         </div>
-         </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.static_xray_score|as_crispy_field }}       
+</div>
+</div>
 
 
-         <div class="col-md-3">
-         <div class="form-group">
-         {{ form.mobile_xray_score|as_crispy_field }}
-         </div>
-         </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.mobile_xray_score|as_crispy_field }}
+</div>
+</div>
 
-         <div class="col-md-3">
-         <div class="form-group">
-         {{ form.ct_score|as_crispy_field }}  
-         </div>
-         </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.ct_score|as_crispy_field }}  
+</div>
+</div>
         
-         <div class="col-md-3">
-         <div class="form-group">
-         {{ form.mri_score|as_crispy_field }}       
-         </div>
-         </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.mri_score|as_crispy_field }}       
+</div>
+</div>
     
-         </div>
+</div>
 
-         <div class="row px-4">
+<div class="row px-4">
+<div class="col-md-3">
+<div class="form-group">
+{{ form.fluoroscopy_score|as_crispy_field }}       
+</div>
+</div>
 
-         <div class="col-md-3">
-         <div class="form-group">
-         {{ form.fluoroscopy_score|as_crispy_field }}       
-         </div>
-         </div>
 
+<div class="col-md-3">
+<div class="form-group">
+{{ form.nuclear_medicine_score|as_crispy_field }}
+</div>
+</div>
 
-         <div class="col-md-3">
-         <div class="form-group">
-         {{ form.nuclear_medicine_score|as_crispy_field }}
-         </div>
-         </div>
-
-         <div class="col-md-3">
-         <div class="form-group">
-         {{ form.radiation_therapy_score|as_crispy_field }}  
-         </div>
-         </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.radiation_therapy_score|as_crispy_field }}  
+</div>
+</div>
         
-         <div class="col-md-3">
-         <div class="form-group">
-         {{ form.ultrasound_score|as_crispy_field }}       
-         </div>
-         </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.ultrasound_score|as_crispy_field }}       
+</div>
+</div>
     
-         </div>
+</div>
 
-         <div class="row px-4">
+<div class="row px-4">
 
-         <div class="col-md-3">
-         <div class="form-group">
-         {{ form.mammography_score|as_crispy_field }}       
-         </div>
-         </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.mammography_score|as_crispy_field }}       
+</div>
+</div>
 
 
-         <div class="col-md-3">
-         <div class="form-group">
-         {{ form.dental_equipment_score|as_crispy_field }}
-         </div>
-         </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.dental_equipment_score|as_crispy_field }}
+</div>
+</div>
 
-         <div class="col-md-3">
-         <div class="form-group">
-         {{ form.carm_score|as_crispy_field }}  
-         </div>
-         </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.carm_score|as_crispy_field }}  
+</div>
+</div>
         
-         <div class="col-md-3">
-         <div class="form-group">
-         {{ form.processing_unit_score|as_crispy_field }}       
-         </div>
-         </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.processing_unit_score|as_crispy_field }}       
+</div>
+</div>
     
-         </div>
+</div>
 
-         <div class="row px-4">
+<div class="row px-4">
 
-         <div class="col-md-3">
-         <div class="form-group">
-         {{ form.diagnostic_room_score|as_crispy_field }}       
-         </div>
-         </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.diagnostic_room_score|as_crispy_field }}       
+</div>
+</div>
 
 
-         <div class="col-md-3">
-         <div class="form-group">
-         {{ form.personnel_score|as_crispy_field }}
-         </div>
-         </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.personnel_score|as_crispy_field }}
+</div>
+</div>
 
-         <div class="col-md-3">
-         <div class="form-group">
-         {{ form.room_design_score|as_crispy_field }}  
-         </div>
-         </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.room_design_score|as_crispy_field }}  
+</div>
+</div>
         
-         <div class="col-md-3">
-         <div class="form-group">
-         {{ form.licence_status_score|as_crispy_field }}  
-         </div>
-         </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.licence_status_score|as_crispy_field }}  
+</div>
+</div>
     
-         </div>
+</div>
 
-         <div class="row px-4">
+<div class="row px-4">
+<div class="col-md-3">
+<div class="form-group">
+{{ form.cpds_score|as_crispy_field }}       
+</div>
+</div>
 
-         <div class="col-md-3">
-         <div class="form-group">
-         {{ form.cpds_score|as_crispy_field }}       
-         </div>
-         </div>
 
+<div class="col-md-3">
+<div class="form-group">
+{{ form.departmental_seminars_score|as_crispy_field }}
+</div>
+</div>
 
-         <div class="col-md-3">
-         <div class="form-group">
-         {{ form.departmental_seminars_score|as_crispy_field }}
-         </div>
-         </div>
-
-         
-
-         <div class="col-md-3">
-         <div class="form-group">
-         {{ form.appraisal_total|as_crispy_field }}       
-         </div>
-         </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.appraisal_total|as_crispy_field }}       
+</div>
+</div>
     
-         </div>
+</div>
+
+<div class="row px-4 justify-content">
+<div class="col-md-6">
+<div class="form-group">    
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="form-group">
+{{ form.appraisal_comments|as_crispy_field }}       
+</div>
+</div>
+
+</div>
 
 
+<div class="row ml-2">
+<p class="col-12 text-success lead">Picture Uploads</p>
+</div>
 
+<div class="row px-4">
+<div class="col-md-3">
+<div class="form-group">
+{{ form.photo_main|as_crispy_field }}
+</div>
+</div>
 
+<div class="col-md-3">
+<div class="form-group">
+{{ form.photo_1|as_crispy_field }}  
+</div>
+</div>
+      
+<div class="col-md-3">
+<div class="form-group">
+{{ form.photo_2|as_crispy_field }}       
+</div>
+</div>
 
+<div class="col-md-3">
+<div class="form-group">
+{{ form.photo_3|as_crispy_field }}
+</div>
+</div>
+</div>
 
-          <div class="row px-4 justify-content">
-         <div class="col-md-6">
-         <div class="form-group">    
-         </div>
-         </div>
+<div class="row px-4">
+<div class="col-md-3">
+<div class="form-group">
+{{ form.photo_4|as_crispy_field }}
+</div>
+</div>
 
-          <div class="col-md-6">
-         <div class="form-group">
-         {{ form.appraisal_comments|as_crispy_field }}       
-         </div>
-         </div>
-
-         
-    
-         </div>
-
-
-
-
-
-      <div class="row ml-2">
-              <p class="col-12 text-success lead">Picture Uploads</p>
-            </div>
-        <div class="row px-4">
-        <div class="col-md-3">
-          <div class="form-group">
-          {{ form.photo_main|as_crispy_field }}
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="form-group">
-           {{ form.photo_1|as_crispy_field }}  
-              
-          </div>
-        </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.photo_5|as_crispy_field }}  
+</div>
+</div>
       
       
-        <div class="col-md-3">
-        <div class="form-group">
-        {{ form.photo_2|as_crispy_field }}       
-          </div>
-        </div>
+<div class="col-md-3">
+<div class="form-group">
+{{ form.photo_6|as_crispy_field }}       
+</div>
+</div>
+</div>
+<hr>
+<div class="d-flex justify-content-end">   
+<a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
 
-        <div class="col-md-3">
-          <div class="form-group">
-          {{ form.photo_3|as_crispy_field }}
-          </div>
-        </div>
-         </div>
-
-         <div class="row px-4">
-        <div class="col-md-3">
-          <div class="form-group">
-          {{ form.photo_4|as_crispy_field }}
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="form-group">
-           {{ form.photo_5|as_crispy_field }}  
-              
-          </div>
-        </div>
-      
-      
-        <div class="col-md-3">
-        <div class="form-group">
-        {{ form.photo_6|as_crispy_field }}       
-          </div>
-        </div>
-
-        
-         </div>
-
-            
-
-
-              <hr>
-              <div class="d-flex justify-content-end">   
-             
-             <a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
-
-             
-
-              <button type="submit" class="btn btn btn-success ml-4 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Post Accreditation Report</button>
-
-               </form>
-
-             
-        </div>
-
-        </main>
+<button type="submit" class="btn btn btn-success ml-4 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Post Accreditation Report</button>
+</form>
+</div>
+</main>
       
 
 
 
 <!--Jquery plugin-->
-  <script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/jquery.js' %}"></script>
 
 <!--other javascript plugins-->
-  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
   
 
 
 
 
-  <!--Jquery plugin-->
+<!--Jquery plugin-->
   <div class="container">
 
 

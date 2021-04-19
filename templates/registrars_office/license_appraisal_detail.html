@@ -10,25 +10,25 @@
 
 {% block content %}
 
-  <main class="container">
+<main class="container">
 
 <!-- Banner -->
 <section class="pt-2 pl-3">
    
-        <div class="row ">
-            <div class="col mb-0">
-                <p class="text-info display-4 paragraph3">Radiography Internship Application Details</p>
-                <hr>
-           
-        </div>
-    </div>
+<div class="row ">
+<div class="col mb-0">
+<p class="text-info display-4 paragraph3">Radiography Internship Application Details</p>
+<hr>           
+</div>
+</div>
 </section>
 
- <div class="row">
-            <div class="col-md-7 mt-0">
-                <div class="col-md-12">
-                    <div class="row">
-  <p class="col-12 text-success lead mb-0">Application Summary</p>
+<div class="row">
+<div class="col-md-7 mt-0">
+<div class="col-md-12">
+
+<div class="row">
+<p class="col-12 text-success lead mb-0">Application Summary</p>
  </div>
  <div class="row">
  <span class="col-5"><strong>Application No:</strong></span>
@@ -46,13 +46,9 @@
 <span class="col-5"><strong>Application Category:</strong></span>
 <span class="col-6">{{object.hospital.license_type}}</span>
 </div>
-<div class="row">
- <span class="col-5"><strong>Application Type:</strong></span>
- <span class="col-6">{{object.hospital.application_type}}</span>
- </div>
  <div class="row">
- <span class="col-5"><strong>Address:</strong></span>
- <span class="col-6">{{object.hospital_name.address}}</span>
+ <span class="col-5"><strong>Hospital/Centre Address:</strong></span>
+ <span class="col-6">{{object.hospital.facility_address}}</span>
  </div>
  <div class="row">
  <span class="col-5"><strong>Phone:</strong></span>
@@ -64,14 +60,136 @@
  <span class="col-5"><strong>Listed Modalities:</strong></span>
  <span class="col-6">{{object.hospital.equipment}}</span>
  </div>
+
+ {% if object.hospital.radiographer_in_charge %}
 <div class="row">
-<span class="col-5"><strong>Radiographers:</strong></span>
- <span class="col-6">{{object.hospital.radiologists}}</span>
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer In Charge:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer_in_charge}}</span>
 </div>
+{% endif %}
+
+{% if object.hospital.radiographer_in_charge_license_no %}
 <div class="row">
-<span class="col-5"><strong>Covering Radiologist:</strong></span>
-<span class="col-6">{{object.hospital.radiologists}}</span>
+<span class="col-5" style="font-size:1.1em;"><strong>R-I-C License No:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer_in_charge_license_no}}</span>
 </div>
+{% endif %}
+
+
+{% if object.hospital.radiographer1 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 1:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer1}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer1_license_no  %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 1 License No:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer1_license_no }}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer2 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 2:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer2}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer2_license_no  %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 2 License No:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer2_license_no }}</span>
+</div>
+{% endif %}
+                
+{% if object.hospital.radiographer3 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 3:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer3}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer3_license_no  %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 3 License No:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer3_license_no }}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname1 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 1 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname1}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation1 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 1 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation1}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname2 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 2 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname2}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation2 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 2 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation2}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname3 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 3 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname3}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation3 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 3 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation3}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname4 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 4 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname4}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation4 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 4 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation4}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname5 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 5 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname5}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation5 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 5 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation5}}</span>
+</div>
+{% endif %}
+
+
+
 </div><br>
 <div class="col-md-10">
 <div class="row">
@@ -80,47 +198,97 @@
 
 <div class="row py-0 pl-1">
 <table class="table table-hover table-borderless">
-
 <tbody>
+
+{% if object.hospital.radiographer_in_charge_passport  %}
+<tr> <td width="50" scope="col">R.I.C Passport Photo:</td> 
+<td width="50" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.radiographer_in_charge_passport.url}}" target="_blank">&nbsp; View R.I.C Passport Photo</a></td>  
+</tr>
+{% endif %}
+
+{% if object.hospital.radiographer_in_charge_nysc  %}
+<tr> <td width="50" scope="col">R.I.C NYSC Certificate:</td> 
+<td width="50" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.radiographer_in_charge_nysc.url}}" target="_blank">&nbsp; View R.I.C NYSC Certificate</a></td>  
+</tr>
+{% endif %}
+
+{% if object.hospital.radiographer_in_charge_practice_license  %}
+<tr> <td width="50" scope="col">R.I.C Practice License:</td> 
+<td width="50" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.radiographer_in_charge_practice_license.url}}" target="_blank">&nbsp; View R.I.C Practice License</a></td>  
+</tr>
+{% endif %}
+
+{% if object.hospital.radiographer1_practice_license  %}
+<tr> <td width="50" scope="col">Radiographer 1 Practice License:</td> 
+<td width="50" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.radiographer1_practice_license.url}}" target="_blank">&nbsp; View Radiographer 1 Practice License</a></td>  
+</tr>
+{% endif %}
+
+{% if object.hospital.radiographer2_practice_license  %}
+<tr> <td width="50" scope="col">Radiographer 2 Practice License:</td> 
+<td width="50" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.radiographer2_practice_license.url}}" target="_blank">&nbsp; View Radiographer 2 Practice License</a></td>  
+</tr>
+{% endif %}
+
+{% if object.hospital.radiographer3_practice_license  %}
+<tr> <td width="50" scope="col">Radiographer 3 Practice License:</td> 
+<td width="50" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.radiographer3_practice_license.url}}" target="_blank">&nbsp; View Radiographer 3 Practice License</a></td>  
+</tr>
+{% endif %}
+
+
 {% if object.hospital.cac_certificate %}
-<tr> <td width="50%" scope="col">CAC Certificate:</td> 
-<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-<a class="text-danger" href="{{object.hospital.cac_certificate.url}}"
-target="_blank">&nbsp; View CAC Certficiate</a></td> 
+<tr> <td width="50" scope="col">CAC Document:</td> 
+<td width="50" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.cac_certificate.url}}" target="_blank">&nbsp; View CAC Certificate</a></td>  
 </tr>
 {% endif %}
+
 {% if object.hospital.practice_license1 %}
-<tr> <td width="50%" scope="col">Radiographer License:</td> 
-<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<tr> <td width="50" scope="col">Practice Licence:</td> 
+<td width="50" scope="col"><i class="fa fa-eye text-dark"></i>
 <a class="text-danger" href="{{object.hospital.practice_license1.url}}"
-target="_blank">&nbsp; View Radiographer License</a></td>  
- </tr>
- {% endif %}
-{% if object.hospital.practice_license2 %}
-<tr> <td width="50%" scope="col">Radiographer License:</td> 
-<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-<a class="text-danger" href="{{object.hospital.practice_license2.url}}"
-target="_blank">&nbsp; View Radiographer License</a></td>  
+target="_blank">&nbsp; View Practicing Licence</a></td>  
 </tr>
 {% endif %}
+
+{% if object.hospital.practice_license2 %}
+<tr> <td width="50" scope="col">Practice Licence:</td> 
+<td width="50" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.practice_license2.url}}"
+target="_blank">&nbsp; View Practicing Licence</a></td>  
+</tr>
+{% endif %}
+
 {% if object.hospital.form_c07 %}
-<tr> <td width="50%" scope="col">Form C07:</td> 
-<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<tr> <td width="50" scope="col">Form C07:</td> 
+<td width="50" scope="col"><i class="fa fa-eye text-dark"></i>
 <a class="text-danger" href="{{object.hospital.form_c07.url}}"
 target="_blank">&nbsp; View Form C07</a></td>  
 </tr>
 {% endif %}
+
+
 {% if object.payment.payment_receipt %}
 <tr> <td width="50%" scope="col">Payment Receipt:</td> 
 <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-<a class="text-danger" href="{{object.payment.payment_receipt.url}}"
-target="_blank">&nbsp; View Payment Receipt</a></td>  
+ <a class="text-danger" href="{{object.payment.payment_receipt.url}}"
+ target="_blank">&nbsp; View Payment Receipt</a></td>  
  </tr>
-{% endif %}
-</tbody>
-</table>
-</div>
+ {% endif %}
+
+  </tbody>
+  </table>
+  </div>
+                
 </div><br>
+
 <div class="col-md-12">
 <div class="row">
 <p class="col-12 text-success lead">Control Details</p>
@@ -151,118 +319,90 @@ Date:</strong></span>
 <p class="text-success lead">Appraisal Uploads</p>
 
 <div class="row py-0">
-               <table class="table table-hover">
-                    <thead style="background-color: #bfe3f8;">
-                        <tr>
-                        <th scope="col lead" style="color: #05567b;">Parameter</th>
-                        <th scope="col lead" style="color: #05567b;">Value</th>
-                        </tr>
-                    </thead>
+<table class="table table-hover">
+<thead style="background-color: #bfe3f8;">
+<tr>
+<th scope="col lead" style="color: #05567b;">Parameter</th>
+<th scope="col lead" style="color: #05567b;">Value</th>
+</tr>
+</thead>
 
-                    <tbody>
+<tbody>
+{% if object.photo_main %}
+<tr> <td width="50%" scope="col">Photo Main:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.photo_main.url}}" target="_blank"> Main Photo</a></td> 
+</tr>
+{% endif %}
 
-                        {% if object.photo_main %}
-                        <tr> <td width="50%" scope="col">Photo Main:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{object.photo_main.url}}"
-                        target="_blank"> Main Photo</a></td> 
-                        </tr>
-                        {% endif %}
+{% if object.photo_1 %}
+<tr> <td width="50%" scope="col">Photo One:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.photo_1.url}}" target="_blank"> Photo One</a></td>  
+</tr>
+{% endif %}
 
-                        {% if object.photo_1 %}
-                        <tr> <td width="50%" scope="col">Photo One:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{object.photo_1.url}}"
-                        target="_blank"> Photo One</a></td>  
-                        </tr>
-                        {% endif %}
+{% if object.photo_2 %}
+<tr> <td width="50%" scope="col">Photo Two:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.photo_2.url}}" target="_blank"> Photo Two</a></td>  
+</tr>
+{% endif %}
 
-                        {% if object.photo_2 %}
-                        <tr> <td width="50%" scope="col">Photo Two:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{object.photo_2.url}}"
-                        target="_blank"> Photo Two</a></td>  
-                        </tr>
-                        {% endif %}
+{% if object.photo_3 %}
+<tr> <td width="50%" scope="col">Photo Three:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.photo_3.url}}" target="_blank"> Photo Three</a></td>  
+</tr>
+{% endif %}
 
-                        {% if object.photo_3 %}
-                        <tr> <td width="50%" scope="col">Photo Three:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{object.photo_3.url}}"
-                        target="_blank"> Photo Three</a></td>  
-                        </tr>
-                        {% endif %}
+{% if object.photo_4 %}
+<tr> <td width="50%" scope="col">Photo Four:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.photo_4.url}}" target="_blank"> Photo Four</a></td>  
+</tr>
+{% endif %}
 
-                        {% if object.photo_4 %}
-                        <tr> <td width="50%" scope="col">Photo Four:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{object.photo_4.url}}"
-                        target="_blank"> Photo Four</a></td>  
-                        </tr>
-                        {% endif %}
+{% if object.photo_5 %}
+<tr> <td width="50%" scope="col">Photo Five:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.photo_5.url}}" target="_blank"> Photo Five</a></td>
+</tr>
+{% endif %}
 
-                        {% if object.photo_5 %}
-                        <tr> <td width="50%" scope="col">Photo Five:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{object.photo_5.url}}"
-                        target="_blank"> Photo Five</a></td>  
-                        </tr>
-                        {% endif %}
-
-                        {% if object.photo_6 %}
-                        <tr> <td width="50%" scope="col">Photo Six:</td> 
-                        <td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
-                        <a class="text-danger" href="{{object.photo_6.url}}"
-                        target="_blank"> Photo Six</a></td>  
-                        </tr>
-                        {% endif %}
+{% if object.photo_6 %}
+<tr> <td width="50%" scope="col">Photo Six:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.photo_6.url}}" target="_blank"> Photo Six</a></td>  
+</tr>
+{% endif %}
                         
-                       
-                    </tbody>
-                </table>
-                </div>
+</tbody>
+</table>
+</div>
 
                 
-
-
-                
-                
-            </div>
-
-        </div>
-        <hr>
-        <div class="d-flex justify-content-end">   
+</div>
+</div>
+<hr>
+<div class="d-flex justify-content-end">   
              
-             <a href="{% url 'registrars_office:registrar_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
+<a href="{% url 'registrars_office:registrar_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
 
+<a href="javascript:{document.getElementById('approve_internship_license{{object.id }}').submit()}"><button class="btn btn-success ml-4 px-3"> Approve Internship Application<i class="fa fa-podcast text-white"></i></button> </a>
 
-            <a href="javascript:{document.getElementById('approve_internship_license{{object.id }}').submit()}"><button class="btn btn-success ml-4 px-3"> Approve Internship Application<i class="fa fa-podcast text-white"></i></button> </a>
-
-
-            <a href="javascript:{document.getElementById('reject_internship_license{{object.id }}').submit()}"><button class="btn btn-danger ml-4 px-3"> Reject Internship Application<i class="fa fa-podcast text-white"></i></button></a> 
+<a href="javascript:{document.getElementById('reject_internship_license{{object.id }}').submit()}"><button class="btn btn-danger ml-4 px-3"> Reject Internship Application<i class="fa fa-podcast text-white"></i></button></a> 
              
+</div>
+</main>
 
-             
-        </div>
-
-
-    </main>
-
-
-
-
-
-
-
-
-        
 
 
 
 <!--end Copy here-->
 <form id="approve_internship_license{{object.id }}" method="POST" action="{% url 'registrars_office:approve_internship_license' object.id %}">
-  {% csrf_token%}
-  <input type="hidden">
+{% csrf_token%}
+<input type="hidden">
   
 
 
@@ -274,29 +414,25 @@ Date:</strong></span>
 </form>
 
 
-
-
-
-
 <!--Jquery plugin-->
-  <script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/jquery.js' %}"></script>
 
 <!--other javascript plugins-->
-  <script src="{% static 'js/bootstrap.min.js' %}"></script>
-  <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
-  <script src="{% static 'js/dataTables.bootstrap.min.js' %}"></script>
-  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-  <script>
-  $('#mydata').dataTable();
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'js/dataTables.bootstrap.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+$('#mydata').dataTable();
 
-  let urlMenu = document.getElementById('dropdown');
-  urlMenu.onchange = function(){
-    let userOption = this.options[this.selectedIndex];
-    if(userOption.value != "nothing"){
+let urlMenu = document.getElementById('dropdown');
+urlMenu.onchange = function(){
+let userOption = this.options[this.selectedIndex];
+if(userOption.value != "nothing"){
       window.open(userOption.value, "_self", "");
     }
   }
-  </script>
+</script>
 
 
 {% endblock %}

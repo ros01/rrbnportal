@@ -10,7 +10,7 @@
 
 {% block content %}
 
-  <main class="container">
+<main class="container">
 
 <!-- Banner -->
 <section class="pt-2 pl-3">
@@ -23,14 +23,14 @@
 </div>
 </section>
 
- <div class="row">
- <div class="col-md-7 mt-0">
- <div class="col-md-12">
- <div class="row">
- <p class="col-12 text-success lead">Application Summary</p>
- </div>
- <div class="row">
- <span class="col-5"><strong>Application No:</strong></span>
+<div class="row">
+<div class="col-md-7 mt-0">
+<div class="col-md-12">
+<div class="row">
+<p class="col-12 text-success lead">Application Summary</p>
+</div>
+<div class="row">
+<span class="col-5"><strong>Application No:</strong></span>
 <span class="col-6 ">{{object.application_no}}</span>
 </div>
 <div class="row">
@@ -54,9 +54,10 @@
 </div>
 
 <div class="row">
-<span class="col-5"><strong>Address:</strong></span>
-<span class="col-6">{{object.hospital_name.address}}</span>
+<span class="col-5"><strong>Contact Address:</strong></span>
+<span class="col-6">{{object.hospital.facility_address}}</span>
 </div>
+
 <div class="row">
 <span class="col-5"><strong>Phone:</strong></span>
 <span class="col-6">{{object.hospital_name.phone_no}}</span>
@@ -66,39 +67,156 @@
  <span class="col-5"><strong>Listed Modalities:</strong></span>
  <span class="col-6">{{object.hospital.equipment}}</span>
  </div>
- <div class="row">
- <span class="col-5"><strong>Radiographers:</strong></span>
- <span class="col-6">{{object.hospital.radiographers}}</span>
- </div>
- <div class="row">
- <span class="col-5"><strong>Radiologists:</strong></span>
- <span class="col-6">{{object.hospital.radiologists}}</span>
- </div>
- </div><br>
- <div class="col-md-12">
-  <div class="row">
-  <p class="col-12 text-success lead">Control Details</p>
-  </div>
-  <div class="row">
-  <span class="col-5"><strong>Inspection 
-  Date:</strong></span>
- <span class="col-6">{{object.schedule.inspection_date}}</span>
- </div>
- <div class="row">
- <span class="col-5"><strong>Inspection Zone:</strong></span>
+
+
+ {% if object.hospital.radiographer_in_charge %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer In Charge:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer_in_charge}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer_in_charge_license_no %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>R-I-C License No:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer_in_charge_license_no}}</span>
+</div>
+{% endif %}
+
+
+{% if object.hospital.radiographer1 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 1:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer1}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer1_license_no  %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 1 License No:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer1_license_no }}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer2 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 2:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer2}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer2_license_no  %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 2 License No:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer2_license_no }}</span>
+</div>
+{% endif %}
+                
+{% if object.hospital.radiographer3 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 3:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer3}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer3_license_no  %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 3 License No:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer3_license_no }}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname1 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 1 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname1}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation1 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 1 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation1}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname2 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 2 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname2}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation2 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 2 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation2}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname3 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 3 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname3}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation3 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 3 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation3}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname4 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 4 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname4}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation4 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 4 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation4}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname5 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 5 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname5}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation5 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 5 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation5}}</span>
+</div>
+{% endif %}
+
+
+
+</div><br>
+<div class="col-md-12">
+<div class="row">
+<p class="col-12 text-success lead">Control Details</p>
+</div>
+<div class="row">
+<span class="col-5"><strong>Inspection Date:</strong></span>
+<span class="col-6">{{object.schedule.inspection_date}}</span>
+</div>
+<div class="row">
+<span class="col-5"><strong>Inspection Zone:</strong></span>
 <span class="col-6">{{object.schedule.inspection_zone}}</span>
 </div>  
 </div>
 </div>
-
-
-
-
-
-            
+          
 <div class="col-md-5 mt-0">
 <p class="text-success lead">Inspection Score</p>
- <span><strong><mark>{{object.inspection_total}}</mark></strong></span>
+<span><strong><mark>{{object.inspection_total}}</mark></strong></span>
 <br>
 <br>
 <p class="text-success lead">Inspection Comments/Observations</p>
@@ -184,40 +302,29 @@ target="_blank"> Photo Six</a></td>
 <a href="{% url 'monitoring:inspections_list' %}" class="btn btn-info ml-4 px-3"><i class="fa fa-window-close text-danger"></i>  Return to Inspection Reports</a> 
 
 
-         <a href="javascript:{document.getElementById('approve_report{{object.id }}').submit()}"><button class="btn btn-success ml-4 px-3"> Approve Inspection Report<i class="fa fa-podcast text-white"></i></button> </a>
+<a href="javascript:{document.getElementById('approve_report{{object.id }}').submit()}"><button class="btn btn-success ml-4 px-3"> Approve Inspection Report<i class="fa fa-podcast text-white"></i></button> </a>
 
 
-         <a href="javascript:{document.getElementById('reject_report{{object.id }}').submit()}"><button class="btn btn-danger ml-4 px-3"> Reject Inspection Report<i class="fa fa-podcast text-white"></i></button></a>
-        </div>
+<a href="javascript:{document.getElementById('reject_report{{object.id }}').submit()}"><button class="btn btn-danger ml-4 px-3"> Reject Inspection Report<i class="fa fa-podcast text-white"></i></button></a>
+</div>
 
-        {% else %}
+{% else %}
 
-        <div class="d-flex justify-content-end">   
-        <a href="{% url 'monitoring:inspections_list' %}" class="btn btn-info px-3"><i class="fa fa-window-close text-danger"></i> Return to Inspection Reports</a> 
+<div class="d-flex justify-content-end">   
+<a href="{% url 'monitoring:inspections_list' %}" class="btn btn-info px-3"><i class="fa fa-window-close text-danger"></i> Return to Inspection Reports</a> 
              
-        <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-dark px-3 ml-4"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>     
-        </div>
+<a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-dark px-3 ml-4"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>     
+</div>
 
-        {% endif %}
-
-
-    </main>
+{% endif %}
 
 
-
-
-
-
-
-
-        
-
-
+</main>
 
 
 <form id="approve_report{{object.id }}" method="POST" action="{% url 'monitoring:approve_report' object.id %}">
   {% csrf_token%}
-  <input type="hidden">
+<input type="hidden">
   
 
 

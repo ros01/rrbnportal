@@ -1,0 +1,190 @@
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block title%}| License Issuance {% endblock %}
+{% block styles %}
+
+
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+<link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+{# Django Tempus Dominus assets are included in `{{ form.media }}` #}
+{{ form.media }}
+
+
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+       <div class="row">
+           <div class="col col-lg-12">
+            <p class="mt-2 mx-3 text-success display-4 paragraph2">Hospital Radiography Practice Permit Renewal Application Issuance</p>
+                <hr>
+          </div>
+           </div>
+
+
+          <div class="row rounded ml-3 mr-0 pl-1 pr-0 justify-content-center align-items-center" style="background-color: #bfe3f8;">
+            <div class="col-md-1 mt-1 pt-1">
+               <i class="fa fa-info-circle fa-3x" aria-hidden="true"></i>
+                </div>
+
+               <div class="col-md-11 mt-2 pt-2 px-0">
+                <p class="lead" style="color: #05567b;">
+                   Radiography Practise Permit Renewal Application</p>
+               </div>
+           </div>
+
+          
+
+          <div class="col col-lg-12 mt-3 mb-0 pb-0">
+            <p class="mb-0 text-success display-4 paragraph3">Showing Radiography Practise Permit Renewal Applications Due for Issuance</p>
+                <hr>
+          </div>
+        
+        <!-- Insert Datepicker here -->
+      
+            <div class="row ml-2 mb-3">
+            <div class="col-md-3">
+          
+            <form method="POST" action=".">
+            {% csrf_token %}
+
+                     
+            
+            {{ form.application_no|as_crispy_field }}
+            {{ form.hospital_name|as_crispy_field }}
+            {{ form.hospital|as_crispy_field }}
+            {{ form.payment|as_crispy_field }}
+            
+                    
+            {{ form.issue_date|as_crispy_field }}
+            </div>
+
+             <div class="col-md-3"> 
+            {{ form.expiry_date|as_crispy_field }}
+
+            </div>
+            <div class="col-md-3">
+            {{ form.license_no|as_crispy_field }}
+            </div>
+
+            <div class="col-md-3">
+            {{ form.license_class|as_crispy_field }}
+            </div>
+
+             
+
+         </div>
+     
+        
+        <div class="d-flex justify-content-end">    
+             <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
+
+             <button type="submit" class="btn btn-success ml-4 px-3" name="_save"><i class="fa fa-podcast text-white"></i> Issue Practice Permit</button>
+             
+        </div>
+        <hr>
+
+            <div class="table-responsive-lg ml-3">
+               
+                  <table class="table table-bordered">
+                    <thead>
+                     
+                      <tr class="bg-secondary">
+                       <td style="color: #fff;" class="small-text">S/N</td>
+                       <td style="color: #fff;" class="small-text">Application No</td>
+                       <td style="color: #fff;" class="small-text">Hospital Name</td>
+                       <td style="color: #fff;" class="small-text">Address</td>
+                       <td style="color: #fff;" class="small-text">Application Category</td>
+                       <td style="color: #fff;" class="small-text">Application Date</td>
+
+                     </tr>
+                    </thead> 
+                    
+                     
+                     <tbody>
+
+               <tr>{% if license_qs %}
+                    {% for object in license_qs %}
+                          <td>1</td>
+                           <td>{{object.application_no}}</td>
+                           <td>{{object.hospital.hospital_name}}</td>
+                           <td>{{object.hospital.facility_address}}</td>
+                           <td>{{object.hospital.license_type}}</td>
+                           <td>{{object.hospital.submission_date}}</td>
+                         </tr>
+                         {% endfor %}
+                    {% endif %}
+                       
+                    
+                     
+                     </tbody>
+
+
+                  </table>
+
+
+                </div>
+               </form>
+             </div>
+      
+
+
+
+
+
+
+
+
+  <!--Jquery plugin-->
+
+
+  <!--other javascript plugins-->
+  <script>
+  let urlMenu = document.getElementById('dropdown');
+  urlMenu.onchange = function(){
+    let userOption = this.options[this.selectedIndex];
+    if(userOption.value != "nothing"){
+      window.open(userOption.value, "_self", "");
+    }
+  }
+  </script>
+
+
+<script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+
+
+
+
+
+
+
+{% endblock %}
