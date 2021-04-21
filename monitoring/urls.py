@@ -3,6 +3,7 @@ from django.shortcuts import render
 from . import views
 from .views import (
     RegistrationListView,
+    MyUserAccount,
     InspectionScheduleListView,
     InspectionCreateView,
     AppraisalCreateView,
@@ -45,6 +46,7 @@ app_name = 'monitoring'
 
 urlpatterns = [
     path('', views.monitoring_dashboard, name='monitoring_dashboard'),
+    path('my_user_account/', MyUserAccount.as_view(), name='my_user_account'),
     path('registration_list/', RegistrationListView.as_view(), name='registration_list'),
     path('<uuid:id>/vet_application/', VetApplication.as_view(), name='vet_application'),
     #path('<uuid:id>', views.vet_application, name='vet_application'),

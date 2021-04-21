@@ -4,6 +4,7 @@ from django.shortcuts import render
 from . import views
 from .views import (
     LicenseApprovalListView,
+    MyUserAccount,
     InternshipCertificateList,
     NewPracticePermitList,
     PracticePermitRenewalList,
@@ -28,6 +29,7 @@ app_name = 'registrars_office'
 
 urlpatterns = [
     path('', views.index, name='registrar_dashboard'),
+    path('my_user_account/', MyUserAccount.as_view(), name='my_user_account'),
     path('license_approval_list/', LicenseApprovalListView.as_view(), name='license_approval_list'),
     path('internship_certificate_list/', InternshipCertificateList.as_view(), name='internship_certificate_list'),
     path('new_practice_permit_list/', NewPracticePermitList.as_view(), name='new_practice_permit_list'),

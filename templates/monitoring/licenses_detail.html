@@ -17,7 +17,7 @@
 <section class="pt-2 pl-3">
 <div class="row ">
 <div class="col mb-0">
-<p class="text-info display-4 paragraph3">Radiography Practice License Application Details</p>
+<p class="text-info display-4 paragraph3">Radiography Practice Permit Application Details</p>
 <hr>
 </div>
 </div>
@@ -254,7 +254,7 @@
  <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
 
 
- {% if object.hospital.application_type == 'New Registration - Radiography Practice' %}
+ {% if object.hospital.application_type == 'New Registration - Radiography Practice Permit' %}
 
  <a href="{% url 'monitoring:issue_reg_cert_permit' object.pk %}" class="btn btn-success ml-4 px-3"><i class="fa fa-podcast text-white"></i>  Issue Registration Certificate & Permit</a>
 

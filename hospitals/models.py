@@ -59,11 +59,12 @@ class Document(models.Model):
         ('Diagnostic and Therapeutic', 'Diagnostic and Therapeutic'),
         )
 
+
     APPLICATION_TYPE = (
-        ('New Registration - Radiography Practice', 'New Registration - Radiography Practice' ),
+        ('New Registration - Radiography Practice Permit', 'New Registration - Radiography Practice Permit' ),
         ('New Registration - Private Hospital Internship', 'New Registration - Private Hospital Internship' ),
         ('New Registration - Government Hospital Internship', 'New Registration - Government Hospital Internship' ),
-        ('Renewal - Radiography Practice', 'Renewal - Radiography Practice'),
+        ('Renewal - Radiography Practice Permit', 'Renewal - Radiography Practice Permit'),
         ('Renewal - Private Hospital Internship', 'Renewal - Private Hospital Internship'),
         ('Renewal - Government Hospital Internship', 'Renewal - Government Hospital Internship'),
         )
@@ -175,7 +176,7 @@ class Payment(models.Model):
     rrr_number = models.CharField(max_length=100)
     receipt_number = models.CharField(max_length=100)
     payment_amount = models.CharField(max_length=100)
-    payment_method = models.CharField(max_length=10, choices = PAYMENT_METHOD)
+    payment_method = models.CharField(max_length=100, choices = PAYMENT_METHOD)
     payment_receipt = models.FileField(upload_to='%Y/%m/%d/')
     payment_date = models.DateField(default=date.today)  
     vet_status = models.IntegerField(default=1)

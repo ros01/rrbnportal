@@ -65,11 +65,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     
     email = models.EmailField(unique=True, null=False, blank=False)
-    first_name = models.CharField(max_length=30, blank=True, null=True)
-    last_name = models.CharField(max_length=30, blank=True, null=True)
-    module_name = models.CharField (max_length=20, choices = MODULE_NAME, blank=True)
-    role = models.CharField (max_length=30, choices = ROLE, blank=True)
-    type = models.CharField(max_length=30, blank=True)
+    first_name = models.CharField(max_length=100, blank=True, null=True)
+    last_name = models.CharField(max_length=100, blank=True, null=True)
+    module_name = models.CharField (max_length=100, choices = MODULE_NAME, blank=True)
+    role = models.CharField (max_length=100, choices = ROLE, blank=True)
+    type = models.CharField(max_length=100, blank=True)
     hospital = models.BooleanField(default=True,
         help_text=_('Designates whether the user can log into hospital dashboard.'))
     date_joined = models.DateField(_('date joined'), auto_now_add=True)

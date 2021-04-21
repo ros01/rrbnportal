@@ -1,0 +1,59 @@
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+{% load humanize %}
+{% block title%}| Radiography Practice Permit Issuance {% endblock %}
+{% block styles %}
+
+{% endblock %}
+{% block content %}
+
+
+
+<main class="container">
+<section class="pt-2">
+
+</section>
+<div class="row mt-1 pt-1">
+<div class="col text-left p-0 ml-3 mt-3">
+<p class="text-success display-4 paragraph2">Successful Issuance of Hospital Radiography Practice Permit</p>
+<hr>
+</div>
+</div>
+
+
+<section class="my-0">
+<div class="container">
+   
+
+<section>
+    
+<div class="row rounded justify-content-center align-items-center mx-1 pt-4" style="background-color: #bfe3f8;">
+            
+<div class="col-md-1 col-sm-2 col-xs-4 pb-4">
+<i class="fas fa-info-circle fa-3x" style="color: #05567b;"></i>
+</div>
+
+<div class="col-md-11 col-sm-10 col-xs-8">
+<p class="lead" style="color: #05567b;">
+{{object.hospital_name}} Radiography Practice Permit has been issued successfully and an email sent to the Hospital/Centre.  Please go to Certificates and Permits menu on dashboard to view or download an electronic copy of this Permit</p>
+<span style="float:right;"> </span> 
+</div>
+</div>
+
+</section>
+
+
+
+<hr>
+<div class="d-flex justify-content-end">   
+<a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
+</div>
+</div>  
+    
+</section>
+
+</main>
+
+<!-- End of Skills -->
+
+{% endblock %}

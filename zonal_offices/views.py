@@ -52,6 +52,11 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
         return context
 
 
+class MyUserAccount(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'zonal_offices/my_profile.html')
+        
+
 class EnuguScheduleListView(LoginRequiredMixin, ListView):
     template_name = "zonal_offices/enugu_schedule_list.html"
     context_object_name = 'object'
@@ -286,7 +291,7 @@ class InspectionReportView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Radiography Practice')
+        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Radiography Practice Permit')
 
         
         #context = {'object': self.get_object()}
@@ -361,10 +366,10 @@ class AccreditationReportView(LoginRequiredMixin, SuccessMessageMixin, CreateVie
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        #context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Radiography Practice', hospital__application_type = 'New Registration - Radiography Practice')
+        #context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
         context['schedule_qss'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship', application_no=self.schedule.application_no)
         context['schedule_qsss'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship', application_no=self.schedule.application_no)
-        #context['schedule_qsr'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Radiography Practice', hospital__application_type = 'Renewal')
+        #context['schedule_qsr'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal')
         context['schedule_qssr'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship', application_no=self.schedule.application_no)
         context['schedule_qgssr'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship', application_no=self.schedule.application_no)
         return context

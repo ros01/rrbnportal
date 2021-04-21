@@ -3,6 +3,7 @@ from django.urls import path
 from . import views
 from .views import (
     EnuguScheduleListView,
+    MyUserAccount,
     LagosScheduleListView,
     AbujaScheduleListView,
     PortHarcourtScheduleListView,
@@ -70,6 +71,7 @@ app_name = 'zonal_offices'
 urlpatterns = [
    
     path('', DashboardTemplateView.as_view(), name='zonal_offices_dashboard'),
+    path('my_user_account/', MyUserAccount.as_view(), name='my_user_account'),
     path('offices', views.offices, name='rrbn_offices'),
     path('enugu_list/', EnuguScheduleListView.as_view(), name='enugu_list'),
     path('lagos_list/', LagosScheduleListView.as_view(), name='lagos_list'),

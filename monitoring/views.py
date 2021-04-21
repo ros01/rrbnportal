@@ -68,6 +68,10 @@ class LoginRequiredMixin(object):
 def monitoring_dashboard(request):
     return render(request, 'monitoring/monitoring_dashboard.html')
 
+class MyUserAccount(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'monitoring/my_profile.html')
+
 class RegistrationListView(LoginRequiredMixin, ListView):
     template_name = "monitoring/list-applications.html"
     context_object_name = 'object'
@@ -177,7 +181,7 @@ class InspectionScheduleListView(LoginRequiredMixin, ListView):
     
     def get_context_data(self, **kwargs):
         context = super(InspectionScheduleListView, self).get_context_data(**kwargs)
-        context['payment_qs'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital__license_type = 'Radiography Practice', hospital__application_type = 'New Registration - Radiography Practice')
+        context['payment_qs'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
         context['payment_qss'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital__license_type = 'Internship Accreditation')
         return context
 
@@ -235,7 +239,7 @@ class InspectionCreateView(LoginRequiredMixin, PaymentObjectMixin, SuccessMessag
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['payment_qs'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital_name=self.payment.hospital_name, hospital__license_type = 'Radiography Practice', hospital__application_type = 'New Registration - Radiography Practice', application_no=self.payment.application_no)
+        context['payment_qs'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital_name=self.payment.hospital_name, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit', application_no=self.payment.application_no)
         context['payment_qss'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital_name=self.payment.hospital_name, hospital__license_type = 'Internship Accreditation', application_no=self.payment.application_no)
         return context
 
@@ -273,10 +277,10 @@ class AppraisalCreateView(LoginRequiredMixin, PaymentObjectMixin, SuccessMessage
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        #context['payment_qs'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital_name=self.payment.hospital_name, hospital__license_type = 'Radiography Practice', hospital__application_type = 'New Registration - Radiography Practice')
+        #context['payment_qs'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital_name=self.payment.hospital_name, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
         context['payment_qss'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital_name=self.payment.hospital_name, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship', application_no=self.payment.application_no)
         context['payment_qsss'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital_name=self.payment.hospital_name, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship', application_no=self.payment.application_no)
-        #context['payment_qsr'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital_name=self.payment.hospital_name, hospital__license_type = 'Radiography Practice', hospital__application_type = 'Renewal - Radiography Practice', application_no=self.payment.application_no)
+        #context['payment_qsr'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital_name=self.payment.hospital_name, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit', application_no=self.payment.application_no)
         context['payment_qssr'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital_name=self.payment.hospital_name, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship', application_no=self.payment.application_no)
         context['payment_qgssr'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital_name=self.payment.hospital_name, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship', application_no=self.payment.application_no)
         return context
@@ -499,8 +503,8 @@ class LicenseIssueListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         obj = super(LicenseIssueListView, self).get_context_data(**kwargs)     
-        obj['inspection'] = Inspection.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Radiography Practice', hospital__application_type = 'New Registration - Radiography Practice').count()
-        obj['permitr'] = Payment.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Radiography Practice', hospital__application_type = 'Renewal - Radiography Practice').count()
+        obj['inspection'] = Inspection.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit').count()
+        obj['permitr'] = Payment.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit').count()
         obj['appraisal'] = Appraisal.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Internship Accreditation').count()   
         return obj   
 
@@ -511,7 +515,7 @@ class LicenseIssueListTable(LoginRequiredMixin, ListView):
         return Inspection.objects.all()  
     def get_context_data(self, **kwargs):
         obj = super(LicenseIssueListTable, self).get_context_data(**kwargs)
-        obj['issue_license_qs'] = Inspection.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Radiography Practice', hospital__application_type = 'New Registration - Radiography Practice')  
+        obj['issue_license_qs'] = Inspection.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')  
         return obj   
 
 class AccreditationIssueListTable(LoginRequiredMixin, ListView):
@@ -532,7 +536,7 @@ class RenewalIssueListTable(LoginRequiredMixin, ListView):
         return Payment.objects.all() 
     def get_context_data(self, **kwargs):
         obj = super(RenewalIssueListTable, self).get_context_data(**kwargs)
-        obj['issue_renewal_qs'] = Payment.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Radiography Practice', hospital__application_type = 'Renewal - Radiography Practice')         
+        obj['issue_renewal_qs'] = Payment.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')         
         return obj   
 
 class RecordsCreateView(LoginRequiredMixin, CreateView):
@@ -754,7 +758,7 @@ class LicenseObjectMixin(object):
 
 
 class LicenseIssuedDetailView(LoginRequiredMixin, LicenseObjectMixin, View):
-    template_name = 'monitoring/license_issued.html' 
+    template_name = 'monitoring/license_issued2.html' 
     def get(self, request, id=None, *args, **kwargs):
         context = {}
         obj = self.get_object()
@@ -774,7 +778,7 @@ class LicenseIssuedDetailView(LoginRequiredMixin, LicenseObjectMixin, View):
 
 
 class RegPermitCertDetailView(LoginRequiredMixin, LicenseObjectMixin, View):
-    template_name = 'monitoring/license_issued.html' 
+    template_name = 'monitoring/license_issued2.html' 
     def get(self, request, id=None, *args, **kwargs):
         context = {}
         obj = self.get_object()
@@ -897,7 +901,7 @@ class RadRegCerttificateListView(LoginRequiredMixin, ListView):
         return License.objects.all()  
     def get_context_data(self, **kwargs):
         obj = super(RadRegCerttificateListView, self).get_context_data(**kwargs)
-        obj['rad_cert_reg'] = License.objects.select_related("hospital_name").filter(hospital__license_type = 'Radiography Practice', hospital__application_type = 'New Registration - Radiography Practice').order_by('-issue_date')
+        obj['rad_cert_reg'] = License.objects.select_related("hospital_name").filter(hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit').order_by('-issue_date')
         return obj    
 
 
@@ -908,7 +912,7 @@ class RadPracticePermitListView(LoginRequiredMixin, ListView):
         return License.objects.all()  
     def get_context_data(self, **kwargs):
         obj = super(RadPracticePermitListView, self).get_context_data(**kwargs)
-        obj['rad_practice_permit'] = License.objects.select_related("hospital_name").filter(hospital__license_type = 'Radiography Practice').order_by('-issue_date')
+        obj['rad_practice_permit'] = License.objects.select_related("hospital_name").filter(hospital__license_type = 'Radiography Practice Permit').order_by('-issue_date')
         return obj  
 
 
@@ -1099,7 +1103,7 @@ def download_rad_cert_reg(request, id):
     p.drawCentredString(300, 250, 'been registered as a practicing centre for')
 
     p.setFont("Helvetica", 16, leading=None)
-    p.drawCentredString(300, 230, str(object.hospital.license_type))
+    p.drawCentredString(300, 230, str(object.hospital.equipment))
 
     p.setFont("Helvetica", 14, leading=None)
     p.drawString(330, 130, 'Registrar/Secretary')
@@ -1147,7 +1151,6 @@ def download_rad_practice_permit(request, id):
     image_path4 = '%s/img/reg_sign.jpg' % settings.STATIC_ROOT
     #image_path5 = '%s/img/passport.jpg' % settings.STATIC_ROOT
     p.drawImage(image_path1, 0, 0, width=595, height=840)
-
     p.drawImage(image_path2, 150, 550, width=115, height=115)
 
   # Header Text
@@ -1157,6 +1160,9 @@ def download_rad_practice_permit(request, id):
   # Body Text
     p.setFont("Helvetica", 12, leading=None)
     p.drawCentredString(300, 765, 'Established by Decree 42, 1987 (now Cap R1 LFN 2004)')
+    
+    p.setFont("Helvetica", 10, leading=None)
+    p.drawCentredString(455, 735, 'PERMIT NO: '+ str(object.license_no))
 
     p.setFont("Helvetica-Bold", 18, leading=None)
     p.drawCentredString(150, 700, 'Year')

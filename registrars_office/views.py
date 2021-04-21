@@ -56,6 +56,11 @@ class LoginRequiredMixin(object):
 def index(request):
     return render (request, 'registrars_office/registrar_dashboard.html')
 
+
+class MyUserAccount(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'registrars_office/my_profile.html')
+
 class InternshipCertificateList(LoginRequiredMixin, ListView):
     template_name = "registrars_office/internship_certificate_approval_list.html"
     context_object_name = 'object'
@@ -90,7 +95,7 @@ class PracticePermitRenewalList(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         obj = super(PracticePermitRenewalList, self).get_context_data(**kwargs)
-        obj['practice_permit_renewals_qs'] = Payment.objects.select_related("hospital_name").filter(application_status=3, hospital__license_type = 'Radiography Practice', hospital__application_type = 'Renewal - Radiography Practice')
+        obj['practice_permit_renewals_qs'] = Payment.objects.select_related("hospital_name").filter(application_status=3, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
         return obj
 
 
@@ -106,7 +111,7 @@ class LicenseApprovalListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         obj = super(LicenseApprovalListView, self).get_context_data(**kwargs)
-        obj['renewal_qs'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital__license_type = 'Radiography Practice', hospital__application_type = 'Renewal - Radiography Practice')
+        obj['renewal_qs'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
         obj['approval_list_qs'] = Inspection.objects.filter(inspection_status=2)
         obj['approval_list_qss'] = Appraisal.objects.filter(appraisal_status=2)
         return obj
@@ -187,7 +192,7 @@ def approve_license(request, id):
 
      context = {}
      context['object'] = object
-     subject = 'Radiography Practise License Approval'
+     subject = 'Radiography Practise Permit Approval'
      from_email = settings.DEFAULT_FROM_EMAIL
      to_email = [object.hospital_name.hospital_admin]
      
@@ -197,7 +202,7 @@ def approve_license(request, id):
 
      send_mail(subject, contact_message, from_email, to_email, fail_silently=True)
 
-     messages.success(request, ('Radiography Practise License Approval'))
+     messages.success(request, ('Radiography Practise Permit Approval'))
      
      return render(request, 'registrars_office/license_approved.html',context)
 
@@ -309,7 +314,7 @@ class RadRegCerttificateListView(LoginRequiredMixin, ListView):
         return License.objects.all()  
     def get_context_data(self, **kwargs):
         obj = super(RadRegCerttificateListView, self).get_context_data(**kwargs)
-        obj['rad_cert_reg'] = License.objects.select_related("hospital_name").filter(hospital__license_type = 'Radiography Practice', hospital__application_type = 'New Registration - Radiography Practice').order_by('-issue_date')
+        obj['rad_cert_reg'] = License.objects.select_related("hospital_name").filter(hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit').order_by('-issue_date')
         return obj    
 
 
@@ -320,7 +325,7 @@ class RadPracticePermitListView(LoginRequiredMixin, ListView):
         return License.objects.all()  
     def get_context_data(self, **kwargs):
         obj = super(RadPracticePermitListView, self).get_context_data(**kwargs)
-        obj['rad_practice_permit'] = License.objects.select_related("hospital_name").filter(hospital__license_type = 'Radiography Practice').order_by('-issue_date')
+        obj['rad_practice_permit'] = License.objects.select_related("hospital_name").filter(hospital__license_type = 'Radiography Practice Permit').order_by('-issue_date')
         return obj  
 
 
@@ -388,7 +393,7 @@ def download_rad_cert_reg(request, id):
     p.drawCentredString(300, 250, 'been registered as a practicing centre for')
 
     p.setFont("Helvetica", 16, leading=None)
-    p.drawCentredString(300, 230, str(object.hospital.license_type))
+    p.drawCentredString(300, 230, str(object.hospital.equipment))
 
     p.setFont("Helvetica", 14, leading=None)
     p.drawString(330, 130, 'Registrar/Secretary')

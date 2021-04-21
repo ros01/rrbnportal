@@ -32,9 +32,9 @@ Fill the Form below. Fields marked Optional may be left blank</p></div>
 <form method="POST" action="." enctype="multipart/form-data">
 {% csrf_token %}
 
- <input type="hidden" name="application_type" class="form-control" value="Renewal - Radiography Practice" required id="id_application_type"  id="div_id_application_type">
+ <input type="hidden" name="application_type" class="form-control" value="Renewal - Radiography Practice Permit" required id="id_application_type"  id="div_id_application_type">
 
- <input type="hidden" name="license_type" class="form-control" value="Radiography Practice" required id="id_license_type"  id="div_id_license_type">
+ <input type="hidden" name="license_type" class="form-control" value="Radiography Practice Permit" required id="id_license_type"  id="div_id_license_type">
 
 {{ form.hospital_name |as_crispy_field }}  
                 

@@ -1,0 +1,187 @@
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+{% block title%}| My Portal Account {% endblock %}
+{% block styles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'fontawesome-free-5.8.2-web/css/allt.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/dataTables.bootstrap4.min.css' %}" >
+<link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css" >
+
+
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+
+        
+
+    <section class="px-2 pt-3 pb-2">
+   
+    <div class="row mt-3 mb-2">
+    <div class="col text-left mb-1">
+    <p class="text-info display-4 paragraph2">Registrar's Officer User Account Details</p>
+    <hr>
+    </div>
+    </div>
+
+    </section>
+        
+           
+            <div class="d-flex justify-content-end"> 
+                <!--<a href="#" class="btn btn-sm btn-danger"><i class="fa fa-asterisk text-white"></i> Deactivate user</a>-->
+                <a href="{% url 'accounts:password-change' %}" class="btn btn-sm btn-danger"><i class="fa fa-check text-white"></i> Reset Password</a>
+                <a href="{% url 'registrars_office:registrar_dashboard' %}" class="btn btn-sm btn-outline-danger ml-3"><i class="fa fa-window-close text-warning"></i> Close</a>
+            </div>
+       
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="photo">
+                    <img src="" alt="">
+                </div>
+            </div>
+            <div class="col-md-9 mt-3">
+
+                <div class="row">
+                    <hr style="width:75%; height:5px; color: #e1e1e1; margin-left: 7px;">
+                    <div class="col-md-3">
+                        Login Id:
+                    </div>
+                    <div class="col-md-9">
+                        {{ user.email }}
+                    </div>
+                </div>
+                <div class="row">
+                    <hr style="width:75%; height:5px; color: #e1e1e1; margin-left: 7px;">
+                    <div class="col-md-3">
+                        Full Name:
+                    </div>
+                    <div class="col-md-9">
+                        {{ user.first_name }} {{ user.last_name }}
+                    </div>
+                </div>
+                <div class="row">
+                    <hr style="width:75%; height:5px; color: #e1e1e1; margin-left: 7px;">
+                    <div class="col-md-3">
+                        Email Address: 
+                    </div>
+                    <div class="col-md-9">
+                        {{ user.email }}
+                    </div>
+                </div>
+                <div class="row">
+                    <hr style="width:75%; height:5px; color: #e1e1e1; margin-left: 7px;">
+                    <div class="col-md-3">
+                        Assigned Module: 
+                    </div>
+                    <div class="col-md-9">
+                        {{ user.module_name }}
+                    </div>
+                </div>
+                <div class="row">
+                    <hr style="width:75%; height:5px; color: #e1e1e1; margin-left: 7px;">
+                    <div class="col-md-3">
+                        Created on: 
+                    </div>
+                    <div class="col-md-9">
+                        {{ user.date_joined }}
+                    </div>
+                </div>
+                <!-- <div class="row">
+                    <hr style="width:75%; height:5px; color: #e1e1e1; margin-left: 7px;">
+                    <div class="col-md-3">
+                        Last Login: 
+                    </div>
+                    <div class="col-md-9">
+                        {{ user.module_name }}
+                    </div>
+                </div>
+                <div class="row">
+                    <hr style="width:75%; height:5px; color: #e1e1e1; margin-left: 7px;">
+                    <div class="col-md-3">
+                        Last Password update:
+                    </div>
+                    <div class="col-md-9">
+                        08-04-2021 Am
+                    </div>
+                </div>
+                <div class="row">
+                    <hr style="width:75%; height:5px; color: #e1e1e1; margin-left: 7px;">
+                    <div class="col-md-3">
+                        Last Failed Login:
+                    </div>
+                    <div class="col-md-9">
+                        08-04-2021 Am
+                    </div>
+                    <hr style="width:75%; height:5px; color: #e1e1e1; margin-left: 7px;">
+                </div> -->
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
+
+
+<!--Jquery plugin-->
+
+
+<!--other javascript plugins-->
+  <script>
+  let urlMenu = document.getElementById('dropdown');
+  urlMenu.onchange = function(){
+    let userOption = this.options[this.selectedIndex];
+    if(userOption.value != "nothing"){
+      window.open(userOption.value, "_self", "");
+    }
+  }
+  </script>
+
+  <script>
+     // Example starter JavaScript for disabling form submissions if there are invalid fields
+     (function () {
+         'use strict';
+         window.addEventListener('load', function () {
+             // Fetch all the forms we want to apply custom Bootstrap validation styles to
+             var forms = document.getElementsByClassName('needs-validation');
+             // Loop over them and prevent submission
+             var validation = Array.prototype.filter.call(forms, function (form) {
+                 form.addEventListener('submit', function (event) {
+                     if (form.checkValidity() === false) {
+                         event.preventDefault();
+                         event.stopPropagation();
+                     }
+                     form.classList.add('was-validated');
+                 }, false);
+             });
+         }, false);
+     })();
+ </script>
+ <script>
+     let urlMenu = document.getElementById('dropdown');
+     urlMenu.onchange = function(){
+       let userOption = this.options[this.selectedIndex];
+       if(userOption.value != "nothing"){
+         window.open(userOption.value, "_self", "");
+       }
+     }
+   </script>
+
+
+   <!--Jquery plugin-->
+     <script src="{% static 'js/jquery.js' %}"></script>
+     <script src="{% static 'js/poppert.min.js' %}"></script>
+
+     <script src="{% static 'js/dataTables.bootstrap4.min.js' %}"></script>
+     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
+
+    <script>
+      $('#mydata').dataTable();
+    </script>
+
+
+
+{% endblock %}

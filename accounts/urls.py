@@ -4,7 +4,13 @@ from .views import (
     StartView, 
     StartReg, 
     StartRegPri,
+    StartPracticePermitRenewal,
+    StartGovernmentAccreditationRenewal,
+    StartPrivateHospitalAccreditationRenewal,
     CreateHospitalProfile,
+    PracticePermitRenewalHospitalProfile,
+    PrivateHospitalInternshipRenewalProfile,
+    GovHospitalInternshipRenewalProfile,
     CreateProfile,
     CreateProfilePrivate,
     RenewalCreateView,  
@@ -15,8 +21,6 @@ from .views import (
     LoginTemplateView, 
     RenewalView, 
     SearchResultsView
-    
-
 )
 
 
@@ -27,14 +31,19 @@ from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, 
 app_name = 'accounts'
 
 
-urlpatterns = [
-    
+urlpatterns = [  
     path('start/', StartView.as_view(), name='start-reg'),
     path('start_registration/', StartReg.as_view(), name='start_registration'),
     path('start_registration_private/', StartRegPri.as_view(), name='start_registration_private'),
+    path('start_practice_permit_renewal/', StartPracticePermitRenewal.as_view(), name='start_practice_permit_renewal'),
+    path('start_government_accreditation_renewal/', StartGovernmentAccreditationRenewal.as_view(), name='start_government_accreditation_renewal'),
+    path('start_private_hospital_accreditation_renewal/', StartPrivateHospitalAccreditationRenewal.as_view(), name='start_private_hospital_accreditation_renewal'),
     path('new_hospital_creation/', CreateHospitalProfile.as_view(), name='new_hospital_creation'),
+    path('practice_permit_renewal_hospital_creation/', PracticePermitRenewalHospitalProfile.as_view(), name='practice_permit_renewal_hospital_creation'),
     path('hospital_profile_creation/', CreateProfile.as_view(), name='hospital_profile_creation'),
     path('private_hospital_profile_creation/', CreateProfilePrivate.as_view(), name='private_hospital_profile_creation'),
+    path('private_hospital_internship_renewal_profile_creation/', PrivateHospitalInternshipRenewalProfile.as_view(), name='private_hospital_internship_renewal_profile_creation'),
+    path('gov_hospital_internship_renewal_profile_creation/', GovHospitalInternshipRenewalProfile.as_view(), name='gov_hospital_internship_renewal_profile_creation'),
     path('start_intership_application/', StartIntershipApplication.as_view(), name='create_manager_profile'),
     path('signin', LoginTemplateView.as_view(), name='signin'),
     path('activate_account', views.activate_account, name='activate_account'),
@@ -73,8 +82,6 @@ urlpatterns = [
     #path('reset-password/confirm/<uidb64>[0-9A-Za-z]+)-<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     #path('reset-password/complete/', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     #path('reset/<uuid:uidb64>/<slug:token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-
-    
 
 ]
 

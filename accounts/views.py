@@ -50,6 +50,18 @@ class StartRegPri(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'accounts/start_private_accreditation.html')
 
+class StartPracticePermitRenewal(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'accounts/start_practice_permit_renewal.html')
+
+class StartGovernmentAccreditationRenewal(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'accounts/start_government_hospital_accreditation_renewal.html')
+
+class StartPrivateHospitalAccreditationRenewal(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'accounts/start_private_hospital_accreditation_renewal.html')
+
 class LoginTemplateView(TemplateView):
     template_name = "accounts/login.html"
 
@@ -63,6 +75,53 @@ class CreateHospitalProfile(View):
     user_form = SignupForm
     hospital_form = HospitalModelForm
     template_name = 'accounts/radiography_profile_creation.html'
+    template_name1 = 'accounts/profile-creation-confirmation.html'
+    
+    def get(self, request, *args, **kwargs):
+        user_form = self.user_form()
+        hospital_form = self.hospital_form()
+        return render(request, self.template_name, {'user_form':user_form, 'hospital_form':hospital_form,})
+    def post(self, request, *args, **kwargs):
+        user_form = self.user_form(request.POST)
+        hospital_form = self.hospital_form(request.POST)
+
+        if user_form.is_valid() and hospital_form.is_valid():
+            user = user_form.save(commit=False)
+            user.is_active = True  # Deactivate account till it is confirmed
+            user.hospital = True
+            user.save()
+            hospital = hospital_form.save(commit=False)
+            Hospital.objects.create(
+                hospital_admin = user,
+                #license_type = user.license_type,
+                hospital_name = hospital.hospital_name,
+                rc_number = hospital.rc_number,
+                phone_no = hospital.phone_no,
+                state = hospital.state,
+                city = hospital.city,
+                contact_address = hospital.contact_address,
+                )
+            current_site = get_current_site(request)
+            subject = 'Activate Your RRBN Portal Account'
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to_email = [user.email]
+            message = render_to_string('accounts/activation_request.html', {
+                'user': user,
+                'hospital': hospital,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            send_mail(subject, message, from_email, to_email, fail_silently=True)
+
+            messages.success(request, ('Please Sign in to with your email and password to continue'))
+            return render(request, self.template_name1)
+        return render(request, self.template_name, {'user_form':user_form, 'hospital_form':hospital_form,})
+
+class PracticePermitRenewalHospitalProfile(View):
+    user_form = SignupForm
+    hospital_form = HospitalModelForm
+    template_name = 'accounts/practice_permit_renewal_profile_creation.html'
     template_name1 = 'accounts/profile-creation-confirmation.html'
     
     def get(self, request, *args, **kwargs):
@@ -161,6 +220,94 @@ class CreateProfile(View):
         return render(request, self.template_name, {'user_form':user_form, 'hospital_form':hospital_form,})
 
 
+class PrivateHospitalInternshipRenewalProfile(View):
+    user_form = SignupForm
+    hospital_form = HospitalModelForm
+    template_name = 'accounts/pri_accreditation_renewal_profile_creation.html'
+    template_name1 = 'accounts/profile-creation-confirmation.html'
+    def get(self, request, *args, **kwargs):
+        user_form = self.user_form()
+        hospital_form = self.hospital_form()
+        return render(request, self.template_name, {'user_form':user_form, 'hospital_form':hospital_form,})
+    def post(self, request, *args, **kwargs):
+        user_form = self.user_form(request.POST)
+        hospital_form = self.hospital_form(request.POST)
+        if user_form.is_valid() and hospital_form.is_valid():
+            user = user_form.save(commit=False)
+            user.is_active = True  # Deactivate account till it is confirmed
+            user.hospital = True
+            user.save()
+            hospital = hospital_form.save(commit=False)
+            Hospital.objects.create(
+                hospital_admin = user,
+                hospital_name = hospital.hospital_name,
+                rc_number = hospital.rc_number,
+                phone_no = hospital.phone_no,
+                state = hospital.state,
+                city = hospital.city,
+                contact_address = hospital.contact_address,
+                )   
+            current_site = get_current_site(request)
+            subject = 'Activate Your RRBN Portal Account'
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to_email = [user.email]
+            message = render_to_string('accounts/activation_request.html', {
+                'user': user,
+                'hospital': hospital,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            send_mail(subject, message, from_email, to_email, fail_silently=True)
+            messages.success(request, ('Please Confirm your email to complete registration.'))
+            return render(request, self.template_name1)
+        return render(request, self.template_name, {'user_form':user_form, 'hospital_form':hospital_form,})
+
+
+
+class GovHospitalInternshipRenewalProfile(View):
+    user_form = SignupForm
+    hospital_form = HospitalModelForm
+    template_name = 'accounts/gov_accreditation_renewal_profile_creation.html'
+    template_name1 = 'accounts/profile-creation-confirmation.html'
+    def get(self, request, *args, **kwargs):
+        user_form = self.user_form()
+        hospital_form = self.hospital_form()
+        return render(request, self.template_name, {'user_form':user_form, 'hospital_form':hospital_form,})
+    def post(self, request, *args, **kwargs):
+        user_form = self.user_form(request.POST)
+        hospital_form = self.hospital_form(request.POST)
+        if user_form.is_valid() and hospital_form.is_valid():
+            user = user_form.save(commit=False)
+            user.is_active = True  # Deactivate account till it is confirmed
+            user.hospital = True
+            user.save()
+            hospital = hospital_form.save(commit=False)
+            Hospital.objects.create(
+                hospital_admin = user,
+                hospital_name = hospital.hospital_name,
+                rc_number = hospital.rc_number,
+                phone_no = hospital.phone_no,
+                state = hospital.state,
+                city = hospital.city,
+                contact_address = hospital.contact_address,
+                )   
+            current_site = get_current_site(request)
+            subject = 'Activate Your RRBN Portal Account'
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to_email = [user.email]
+            message = render_to_string('accounts/activation_request.html', {
+                'user': user,
+                'hospital': hospital,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            send_mail(subject, message, from_email, to_email, fail_silently=True)
+            messages.success(request, ('Please Confirm your email to complete registration.'))
+            return render(request, self.template_name1)
+        return render(request, self.template_name, {'user_form':user_form, 'hospital_form':hospital_form,})
+
 class CreateProfilePrivate(View):
     user_form = SignupForm
     hospital_form = HospitalModelForm
@@ -203,7 +350,6 @@ class CreateProfilePrivate(View):
             messages.success(request, ('Please Confirm your email to complete registration.'))
             return render(request, self.template_name1)
         return render(request, self.template_name, {'user_form':user_form, 'hospital_form':hospital_form,})
-
 
 def renewal(request):
     try:

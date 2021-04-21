@@ -3,7 +3,7 @@
 
 {% load crispy_forms_tags %}
 
-{% block title%}| License Issuance {% endblock %}
+{% block title%}| Radiography Practice Permit Issuance {% endblock %}
 {% block styles %}
 
 
@@ -24,127 +24,94 @@
 {% block content %}
 
 <div class="container">
-       <div class="row">
-           <div class="col col-lg-12">
-            <p class="mt-2 mx-3 text-success display-4 paragraph2">Hospital Radiography Practice Application - License Issuance</p>
-                <hr>
-          </div>
-           </div>
+<div class="row">
+<div class="col col-lg-12">
+<p class="mt-2 mx-3 text-success display-4 paragraph2">Radiography Practice Permit Application Issuance</p>
+<hr>
+</div>
+</div>
+<div class="row rounded ml-3 mr-0 pl-1 pr-0 justify-content-center align-items-center" style="background-color: #bfe3f8;">
+<div class="col-md-1 mt-1 pt-1">
+<i class="fa fa-info-circle fa-3x" aria-hidden="true"></i>
+</div>
+<div class="col-md-11 mt-2 pt-2 px-0">
+<p class="lead" style="color: #05567b;"> Radiography Practise Permit Issuance</p>
+</div>
+</div>
 
-
-          <div class="row rounded ml-3 mr-0 pl-1 pr-0 justify-content-center align-items-center" style="background-color: #bfe3f8;">
-            <div class="col-md-1 mt-1 pt-1">
-               <i class="fa fa-info-circle fa-3x" aria-hidden="true"></i>
-                </div>
-
-               <div class="col-md-11 mt-2 pt-2 px-0">
-                <p class="lead" style="color: #05567b;">
-                   License Issuance for Radiography Practise License Application </p>
-               </div>
-           </div>
-
-          
-
-          <div class="col col-lg-12 mt-3 mb-0 pb-0">
-            <p class="mb-0 text-success display-4 paragraph3">Showing Radiography Practise License Applications Due for License Issuance</p>
-                <hr>
-          </div>
+<div class="col col-lg-12 mt-3 mb-0 pb-0">
+<p class="mb-0 text-success display-4 paragraph3">Showing Radiography Practise Permit Applications Due for Issuance</p>
+<hr>
+</div>
         
-        <!-- Insert Datepicker here -->
-      
-            <div class="row ml-2 mb-3">
-            <div class="col-md-3">
-          
-            <form method="POST" action=".">
-            {% csrf_token %}
+<!-- Insert Datepicker here -->
+<div class="row ml-2 mb-3">
+<div class="col-md-3">
+<form method="POST" action=".">
+{% csrf_token %}
+{% if license_qs %}
+{% for object in license_qs %}
+{% if object.inspection_total > 60 %}
+<input type="hidden" name="license_class" required id="id_license_class" id="div_id_license_class" value="Full Registration">
+{% else %}              
 
-            {% if license_qs %}
-            {% for object in license_qs %}
-            {% if object.inspection_total > 60 %}
-              <input type="hidden" name="license_class" required id="id_license_class" id="div_id_license_class" value="Full Registration">
-            {% else %}
-              <input type="hidden" name="license_class" required id="id_license_class" id="div_id_license_class" value="Provisional Registration">
-            {% endif %}
-            {% endfor %}
-            {% endif %}
-            
-            
-            {{ form.application_no|as_crispy_field }}
-            {{ form.hospital_name|as_crispy_field }}
-            {{ form.hospital|as_crispy_field }}
-            {{ form.payment|as_crispy_field }}
-            {{ form.schedule |as_crispy_field }}
-            {{ form.inspection |as_crispy_field }}
-            
+<input type="hidden" name="license_class" required id="id_license_class" id="div_id_license_class" value="Provisional Registration">
+{% endif %}
+{% endfor %}
+{% endif %}
+{{ form.application_no|as_crispy_field }}
+{{ form.hospital_name|as_crispy_field }}
+{{ form.hospital|as_crispy_field }}
+{{ form.payment|as_crispy_field }}
+{{ form.schedule |as_crispy_field }}
+{{ form.inspection |as_crispy_field }}
+{{ form.issue_date|as_crispy_field }}
+</div>
+<div class="col-md-3"> 
+{{ form.expiry_date|as_crispy_field }}
+</div>
+<div class="col-md-3">
+{{ form.license_no|as_crispy_field }}
+</div> 
 
+</div>
+<div class="d-flex justify-content-end">    
+<a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
 
-           
-            {{ form.issue_date|as_crispy_field }}
-            </div>
-
-             <div class="col-md-3"> 
-            {{ form.expiry_date|as_crispy_field }}
-
-            </div>
-            <div class="col-md-3">
-            {{ form.license_no|as_crispy_field }}
-            </div>
-
-             
-
-         </div>
-     
-        
-        <div class="d-flex justify-content-end">    
-             <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
-
-             <button type="submit" class="btn btn-success ml-4 px-3" name="_save"><i class="fa fa-podcast text-white"></i> Issue License</button>
-             
-        </div>
-        <hr>
-
-            <div class="table-responsive-lg ml-3">
+<button type="submit" class="btn btn-success ml-4 px-3" name="_save"><i class="fa fa-podcast text-white"></i> Issue Permit/Certificate</button>
+</div>
+<hr>
+<div class="table-responsive-lg ml-3">
                
-                  <table class="table table-bordered">
-                    <thead>
-                     
-                      <tr class="bg-secondary">
-                       <td style="color: #fff;" class="small-text">S/N</td>
-                       <td style="color: #fff;" class="small-text">Application No</td>
-                       <td style="color: #fff;" class="small-text">Hospital Name</td>
-                       <td style="color: #fff;" class="small-text">Address</td>
-                       <td style="color: #fff;" class="small-text">Application Category</td>
-                       <td style="color: #fff;" class="small-text">Inspection Date</td>
+<table class="table table-bordered">
+<thead>
+<tr class="bg-secondary">
+<th class="small-text" style="color: #fff; "width="2%">SN</th>
+<th class="small-text" style="color: #fff; "width="12%">Application No</th>
+<th class="small-text" style="color: #fff; "width="22%">Hospital Name</th>
+<th class="small-text" style="color: #fff; "width="26%">Address</th> 
+<th class="small-text" style="color: #fff; "width="26%">Application Category</th>
+<th class="small-text" style="color: #fff; "width="12%">Inspection Date</th>
+</tr>
+</thead> 
+<tbody>
 
-                     </tr>
-                    </thead> 
-                    
-                     
-                     <tbody>
-
-               <tr>{% if license_qs %}
-                    {% for object in license_qs %}
-                          <td>1</td>
-                           <td>{{object.application_no}}</td>
-                           <td>{{object.hospital.hospital_name}}</td>
-                           <td>{{object.hospital.facility_address}}</td>
-                           <td>{{object.hospital.license_type}}</td>
-                           <td>{{object.schedule.inspection_date}}</td>
-                         </tr>
-                         {% endfor %}
-                    {% endif %}
-                       
-                    
-                     
-                     </tbody>
-
-
-                  </table>
-
-
-                </div>
-               </form>
-             </div>
+<tr>{% if license_qs %}
+{% for object in license_qs %}
+<td>{{forloop.counter}}</td>
+<td>{{object.application_no}}</td>
+<td>{{object.hospital.hospital_name}}</td>
+<td>{{object.hospital.facility_address}}</td>
+<td>{{object.hospital.license_type}}</td>
+<td>{{object.schedule.inspection_date}}</td>
+</tr>
+{% endfor %}
+{% endif %}                   
+</tbody>
+</table>
+</div>
+</form>
+</div>
       
 
 

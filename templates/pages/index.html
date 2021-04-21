@@ -44,7 +44,10 @@
 <div class="row "> 
 <div class="col-lg-12 col-md-12"> <ul class="list-unstyled"> <li> <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a href="{% url 'accounts:start-reg' %}">Apply for Practice Permit</a> </li> 
 <!-- <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="{% url 'accounts:activate_account' %}">Apply for Renewal of Practice</a> </li> -->
-<li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="{% url 'verify_practice' %}">Check Practice Registration Status</a> </li></ul> 
+
+<li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="{% url 'accounts:start_practice_permit_renewal' %}">Renew Practice License</a> </li>
+
+<li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="{% url 'verify_practice' %}">Check Practice License Status</a> </li></ul> 
 </div>
 </div>
 </div>
@@ -57,7 +60,7 @@
 <div class="row "> 
 <div class="col-lg-12 col-md-12"><ul class="list-unstyled"> <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i>  <a class="blink" href="{% url 'accounts:start_registration_private' %}">Apply for Accreditation</a> </li> 
 
-<!--  <li><i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="{% url 'accounts:activate_account' %}">Apply for Re-acccreditation</a> </li>  -->
+<li><i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="{% url 'accounts:start_private_hospital_accreditation_renewal' %}">Apply for Re-acccreditation</a> </li> 
 
 <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="{% url 'verify_internship_accreditation' %}">Check Accreditation Status</a> </li></ul>  
 	
@@ -72,8 +75,7 @@
 <div class="row "> 
 
 <div class="col-lg-12 col-md-12"> <ul class="list-unstyled"> <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="{% url 'accounts:start_registration' %}">Apply for Accreditation</a> </li> 
-<!--  <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="{% url 'accounts:activate_account' %}">Apply for Re-acccreditation</a> </li>  --> 
-
+<li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="{% url 'accounts:start_government_accreditation_renewal' %}">Apply for Re-acccreditation</a> </li> 
 <li>  <i style="color:#228B22" class="fas fa-arrow-alt-circle-right"></i> <a class="blink" href="{% url 'verify_internship_accreditation' %}">Check Accreditation Status</a> </li></ul> 
  </div>
         

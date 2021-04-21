@@ -36,7 +36,7 @@
 	<form method="POST" action="." enctype="multipart/form-data">
      {% csrf_token %}
 
-     <input type="hidden" name="type" class="form-control" value="Pri Internship Accreditation" required id="id_type"  id="div_id_type">
+     <input type="hidden" name="type" class="form-control" value="Gov Internship Accreditation Renewal" required id="id_type"  id="div_id_type">
 
    	<div class="row"> 
 	<div class="col-md-4"> 
@@ -111,7 +111,7 @@
     
     <a href="{% url 'index' %}" class="text-dark py-1 mr-3 mt-2 mb-4 btn btn-outline-dark"><i class="fas fa-times"></i> Cancel</a>
 
-    <a href="{% url 'accounts:start-reg' %}" class="text-white py-1 mr-3 mt-2 mb-4 btn btn-warning"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Go Back</a>
+    <a href="{% url 'accounts:start_government_accreditation_renewal' %}" class="text-white py-1 mr-3 mt-2 mb-4 btn btn-warning"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Go Back</a>
     
     <button type="submit" class="btn btn-success py-1 mt-2 mb-4"> Create Profile &#x21E8;</button> </div> 
     </div> 

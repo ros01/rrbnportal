@@ -13,13 +13,13 @@
 	<main class="container">
 	<div class="row" style="border-bottom:1px solid #ddd">
 	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-	<h3 class="text-success">Hospital Profile Creation</h3>
+	<h3 class="text-success">New Hospital Profile Creation</h3>
 	</div>
 	
 	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-right">
 	<h3 class="text-default">
 	<span style="font-size:14px;"><b>Category:</b></span>
-	<span class="text-success">Internship Accreditation</span>
+	<span class="text-success">Practice Permit Renewal</span>
 	</h3>
 	</div>
 	</div>
@@ -28,7 +28,7 @@
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	<br>			
 	<section class="portlet" style="background:#FFFFFF"> 
-	<div class="alert alert-info text-center" style="color:#333"> Fill the Form below. All fields are required. 
+	<div class="alert alert-info text-center" style="color:#333"><span class="req">*</span> Fill the Form below. All fields are required. Please Sign In instead if you already have a portal account. 
 	</div> 
 	</div> 
 	</div> 
@@ -36,7 +36,11 @@
 	<form method="POST" action="." enctype="multipart/form-data">
      {% csrf_token %}
 
-     <input type="hidden" name="type" class="form-control" value="Pri Internship Accreditation" required id="id_type"  id="div_id_type">
+
+    <!--
+    <input type="hidden" name="hospital" class="form-control" value="True" required id="id_hospital"  id="div_id_hospital"> -->
+
+    <input type="hidden" name="type" class="form-control" value="Radiography Practice Permit Renewal" required id="id_type"  id="div_id_type">
 
    	<div class="row"> 
 	<div class="col-md-4"> 
@@ -111,9 +115,9 @@
     
     <a href="{% url 'index' %}" class="text-dark py-1 mr-3 mt-2 mb-4 btn btn-outline-dark"><i class="fas fa-times"></i> Cancel</a>
 
-    <a href="{% url 'accounts:start-reg' %}" class="text-white py-1 mr-3 mt-2 mb-4 btn btn-warning"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Go Back</a>
+    <a href="{% url 'accounts:start_practice_permit_renewal' %}" class="text-white py-1 mr-3 mt-2 mb-4 btn btn-warning"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Go Back</a>
     
-    <button type="submit" class="btn btn-success py-1 mt-2 mb-4"> Create Profile &#x21E8;</button> </div> 
+    <button type="submit" class="btn btn-success py-1 mt-2 mb-4"> Create Hospital Profile &#x21E8;</button> </div> 
     </div> 
 	</form> 
 
