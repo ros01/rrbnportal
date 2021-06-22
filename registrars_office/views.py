@@ -352,7 +352,7 @@ def download_rad_cert_reg(request, id):
     image_path1 = '%s/img/cert_border1.jpeg' % settings.STATIC_ROOT
     image_path2 = '%s/img/logo_small.png' % settings.STATIC_ROOT
     image_path3 = '%s/img/cert_seal4.jpeg' % settings.STATIC_ROOT
-    image_path4 = '%s/img/reg_sign.jpg' % settings.STATIC_ROOT
+    image_path4 = '%s/img/ceo_sign.jpg' % settings.STATIC_ROOT
     p.drawImage(image_path1, 0, 0, width=595, height=840)
 
     p.drawImage(image_path2, 250, 690, width=90, height=90)
@@ -438,7 +438,7 @@ def download_rad_practice_permit(request, id):
     image_path1 = '%s/img/cert_border6.jpeg' % settings.STATIC_ROOT
     image_path2 = '%s/img/logo_small.png' % settings.STATIC_ROOT
     image_path3 = '%s/img/cert_seal4.jpeg' % settings.STATIC_ROOT
-    image_path4 = '%s/img/reg_sign.jpg' % settings.STATIC_ROOT
+    image_path4 = '%s/img/ceo_sign.jpg' % settings.STATIC_ROOT
     #image_path5 = '%s/img/passport.jpg' % settings.STATIC_ROOT
     p.drawImage(image_path1, 0, 0, width=595, height=840)
 
@@ -535,7 +535,7 @@ def download_accreditation_cert(request, id):
     image_path1 = '%s/img/cert_border5.jpeg' % settings.STATIC_ROOT
     image_path2 = '%s/img/logo_small.png' % settings.STATIC_ROOT
     image_path3 = '%s/img/cert_seal4.jpeg' % settings.STATIC_ROOT
-    image_path4 = '%s/img/reg_sign.jpg' % settings.STATIC_ROOT
+    image_path4 = '%s/img/ceo_sign.jpg' % settings.STATIC_ROOT
     p.drawImage(image_path1, 0, 0, width=842, height=595)
 
     p.drawImage(image_path2, 380, 478, width=90, height=90)
