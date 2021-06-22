@@ -781,17 +781,20 @@ class LicensePdfView(LoginRequiredMixin, GenerateObjectMixin, View):
             return HttpResponse(result.getvalue(), content_type='application/pdf') 
         return None
 
-class RegisteredHospitalsListView(LoginRequiredMixin, View):
+
+class RegisteredHospitalsListView(LoginRequiredMixin, ListView):
     template_name = "registrars_office/registered_hospitals_list.html"
-    queryset = License.objects.all()
+    context_object_name = 'object'
 
     def get_queryset(self):
-        return self.queryset
+        return License.objects.all()
         
+    def get_context_data(self, **kwargs):
+        obj = super(RegisteredHospitalsListView, self).get_context_data(**kwargs)
+        obj['hospitals_qs'] = License.objects.order_by('-issue_date')
+        return obj
 
-    def get(self, request, *args, **kwargs):
-        context = {'object': self.get_queryset()}
-        return render(request, self.template_name, context)
+
 
 
 class RegisteredObjectMixin(object):

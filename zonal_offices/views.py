@@ -1437,17 +1437,24 @@ class HospitalRecordsDetail(LoginRequiredMixin, RecordsObjectMixin, View):
         return render(request, self.template_name, context)
 
 
-class RegisteredHospitalsListView(LoginRequiredMixin, View):
+
+
+
+
+
+class RegisteredHospitalsListView(LoginRequiredMixin, ListView):
     template_name = "zonal_offices/registered_hospitals_list.html"
-    queryset = License.objects.all()
+    context_object_name = 'object'
 
     def get_queryset(self):
-        return self.queryset
+        return License.objects.all()
         
 
-    def get(self, request, *args, **kwargs):
-        context = {'object': self.get_queryset()}
-        return render(request, self.template_name, context)
+    def get_context_data(self, **kwargs):
+        obj = super(RegisteredHospitalsListView, self).get_context_data(**kwargs)
+        obj['hospitals_qs'] = License.objects.order_by('-issue_date')
+        return obj
+
 
 
 class RegisteredObjectMixin(object):

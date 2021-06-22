@@ -129,6 +129,11 @@ AUTH_PASSWORD_VALIDATORS = [
 #SESSION_COOKIE_AGE = 60 * 5  # Session will expiry after 30 minutes idle.
 #SESSION_SAVE_EVERY_REQUEST = True
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 600 
+SESSION_SAVE_EVERY_REQUEST = True
+LOGIN_URL = '/accounts/signin'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
