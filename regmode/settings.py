@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '@nl0&7a3*=n0nuozdw-pgvf5rp%_hut282q1ge&q!ojjnh1-@s'
+SECRET_KEY = 's'
 
 # SECURITY WARNING: don't  run with debug turned on in production!
 DEBUG = True
@@ -182,7 +182,7 @@ CAPTCHA_FONT_SIZE = 30
 
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = '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'
+EMAIL_HOST_PASSWORD = 'Boc'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = '"RRBN" <noreply@monitoring.rrbn.gov.ng>'
