@@ -183,7 +183,7 @@ class CreateProfile(View):
 
         if user_form.is_valid() and hospital_form.is_valid():
             user = user_form.save(commit=False)
-            user.is_active = False  # Deactivate account till it is confirmed
+            user.is_active = True  # Deactivate account till it is confirmed
             user.hospital = True
             user.save()
             hospital = hospital_form.save(commit=False)
@@ -322,7 +322,7 @@ class CreateProfilePrivate(View):
         hospital_form = self.hospital_form(request.POST)
         if user_form.is_valid() and hospital_form.is_valid():
             user = user_form.save(commit=False)
-            user.is_active = False  # Deactivate account till it is confirmed
+            user.is_active = True  # Deactivate account till it is confirmed
             user.hospital = True
             user.save()
             hospital = hospital_form.save(commit=False)
@@ -592,7 +592,7 @@ class StartIntershipApplication(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.is_active = False  # Deactivate account till it is confirmed
+            user.is_active = True  # Deactivate account till it is confirmed
             user.save()
     
             current_site = get_current_site(request)
