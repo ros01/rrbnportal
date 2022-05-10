@@ -62,10 +62,11 @@ class LoginRequiredMixin(object):
     def dispatch(self, request, *args, **kwargs):
         return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
 
-
+@login_required
 def monitoring_dashboard(request):
     return render(request, 'monitoring/monitoring_dashboard.html')
 
+@login_required
 def upload_internship_centers(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
@@ -108,6 +109,7 @@ class UploadInternshipList(View):
         return JsonResponse(data)
 
 
+@login_required
 def clear_database(request):
     for document in InternshipList.objects.all():
         document.file.delete()
@@ -355,6 +357,7 @@ class VetApplication(LoginRequiredMixin, PaymentObjectMixin, View):
         #context = {'object': self.get_object()}
         return render(request, self.template_name, context)  
 
+@login_required
 def approve(request, id):
   if request.method == 'POST':
      object = get_object_or_404(Payment, pk=id)
@@ -372,7 +375,8 @@ def approve(request, id):
      send_mail(subject, contact_message, from_email, to_email, fail_silently=True)
      messages.success(request, ('Application vetted successfully. Please proceed to Schedule Hospital for Inspection in case of New Practice Permit Application or Internship Accreditation Application.'))
      return render(request, 'monitoring/verification_successful.html',context)
- 
+
+@login_required 
 def reject(request, id):
   if request.method == 'POST':
      object = get_object_or_404(Payment, pk=id)
@@ -622,7 +626,7 @@ class AccreditationCompletedDetailView(LoginRequiredMixin, AccreditationObjectMi
         #context = {'object': self.get_object()}
         return render(request, self.template_name, context)
 
-
+@login_required
 def inspection_report(request, id):
     inspection = get_object_or_404(Inspection, pk=id)
   
@@ -630,6 +634,7 @@ def inspection_report(request, id):
            }
     return render(request, 'monitoring/inspections_detail.html', context)
 
+@login_required
 def approve_report(request, id):
     if request.method == 'POST':
         object = get_object_or_404(Inspection, pk=id)
@@ -647,7 +652,9 @@ def approve_report(request, id):
         send_mail(subject, contact_message, from_email, to_email, fail_silently=True)
         messages.success(request, ('Inspection Report Validation Successful'))    
         return render(request, 'monitoring/inspection_successful.html',context)
-    
+
+
+@login_required   
 def approve_appraisal_report(request, id):
     if request.method == 'POST':
       object = get_object_or_404(Appraisal, pk=id)
@@ -664,7 +671,7 @@ def approve_appraisal_report(request, id):
       messages.success(request, ('Internship Accreditation Report Validation Successful'))    
       return render(request, 'monitoring/appraisal_successful.html',context)
 
-
+@login_required
 def reject_report(request, id):
     if request.method == 'POST':
       object = get_object_or_404(Inspection, pk=id)
@@ -680,7 +687,7 @@ def reject_report(request, id):
       messages.error(request, ('Inspection failed.  Hospital will be contacted and guided on how to remedy inspection shortfalls.'))
       return render(request, 'monitoring/inspection_failed.html',context)
 
-
+@login_required
 def reject_appraisal_report(request, id):
     if request.method == 'POST':
       object = get_object_or_404(Appraisal, pk=id)
@@ -696,14 +703,14 @@ def reject_appraisal_report(request, id):
       messages.error(request, ('Accreditation failed.  Hospital will be contacted and guided on how to remedy accreditation shortfalls.'))
       return render(request, 'monitoring/inspection_failed.html',context)
 
-
+@login_required
 def validate(request, id):
   appraisal = get_object_or_404(Appraisal, pk=id)
   context={'appraisal': appraisal,        
            }
   return render(request, 'monitoring/appraisals_detail.html', context)
 
-
+@login_required
 def view_appraisal_report(request, id):
   appraisal = get_object_or_404(Appraisal, pk=id)
   context={'appraisal': appraisal,        
@@ -1277,7 +1284,7 @@ def getPDF(request, id):
     #return response
 
 
-
+@login_required
 def download_rad_cert_reg(request, id):
     # Create a file-like buffer to receive PDF data.
     buffer = io.BytesIO()
@@ -1369,7 +1376,7 @@ def download_rad_cert_reg(request, id):
 
  
 
-
+@login_required
 def download_rad_practice_permit(request, id):
     # Create a file-like buffer to receive PDF data.
     buffer = io.BytesIO()
@@ -1467,7 +1474,7 @@ def download_rad_practice_permit(request, id):
     return FileResponse(buffer, as_attachment=False, filename='registration_of_practice_permit.pdf')   
 
 
-
+@login_required
 def download_accreditation_cert(request, id):
     # Create a file-like buffer to receive PDF data.
     buffer = io.BytesIO()

@@ -42,8 +42,8 @@
 <th class="small-text" style="color: #fff; "width="12%">Application No</th>
 <th class="small-text" style="color: #fff; "width="19%">Hospital Name</th>
 <th class="small-text" style="color: #fff; "width="19%">Application Type</th>
-<th class="small-text" style="color: #fff; "width="17%">Stage</th>
-<th class="small-text" style="color: #fff; "width="10%">Start Date</th>
+<th class="small-text" style="color: #fff; "width="16%">Stage</th>
+<th class="small-text" style="color: #fff; "width="11%">Start Date</th>
 <th class="small-text" style="color: #fff; "width="11%">View </th>
 </tr> </thead> 
 
@@ -61,8 +61,8 @@
 <td width="12%">{{object.application_no}}</td> 
 <td width="19%">{{object.hospital_name}}</td> 
 <td width="19%">{{object.hospital.license_type}}</td> 
-<td width="17%">Application Complete</td> 
-<td width="10%">{{object.hospital_name.date}}</td> 
+<td width="16%">Application Complete</td> 
+<td width="11%">{{object.hospital_name.date}}</td> 
 <td width="11%"><a href="{% url 'monitoring:hospital_license_details' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Details</a></td> 
 </tr> 
 
@@ -75,8 +75,8 @@
 <td width="12%">{{object.application_no}}</td> 
 <td width="19%">{{object.hospital_name}}</td> 
 <td width="19%">{{object.hospital.license_type}}</td> 
-<td width="17%">Awaiting Issuance</td> 
-<td width="10%">{{object.hospital_name.date}}</td> 
+<td width="16%">Awaiting Issuance</td> 
+<td width="11%">{{object.hospital_name.date}}</td> 
 <td width="11%"><a href="{% url 'monitoring:hospital_accreditation_registrar_approval_details' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Details</a></td> 
 </tr> 
 
@@ -89,8 +89,8 @@
 <td width="12%">{{object.application_no}}</td> 
 <td width="19%">{{object.hospital_name}}</td> 
 <td width="19%">{{object.hospital.license_type}}</td> 
-<td width="17%">Awaiting Issuance</td> 
-<td width="10%">{{object.hospital_name.date}}</td> 
+<td width="16%">Awaiting Issuance</td> 
+<td width="11%">{{object.hospital_name.date}}</td> 
 <td width="11%"><a href="{% url 'monitoring:hospital_inspection_registrar_approval_details' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Details</a></td> 
 </tr> 
 
@@ -103,8 +103,8 @@
 <td width="12%">{{object.application_no}}</td> 
 <td width="19%">{{object.hospital_name}}</td> 
 <td width="19%">{{object.hospital.license_type}}</td> 
-<td width="17%">Accreditation Approved</td> 
-<td width="10%">{{object.hospital_name.date}}</td> 
+<td width="16%">Accreditation Approved</td> 
+<td width="11%">{{object.hospital_name.date}}</td> 
 <td width="11%"><a href="{% url 'monitoring:hospital_accreditation_approval_details' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Details</a></td> 
 </tr> 
 
@@ -117,8 +117,8 @@
 <td width="12%">{{object.application_no}}</td> 
 <td width="19%">{{object.hospital_name}}</td> 
 <td width="19%">{{object.hospital.license_type}}</td> 
-<td width="17%">Inspection Approved</td> 
-<td width="10%">{{object.hospital_name.date}}</td> 
+<td width="16%">Inspection Approved</td> 
+<td width="11%">{{object.hospital_name.date}}</td> 
 <td width="11%"><a href="{% url 'monitoring:hospital_inspection_approval_details' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Details</a></td> 
 </tr> 
 
@@ -131,8 +131,8 @@
 <td width="12%">{{object.application_no}}</td> 
 <td width="19%">{{object.hospital_name}}</td> 
 <td width="19%">{{object.hospital.license_type}}</td> 
-<td width="17%">Accreditation Completed</td> 
-<td width="10%">{{object.hospital_name.date}}</td> 
+<td width="16%">Accreditation Completed</td> 
+<td width="11%">{{object.hospital_name.date}}</td> 
 <td width="11%"><a href="{% url 'monitoring:hospital_accreditation_details' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Details</a></td> 
 </tr> 
 
@@ -145,8 +145,8 @@
 <td width="12%">{{object.application_no}}</td> 
 <td width="19%">{{object.hospital_name}}</td> 
 <td width="19%">{{object.hospital.license_type}}</td> 
-<td width="17%">Inspection Completed</td> 
-<td width="10%">{{object.hospital_name.date}}</td> 
+<td width="16%">Inspection Completed</td> 
+<td width="11%">{{object.hospital_name.date}}</td> 
 <td width="11%"><a href="{% url 'monitoring:hospital_inspection_details' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Details</a></td> 
 </tr> 
 
@@ -159,8 +159,8 @@
 <td width="12%">{{object.application_no}}</td> 
 <td width="19%">{{object.hospital_name}}</td> 
 <td width="19%">{{object.hospital.license_type}}</td> 
-<td width="17%">Inspection Scheduled</td> 
-<td width="10%">{{object.hospital_name.date}}</td> 
+<td width="16%">Inspection Scheduled</td> 
+<td width="11%">{{object.hospital_name.date}}</td> 
 <td width="11%"><a href="{% url 'monitoring:hospital_schedule_details' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Details</a></td> 
 </tr> 
 
@@ -173,8 +173,8 @@
 <td width="12%">{{object.application_no}}</td> 
 <td width="19%">{{object.hospital_name}}</td> 
 <td width="19%">{{object.hospital.license_type}}</td> 
-<td width="17%">Verifications Complete</td> 
-<td width="10%">{{object.hospital_name.date}}</td> 
+<td width="16%">Verifications Complete</td> 
+<td width="11%">{{object.hospital_name.date}}</td> 
 <td width="11%"><a href="{% url 'monitoring:hospital_verification_details' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Details</a></td> 
 </tr> 
 
@@ -187,8 +187,8 @@
 <td width="12%">{{object.application_no}}</td> 
 <td width="19%">{{object.hospital_name}}</td> 
 <td width="19%">{{object.hospital.license_type}}</td> 
-<td width="17%">Application Verification</td> 
-<td width="10%">{{object.hospital_name.date}}</td> 
+<td width="16%">Application Verification</td> 
+<td width="11%">{{object.hospital_name.date}}</td> 
 <td width="11%"><a href="{% url 'monitoring:hospital_payment_details' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Details</a></td> 
 </tr> 
 
@@ -202,8 +202,8 @@
 <td width="12%">{{object.application_no}}</td> 
 <td width="19%">{{object.hospital_name}}</td> 
 <td width="19%">{{object.license_type}}</td> 
-<td width="17%">Registration</td> 
-<td width="10%">{{object.date}}</td> 
+<td width="16%">Registration</td> 
+<td width="11%">{{object.hospital_name.date}}</td> 
 <td width="11%"><a href="{% url 'monitoring:hospital_registration_details' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Details</a></td> 
 </tr> 
 
@@ -217,8 +217,8 @@
 <td width="12%">Not applicable</td> 
 <td width="19%">{{object.hospital_name}}</td> 
 <td width="19%">{{object.type}}</td> 
-<td width="17%">Start Application</td> 
-<td width="10%">{{object.date}}</td> 
+<td width="16%">Start Application</td> 
+<td width="11%">{{object.date}}</td> 
 <td width="11%"><a href="{% url 'monitoring:hospital_profile_details' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Details</a></td> 
 </tr> 
 
