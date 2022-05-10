@@ -94,6 +94,7 @@ class CreateHospitalProfile(View):
             Hospital.objects.create(
                 hospital_admin = user,
                 #license_type = user.license_type,
+                type = hospital.type,
                 hospital_name = hospital.hospital_name,
                 rc_number = hospital.rc_number,
                 phone_no = hospital.phone_no,
@@ -141,6 +142,7 @@ class PracticePermitRenewalHospitalProfile(View):
             Hospital.objects.create(
                 hospital_admin = user,
                 #license_type = user.license_type,
+                type = hospital.type,
                 hospital_name = hospital.hospital_name,
                 rc_number = hospital.rc_number,
                 phone_no = hospital.phone_no,
@@ -189,12 +191,13 @@ class CreateProfile(View):
             hospital = hospital_form.save(commit=False)
             Hospital.objects.create(
                 hospital_admin = user,
+                type = hospital.type,
                 hospital_name = hospital.hospital_name,
                 rc_number = hospital.rc_number,
                 phone_no = hospital.phone_no,
                 state = hospital.state,
                 city = hospital.city,
-                address = hospital.address,
+                contact_address = hospital.contact_address,
                
                 )
             
@@ -240,6 +243,7 @@ class PrivateHospitalInternshipRenewalProfile(View):
             hospital = hospital_form.save(commit=False)
             Hospital.objects.create(
                 hospital_admin = user,
+                type = hospital.type,
                 hospital_name = hospital.hospital_name,
                 rc_number = hospital.rc_number,
                 phone_no = hospital.phone_no,
@@ -285,6 +289,7 @@ class GovHospitalInternshipRenewalProfile(View):
             hospital = hospital_form.save(commit=False)
             Hospital.objects.create(
                 hospital_admin = user,
+                type = hospital.type,
                 hospital_name = hospital.hospital_name,
                 rc_number = hospital.rc_number,
                 phone_no = hospital.phone_no,
@@ -326,8 +331,11 @@ class CreateProfilePrivate(View):
             user.hospital = True
             user.save()
             hospital = hospital_form.save(commit=False)
+
+           
             Hospital.objects.create(
                 hospital_admin = user,
+                type = hospital.type,
                 hospital_name = hospital.hospital_name,
                 rc_number = hospital.rc_number,
                 phone_no = hospital.phone_no,

@@ -2,8 +2,22 @@ from django.urls import path
 from django.shortcuts import render
 from . import views
 from .views import (
+    AllHospitalsView,
+    HospitalProfileDetails,
+    HospitalRegistrationDetails,
+    HospitalPaymentDetails,
+    HospitalVerificationDetails,
+    HospitalScheduleDetails,
+    HospitalInspectionDetails,
+    HospitalAccreditationDetails,
+    HospitalInspectionApprovalDetails,
+    HospitalAccreditationApprovalDetails,
+    HospitalInspectionRegistrarApprovalDetails,
+    HospitalAccreditationRegistrarApprovalDetails,
+    HospitalLicenseDetails,
     RegistrationListView,
     MyUserAccount,
+    UploadInternshipList,
     InspectionScheduleListView,
     InspectionCreateView,
     AppraisalCreateView,
@@ -46,8 +60,30 @@ app_name = 'monitoring'
 
 urlpatterns = [
     path('', views.monitoring_dashboard, name='monitoring_dashboard'),
+    path('upload_internship_centers', views.upload_internship_centers, name='upload_internship_centers'),
+    path('upload_internship_list', views.UploadInternshipList.as_view(), name='upload_internship_list'),
+    path('clear_database', views.clear_database, name='clear_database'),
+    # path('basic-upload', views.BasicUploadView.as_view(), name='basic_upload'),
     path('my_user_account/', MyUserAccount.as_view(), name='my_user_account'),
     path('registration_list/', RegistrationListView.as_view(), name='registration_list'),
+    path('all_hospitals_application_list/', AllHospitalsView.as_view(), name='all_hospitals_application_list'),
+    path('<uuid:pk>/hospital_profile_details/', HospitalProfileDetails.as_view(), name='hospital_profile_details'),
+    path('<uuid:pk>/hospital_registration_details/', HospitalRegistrationDetails.as_view(), name='hospital_registration_details'),
+    path('<uuid:pk>/hospital_payment_details/', HospitalPaymentDetails.as_view(), name='hospital_payment_details'),
+    path('<uuid:pk>/hospital_verification_details/', HospitalVerificationDetails.as_view(), name='hospital_verification_details'),
+    path('<uuid:pk>/hospital_schedule_details/', HospitalScheduleDetails.as_view(), name='hospital_schedule_details'),
+    path('<uuid:pk>/hospital_inspection_details/', HospitalInspectionDetails.as_view(), name='hospital_inspection_details'),
+    path('<uuid:pk>/hospital_accreditation_details/', HospitalAccreditationDetails.as_view(), name='hospital_accreditation_details'),
+    path('<uuid:pk>/hospital_inspection_approval_details/', HospitalInspectionApprovalDetails.as_view(), name='hospital_inspection_approval_details'),
+    path('<uuid:pk>/hospital_accreditation_approval_details/', HospitalAccreditationApprovalDetails.as_view(), name='hospital_accreditation_approval_details'),
+    path('<uuid:pk>/hospital_inspection_registrar_approval_details/', HospitalInspectionRegistrarApprovalDetails.as_view(), name='hospital_inspection_registrar_approval_details'),
+    path('<uuid:pk>/hospital_accreditation_registrar_approval_details/', HospitalAccreditationRegistrarApprovalDetails.as_view(), name='hospital_accreditation_registrar_approval_details'),
+    path('<uuid:pk>/hospital_license_details/', HospitalLicenseDetails.as_view(), name='hospital_license_details'),
+    
+
+
+
+
     path('<uuid:id>/vet_application/', VetApplication.as_view(), name='vet_application'),
     #path('<uuid:id>', views.vet_application, name='vet_application'),
     path('<uuid:id>/approve/', views.approve, name='approve'),

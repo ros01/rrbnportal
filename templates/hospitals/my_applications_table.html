@@ -51,7 +51,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td>
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Complete</td> 
@@ -66,7 +66,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td>
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td>  
  <td width="16%">License Issuance</td> 
@@ -80,7 +80,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td>
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td>  
  <td width="16%">Final Approval</td> 
@@ -94,7 +94,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td>
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td>  
  <td width="16%">Facility Inspection</td> 
@@ -109,7 +109,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td>
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td>  
  <td width="16%">Inspection Scheduled</td> 
@@ -124,7 +124,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td>
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td>  
  <td width="16%">Payment Verified</td> 
@@ -139,7 +139,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td>
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Payment Verification</td> 
@@ -154,7 +154,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td>
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.submission_date}}</td>
+ <td width="13%">{{object.date}}</td>
  <td width="18%">{{object.license_type}}</td> 
  <td width="22%">{{object.application_type}}</td> 
  <td width="16%">Payment Processing</td> 
@@ -170,7 +170,7 @@
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">Not applicable</td> 
  <td width="13%">{{user.reg_date_pretty}}</td> 
- <td width="18%">{{user.type}}</td> 
+ <td width="18%">{{object.type}}</td> 
  <td width="22%">New Application</td> 
  <td width="16%">Start Application</td> 
  <td width="15%"><a href="{% url 'hospitals:start_new_radiography_license_application' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Register</a> </td> 
@@ -185,7 +185,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td>
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Complete</td> 
@@ -199,7 +199,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">License Issuance</td> 
@@ -213,7 +213,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td>  
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Final Approval</td> 
@@ -227,7 +227,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Facility Inspection</td> 
@@ -241,7 +241,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Inspection Scheduled</td> 
@@ -255,7 +255,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td>  
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Payment Verified</td> 
@@ -269,7 +269,7 @@
  <tr> 
  <td width="2%">{{ count|add:"1" }}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td>
  <td width="22%">{{object.hospital.application_type}}</td>
  <td width="16%">Payment Verification</td> 
@@ -283,7 +283,7 @@
  <tr> 
  <td width="2%">{{ count|add:"1" }}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.submission_date}}</td> 
+ <td width="13%">{{object.date}}</td> 
  <td width="18%">{{object.license_type}}</td> 
  <td width="22%">{{object.application_type}}</td> 
  <td width="16%">Payment Processing</td> 
@@ -313,7 +313,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td>
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Complete</td> 
@@ -327,7 +327,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">License Issuance</td> 
@@ -341,7 +341,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td>  
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Final Approval</td> 
@@ -355,7 +355,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Facility Inspection</td> 
@@ -369,7 +369,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Inspection Scheduled</td> 
@@ -383,7 +383,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td>  
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Payment Verified</td> 
@@ -397,7 +397,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td>
  <td width="22%">{{object.hospital.application_type}}</td>
  <td width="16%">Payment Verification</td> 
@@ -411,7 +411,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.submission_date}}</td> 
+ <td width="13%">{{object.date}}</td> 
  <td width="18%">{{object.license_type}}</td> 
  <td width="22%">{{object.application_type}}</td> 
  <td width="16%">Payment Processing</td> 
@@ -443,7 +443,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td>
- <td width="13%">{{object.hospital.submission_date}}</td>
+ <td width="13%">{{object.hospital.date}}</td>
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Complete</td> 
@@ -458,7 +458,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">License Issuance</td> 
@@ -473,7 +473,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Permit Final Approval</td> 
@@ -488,7 +488,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td>
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Final Approval</td> 
@@ -503,7 +503,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td>
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Facility Inspection</td> 
@@ -518,7 +518,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td>
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Inspection Scheduled</td> 
@@ -533,7 +533,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Payment Verified</td> 
@@ -547,7 +547,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td>
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td>
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Payment Verification</td> 
@@ -562,7 +562,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td>
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.submission_date}}</td>
+ <td width="13%">{{object.date}}</td>
  <td width="18%">{{object.license_type}}</td> 
  <td width="22%">{{object.application_type}}</td> 
  <td width="16%">Payment Processing</td> 
@@ -593,7 +593,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td>
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Complete</td> 
@@ -607,7 +607,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">License Issuance</td> 
@@ -621,7 +621,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td>  
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Final Approval</td> 
@@ -635,7 +635,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Facility Inspection</td> 
@@ -649,7 +649,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Inspection Scheduled</td> 
@@ -663,7 +663,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td>  
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Payment Verified</td> 
@@ -677,7 +677,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td>
  <td width="22%">{{object.hospital.application_type}}</td>
  <td width="16%">Payment Verification</td> 
@@ -691,7 +691,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.submission_date}}</td> 
+ <td width="13%">{{object.date}}</td> 
  <td width="18%">{{object.license_type}}</td> 
  <td width="22%">{{object.application_type}}</td> 
  <td width="16%">Payment Processing</td> 
@@ -721,7 +721,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td>
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Complete</td> 
@@ -735,7 +735,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">License Issuance</td> 
@@ -749,7 +749,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td>  
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Final Approval</td> 
@@ -763,7 +763,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Facility Inspection</td> 
@@ -777,7 +777,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Inspection Scheduled</td> 
@@ -791,7 +791,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td>  
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td> 
  <td width="22%">{{object.hospital.application_type}}</td> 
  <td width="16%">Payment Verified</td> 
@@ -805,7 +805,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="13%">{{object.hospital.date}}</td> 
  <td width="18%">{{object.hospital.license_type}}</td>
  <td width="22%">{{object.hospital.application_type}}</td>
  <td width="16%">Payment Verification</td> 
@@ -819,7 +819,7 @@
  <tr> 
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">{{object.application_no}}</td> 
- <td width="13%">{{object.submission_date}}</td> 
+ <td width="13%">{{object.date}}</td> 
  <td width="18%">{{object.license_type}}</td> 
  <td width="22%">{{object.application_type}}</td> 
  <td width="16%">Payment Processing</td> 

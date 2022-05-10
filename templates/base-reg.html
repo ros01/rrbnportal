@@ -27,46 +27,64 @@
 <section>
 <!--navbar start-->
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top p-2" style="border-bottom:2px solid #dddddd;">
-    <div class="container">
-      <a class="navbar-brand" href="#"><img class="logo" src="{% static 'img/rrbn-logo.png' %}" alt="rrbn-logo"></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="col-lg-6 col-md-8 col-sm-6 col-6 ">
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto ">
-          <li class="nav-item active">
-            <a class="nav-link" href="{% url 'index' %}">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'about' %}">About</a>
-          </li>
-          <li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle" href="#"
-                              id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                              aria-expanded="false">Help</a>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <a class="dropdown-item" href="{% url 'guidelines' %}">Guidelines</a>
-                              <div class="dropdown-divider"></div>
-                              <a class="dropdown-item" href="{% url 'faq' %}">FAQ</a>
-                              <div class="dropdown-divider"></div>
-                              <a class="dropdown-item" href="{% url 'zonal_offices' %}">Zonal Offices</a>
-                              <div class="dropdown-divider"></div>
-                              <a class="dropdown-item" href="{% url 'internship_centers' %}">Internship Centres</a>
-                          </div>
-                      </li>
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top p-2" style="border-bottom:2px solid #dddddd;">
+<div class="container">
+<a class="navbar-brand" href="#"><img class="logo" src="{% static 'img/rrbn-logo.png' %}" alt="rrbn-logo"></a>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="col-lg-10 col-md-10 col-sm-10 col-10 ">
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+<ul class="navbar-nav mr-auto ">
+    <li class="nav-item active">
+    <a class="nav-link" href="{% url 'index' %}">Home</a>
+    </li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'contact' %}">Contact</a>
-          </li>
-          <a href="{% url 'accounts:signin' %}" class="btn btn-success my-2 my-sm-0 xpand" role="button" aria-pressed="true">Sign In</a>
-          
-        </ul>
-      </div>
-      </div>
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'about' %}">About</a>
+    </li>
+
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'faq' %}">FAQ</a>
+    </li>
+
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'guidelines' %}">Guidelines</a>
+    </li>
+
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'zonal_offices' %}">Zonal Offices</a>
+    </li>
+
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'internship_centers' %}">Internship Centres</a>
+    </li>
+    <!-- <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#"
+    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+    aria-expanded="false">Help</a>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="{% url 'guidelines' %}">Guidelines</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="{% url 'faq' %}">FAQ</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="{% url 'zonal_offices' %}">Zonal Offices</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="{% url 'internship_centers' %}">Internship Centres</a>
     </div>
-  </nav>
+    </li> -->
+
+    <li class="nav-item">
+    <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+    </li>
+
+    <a href="{% url 'accounts:signin' %}" class="btn btn-success my-0 my-sm-0" role="button" aria-pressed="true">Sign In</a>
+
+</ul>
+</div>
+</div>
+</div>
+</nav>
   <!--navbar ends -->
   
   </section>

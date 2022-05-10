@@ -36,14 +36,14 @@
        <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <b>{{object.hospital_name|upper}}</b> <br/> 
 
         {% for invoice in invoice %}
-        {{ invoice.address }}
+        {{ invoice.contact_address }}
         <br/> {{invoice.phone_no}}
         {% endfor %}
         <br/>
         {{user.email}} </div> 
         
 
-       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"> <b style="color:#888">Application Date: </b>{{object.submission_date}} <br/><br/> <b style="color:#888">Application #: </b> {{object.application_no}} 
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"> <b style="color:#888">Application Date: </b>{{object.date}} <br/><br/> <b style="color:#888">Application #: </b> {{object.application_no}} 
        </div>
 
        </div> <br/> 

@@ -22,7 +22,19 @@
                        <div class="card-body">
                          <h5 class="card-title">HOSPITALS/CENTERS ACCREDITED FOR INTERNSHIP TRAINING</h5>
                          <h6 class="card-subtitle mb-2 text-muted">Click the link below to view list of Hospitals/Centers accredited for internship Training</h6>
-                         <a class="unstyled shrink" href="{% static 'internship_centers.pdf' %}" target="_blank"><i class="fa fa-list-ol text-success"></i> VIEW LIST OF ACCREDITED CENTERS</a>
+                         <!-- <a class="unstyled shrink" href="{% static 'internship_centers.pdf' %}" target="_blank"><i class="fa fa-list-ol text-success"></i> VIEW LIST OF ACCREDITED CENTERS</a> -->
+
+
+                       
+
+                        {% if document %}
+                        <div class="row ml-1">
+                        <a class="unstyled shrink" href="{{ MEDIA_URL }}{{document.file.url}}" target="_blank"><i class="fa fa-list-ol text-success"></i> VIEW LIST OF ACCREDITED CENTERS</a>
+                        </div>
+                        {% endif %}
+                       
+
+
                        </div>
                    </div>
                    <p class="mt-2">NEED YOUR CENTER ACCREDITED FOR INTERNSHIP?</p>

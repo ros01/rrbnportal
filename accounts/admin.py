@@ -18,7 +18,7 @@ class AddUserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'password1', 'password2', 'module_name', 'role', 'hospital', 'type')
+        fields = ('email', 'first_name', 'last_name', 'password1', 'password2', 'module_name', 'role', 'hospital')
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -46,7 +46,7 @@ class UpdateUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('email', 'password', 'first_name', 'last_name', 'is_active',
-                  'is_staff', 'module_name', 'role', 'hospital', 'type'  
+                  'is_staff', 'module_name', 'role', 'hospital', 
         )
 
     def clean_password(self):
@@ -66,7 +66,7 @@ class UserAdmin(BaseUserAdmin):
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name')}),
         ('Permissions', {'fields': ('is_active', 'is_staff')}),
-        ('Profiles', {'fields': ('module_name', 'role', 'hospital', 'type')}),
+        ('Profiles', {'fields': ('module_name', 'role', 'hospital')}),
     )
     add_fieldsets = (
         (
@@ -92,10 +92,10 @@ admin.site.register(User, UserAdmin)
 
 
 class HospitalAdmin(admin.ModelAdmin):
-  list_display = ('hospital_name', 'rc_number', 'phone_no', 'reg_date')
-  list_display_links = ('hospital_name', 'rc_number' )
-  list_filter = ('hospital_name', 'rc_number' )
-  search_fields = ('hospital_name', 'rc_number')
+  list_display = ('hospital_name', 'type', 'rc_number', 'phone_no', 'date')
+  list_display_links = ('hospital_name', 'type', 'rc_number' )
+  list_filter = ('hospital_name', 'type', 'rc_number' )
+  search_fields = ('hospital_name', 'type', 'rc_number')
   list_per_page = 25
 
 

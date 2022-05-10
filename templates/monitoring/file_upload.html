@@ -1,0 +1,144 @@
+{% extends 'monitoring/monitoring_base2.html'%}
+
+{% load static %}
+
+{% block title %}Upload Internship Centers{% endblock %}
+
+{% block javascript %}
+  {# JQUERY FILE UPLOAD SCRIPTS #}
+  <script src="{% static 'js/jquery-file-upload/vendor/jquery.ui.widget.js' %}"></script>
+  <script src="{% static 'js/jquery-file-upload/jquery.iframe-transport.js' %}"></script>
+  <script src="{% static 'js/jquery-file-upload/jquery.fileupload.js' %}"></script>
+
+
+  {# PHOTOS PAGE SCRIPTS #}
+  <script src="{% static 'js/photos/js/progress-bar-upload.js' %}"></script>
+
+{% endblock %}
+
+
+{% block content %}
+
+ 
+
+
+  <section class="bg-light py-5">
+    <main class="container">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <div class="card">
+            <div class="card-header bg-success text-white">
+              <h5>
+              Upload List of Internship Centers</h5>
+            </div>
+
+            <div class="card-body">
+
+             <div class="d-flex justify-content-end">
+
+            <form method="post" action="{% url 'monitoring:clear_database' %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <button type="submit" class="btn btn-danger pull-right">
+            <span class="glyphicon glyphicon-trash"></span> Clear Database
+            </button>
+            </form>
+
+            </div>
+            </div>
+
+
+            <div class="card-body">
+
+    
+            <input id="fileupload" type="file" name="file" multiple
+            style="display: none;"
+            data-url="{% url 'monitoring:upload_internship_list' %}"
+            data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+
+
+            <table id="gallery" class="table table-bordered">
+            <thead>
+            <tr>
+            <th>Internship Lists</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for document in list %}
+            <tr>
+            <td><a href="{{ document.file.url }}">{{ document.file.name }}</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+
+
+            <div class="d-flex justify-content-end">  
+
+            
+
+            <a href="{% url 'monitoring:monitoring_dashboard' %}" class="py-2 mt-2 mb-4 btn btn-outline-warning"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Return to Dashboard</a>
+
+            <button type="button" class="text-white py-2 mt-2 ml-3 mb-4 btn btn-success js-upload-photos">
+            <span class="glyphicon glyphicon-cloud-upload"></span> Upload Internship List
+            </button> 
+
+
+            </div>
+            </div>
+            </div>
+            </div>
+            </main>
+            </section>
+
+
+
+
+
+
+  <!-- <div style="margin-bottom: 20px;">
+    <button type="button" class="btn btn-primary js-upload-photos">
+      <span class="glyphicon glyphicon-cloud-upload"></span> Upload Internship List
+    </button>
+    <input id="fileupload" type="file" name="file" multiple
+           style="display: none;"
+           data-url="{% url 'monitoring:upload_internship_list' %}"
+           data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+  </div>
+
+  <table id="gallery" class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Internship Lists</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for document in list %}
+        <tr>
+          <td><a href="{{ document.file.url }}">{{ document.file.name }}</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table> -->
+
+ 
+
+
+<div class="modal fade" id="modal-progress" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Uploading...</h4>
+      </div>
+      <div class="modal-body">
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}

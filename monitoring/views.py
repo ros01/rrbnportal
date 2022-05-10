@@ -18,7 +18,8 @@ from django.views.generic import (
      UpdateView,
      DeleteView
 )
-from .forms import ScheduleModelForm, LicenseModelForm, PermitRenewalModelForm, AccreditationModelForm, RecordsModelForm
+from .forms import *
+from .models import *
 from django.template.loader import get_template
 from django.core.mail import send_mail
 from django.contrib import messages
@@ -34,22 +35,19 @@ from django.db import models
 from django.contrib.messages.views import SuccessMessageMixin
 import itertools
 counter = itertools.count()
-
+import time
+from django.http import JsonResponse
+from itertools import chain
 from io import BytesIO
 from reportlab.platypus import SimpleDocTemplate, Paragraph, PageBreak, BaseDocTemplate, PageTemplate, Frame
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import mm, inch
 from reportlab.lib.pagesizes import letter, A4
 from reportlab.lib.pagesizes import landscape, portrait
-
-
 from django.contrib import admin
-
-
 import io
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
-
 
 User = get_user_model()
 
@@ -68,9 +66,239 @@ class LoginRequiredMixin(object):
 def monitoring_dashboard(request):
     return render(request, 'monitoring/monitoring_dashboard.html')
 
+def upload_internship_centers(request):
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('monitoring:monitoring_dashboard')
+    else:
+        form = DocumentForm()
+    return render(request, 'monitoring/internship_centers.html', {
+        'form': form
+    })
+
+class UploadInternshipList1(View):
+    def get(self, request):
+        internship_list = InternshipList.objects.all()
+        return render(self.request, 'monitoring/file_upload.html', {'list': internship_list})
+
+    def post(self, request):
+        form = InternshipListForm(self.request.POST, self.request.FILES)
+        if form.is_valid():
+            document = form.save()
+            data = {'is_valid': True, 'name': document.file.name, 'url': document.file.url}
+        else:
+            data = {'is_valid': False}
+        return JsonResponse(data)
+
+class UploadInternshipList(View):
+    def get(self, request):
+        internship_list = InternshipList.objects.all()
+        return render(self.request, 'monitoring/file_upload.html', {'list': internship_list})
+
+    def post(self, request):
+        time.sleep(1)
+        form = InternshipListForm(self.request.POST, self.request.FILES)
+        if form.is_valid():
+            document = form.save()
+            data = {'is_valid': True, 'name': document.file.name, 'url': document.file.url}
+        else:
+            data = {'is_valid': False}
+        return JsonResponse(data)
+
+
+def clear_database(request):
+    for document in InternshipList.objects.all():
+        document.file.delete()
+        document.delete()
+    return redirect(request.POST.get('next'))
+
 class MyUserAccount(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'monitoring/my_profile.html')
+
+
+
+class AllHospitalsView(LoginRequiredMixin, ListView):
+    template_name = "monitoring/hospitals_application_table2.html"
+    context_object_name = 'object'
+    # model = Document 
+
+    def get_queryset(self):
+         queryset = Document.objects.order_by('submission_date')
+         return queryset
+    
+    
+    def get_context_data(self, **kwargs):
+        context = super(AllHospitalsView, self).get_context_data(**kwargs)
+        hospital_rpp = Hospital.objects.select_related("hospital_admin").filter(application_status=1, type = 'Radiography Practice Permit')
+        context['hospital_rpp'] = hospital_rpp
+        hospital_gia = Hospital.objects.select_related("hospital_admin").filter(application_status=1, type = 'Gov Internship Accreditation')
+        hospital_pia = Hospital.objects.select_related("hospital_admin").filter(application_status=1, type = 'Pri Internship Accreditation')
+        hospital_rppr = Hospital.objects.select_related("hospital_admin").filter(application_status=1, type = 'Radiography Practice Permit Renewal')
+        hospital_piar = Hospital.objects.select_related("hospital_admin").filter(application_status=1, type = 'Pri Internship Accreditation Renewal')
+        hospital_giar = Hospital.objects.select_related("hospital_admin").filter(application_status=1, type = 'Gov Internship Accreditation Renewal')
+        
+        stage_one = Hospital.objects.select_related("hospital_admin").filter(application_status=1)
+        context['stage_one'] = stage_one
+
+
+        document_rpp = Document.objects.select_related("hospital_name").filter(application_status=1, license_type = 'Radiography Practice Permit', application_type = 'New Registration - Radiography Practice Permit')
+        context['document_rpp'] = document_rpp
+        document_gia = Document.objects.select_related("hospital_name").filter(application_status=1, license_type = 'Internship Accreditation', application_type = 'New Registration - Government Hospital Internship')
+        document_pia = Document.objects.select_related("hospital_name").filter(application_status=1, license_type = 'Internship Accreditation', application_type = 'New Registration - Private Hospital Internship')
+        document_rppr = Document.objects.select_related("hospital_name").filter(application_status=1, license_type = 'Radiography Practice Permit', application_type = 'Renewal - Radiography Practice Permit')
+        document_piar = Document.objects.select_related("hospital_name").filter(application_status=1, license_type = 'Internship Accreditation', application_type = 'Renewal - Private Hospital Internship')
+        document_giar = Document.objects.select_related("hospital_name").filter(application_status=1, license_type = 'Internship Accreditation', application_type = 'Renewal - Government Hospital Internship')
+       
+        stage_two = Document.objects.select_related("hospital_name").filter(application_status=1)
+        context['stage_two'] = stage_two
+
+
+        payment_rpp = Payment.objects.select_related("hospital_name").filter(hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
+        payment_gia = Payment.objects.select_related("hospital_name").filter(hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
+        payment_pia = Payment.objects.select_related("hospital_name").filter(hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
+        payment_rppr = Payment.objects.select_related("hospital_name").filter(application_status=3, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
+        payment_piar = Payment.objects.select_related("hospital_name").filter(hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
+        payment_giar = Payment.objects.select_related("hospital_name").filter(hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
+
+        stage_three = Payment.objects.select_related("hospital_name").filter(application_status=2)
+        context['stage_three'] = stage_three
+
+        payment_vrpp = Payment.objects.select_related("hospital_name").filter(application_status=3, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
+        payment_vgia = Payment.objects.select_related("hospital_name").filter(application_status=3, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
+        payment_vpia = Payment.objects.select_related("hospital_name").filter(application_status=3, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
+        payment_vrppr = Payment.objects.select_related("hospital_name").filter(application_status=3, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
+        payment_vpiar = Payment.objects.select_related("hospital_name").filter(application_status=3, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
+        payment_vgiar = Payment.objects.select_related("hospital_name").filter(application_status=3, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
+
+        stage_four = Payment.objects.select_related("hospital_name").filter(application_status=3)
+        context['stage_four'] = stage_four
+
+        schedule_rpp = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
+        schedule_gia = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
+        schedule_pia = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
+        #context['schedule_qsr'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
+        schedule_piar = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
+        schedule_giar = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
+
+        stage_five = Schedule.objects.select_related("hospital_name").filter(application_status=4)
+        context['stage_five'] = stage_five
+
+        inspection_rpp = Inspection.objects.select_related("hospital_name").filter(application_status=5, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
+        accreditation_gia = Appraisal.objects.select_related("hospital_name").filter(application_status=5, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
+        accreditation_pia = Appraisal.objects.select_related("hospital_name").filter(application_status=5, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
+        #inspection_qsr = Inspection.objects.select_related("hospital_name").filter(application_status=5, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
+        accreditation_piar = Appraisal.objects.select_related("hospital_name").filter(application_status=5, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
+        accreditation_giar = Appraisal.objects.select_related("hospital_name").filter(application_status=5, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
+        
+        stage_six = Inspection.objects.select_related("hospital_name").filter(application_status=5)
+        context['stage_six'] = stage_six
+
+        stage_seven = Appraisal.objects.select_related("hospital_name").filter(application_status=5)
+        context['stage_seven'] = stage_seven
+
+
+        inspection_arpp = Inspection.objects.select_related("hospital_name").filter(application_status=6, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
+        accreditation_agia = Appraisal.objects.select_related("hospital_name").filter(application_status=6, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
+        accreditation_apia = Appraisal.objects.select_related("hospital_name").filter(application_status=6, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
+        #context['inspection_approved_qsr'] = Inspection.objects.select_related("hospital_name").filter(application_status=6, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
+        accreditation_apiar = Appraisal.objects.select_related("hospital_name").filter(application_status=6, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
+        accreditation_agiar = Appraisal.objects.select_related("hospital_name").filter(application_status=6, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
+
+        stage_eight = Inspection.objects.select_related("hospital_name").filter(application_status=6)
+        context['stage_eight'] = stage_eight
+
+        stage_nine = Appraisal.objects.select_related("hospital_name").filter(application_status=6)
+        context['stage_nine'] = stage_nine
+
+
+        registrar_arpp = Inspection.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
+        registrar_agia = Appraisal.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
+        registrar_apia = Appraisal.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
+        #context['registrar_approval_qsr'] = Inspection.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
+        registrar_arppr = Inspection.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
+        registrar_apiar = Appraisal.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
+        registrar_agiar = Appraisal.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
+
+        stage_ten = Inspection.objects.select_related("hospital_name").filter(application_status=7)
+        context['stage_ten'] = stage_ten
+
+        stage_eleven = Appraisal.objects.select_related("hospital_name").filter(application_status=7)
+        context['stage_eleven'] = stage_eleven
+
+
+        license_irpp = License.objects.select_related("hospital_name").filter(application_status=8, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
+        license_igia = License.objects.select_related("hospital_name").filter(application_status=8, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
+        license_ipia = License.objects.select_related("hospital_name").filter(application_status=8, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
+        license_irppr = License.objects.select_related("hospital_name").filter(application_status=8, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
+        license_ipiar = License.objects.select_related("hospital_name").filter(application_status=8, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
+        license_igiar = License.objects.select_related("hospital_name").filter(application_status=8, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
+
+        stage_twelve = License.objects.select_related("hospital_name").filter(application_status=8)
+        context['stage_twelve'] = stage_twelve
+        
+        all_hospitals_list = sorted(chain(stage_one, stage_two, stage_three, stage_four, stage_five, stage_six, stage_seven, stage_eight, stage_nine, stage_ten, stage_eleven, stage_twelve), key=lambda instance: instance.pk,reverse=True)
+
+        # all_hospitals_list = sorted(chain(hospital_rpp, hospital_gia, hospital_pia, hospital_rppr, hospital_piar, hospital_giar, document_rpp, document_gia, document_pia, document_rppr, document_piar, document_giar, payment_rpp, payment_gia, payment_pia, payment_rppr, payment_piar, payment_giar, payment_vrpp, payment_vgia, payment_vpia, payment_vrppr, payment_vpiar, payment_vgiar, schedule_rpp, schedule_gia, schedule_pia, schedule_piar, schedule_pia, schedule_piar, schedule_giar, inspection_rpp, accreditation_gia, accreditation_pia, accreditation_piar, accreditation_giar, inspection_arpp, accreditation_agia, accreditation_apia, accreditation_apiar, accreditation_agiar, registrar_arpp, registrar_agia, registrar_apia, registrar_arppr, registrar_apiar, registrar_agiar, license_irpp, license_igia, license_ipia, license_irppr, license_ipiar, license_igiar), key=lambda instance: instance.date,reverse=True)
+        context['all_hospitals_list'] = all_hospitals_list
+        return context 
+
+
+
+class HospitalProfileDetails(LoginRequiredMixin, DetailView):
+    template_name = "monitoring/hospital_profile_details.html"
+    model = Hospital
+
+class HospitalRegistrationDetails(LoginRequiredMixin, DetailView):
+    template_name = "monitoring/hospital_registration_details.html"
+    model = Document
+
+class HospitalPaymentDetails(LoginRequiredMixin, DetailView):
+    template_name = "monitoring/hospital_payment_details.html"
+    model = Payment
+
+
+class HospitalVerificationDetails(LoginRequiredMixin, DetailView):
+    template_name = "monitoring/hospital_verification_details.html"
+    model = Payment
+
+class HospitalScheduleDetails(LoginRequiredMixin, DetailView):
+    template_name = "monitoring/hospital_schedule_details.html"
+    model = Schedule
+
+class HospitalInspectionDetails(LoginRequiredMixin, DetailView):
+    template_name = "monitoring/hospital_inspection_details.html"
+    model = Inspection
+
+class HospitalAccreditationDetails(LoginRequiredMixin, DetailView):
+    template_name = "monitoring/hospital_accreditation_details.html"
+    model = Appraisal
+
+
+class HospitalInspectionApprovalDetails(LoginRequiredMixin, DetailView):
+    template_name = "monitoring/hospital_inspection_approval_details.html"
+    model = Inspection
+
+
+class HospitalAccreditationApprovalDetails(LoginRequiredMixin, DetailView):
+    template_name = "monitoring/hospital_accreditation_approval_details.html"
+    model = Appraisal
+
+class HospitalInspectionRegistrarApprovalDetails(LoginRequiredMixin, DetailView):
+    template_name = "monitoring/hospital_inspection_registrar_approval_details.html"
+    model = Inspection
+
+class HospitalAccreditationRegistrarApprovalDetails(LoginRequiredMixin, DetailView):
+    template_name = "monitoring/hospital_accreditation_registrar_approval_details.html"
+    model = Appraisal
+    
+
+class HospitalLicenseDetails(LoginRequiredMixin, DetailView):
+    template_name = "monitoring/hospital_license_details.html"
+    model = License
+
 
 class RegistrationListView(LoginRequiredMixin, ListView):
     template_name = "monitoring/list-applications.html"
@@ -125,8 +353,7 @@ class VetApplication(LoginRequiredMixin, PaymentObjectMixin, View):
         # GET method
         context = {'object': self.get_object()}
         #context = {'object': self.get_object()}
-        return render(request, self.template_name, context)
-    
+        return render(request, self.template_name, context)  
 
 def approve(request, id):
   if request.method == 'POST':
@@ -1056,7 +1283,8 @@ def download_rad_cert_reg(request, id):
     buffer = io.BytesIO()
 
     # Create the PDF object, using the buffer as its "file."
-    p = canvas.Canvas(buffer, pagesize=(A4))
+    p = canvas.Canvas(buffer, pagesize=portrait(A4))
+    
     object = get_object_or_404(License, pk=id)
 
     image_path1 = '%s/img/cert_border1.jpeg' % settings.STATIC_ROOT
@@ -1102,8 +1330,12 @@ def download_rad_cert_reg(request, id):
     p.setFont("Helvetica", 16, leading=None)
     p.drawCentredString(300, 250, 'been registered as a practicing centre for')
 
-    p.setFont("Helvetica", 16, leading=None)
+    LINE_1 = 508
+
+    p.setFont("Helvetica", 11, leading=None)
     p.drawCentredString(300, 230, str(object.hospital.equipment))
+
+
 
     p.setFont("Helvetica", 14, leading=None)
     p.drawString(330, 130, 'Registrar/Secretary')

@@ -1,0 +1,86 @@
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+{% load humanize %}
+{% block title%}| Welcome {% endblock %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/hospital_dashboard.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container">
+    <section class="p-2">
+   
+    <div class="row mt-2 ">
+    <div class="col text-left ml-2 mb-0">
+    {% if object.hospital.license_type == "Internship Accreditation" %}
+    <p class="text-success display-4 paragraph3">Internship Accreditation - Payment Submission Confirmation</p>
+    {% else %}
+    <p class="text-success display-4 paragraph3">Radiography Practice License Application - Payment Submission Confirmation</p>
+    {% endif %}
+
+    <hr>
+    </div>
+    </div>
+
+    </section>
+        <section>
+            <div class="row ml-3 mt-0 mr-2 pl-3 pt-2" style="background-color: #bfe3f8;"> <div class="col-md-12 col-sm-12 col-xs-12">  <p class="lead text-justify" style="color: #05567b;"><b>{{object.hospital_name}}</b> payment details have been submitted successfully to RRBN. See details below: </p></div> </div>
+
+        </section>
+        <br>
+        
+                    
+        <div class="container">
+              
+        <div class="row mr-2 pl-3"> <p class="text-success display-4 paragraph3">Payment Records:</p>
+        <table class="table table-hover table-condensed"> 
+        <thead> 
+        <tr class="blackTr"> 
+                <th>SN</th> 
+                <th width="15%">Payment Date</th> 
+                <th width="18%">RRR No.</th> 
+                <th width="15%">Receipt No.</th> 
+                <th width="18%">Payment Method</th> 
+                <th width="15%">Amount (NGN)</th> 
+                <th width="17%">Transaction Status</th> 
+                </tr> </thead> 
+
+                <tbody> 
+                {% if object %}
+               
+                <tr> <td width="2%">1.</td> 
+                <td width="15%">{{object.payment_date}}</td> 
+                <td width="18%">{{object.rrr_number}}</td> 
+                <td width="15%">{{object.receipt_number}}</td> 
+                <td width="18%">{{object.payment_method}}</td> 
+                <td width="15%">{{object.payment_amount | intcomma}}</td> 
+                <td width="17%"> <span style="color:#080">PENDING</span> </td> 
+                </tr> </tbody> </table> </div> 
+
+                {% endif %}
+
+                
+
+                <div class="row mr-2 pl-3"> 
+                <p class="text-success display-4 paragraph3">Next step is facility inspection:</p><br>
+                <p class="lead ml-2"><strong>Once payment details are validated, hospital will be schedule for facility inspection</strong></p>
+
+
+
+                 </div>
+
+
+             
+                <hr>
+
+                
+
+                <div class="d-flex justify-content-end">   
+                <a href="{% url 'monitoring:monitoring_dashboard' %}" class="text-dark py-1 mr-3 mt-6 btn btn-outline-info"><i class="fas fa-times"></i> Close</a>   
+                </div>
+                <br>
+                 
+        
+
+                </div>
+                </div>
+                {% endblock %}

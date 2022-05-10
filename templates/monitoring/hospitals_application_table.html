@@ -1,0 +1,911 @@
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+{% block title%}| Radiography Practice License Applications{% endblock %}
+{% block styles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'fontawesome-free-5.8.2-web/css/allt.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/dataTables.bootstrap4.min.css' %}" >
+<link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css" >
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+       <div class="row">
+           <div class="col col-lg-12">
+            
+<section class="px-2 pt-3 pb-2">
+   
+    <div class="row mt-3 mb-2">
+    <div class="col text-left mb-1">
+    <p class="text-secondary display-4 paragraph2">Hospitals Applications List</p>
+    <hr>
+    </div>
+    </div>
+
+</section>
+
+<div class="table-responsive-lg">
+<table class="table table-striped table-bordered table-hover" id="mydata">
+
+
+<thead>
+<tr style="background: #41963F;">
+<th class="small-text" style="color: #fff; "width="2%">SN</th>
+<th class="small-text" style="color: #fff; "width="14%">Application No</th>
+<th class="small-text" style="color: #fff; "width="13%">Submitted On</th>
+<th class="small-text" style="color: #fff; "width="18%">Application Category</th>
+<th class="small-text" style="color: #fff; "width="22%">Application Type</th>
+<th class="small-text" style="color: #fff; "width="16%">Stage</th>
+<th class="small-text" style="color: #fff; "width="15%">Action</th>
+</tr> </thead> 
+
+ 
+
+ {% if license_issue_qs %}
+ {% for object in license_issue_qs %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td>
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Complete</td> 
+ <td width="15%"><a href="{% url 'hospitals:license_details' object.id %}"class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a></td> 
+ </tr> 
+ {% endfor %}
+
+ 
+ {% elif registrar_approval_qs %}
+ {% for object in registrar_approval_qs %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td>
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td>  
+ <td width="16%">License Issuance</td> 
+ <td width="15%"><a href="{% url 'hospitals:license_issuance' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif inspection_approved_qs %}
+ {% for object in inspection_approved_qs %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td>
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td>  
+ <td width="16%">Final Approval</td> 
+ <td width="15%"><a href="{% url 'hospitals:inspection_passed' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif inspection_qs %}
+ {% for object in inspection_qs %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td>
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td>  
+ <td width="16%">Facility Inspection</td> 
+ <td width="15%"><a href="{% url 'hospitals:inspection_processing' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a>  </td> 
+ </tr> 
+ {% endfor %}
+
+ 
+ {% elif schedule_qs %}
+ {% for object in schedule_qs %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td>
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td>  
+ <td width="16%">Inspection Scheduled</td> 
+ <td width="15%"><a href="{% url 'hospitals:schedule_detail' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
+ </tr> 
+ {% endfor %}
+
+ 
+ {% elif payment_verified_qs %}
+ {% for object in payment_verified_qs %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td>
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td>  
+ <td width="16%">Payment Verified</td> 
+ <td width="15%"><a href="{% url 'hospitals:license_verifications_successful' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
+ </tr> 
+ {% endfor %}
+
+ 
+ {% elif payment_qs %}
+ {% for object in payment_qs %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td>
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Payment Verification</td> 
+ <td width="15%"><a href="{% url 'hospitals:payment_verifications' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a></td> 
+ </tr> 
+ {% endfor %}
+
+ 
+ {% elif document_qs %}
+ {% for object in document_qs %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td>
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.submission_date}}</td>
+ <td width="18%">{{object.license_type}}</td> 
+ <td width="22%">{{object.application_type}}</td> 
+ <td width="16%">Payment Processing</td> 
+ <td width="15%"><a href= "{% url 'hospitals:generate_invoice' object.pk %}"  class="btn btn-outline-success btn-sm">Continue <i class="fa fa-play text-success"></i></a> </td> 
+ </tr> 
+ {% endfor %}
+
+ 
+ {% else %}
+ {% for object in hospital_qs %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">Not applicable</td> 
+ <td width="13%">{{user.reg_date_pretty}}</td> 
+ <td width="18%">{{object.type}}</td> 
+ <td width="22%">New Application</td> 
+ <td width="16%">Start Application</td> 
+ <td width="15%"><a href="{% url 'hospitals:start_new_radiography_license_application' object.pk %}" class="btn btn-outline-warning disabled btn-sm"><i class="fa fa-eye text-danger"></i> Register</a> </td> 
+ </tr> 
+ {% endfor %}
+ {% endif %}
+
+
+ {% if license_issue_qss %}
+ {% for object in license_issue_qss %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td>
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Complete</td> 
+ <td width="15%"><a href="{% url 'hospitals:license_details' object.pk %}"class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a></td>
+ </tr> 
+ {% endfor %}
+
+ {% elif registrar_approval_qss %}
+ {% for object in registrar_approval_qss %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">License Issuance</td> 
+ <td width="15%"><a href="{% url 'hospitals:internship_license_issuance' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif accreditation_approved_qss %}
+ {% for object in accreditation_approved_qss %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td>  
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Final Approval</td> 
+ <td width="15%"><a href="{% url 'hospitals:appraisal_passed' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> view</a> </td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif accreditation_qss %}
+ {% for object in accreditation_qss %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Facility Inspection</td> 
+ <td width="15%"><a href="{% url 'hospitals:appraisal_processing' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a>  </td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif schedule_qss %}
+ {% for object in schedule_qss %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Inspection Scheduled</td> 
+ <td width="15%"><a href="{% url 'hospitals:schedule_detail' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> view</a> </td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif payment_verified_qss%}
+ {% for object in payment_verified_qss %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td>  
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Payment Verified</td> 
+ <td width="15%"><a href="{% url 'hospitals:accreditation_verifications_successful' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
+ </tr>          
+ {% endfor %}
+
+ {% elif payment_qss %}
+ {% for object in payment_qss %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{ count|add:"1" }}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td>
+ <td width="22%">{{object.hospital.application_type}}</td>
+ <td width="16%">Payment Verification</td> 
+ <td width="15%"><a href="{% url 'hospitals:accreditation_payment_verifications' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a></td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif document_qss %}
+ {% for object in document_qss %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{ count|add:"1" }}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.submission_date}}</td> 
+ <td width="18%">{{object.license_type}}</td> 
+ <td width="22%">{{object.application_type}}</td> 
+ <td width="16%">Payment Processing</td> 
+ <td width="15%"><a href= "{% url 'hospitals:generate_accreditation_payment_details' object.pk %}"  class="btn btn-outline-success btn-sm">Continue <i class="fa fa-play text-success"></i></a> </td> 
+ </tr> 
+ {% endfor %}
+
+ {% else %}
+ {% for object in hospital_qss %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">Not applicable</td> 
+ <td width="13%">{{user.reg_date_pretty}}</td> 
+ <td width="18%">Internship Accreditation</td> 
+ <td width="22%">New Application</td> 
+ <td width="16%">Start Application</td> 
+ <td width="15%"><a href="{% url 'hospitals:start_gov_internship_accreditation_application' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Register</a> </td> 
+ </tr> 
+ {% endfor %}
+ {% endif %}
+
+
+ {% if license_issue_qsss %}
+ {% for object in license_issue_qsss %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td>
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Complete</td> 
+ <td width="15%"><a href="{% url 'hospitals:license_details' object.pk %}"class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a></td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif registrar_approval_qsss %}
+ {% for object in registrar_approval_qsss %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">License Issuance</td> 
+ <td width="15%"><a href="{% url 'hospitals:internship_license_issuance' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif accreditation_approved_qsss %}
+ {% for object in accreditation_approved_qsss %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td>  
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Final Approval</td> 
+ <td width="15%"><a href="{% url 'hospitals:appraisal_passed' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif accreditation_qsss %}
+ {% for object in accreditation_qsss %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Facility Inspection</td> 
+ <td width="15%"><a href="{% url 'hospitals:appraisal_processing' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> view</a>  </td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif schedule_qsss %}
+ {% for object in schedule_qsss %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Inspection Scheduled</td> 
+ <td width="15%"><a href="{% url 'hospitals:schedule_detail' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> view</a> </td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif payment_verified_qsss %}
+ {% for object in payment_verified_qsss %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td>  
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Payment Verified</td> 
+ <td width="15%"><a href="{% url 'hospitals:accreditation_verifications_successful' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
+ </tr>          
+ {% endfor %}
+
+ {% elif payment_qsss %}
+ {% for object in payment_qsss %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td>
+ <td width="22%">{{object.hospital.application_type}}</td>
+ <td width="16%">Payment Verification</td> 
+ <td width="15%"><a href="{% url 'hospitals:accreditation_payment_verifications' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a></td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif document_qsss %}
+ {% for object in document_qsss %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.submission_date}}</td> 
+ <td width="18%">{{object.license_type}}</td> 
+ <td width="22%">{{object.application_type}}</td> 
+ <td width="16%">Payment Processing</td> 
+ <td width="15%"><a href= "{% url 'hospitals:generate_accreditation_invoice' object.pk %}"  class="btn btn-outline-success btn-sm">Continue <i class="fa fa-play text-success"></i></a> </td> 
+ </tr> 
+ 
+ {% endfor %}
+
+ {% else %}
+ {% for object in hospital_qsss %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">Not applicable</td> 
+ <td width="13%">{{user.reg_date_pretty}}</td> 
+ <td width="18%">Internship Accreditation</td> 
+ <td width="22%">New Application</td> 
+ <td width="16%">Start Application</td> 
+ <td width="15%"><a href="{% url 'hospitals:start_pri_internship_accreditation_application' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Register</a> </td> 
+ </tr> 
+
+ {% endfor %}
+ {% endif %}
+
+
+ {% if license_issue_qsr %}
+ {% for object in license_issue_qsr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td>
+ <td width="13%">{{object.hospital.submission_date}}</td>
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Complete</td> 
+ <td width="15%"><a href="{% url 'hospitals:license_details' object.id %}"class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i>View</a></td> 
+ </tr> 
+ {% endfor %}
+
+ 
+ {% elif registrar_approval_qsr %}
+ {% for object in registrar_approval_qsr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">License Issuance</td> 
+ <td width="15%"><a href="{% url 'hospitals:practice_permit_renewal_final_approval' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> view</a> </td> 
+ </tr> 
+ {% endfor %}
+
+
+ {% elif registrar_approval_qsrr %}
+ {% for object in registrar_approval_qsrr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Permit Final Approval</td> 
+ <td width="15%"><a href="{% url 'hospitals:practice_permit_renewal_final_approval' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
+ </tr> 
+ {% endfor %}
+
+  
+ {% elif inspection_approved_qsr %}
+ {% for object in inspection_approved_qsr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td>
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Final Approval</td> 
+ <td width="15%"><a href="{% url 'hospitals:inspection_passed' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> view</a> </td> 
+ </tr> 
+ {% endfor %}
+
+
+ {% elif inspection_qsr %}
+ {% for object in inspection_qsr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td>
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Facility Inspection</td> 
+ <td width="15%"><a href="{% url 'hospitals:inspection_processing' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> view</a>  </td> 
+ </tr> 
+ {% endfor %}
+
+ 
+ {% elif schedule_qsr %}
+ {% for object in schedule_qsr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td>
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Inspection Scheduled</td> 
+ <td width="15%"><a href="{% url 'hospitals:schedule_detail' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> view</a> </td> 
+ </tr> 
+ {% endfor %}
+
+ 
+ {% elif payment_verified_qsr %}
+ {% for object in payment_verified_qsr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Payment Verified</td> 
+ <td width="15%"><a href="{% url 'hospitals:license_verifications_successful' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
+ </tr>                
+ {% endfor %}
+
+ {% elif payment_qsr %}
+ {% for object in payment_qsr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td>
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td>
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Payment Verification</td> 
+ <td width="15%"><a href="{% url 'hospitals:payment_verifications' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a></td> 
+ </tr> 
+ {% endfor %}
+
+ 
+ {% elif document_qsr %}
+ {% for object in document_qsr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td>
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.submission_date}}</td>
+ <td width="18%">{{object.license_type}}</td> 
+ <td width="22%">{{object.application_type}}</td> 
+ <td width="16%">Payment Processing</td> 
+ <td width="15%"><a href= "{% url 'hospitals:generate_renewal_invoice' object.pk %}"  class="btn btn-outline-success btn-sm">Continue <i class="fa fa-play text-success"></i></a> </td> 
+ </tr> 
+ {% endfor %}
+
+ 
+ {% else %}
+ {% for object in hospital_qsr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td>
+ <td width="14%">Not applicable</td> 
+ <td width="13%">{{user.reg_date_pretty}}</td> 
+ <td width="18%">{{user.type}}</td> 
+ <td width="22%">Renewal - Radiography Practice</td> 
+ <td width="16%">Start Application</td> 
+ <td width="15%"><a href="{% url 'hospitals:start_new_practice_permit_renewal' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Continue </a> </td> 
+ </tr> 
+ {% endfor %}
+ {% endif %}
+
+
+ {% if license_issue_qssr %}
+ {% for object in license_issue_qssr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td>
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Complete</td> 
+ <td width="15%"><a href="{% url 'hospitals:license_details' object.pk %}"class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a></td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif registrar_approval_qssr %}
+ {% for object in registrar_approval_qssr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">License Issuance</td> 
+ <td width="15%"><a href="{% url 'hospitals:internship_license_issuance' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif accreditation_approved_qssr %}
+ {% for object in accreditation_approved_qssr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td>  
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Final Approval</td> 
+ <td width="15%"><a href="{% url 'hospitals:appraisal_passed' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif accreditation_qssr %}
+ {% for object in accreditation_qssr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Facility Inspection</td> 
+ <td width="15%"><a href="{% url 'hospitals:appraisal_processing' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a>  </td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif schedule_qssr %}
+ {% for object in schedule_qssr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Inspection Scheduled</td> 
+ <td width="15%"><a href="{% url 'hospitals:schedule_detail' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif payment_verified_qssr %}
+ {% for object in payment_verified_qssr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td>  
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Payment Verified</td> 
+ <td width="15%"><a href="{% url 'hospitals:accreditation_verifications_successful' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
+ </tr>          
+ {% endfor %}
+
+ {% elif payment_qssr %}
+ {% for object in payment_qssr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td>
+ <td width="22%">{{object.hospital.application_type}}</td>
+ <td width="16%">Payment Verification</td> 
+ <td width="15%"><a href="{% url 'hospitals:accreditation_payment_verifications' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a></td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif document_qssr %}
+ {% for object in document_qssr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.submission_date}}</td> 
+ <td width="18%">{{object.license_type}}</td> 
+ <td width="22%">{{object.application_type}}</td> 
+ <td width="16%">Payment Processing</td> 
+ <td width="15%"><a href= "{% url 'hospitals:generate_accreditation_invoice' object.pk %}"  class="btn btn-outline-success btn-sm">Continue <i class="fa fa-play text-success"></i></a> </td> 
+ </tr> 
+ {% endfor %}
+
+ {% else %}
+ {% for object in hospital_qssr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">Not applicable</td> 
+ <td width="13%">{{user.reg_date_pretty}}</td> 
+ <td width="18%">Internship Accreditation</td> 
+ <td width="22%">Renewal - Internship Accreditation</td> 
+ <td width="16%">Start Application</td> 
+ <td width="15%"><a href="{% url 'hospitals:start_new_pri_internship_renewal' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Continue</a> </td> 
+ </tr> 
+ {% endfor %}
+ {% endif %}
+
+
+ {% if license_issue_qgssr %}
+ {% for object in license_issue_qgssr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td>
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Complete</td> 
+ <td width="15%"><a href="{% url 'hospitals:license_details' object.pk %}"class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a></td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif registrar_approval_qgssr %}
+ {% for object in registrar_approval_qgssr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">License Issuance</td> 
+ <td width="15%"><a href="{% url 'hospitals:internship_license_issuance' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif accreditation_approved_qgssr %}
+ {% for object in accreditation_approved_qgssr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td>  
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Final Approval</td> 
+ <td width="15%"><a href="{% url 'hospitals:appraisal_passed' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif accreditation_qgssr %}
+ {% for object in accreditation_qgssr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Facility Inspection</td> 
+ <td width="15%"><a href="{% url 'hospitals:appraisal_processing' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a>  </td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif schedule_qgssr %}
+ {% for object in schedule_qgssr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Inspection Scheduled</td> 
+ <td width="15%"><a href="{% url 'hospitals:schedule_detail' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif payment_verified_qgssr %}
+ {% for object in payment_verified_qgssr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td>  
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td> 
+ <td width="22%">{{object.hospital.application_type}}</td> 
+ <td width="16%">Payment Verified</td> 
+ <td width="15%"><a href="{% url 'hospitals:accreditation_verifications_successful' object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a> </td> 
+ </tr>          
+ {% endfor %}
+
+ {% elif payment_qgssr %}
+ {% for object in payment_qgssr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.hospital.submission_date}}</td> 
+ <td width="18%">{{object.hospital.license_type}}</td>
+ <td width="22%">{{object.hospital.application_type}}</td>
+ <td width="16%">Payment Verification</td> 
+ <td width="15%"><a href="{% url 'hospitals:accreditation_payment_verifications' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a></td> 
+ </tr> 
+ {% endfor %}
+
+ {% elif document_qgssr %}
+ {% for object in document_qgssr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">{{object.application_no}}</td> 
+ <td width="13%">{{object.submission_date}}</td> 
+ <td width="18%">{{object.license_type}}</td> 
+ <td width="22%">{{object.application_type}}</td> 
+ <td width="16%">Payment Processing</td> 
+ <td width="15%"><a href= "{% url 'hospitals:generate_accreditation_payment_details' object.pk %}"  class="btn btn-outline-success btn-sm">Continue <i class="fa fa-play text-success"></i></a> </td> 
+ </tr> 
+ {% endfor %}
+
+ {% else %}
+ {% for object in hospital_qgssr %}
+ <tbody> 
+ <tr> 
+ <td width="2%">{{forloop.counter}}</td> 
+ <td width="14%">Not applicable</td> 
+ <td width="13%">{{user.reg_date_pretty}}</td> 
+ <td width="18%">Internship Accreditation</td> 
+ <td width="22%">Renewal - Internship Accreditation</td> 
+ <td width="16%">Start Application</td> 
+ <td width="15%"><a href="{% url 'hospitals:start_new_gov_internship_renewal' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Continue</a> </td> 
+ </tr> 
+ {% endfor %}
+ {% endif %}
+
+
+ </tbody> 
+ </table> 
+ </div> 
+ </div>
+ </div>
+ </div>
+
+  <!--Jquery plugin-->
+
+
+  <!--other javascript plugins-->
+  <script>
+  let urlMenu = document.getElementById('dropdown');
+  urlMenu.onchange = function(){
+    let userOption = this.options[this.selectedIndex];
+    if(userOption.value != "nothing"){
+      window.open(userOption.value, "_self", "");
+    }
+  }
+  </script>
+
+  <script>
+     // Example starter JavaScript for disabling form submissions if there are invalid fields
+     (function () {
+         'use strict';
+         window.addEventListener('load', function () {
+             // Fetch all the forms we want to apply custom Bootstrap validation styles to
+             var forms = document.getElementsByClassName('needs-validation');
+             // Loop over them and prevent submission
+             var validation = Array.prototype.filter.call(forms, function (form) {
+                 form.addEventListener('submit', function (event) {
+                     if (form.checkValidity() === false) {
+                         event.preventDefault();
+                         event.stopPropagation();
+                     }
+                     form.classList.add('was-validated');
+                 }, false);
+             });
+         }, false);
+     })();
+ </script>
+ <script>
+     let urlMenu = document.getElementById('dropdown');
+     urlMenu.onchange = function(){
+       let userOption = this.options[this.selectedIndex];
+       if(userOption.value != "nothing"){
+         window.open(userOption.value, "_self", "");
+       }
+     }
+   </script>
+
+
+   <!--Jquery plugin-->
+     <script src="{% static 'js/jquery.js' %}"></script>
+     <script src="{% static 'js/poppert.min.js' %}"></script>
+
+     <script src="{% static 'js/dataTables.bootstrap4.min.js' %}"></script>
+     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
+
+    <script>
+      $('#mydata').dataTable();
+    </script>
+
+
+
+{% endblock %}

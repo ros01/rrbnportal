@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from hospitals.models import Schedule, Inspection, License, Payment, Records, Appraisal
 from accounts.models import Hospital
+from .models import *
 from tempus_dominus.widgets import DatePicker
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field
@@ -13,6 +14,16 @@ from django.db import transaction
 from django.shortcuts import get_object_or_404
 
 
+class DocumentForm(forms.ModelForm):
+    class Meta:
+        model = DocumentUpload
+        fields = ('description', 'document', )
+        
+
+class InternshipListForm(forms.ModelForm):
+    class Meta:
+        model = InternshipList
+        fields = ('file', )
 
 
 class ScheduleModelForm(forms.ModelForm):
@@ -22,7 +33,7 @@ class ScheduleModelForm(forms.ModelForm):
                 'useCurrent': True,
                 'collapse': False,
                 'minDate': '2020-06-05',
-                'maxDate': '2025-12-31',
+                # 'maxDate': '2025-12-31',
             },
     		attrs={
                 'append': 'fa fa-calendar',
@@ -37,7 +48,7 @@ class ScheduleModelForm(forms.ModelForm):
                 'useCurrent': True,
                 'collapse': False,
                 'minDate': '2020-06-05',
-                'maxDate': '2025-12-31',
+                # 'maxDate': '2025-12-31',
             },
     		attrs={
                 'append': 'fa fa-calendar',
@@ -76,7 +87,7 @@ class LicenseModelForm(forms.ModelForm):
                 'useCurrent': True,
                 'collapse': False,
                 'minDate': '2020-06-05',
-                'maxDate': '2025-12-31',
+                # 'maxDate': '2025-12-31',
             },
             attrs={
                 'append': 'fa fa-calendar',
@@ -91,7 +102,7 @@ class LicenseModelForm(forms.ModelForm):
                 'useCurrent': True,
                 'collapse': False,
                 'minDate': '2020-06-05',
-                'maxDate': '2025-12-31',
+                # 'maxDate': '2025-12-31',
             },
             attrs={
                 'append': 'fa fa-calendar',
@@ -129,7 +140,7 @@ class PermitRenewalModelForm(forms.ModelForm):
                 'useCurrent': True,
                 'collapse': False,
                 'minDate': '2020-06-05',
-                'maxDate': '2025-12-31',
+                # 'maxDate': '2025-12-31',
             },
             attrs={
                 'append': 'fa fa-calendar',
@@ -144,7 +155,7 @@ class PermitRenewalModelForm(forms.ModelForm):
                 'useCurrent': True,
                 'collapse': False,
                 'minDate': '2020-06-05',
-                'maxDate': '2025-12-31',
+                # 'maxDate': '2025-12-31',
             },
             attrs={
                 'append': 'fa fa-calendar',
@@ -183,7 +194,7 @@ class AccreditationModelForm(forms.ModelForm):
                 'useCurrent': True,
                 'collapse': False,
                 'minDate': '2020-06-05',
-                'maxDate': '2025-12-31',
+                # 'maxDate': '2025-12-31',
             },
             attrs={
                 'append': 'fa fa-calendar',
@@ -198,7 +209,7 @@ class AccreditationModelForm(forms.ModelForm):
                 'useCurrent': True,
                 'collapse': False,
                 'minDate': '2020-06-05',
-                'maxDate': '2025-12-31',
+                # 'maxDate': '2025-12-31',
             },
             attrs={
                 'append': 'fa fa-calendar',
@@ -237,7 +248,7 @@ class RecordsModelForm(forms.ModelForm):
                 'useCurrent': True,
                 'collapse': False,
                 'minDate': '2020-06-05',
-                'maxDate': '2025-12-31',
+                # 'maxDate': '2025-12-31',
             },
             attrs={
                 'append': 'fa fa-calendar',

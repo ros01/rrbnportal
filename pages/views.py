@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from hospitals.models import License
 from django.db.models import Q
 from django.views.generic import TemplateView, ListView
+from monitoring.models import *
 
 def index(request):
     return render(request, 'pages/index.html')
@@ -65,7 +66,10 @@ def guidelines(request):
     return render(request, 'pages/guidelines.html')
 
 def internship_centers(request):
-    return render(request, 'pages/internship_centers.html')
+    document = InternshipList.objects.all().order_by('id').last()
+    context = {'document':document}
+    
+    return render(request, 'pages/internship_centers.html', context)
 
 def zonal_offices(request):
     return render(request, 'pages/zonal_offices.html')

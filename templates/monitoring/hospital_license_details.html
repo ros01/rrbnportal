@@ -1,0 +1,91 @@
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+{% block title%}| Welcome {% endblock %}
+
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/hospital_dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+
+
+<div class="row rounded pl-3 justify-content-center align-items-center" style="background-color: #bfe3f8;">
+          
+</div>
+    
+
+<!-- Skills -->
+
+<section>
+
+
+<div class="container">
+<div class="container mt-4"> 
+{% if object.hospital.license_type == "Radiography Practice Permit" %}
+<p class="text-secondary display-4 paragraph2">
+Radiography Practice Permit Application Details
+<span style="float:right; font-size:14px"> 
+<br/> Permit Number: <b>{{object.license_no}}</b> </span> </p> </div> 
+<hr>
+<div class="alert text-success" style="background-color: #fffed6; font-size:18px"><b>{{object.hospital_name|upper}}</b> Radiography Practice Permit Application has been successfully processed. Download an electronic copy of the Certificate and Permit below <br/><br/> 
+
+{% if object.hospital.application_type == "New Registration - Radiography Practice Permit" %}
+<a style="font-size:1.1em" class="btn btn-outline-success mr-3" href="{% url 'monitoring:download_rad_cert_reg' id=object.id %}" target="_blank"> <i class="fa fa-download"></i> Download Registration of Practice Certifcate</a>
+
+<a style="font-size:1.1em" class="btn btn-outline-success" href="{% url 'monitoring:download_rad_practice_permit' id=object.id %}" target="_blank"> <i class="fa fa-download"></i> Download Practice Permit</a>
+
+{% else %}
+
+<a style="font-size:1.1em" class="btn btn-outline-success" href="{% url 'hospitals:download_rad_practice_permit' id=object.id %}" target="_blank"> <i class="fa fa-download"></i> Download Practice Permit</a>
+
+{% endif %}
+
+
+</div> 
+<div class="container">
+<p class="display-4 paragraph3" style="color: #05567b;">Summary Details of Radiography Practice License Application </p></div>
+{% else %}
+<p class="text-secondary display-4 paragraph2">
+Radiography Internship Accreditation Application Details
+<span style="float:right; font-size:14px"> 
+<br/> Certificate Number: <b>{{object.license_no}}</b> </span> </p> </div> 
+<hr>
+<div class="alert text-success" style="background-color: #fffed6; font-size:18px"><b>{{object.hospital_name|upper}}</b> Radiography Internship Accreditation Application has been successfully processed. Download an electronic copy of the Certificate below. <br/><br/> <a style="font-size:1.1em" class="btn btn-outline-success" href="{% url 'hospitals:download_accreditation_cert' id=object.id %}" target="_blank"> <i class="fa fa-download"></i> Download Certificate </a></div> 
+<div class="container">
+<p class="display-4 paragraph3" style="color: #05567b;">Summary of Radiography Internship Accreditation Application </p></div>
+{% endif %}
+<div class="row ml-1 mb-3">
+<div class="col-md-3"> <b>Application Number:</b> <br> {{object.application_no}}</div> <div class="col-md-3"> <b>Application Type:</b><br> {{object.hospital.application_type}}</div> <div class="col-md-3"> <b>Certificate Type:</b> <br> {{object.hospital.license_type}}   </div> <div class="col-md-3"> <b>Class of Certificate:</b><br> {{object.license_class}}</div> <br/> </div> 
+<div class="row ml-1 mb-3"><div class="col-md-3">  <b>Hospital/Centre Address:</b><br> {{object.hospital.facility_address}}  </div> <div class="col-md-3"> <b> Phone:</b><br> {{object.hospital_name.phone_no}} </div> <div class="col-md-3">  <b>Email:</b><br>{{object.hospital_name.hospital_admin}}</div> 
+
+
+
+<div class="col-md-3"> <b>Last Inspection Date:</b><br/> {% if object.schedule.inspection_date %}{{object.schedule.inspection_date}} {% else %} Not Applicable {% endif %}</div><br/></div>
+
+
+ <div class="row ml-1"> <div class="col-md-3"> <b>Certificate Issue Date:</b><br/> {{object.issue_date}}  </div><div class="col-md-3"> <b>Certificate Expiry Date:</b><br/> {{object.expiry_date}} </div> <div class="col-md-3"> <b>Certificate Number:</b><br/> {{object.license_no}}  </div> <div class="col-md-3"> <b>Certificate Status:</b><br/> 
+  {% if object.license_status == "Expired" %}
+
+
+<span style="color:#F00"><b>{{object.license_status}}</b></span>  
+
+{% else %}
+
+<span style="color:#41963F"><b>{{object.license_status}}</b></span> 
+
+{% endif %}
+
+</div> </div> <p></p> 
+<hr>
+<div class="d-flex justify-content-end mb-3">   
+<a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
+</div>
+</div> 
+
+    
+</section>
+
+<!-- End of Skills -->
+
+{% endblock %}

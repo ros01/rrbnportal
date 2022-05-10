@@ -16,7 +16,7 @@ User = get_user_model()
 class SignupForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'password1', 'password2', 'hospital', 'type')
+        fields = ('email', 'first_name', 'last_name', 'password1', 'password2', 'hospital')
 
 
 
@@ -33,7 +33,7 @@ class HospitalModelForm(forms.ModelForm):
       
     class Meta:
          model = Hospital
-         fields = ('hospital_name', 'rc_number', 'phone_no', 'state', 'city', 'contact_address')
+         fields = ('hospital_name', 'type', 'rc_number', 'phone_no', 'state', 'city', 'contact_address')
          
 
          widgets = {

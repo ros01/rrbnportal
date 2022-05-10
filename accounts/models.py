@@ -69,7 +69,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=100, blank=True, null=True)
     module_name = models.CharField (max_length=100, choices = MODULE_NAME, blank=True)
     role = models.CharField (max_length=100, choices = ROLE, blank=True)
-    type = models.CharField(max_length=100, blank=True)
     hospital = models.BooleanField(default=True,
         help_text=_('Designates whether the user can log into hospital dashboard.'))
     date_joined = models.DateField(_('date joined'), auto_now_add=True)
@@ -154,12 +153,14 @@ class Hospital(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     hospital_name = models.CharField(max_length=200, blank=True)
     hospital_admin = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='practice_manager', null=True, on_delete=models.CASCADE)
+    type = models.CharField(max_length=100, blank=True)
     rc_number = models.CharField(max_length=100, blank=True, null =True)
     phone_no = models.CharField(max_length=100, blank=True)
     state = models.CharField(max_length=100, choices = STATE_CHOICES)
     city = models.CharField(max_length=100)
     contact_address = models.TextField(blank=True)
-    reg_date = models.DateField(default=date.today)
+    application_status = models.IntegerField(default=1)
+    date = models.DateField(default=date.today)
     
 
     def __str__(self):

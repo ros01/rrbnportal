@@ -150,7 +150,7 @@ class Document(models.Model):
     radiographer3_practice_license = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     cac_certificate = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     form_c07 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
-    submission_date = models.DateField(default=date.today)
+    date = models.DateField(default=date.today)
 
     class Meta:
         unique_together = ('application_no', 'hospital_name')
@@ -163,6 +163,11 @@ class Document(models.Model):
         equipment_count = self.equipment
         equipment_count = len(equipment_count)
         return equipment_count
+
+    def save(self, *args, **kwargs):
+        super(Document, self).save(*args, **kwargs)
+        self.hospital_name.application_status = 2
+        self.hospital_name.save()
 
     
 
@@ -181,7 +186,7 @@ class Payment(models.Model):
     payment_date = models.DateField(default=date.today)  
     vet_status = models.IntegerField(default=1)
     vetting_officer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, related_name='vetted_by', blank=True, null=True)
-    vet_date =models.DateField(null=True, blank=True, auto_now=True, auto_now_add=False)
+    vet_date =models.DateField(null=True, blank=True, auto_now=False, auto_now_add=True)
 
 
     class Meta:
@@ -191,11 +196,19 @@ class Payment(models.Model):
     def __str__(self):
         return  str(self.hospital_name)
 
-    def save(self, *args, **kwargs):
+    # def save(self, *args, **kwargs):
         
+    #     if self.vet_status == 2:
+    #         self.vet_date = datetime.now()
+    #     super(Payment, self).save(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        super(Payment, self).save(*args, **kwargs)
+        self.hospital.application_status = 2
+        self.hospital.save()
+
         if self.vet_status == 2:
             self.vet_date = datetime.now()
-        super(Payment, self).save(*args, **kwargs)
 
 
     def vet_date_pretty(self):
@@ -237,6 +250,7 @@ class Schedule(models.Model):
 
     def save(self, *args, **kwargs):
         super(Schedule, self).save(*args, **kwargs)
+        self.payment.application_status = 4
         self.payment.vet_status = 4
         self.payment.save()
 

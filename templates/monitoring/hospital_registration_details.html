@@ -1,0 +1,229 @@
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+{% load humanize %}
+{% block title%}| Welcome {% endblock %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/hospital_dashboard.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container">
+    <section class="p-2">
+   
+    <div class="row mt-2 ">
+    <div class="col text-center ml-2 mb-0">
+    <p class="text-success display-4 paragraph3">Hospital {{object.license_type}} Application Summary</p>
+    <hr>
+    </div>
+    </div>
+
+    <!-- </section>
+    <section>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12"> 
+    <div class="alert" style="background-color: #f7dedd; font-size:18px"> <b>{{object.hospital_name|upper}}</b> Application Summary:<br/> </br> </div> 
+     </div> 
+
+    </section> -->
+    <br>
+        
+       <div class="row justify-content-center mx-auto"> 
+
+        <div class="col-md-7 col-md text-left" style="background:#1ca8dd"> 
+        <h4 class="justify-content-center" style="font-size:18px; padding:10px; color:#fff"> <b>{{object.hospital_name|upper}}</b> Application Summary: </h4> 
+       </div> 
+
+       <div class="col-md-7 col-md"> 
+       <div class="row pl-2"> 
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Hospital Name:</b></div> 
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.hospital_name}}</div> <br>
+        <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Application No:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.application_no}}</div> 
+
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Application Type:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.application_type}}</div> 
+
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Address:</b></div> 
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.facility_address}}</div> <br>
+
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888"> State of Origin:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.facility_state_of_location}}</div>           
+       </div> <br/> 
+
+       <div class="row" style="background: #efefef; color:#333; padding:8px;"> <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12 text-success"> Hospital/Center Practice Details </div> 
+       </div> 
+      <div class="row pl-2" style="background:#f7dedd"> 
+
+      <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Equipment:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.equipment}}</div> 
+
+       {% if object.radiographer_in_charge %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Radiographer In Charge:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.radiographer_in_charge}}</div> 
+       {% endif %}
+
+       {% if object.radiographer_in_charge_license_no %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">R.I.C License No:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.radiographer_in_charge_license_no}}</div> 
+       {% endif %}
+
+       {% if object.radiographer1 %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Radiographer 1:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.radiographer1}}</div> 
+       {% endif %}
+
+       {% if object.radiographer1_license_no %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Radiographer 1 License No:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.radiographer1_license_no}}</div> 
+       {% endif %}
+
+       {% if object.radiographer2 %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Radiographer 2:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.radiographer2}}</div> 
+       {% endif %}
+
+       {% if object.radiographer2_license_no %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Radiographer 2 License No:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.radiographer2_license_no}}</div> 
+       {% endif %}
+
+
+       {% if object.radiographer3 %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Radiographer 3:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.radiographer3}}</div> 
+       {% endif %}
+       
+       {% if object.radiographer3_license_no %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Radiographer 3 License No:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.radiographer3_license_no}}</div> 
+       {% endif %}
+
+       {% if object.staffname1 %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Staff One:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.staffname1}}</div> 
+       {% endif %}
+
+       {% if object.staffdesignation1 %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Staff One Designation:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.staffdesignation1}}</div> 
+       {% endif %}
+
+       {% if object.staffname2 %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Staff Two:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.staffname2}}</div> 
+       {% endif %}
+
+       {% if object.staffdesignation2 %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Staff Two Designation:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.staffdesignation2}}</div> 
+       {% endif %}
+
+       {% if object.staffname3 %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Staff Three:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.staffname3}}</div> 
+       {% endif %}
+
+       {% if object.staffdesignation3 %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Staff Three Designation:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.staffdesignation3}}</div> 
+       {% endif %}
+
+       {% if object.staffname4 %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Staff Four:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.staffname4}}</div> 
+       {% endif %}
+
+       {% if object.staffdesignation4 %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Staff Four Designation:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.staffdesignation4}}</div> 
+       {% endif %}
+
+       {% if object.staffname5 %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Staff Five:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.staffname5}}</div> 
+       {% endif %}
+
+       {% if object.staffdesignation5 %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Staff Five Designation:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.staffdesignation5}}</div> 
+       {% endif %}
+
+       {% if object.radiographer_in_charge_passport %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">R.I.C Passport Photo:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <i class="fa fa-eye text-dark"></i>
+	   <a class="text-danger" href="{{object.radiographer_in_charge_passport.url}}" target="_blank">View R.I.C Passport Photo</a></div> 
+       {% endif %}
+
+       {% if object.radiographer_in_charge_nysc %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">R.I.C NYSC:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <i class="fa fa-eye text-dark"></i>
+	   <a class="text-danger" href="{{object.radiographer_in_charge_nysc.url}}" target="_blank">View R.I.C NYSC</a></div> 
+       {% endif %}
+
+       {% if object.radiographer_in_charge_practice_license %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">R.I.C License:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <i class="fa fa-eye text-dark"></i>
+	   <a class="text-danger" href="{{object.radiographer_in_charge_practice_license.url}}" target="_blank">View R.I.C License</a></div> 
+       {% endif %}
+
+        {% if object.radiographer1_practice_license %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Radiographer One License:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <i class="fa fa-eye text-dark"></i>
+	   <a class="text-danger" href="{{object.radiographer1_practice_license.url}}" target="_blank">View Radiographer One License</a></div> 
+       {% endif %}
+
+        {% if object.radiographer2_practice_license %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Radiographer Two License:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <i class="fa fa-eye text-dark"></i>
+	   <a class="text-danger" href="{{object.radiographer2_practice_license.url}}" target="_blank">View Radiographer Two License</a></div> 
+       {% endif %}
+
+       {% if object.radiographer3_practice_license %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Radiographer Three License:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <i class="fa fa-eye text-dark"></i>
+	   <a class="text-danger" href="{{object.radiographer3_practice_license.url}}" target="_blank">View Radiographer Three License</a></div> 
+       {% endif %}
+
+       {% if object.cac_certificate %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">CAC Certificate:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <i class="fa fa-eye text-dark"></i>
+	   <a class="text-danger" href="{{object.cac_certificate.url}}" target="_blank">View CAC Certificate</a></div> 
+       {% endif %}
+
+       {% if object.form_c07 %}
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Form C07:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <i class="fa fa-eye text-dark"></i>
+	   <a class="text-danger" href="{{object.form_c07.url}}" target="_blank">View Form C07</a></div> 
+       {% endif %}
+
+            
+       </div> <!-- total --> 
+
+             
+       
+       <div class="row" style="border-top:1px solid #555; border-bottom: 1px solid #555; padding:8px; background:#f7dedd"> 
+
+        <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"> <b style="color:#888">Registration Start Date:</b> </div> 
+        <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.date}}</div> 
+
+        </div> <!-- buttons --> 
+
+
+        <div class="row justify-content-end"> 
+        
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12 text-right"> 
+        <br/> <a href="{% url 'monitoring:monitoring_dashboard' %}" class="text-dark py-1 mr-3 mt-6 btn btn-outline-info"><i class="fas fa-times"></i> Close</a>       
+        
+        </div>
+        </div>
+        </div>
+        </div>
+        
+        
+        </div>
+
+
+        {% endblock %}
+
+
+                
+
+    
