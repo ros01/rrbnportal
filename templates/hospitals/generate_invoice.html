@@ -19,7 +19,7 @@
     </section>
     <section>
     <div class="col-lg-12 col-md-12 col-sm-12 col-12"> 
-    <div class="alert" style="background-color: #f7dedd; font-size:18px"> Dear <b>{{object.hospital_name|upper}}</b>,<br/> Please find below your application payment invoice.  This includes registration fee of N50,000 and cost for registration of all available modalities (first modality attracts a fee of N10,000 while additional modalities attract N5,000 per modality). </br> </div> 
+    <div class="alert" style="background-color: #f7dedd; font-size:18px"> Dear <b>{{object.hospital_name|upper}}</b>,<br/> Please find below your application payment invoice.  This includes registration fee of N100,000 and cost for registration of all available modalities (first modality attracts a fee of N20,000 while additional modalities attract N5,000 per modality). </br> </div> 
      </div> 
 
     </section>
@@ -57,7 +57,7 @@
       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> Registration of Practice Application Fee</span> <br/> <p class="help-block"> <b style="color:#888">Category:</b>{{object.license_type|upper}} <br/> <b style="color:#888">Type:</b> {{object.application_type|upper}} </p> </div> 
 
 
-      <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> N50,000.00 </span> </div>
+      <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> N100,000.00 </span> </div>
 
       </div> <!-- total --> 
 
@@ -71,31 +71,31 @@
       
      
       {% if object.equipment_count == 13 %}   
-      N70,000.00
+      N80,000.00
       {% elif object.equipment_count == 12  %}
-      N65,000.00
+      N75,000.00
       {% elif object.equipment_count == 11  %}
-      N60,000.00
+      N70,000.00
       {% elif object.equipment_count == 10  %}
-      N55,000.00
+      N65,000.00
       {% elif object.equipment_count == 9  %}
-      N50,000.00
+      N60,000.00
       {% elif object.equipment_count == 8  %}
-      N45,000.00
+      N55,000.00
       {% elif object.equipment_count == 7  %}
-      N40,000.00
+      N50,000.00
       {% elif object.equipment_count == 6  %}
-      N35,000.00
+      N45,000.00
       {% elif object.equipment_count == 5  %}
-      N30,000.00
+      N40,000.00
       {% elif object.equipment_count == 4  %}
-      N25,000.00
+      N35,000.00
       {% elif object.equipment_count == 3  %}
-      N20,000.00
+      N30,000.00
       {% elif object.equipment_count == 2  %}
-      N15,000.00
+      N25,000.00
       {% else  %}
-      N10,000.00
+      N20,000.00
       {% endif %}
      
 
@@ -112,31 +112,31 @@
 
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> 
        {% if object.equipment_count == 13 %}   
-          N120,000.00
+          N180,000.00
           {% elif object.equipment_count == 12  %}
-          N115,000.00
+          N175,000.00
           {% elif object.equipment_count == 11  %}
-          N110,000.00
+          N170,000.00
           {% elif object.equipment_count == 10  %}
-          N105,000.00
+          N165,000.00
           {% elif object.equipment_count == 9  %}
-          N100,000.00
+          N160,000.00
           {% elif object.equipment_count == 8  %}
-          N95,000.00
+          N155,000.00
           {% elif object.equipment_count == 7  %}
-          N90,000.00
+          N150,000.00
           {% elif object.equipment_count == 6  %}
-          N85,000.00
+          N145,000.00
           {% elif object.equipment_count == 5  %}
-          N80,000.00
+          N140,000.00
           {% elif object.equipment_count == 4  %}
-          N75,000.00
+          N135,000.00
           {% elif object.equipment_count == 3  %}
-          N70,000.00
+          N130,000.00
           {% elif object.equipment_count == 2  %}
-          N65,000.00
+          N125,000.00
           {% else  %}
-          N60,000.00
+          N120,000.00
           {% endif %} 
 
 
