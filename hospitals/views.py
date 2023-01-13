@@ -189,7 +189,7 @@ class HospitalObjectMixin(object):
             obj = get_object_or_404(self.model, id=id)
         return obj 
 
-class StartNewApplication(LoginRequiredMixin, ListView):
+class StartNewApplication(LoginRequiredMixin, HospitalObjectMixin, ListView):
     template_name = "hospitals/start_new_application.html"
     context_object_name = 'object'
 
