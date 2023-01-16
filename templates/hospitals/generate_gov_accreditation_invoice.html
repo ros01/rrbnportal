@@ -47,18 +47,45 @@
     <div class="row" style="background: #efefef; color:#333; padding:8px;"> <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> Description </div> <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"> Amount (NGN) </div> 
     </div> 
     <br/> 
+
+
+    {% if object.application_type == "Renewal - Government Hospital Internship" %}
+
+
     <div class="row"> 
     <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> Accreditation Fee</span> <br/> <p class="help-block"> <b style="color:#888">Category:</b>{{object.license_type|upper}} <br/> <b style="color:#888">Type:</b> {{object.application_type|upper}} </p> </div> 
-    <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> N200,000.00 </span> </div>
+    <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> N500,000.00 </span> </div>
     </div> <!-- total --> 
      
     <div class="row" style="border-top:1px solid #555; border-bottom: 1px solid #555; padding:8px;"> 
     <div class="col-lg5 col-md-5 col-sm-3 col-xs-12"> Payment Status: <b style="color:#dc3545">PENDING</b> </div> 
     <div class="col-lg2 col-md-2 col-sm-3 col-xs-12 text-right"> <b>Total:</b> </div> 
     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> 
-    N200,000.00
+    N500,000.00
     </span> </div> 
     </div> <!-- buttons --> <br/> 
+
+
+    {% else %}
+
+    <div class="row"> 
+    <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> Accreditation Fee</span> <br/> <p class="help-block"> <b style="color:#888">Category:</b>{{object.license_type|upper}} <br/> <b style="color:#888">Type:</b> {{object.application_type|upper}} </p> </div> 
+    <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> N800,000.00 </span> </div>
+    </div> <!-- total --> 
+     
+    <div class="row" style="border-top:1px solid #555; border-bottom: 1px solid #555; padding:8px;"> 
+    <div class="col-lg5 col-md-5 col-sm-3 col-xs-12"> Payment Status: <b style="color:#dc3545">PENDING</b> </div> 
+    <div class="col-lg2 col-md-2 col-sm-3 col-xs-12 text-right"> <b>Total:</b> </div> 
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> 
+    N800,000.00
+    </span> </div> 
+    </div> <!-- buttons --> <br/> 
+
+    {% endif %}
+
+
+
+
 
     <div class="row"> 
     <div class="col-lg-6 col-md-4 col-sm-12 hidden-xs"> 
