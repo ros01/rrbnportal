@@ -19,7 +19,7 @@
     </section>
     <section>
     <div class="col-lg-12 col-md-12 col-sm-12 col-12"> 
-    <div class="alert" style="background-color: #f7dedd; font-size:18px"> Dear <b>{{object.hospital_name|upper}}</b>,<br/> Please find below your application payment invoice.  This includes cost for registration of all available modalities (first modality attracts a fee of N20,000 while additional modalities attract N5,000 per modality). </br> </div> 
+    <div class="alert" style="background-color: #f7dedd; font-size:18px"> Dear <b>{{object.hospital_name|upper}}</b>,<br/> Please find below your Radiography Practice Permit Renewal invoice </br> </div> 
      </div> 
 
     </section>
@@ -63,40 +63,12 @@
 
       <div class="row"> 
 
-      <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> Cost for Registration of Modalities</span>  </div> 
+      <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> Annual Radiography Practice Permit Renewal Fee</span>  </div> 
 
 
-      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> 
-
-      
-     
-      {% if object.equipment_count == 13 %}   
-      N80,000.00
-      {% elif object.equipment_count == 12  %}
-      N75,000.00
-      {% elif object.equipment_count == 11  %}
-      N70,000.00
-      {% elif object.equipment_count == 10  %}
-      N65,000.00
-      {% elif object.equipment_count == 9  %}
-      N60,000.00
-      {% elif object.equipment_count == 8  %}
-      N55,000.00
-      {% elif object.equipment_count == 7  %}
+      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> <span style="font-size:1.1em">   
       N50,000.00
-      {% elif object.equipment_count == 6  %}
-      N45,000.00
-      {% elif object.equipment_count == 5  %}
-      N40,000.00
-      {% elif object.equipment_count == 4  %}
-      N35,000.00
-      {% elif object.equipment_count == 3  %}
-      N30,000.00
-      {% elif object.equipment_count == 2  %}
-      N25,000.00
-      {% else  %}
-      N20,000.00
-      {% endif %}
+      
       </span> </div>
       </div> 
        
@@ -104,36 +76,8 @@
       <div class="col-lg6 col-md-6 col-sm-3 col-xs-12"> Payment Status: <b style="color:#dc3545">PENDING</b> </div> 
       <div class="col-lg2 col-md-2 col-sm-3 col-xs-12 text-right"> <b>Total:</b> </div> 
       <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> <span style="font-size:1.1em"> 
-      {% if object.equipment_count == 13 %}   
-      N80,000.00
-      {% elif object.equipment_count == 12  %}
-      N75,000.00
-      {% elif object.equipment_count == 11  %}
-      N70,000.00
-      {% elif object.equipment_count == 10  %}
-      N65,000.00
-      {% elif object.equipment_count == 9  %}
-      N60,000.00
-      {% elif object.equipment_count == 8  %}
-      N55,000.00
-      {% elif object.equipment_count == 7  %}
       N50,000.00
-      {% elif object.equipment_count == 6  %}
-      N45,000.00
-      {% elif object.equipment_count == 5  %}
-      N40,000.00
-      {% elif object.equipment_count == 4  %}
-      N35,000.00
-      {% elif object.equipment_count == 3  %}
-      N30,000.00
-      {% elif object.equipment_count == 2  %}
-      N25,000.00
-      {% else  %}
-      N20,000.00
-      {% endif %} 
-
-
-        </span> </div> 
+    </span> </div> 
         </div> <!-- buttons --> <br/> 
 
 
