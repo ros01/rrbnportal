@@ -1085,7 +1085,8 @@ class MyLicenseApplicationsHistory(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         obj = super(MyLicenseApplicationsHistory, self).get_context_data(**kwargs)
         obj['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
-        obj['permit_qs'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, hospital__license_type = 'Radiography Practice')
+        obj['permit_qs'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, hospital__license_type = 'Radiography Practice Permit')
+        #obj['permit_qs'] = License.objects.all()
         obj['certificate_qs'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, hospital__license_type = 'Internship Accreditation')
         return obj  
 

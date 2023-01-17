@@ -4,10 +4,10 @@ from .models import Payment, Document, Inspection, License, Schedule, Records, A
 
 
 class DocumentAdmin(admin.ModelAdmin):
-  list_display = ('application_no', 'application_type', 'hospital_name', 'hospital_type', 'equipment')
-  list_display_links = ('application_no', 'application_type')
+  list_display = ('application_no', 'application_type', 'license_type', 'hospital_name', 'hospital_type', 'equipment')
+  list_display_links = ('application_no', 'application_type', 'license_type')
   list_filter = ('hospital_name',)
-  search_fields = ('application_type', 'hospital_type', 'equipment')
+  search_fields = ('application_type', 'license_type', 'hospital_type', 'equipment')
   list_per_page = 25
 
 
