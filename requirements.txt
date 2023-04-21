@@ -20,6 +20,6 @@ pytz==2019.3
 reportlab==3.5.66
 rlextra==3.5.66
 six==1.14.0
-sqlparse==0.3.0
+sqlparse==0.4.4
 webencodings==0.5.1
 xhtml2pdf==0.2.4
