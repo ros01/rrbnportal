@@ -57,6 +57,30 @@ class MyUserAccount(View):
         return render(request, 'zonal_offices/my_profile.html')
         
 
+
+
+class InspectionScheduleListView(LoginRequiredMixin, ListView):
+    template_name = "zonal_offices/inspection_schedule_list.html"
+    context_object_name = 'object'
+
+    def get_queryset(self):
+        return Schedule.objects.all()
+        
+
+    def get_context_data(self, **kwargs):
+        obj = super(InspectionScheduleListView, self).get_context_data(**kwargs)
+        obj['enugu_qs'] = Schedule.objects.filter(inspection_zone="Enugu", application_status=4)
+        obj['abuja_qs'] = Schedule.objects.filter(inspection_zone="Abuja", application_status=4)
+        obj['lagos_qs'] = Schedule.objects.filter(inspection_zone="Lagos", application_status=4)
+        obj['sokoto_qs'] = Schedule.objects.filter(inspection_zone="Sokoto", application_status=4)
+        obj['kano_qs'] = Schedule.objects.filter(inspection_zone="Kano", application_status=4)
+        obj['ph_qs'] = Schedule.objects.filter(inspection_zone="Port Harcourt", application_status=4)
+        obj['awka_qs'] = Schedule.objects.filter(inspection_zone="Awka", application_status=4)
+        obj['calabar_qs'] = Schedule.objects.filter(inspection_zone="Calabar", application_status=4)
+        obj['ilesha_qs'] = Schedule.objects.filter(inspection_zone="Ilesha", application_status=4)
+        return obj
+
+
 class EnuguScheduleListView(LoginRequiredMixin, ListView):
     template_name = "zonal_offices/enugu_schedule_list.html"
     context_object_name = 'object'

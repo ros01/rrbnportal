@@ -178,7 +178,32 @@ class MyApplicationListView(LoginRequiredMixin, ListView):
         context['license_issue_qsr'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
         context['license_issue_qssr'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
         context['license_issue_qgssr'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
+        print (context)
         return context 
+
+class MyApplicationListView3(LoginRequiredMixin, ListView):
+    template_name = "hospitals/my_applications_table.html"
+    context_object_name = 'object'
+    model = Document
+   
+    def get_context_data(self, *args, **kwargs):
+        context = super(MyApplicationListView, self).get_context_data(*args, **kwargs)
+        print(dir(context.get('page_obj')))
+        return context
+
+    def get_queryset(self):
+        request = self.request
+        qs = Document.objects.all()
+        query = request.GET.get('q')
+        user = self.request.user
+        if query:
+            qs = qs.filter(title__icontains=query)
+        # if user.is_authenticated():
+        #     qs = qs.owned(user)
+        return qs 
+
+
+
 
 class HospitalObjectMixin(object):
     model = Hospital

@@ -77,9 +77,9 @@ INSPECTION_ZONE = (
         ('Sokoto', 'Sokoto'), 
         ('Kano', 'Kano'), 
         ('Port Harcourt', 'Port Harcourt'), 
-        ('Asaba', 'Asaba'), 
+        ('Awka', 'Awka'), 
         ('Calabar', 'Calabar'), 
-        ('Nnewi', 'Nnewi'),  
+        ('Ilesha', 'Ilesha'),  
         )
 
 

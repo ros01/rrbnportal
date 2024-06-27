@@ -13,6 +13,7 @@ from bootstrap_modal_forms.mixins import PassRequestMixin, PopRequestMixin, Crea
 
 
 
+
 class InspectionModelForm(forms.ModelForm):
 
     class Meta:

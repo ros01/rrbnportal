@@ -13,32 +13,26 @@
 <!--BODY STARTS-->
 
 <main class="container">
-
-    
-
-    <div class="row rounded mr-0 pl-1 pr-0 justify-content-center align-items-center" style="background-color: #bfe3f8;">
-            <div class="col-md-1 mt-1 py-auto">
-               <i class="fas fa-info-circle fa-3x"></i>
-                </div>
-
-               <div class="col-md-11 mt-2 pt-2 px-0">
-                <p class="text-dark"><strong>DEAR RRBN {{user.module_name|upper }} USER;<br>
-                    Welcome to the Zonal Office Console.<br>
-                    Here, you can easily manage inspection schedules, upload inspection reports, access numerous opperational reports, etc.</strong>
-                </p>
-               </div>
-           </div>
+<div class="row rounded mr-0 pl-1 pr-0 justify-content-center align-items-center" style="background-color: #bfe3f8;">
+<div class="col-md-1 mt-1 py-auto">
+<i class="fas fa-info-circle fa-3x"></i>
+</div>
+<div class="col-md-11 mt-2 pt-2 px-0">
+<p class="text-dark"><strong>DEAR RRBN {{user.module_name|upper }} USER;<br>
+Welcome to the Zonal Office Console.<br>
+Here, you can easily manage inspection schedules, upload inspection reports, access numerous opperational reports, etc.</strong>
+</p>
+</div>
+</div>
 
 
-
-
-    <!--utility items-->
-    <div class="row mt-4 mobile-top2">
-        <div class="col-lg-4 col-md-12 push-down grow" style="background:#e1e1e1;">
-                <div class="list-group mt-3">
-                    <button type="button" class="list-group-item list-group-item-action bg-warning d-flex normalize" style="height: 3rem !important;">
-                        <i class="fa fa-tv text-white font-weight-bold mt-2 size14"></i><p class="text-white font-weight-bold size14-mobile mt-mobile"> &nbsp; Hospitals Inspection Statistics</p>
-                    </button>
+<!--utility items-->
+<div class="row mt-4 mobile-top2">
+<div class="col-lg-4 col-md-12 push-down grow" style="background:#e1e1e1;">
+<div class="list-group mt-3">
+<button type="button" class="list-group-item list-group-item-action bg-warning d-flex normalize" style="height: 3rem !important;">
+<i class="fa fa-tv text-white font-weight-bold mt-2 size14"></i><p class="text-white font-weight-bold size14-mobile mt-mobile"> &nbsp; Hospitals Inspection Statistics</p>
+</button>
                 </div>
                 <ul class="list-group mt-2">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -78,35 +72,10 @@
          <h5 class="pb-2" style="margin: -45px 0 0 60px; font-weight: bold;">Inspections</h5>                
         <ul class="list-unstyled d-flex">
 
-        {% if user.module_name == "Enugu Office" %}
-        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:enugu_list' %}"> Inspection Schedules List</a></li>
         
-        {% elif user.module_name == "Lagos Office" %}
-        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:lagos_list' %}"> Inspection Schedules List</a></li>
-
-
-        {% elif user.module_name == "Asaba Office" %}
-        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:asaba_list' %}"> Inspection Schedules List</a></li>
-
-
-        {% elif user.module_name == "Calabar Office" %}
-        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:calabar_list' %}"> Inspection Schedules List</a></li>
+        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:inspection_list' %}"> Inspection Schedules List</a></li>
         
-        {% elif user.module_name == "Port Harcourt Office" %}
-        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:ph_list' %}"> Inspection Schedules List</a></li>
-
-        {% elif user.module_name == "Kano Office" %}
-
-        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:kano_list' %}"> Inspection Schedules List</a></li>
-
-
-        {% else %}
-
-        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:abuja_list' %}"> Inspection Schedules List</a></li>
-                                  
-        {% endif %}
-
-                            </ul>
+        </ul>
                             <ul class="list-unstyled d-flex m-up">
                                 <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:inspection_reports_list' %}"> Inspection Reports</a></li>
                             </ul>

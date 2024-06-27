@@ -51,13 +51,15 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     MODULE_NAME = (
         ('Monitoring HQ', 'Monitoring Hq'),
-        ('Enugu Office', 'Enugu Office'),
         ('Lagos Office', 'Lagos Office'),
+        ('Enugu Office', 'Enugu Office'),
+        ('Sokoto Office', 'Sokoto Office'),
         ('Abuja Office', 'Abuja Office'),
-        ('Asaba Office', 'Asaba Office'),
-        ('Calabar Office', 'Calabar Office'),
-        ('Port Harcourt Office', 'Port Harcourt Office'),
         ('Kano Office', 'Kano Office'),
+        ('Port Harcourt Office', 'Port Harcourt Office'),
+        ('Awka Office', 'Awka Office'),
+        ('Calabar Office', 'Calabar Office'),
+        ('Ilesha Office', 'Ilesha Office'),        
         ('Registrars Office', 'CEO'),
         ('Accounts HQ', 'FAH'),
         )
