@@ -2,8 +2,13 @@ from django.urls import path
 from django.shortcuts import render
 from . import views
 from .views import (
+    HospitalUploadListView,
+    HospitalsUpdatedUploadListView,
     AllHospitalsView,
     HospitalProfileDetails,
+    NewHospitalProfileDetails,
+    UpdateHospitalProfileDetails,
+    HospitalProfileCreateView,
     HospitalRegistrationDetails,
     HospitalPaymentDetails,
     HospitalVerificationDetails,
@@ -63,6 +68,12 @@ urlpatterns = [
     path('upload_internship_centers', views.upload_internship_centers, name='upload_internship_centers'),
     path('upload_internship_list', views.UploadInternshipList.as_view(), name='upload_internship_list'),
     path('clear_database', views.clear_database, name='clear_database'),
+    path('create_hospital_profile',  HospitalProfileCreateView.as_view(), name='create_hospital_profile'),
+    path('downloadfile', views.downloadfile, name='downloadfile'),
+    path('hospitals_upload_list',  HospitalUploadListView.as_view(), name='hospitals_upload_list'),
+    path('hospitals_updated_upload_list',  HospitalsUpdatedUploadListView.as_view(), name='hospitals_updated_upload_list'),
+    path('<uuid:pk>/new_hospital_profile_details/', NewHospitalProfileDetails.as_view(), name='new_hospital_profile_details'),
+    path('<uuid:pk>/update_hospital_profile_details/', UpdateHospitalProfileDetails.as_view(), name='update_hospital_profile_details'),
     # path('basic-upload', views.BasicUploadView.as_view(), name='basic_upload'),
     path('my_user_account/', MyUserAccount.as_view(), name='my_user_account'),
     path('registration_list/', RegistrationListView.as_view(), name='registration_list'),

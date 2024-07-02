@@ -159,6 +159,20 @@
 {% endfor %}
 
 
+{% elif user.module_name ==  "Maiduguri Office" %}
+{% for object in maiduguri_qs %}
+<tr>
+<td width="2%">{{forloop.counter}}</td>
+<td width="13%">{{object.application_no}}</td>
+<td width="17%">{{object.hospital_name}}</td>
+<td width="19%">{{object.hospital.license_type}}</td>
+<td width="22%">{{object.hospital.facility_address}}</td>
+<td width="14%">{{object.inspection_date}}</td>
+<td width="10%"><a href="{% url 'zonal_offices:inspection_detail' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a></td>
+</tr>
+{% endfor %}
+
+
 {% else %}
 {% for object in ilesha_qs %}
 <tr>
@@ -179,6 +193,8 @@
 </div>
 </div>
 </div>
+
+
 
 
 

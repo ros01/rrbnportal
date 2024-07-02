@@ -12,6 +12,7 @@ from hospitals.choices import INSPECTION_ZONE, LICENSE_STATUS, STATE_CHOICES, SE
 from django.conf import settings
 from django.db import transaction
 from django.shortcuts import get_object_or_404
+# from bootstrap_datepicker_plus.widgets import DatePickerInput
 
 
 class DocumentForm(forms.ModelForm):
@@ -238,6 +239,32 @@ class AccreditationModelForm(forms.ModelForm):
        self.fields['expiry_date'].label = "Expiry Date"
        self.fields['license_no'].label = "Certificate No"
        #self.fields['license_status'].label = "License Status"
+
+class HospitalProfileModelForm(forms.ModelForm):
+      
+    class Meta:
+         model = Hospital
+         fields = ('hospital_name', 'hospital_admin', 'phone_no', 'rc_number', 'state', 'city', 'type', 'contact_address')
+         
+
+         widgets = {
+            'contact_address': forms.Textarea(attrs={'rows':2, 'cols':3}),
+            'hospital_admin': forms.HiddenInput(),
+            'type': forms.HiddenInput(),
+            # 'dob': DatePickerInput(),
+            
+         }
+
+    def __init__(self, *args, **kwargs):
+       super(HospitalProfileModelForm, self).__init__(*args, **kwargs)
+       self.fields['hospital_name'].label = "Hospital Name"
+       self.fields['phone_no'].label = "Mobile Telephone Number"
+       self.fields['state'].label = "State of Location"
+       self.fields['city'].label = "City of Location"
+       self.fields['contact_address'].label = "Contact Address"
+       self.fields['rc_number'].label = "RC Number"
+       self.fields['rc_number'].widget.attrs['placeholder'] = "Leave blank if no RC Number"
+      
 
 
 

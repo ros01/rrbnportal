@@ -22,13 +22,36 @@ class SignupForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
        super(SignupForm, self).__init__(*args, **kwargs)
-       self.fields['first_name'].label = "First Name"
-       self.fields['last_name'].label = "Last Name"
+       self.fields['first_name'].label = "Hospital Admin First Name"
+       self.fields['last_name'].label = "Hospital Admin Last Name"
        self.fields['email'].label = "Email Address"
        self.fields['email'].widget.attrs['placeholder'] = "enter email that will serve as your username"
+
        #self.fields['application_type'].label = "Application Type"
        #self.fields['application_type'].widget.attrs['placeholder'] = "Select Application Type"
+
+
+class UserUpdateForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ('email', 'first_name', 'last_name', 'password1', 'password2', 'hospital')
+
+
+
+    def __init__(self, *args, **kwargs):
+       super(UserUpdateForm, self).__init__(*args, **kwargs)
+       self.fields['first_name'].label = "Hospital Admin First Name"
+       self.fields['last_name'].label = "Hospital Admin Last Name"
+       self.fields['email'].label = "Email Address"
+       self.fields['email'].widget.attrs['placeholder'] = "enter email that will serve as your username"
+       self.fields['password1'].required = False
+       self.fields['password2'].required = False
        
+       #self.fields['application_type'].label = "Application Type"
+       #self.fields['application_type'].widget.attrs['placeholder'] = "Select Application Type"
+
+
+
 class HospitalModelForm(forms.ModelForm):
       
     class Meta:

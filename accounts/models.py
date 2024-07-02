@@ -59,7 +59,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('Port Harcourt Office', 'Port Harcourt Office'),
         ('Awka Office', 'Awka Office'),
         ('Calabar Office', 'Calabar Office'),
-        ('Ilesha Office', 'Ilesha Office'),        
+        ('Ilesha Office', 'Ilesha Office'), 
+        ('Maiduguri Office', 'Maiduguri Office'),       
         ('Registrars Office', 'CEO'),
         ('Accounts HQ', 'FAH'),
         )
@@ -167,3 +168,14 @@ class Hospital(models.Model):
 
     def __str__(self):
         return  str (self.hospital_name)
+
+
+    def get_absolute_url(self):
+        return reverse("monitoring:new_hospital_profile_details", kwargs={"pk": self.id})
+
+
+    def get_zonal_absolute_url(self):
+        return reverse("zonal_offices:new_hospital_profile_details", kwargs={"pk": self.id})
+
+
+

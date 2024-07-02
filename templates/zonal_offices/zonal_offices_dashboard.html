@@ -76,46 +76,47 @@ Here, you can easily manage inspection schedules, upload inspection reports, acc
         <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:inspection_list' %}"> Inspection Schedules List</a></li>
         
         </ul>
-                            <ul class="list-unstyled d-flex m-up">
-                                <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:inspection_reports_list' %}"> Inspection Reports</a></li>
-                            </ul>
+        <ul class="list-unstyled d-flex m-up">
+            <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:inspection_reports_list' %}"> Inspection Reports</a></li>
+        </ul>
 
-                            <ul class="list-unstyled d-flex m-up">
-                                <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:create_hospital_record' %}"> Create Hospital Records</a></li>
-                            </ul>
+        <ul class="list-unstyled d-flex m-up">
+            <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:create_hospital_record' %}"> Create Hospital Records</a></li>
+        </ul>
 
-                             <ul class="list-unstyled d-flex m-up">
-                                <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:hospital_records_list' %}">Hospital Records Details</a></li>
-                            </ul>
+         <ul class="list-unstyled d-flex m-up">
+            <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:hospital_records_list' %}">Hospital Records Details</a></li>
+        </ul>
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-6 col-md-12">
+        <div class="card card-style-2">
+        <div class="card-body">
+        <i class="fa fa-wrench" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
+        <h5 class="pb-2" style="margin: -50px 0 0 60px; font-weight: bold;">Utilities</h5>
+
+        <ul class="list-unstyled d-flex m-up">
+        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:create_hospital_profile' %}"> Batch Create Hospitals</a></li>
+        </ul>
+        <ul class="list-unstyled d-flex m-up">
+        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:hospitals_upload_list' %}"> Hospitals Upload List</a></li>
+        </ul>
+
+        <ul class="list-unstyled d-flex m-up">
+        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:hospitals_updated_upload_list' %}"> Hospitals Upload List (Updated)</a></li>
+        </ul>
 
 
-
-
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-12">
-                        <div class="card card-style-2">
-                            <div class="card-body">
-                                <i class="fa fa-wrench" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
-                                <h5 class="pb-2" style="margin: -50px 0 0 60px; font-weight: bold;">Utilities</h5>
-                                <ul class="list-unstyled d-flex">
-                                    <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:hospitals_lookup' %}"> Hospitals/Centers Lookup</a></li>
-                                </ul>
-                                <ul class="list-unstyled d-flex m-up">
-                                    <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'utilities:offices' %}"> List of RRBN Zonal Offices</a></li>
-                                </ul>
-
-                                    <ul class="list-unstyled d-flex m-up">
-                                    <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> License Categories & Processing Fees</a></li>
-                                </ul>
-                                <ul class="list-unstyled d-flex m-up">
-                                    <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="#"> Document Verification Service</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+        <ul class="list-unstyled d-flex">
+        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'zonal_offices:hospitals_lookup' %}"> Hospitals/Centers Lookup</a></li>
+        </ul>
+        <ul class="list-unstyled d-flex m-up">
+        <i class="fa fa-check-circle text-success mt-1" style="font-size: 15px; margin:0 7px 0 60px;"></i><li><a class="text-dark" href="{% url 'utilities:offices' %}"> List of RRBN Zonal Offices</a></li>
+        </ul>
+        </div>
+        </div>
+        </div>
                     <div class="col-lg-6 col-md-12">
                         <div class="card card-style-2">
                             <div class="card-body">

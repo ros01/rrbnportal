@@ -1,0 +1,125 @@
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+{% load humanize %}
+{% block title%}| Welcome {% endblock %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/hospital_dashboard.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container">
+    <section class="p-2">
+   
+    <div class="row mt-2 ">
+    <div class="col text-center mb-0">
+    <p class="text-success display-4 paragraph3">Hospital {{object.type}} Application Summary</p>
+    <hr>
+    </div>
+    </div>
+
+    <!-- </section>
+    <section>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12"> 
+    <div class="alert" style="background-color: #f7dedd; font-size:18px"> <b>{{object.hospital_name|upper}}</b> Application Summary:<br/> </br> </div> 
+     </div> 
+
+    </section> -->
+    <br>
+        
+       <div class="row justify-content-center mx-auto"> 
+
+        <div class="col-md-7 col-md text-left" style="background:#1ca8dd"> 
+        <h4 class="justify-content-center" style="font-size:18px; padding:10px; color:#fff"> <b>{{object.hospital_name|upper}}</b> Application Summary: </h4> 
+       </div> 
+
+       <div class="col-md-7 col-md"> 
+       <div class="row pl-2"> 
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Hospital Name:</b></div> 
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.hospital_name}}</div> <br>
+
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Application Type:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.type}}</div> 
+
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">RC Number:</b></div> 
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.rc_number}}</div> <br>
+
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Address:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.contact_address}}</div>           
+       </div> <br/> 
+
+       <div class="row" style="background: #efefef; color:#333; padding:8px;"> <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12 text-success"> Contact Details </div> 
+       </div> 
+      <div class="row pl-2" style="background:#f7dedd"> 
+
+      <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Hospital Admin:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.hospital_admin.get_full_name}}</div> 
+
+      <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Phone Number:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.phone_no}}</div> 
+
+        <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Email:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.hospital_admin.email}}</div> 
+
+        <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Address:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.contact_address}}</div> 
+
+
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">City:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.city}}</div> 
+
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">State:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.state}}</div> 
+       </div> <!-- total --> 
+
+             
+       
+       <div class="row" style="border-top:1px solid #555; border-bottom: 1px solid #555; padding:8px; background:#f7dedd"> 
+
+        <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"> <b style="color:#888">Registration Start Date:</b> </div> 
+        <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.date}}</div> 
+
+        </div> <!-- buttons --> 
+         <br/> 
+
+
+        <!-- <div class="row justify-content-end"> 
+        
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12 text-right"> 
+        <br/> 
+
+         <a href="{% url 'monitoring:update_hospital_profile_details' object.pk %}" class="text-dark py-1 mr-3 mt-6 btn btn-outline-info"><i class="fas fa-times"></i> Update Hospital Profile</a>    
+
+        <a href="{% url 'monitoring:monitoring_dashboard' %}" class="text-dark py-1 mr-3 mt-6 btn btn-outline-info"><i class="fas fa-times"></i> Close</a>       
+        
+        </div>
+        </div> -->
+
+        <div class="d-flex justify-content-end mb-3">   
+
+         <a href="{% url 'zonal_offices:hospitals_upload_list' %}" class="btn btn-outline-success py-0 mr-3 mt-1 mb-3"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Back to Upload List</a>  
+
+
+         <a href="{% url 'zonal_offices:update_hospital_profile_details' object.pk %}" class="btn btn-outline-success py-0 mt-1 mb-3"><i class="fa fa-toggle-on" aria-hidden="true"></i> Update Hospital Profile </a>  
+         </div>
+
+
+
+
+
+
+
+
+
+
+        </div>
+        </div>
+        
+        
+        </div>
+
+
+        {% endblock %}
+
+
+                
+
+    

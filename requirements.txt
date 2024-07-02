@@ -1,5 +1,7 @@
+annotated-types==0.7.0
 asgiref==3.2.3
 Django==3.0.3
+django-bootstrap-datepicker-plus==5.0.3
 django-bootstrap-modal-forms==2.0.0
 django-crispy-forms==1.8.1
 django-multiselectfield==0.1.12
@@ -14,6 +16,8 @@ Pmw==2.0.2
 preppy==3.0.3
 psycopg2-binary==2.8.4
 pycparser==2.20
+pydantic==2.7.4
+pydantic-core==2.18.4
 PyPDF2==1.26.0
 pyRXP==2.2.1
 pytz==2019.3
@@ -21,5 +25,6 @@ reportlab==3.5.66
 rlextra==3.5.66
 six==1.14.0
 sqlparse==0.3.0
+typing-extensions==4.12.2
 webencodings==0.5.1
 xhtml2pdf==0.2.4

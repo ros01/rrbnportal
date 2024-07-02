@@ -2,7 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test
-from django.http import HttpResponse, Http404
+from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse, StreamingHttpResponse
+from wsgiref.util import FileWrapper
 from accounts.models import Hospital
 from accounts.decorators import monitoring_required
 from hospitals.models import Payment, Document, Schedule, Inspection, License, Records, Appraisal
@@ -20,11 +21,13 @@ from django.views.generic import (
 )
 from .forms import *
 from .models import *
+from accounts.forms import *
 from django.template.loader import get_template
 from django.core.mail import send_mail
 from django.contrib import messages
 from xhtml2pdf import pisa
 import os
+import mimetypes
 from django.contrib.staticfiles import finders
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
@@ -45,11 +48,27 @@ from reportlab.lib.units import mm, inch
 from reportlab.lib.pagesizes import letter, A4
 from reportlab.lib.pagesizes import landscape, portrait
 from django.contrib import admin
-import io
+import io, csv
+from django.contrib.auth.hashers import make_password
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
+from django.contrib.messages.views import SuccessMessageMixin
 
 User = get_user_model()
+
+
+class StaffRequiredMixin(object):
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.role == 'Monitoring':
+            messages.error(
+                request,
+                'You do not have the permission required to perform the '
+                'requested operation.')
+            return redirect(settings.LOGIN_URL)
+        return super(StaffRequiredMixin, self).dispatch(request,
+            *args, **kwargs)
+
 
 
 class LoginRequiredMixin(object):
@@ -79,7 +98,34 @@ def upload_internship_centers(request):
         'form': form
     })
 
-class UploadInternshipList1(View):
+
+
+
+class HospitalUploadListView(StaffRequiredMixin, ListView):
+    template_name = "monitoring/hospitals_upload_list.html"
+    def get_queryset(self):
+        # request = self.request
+        # user = request.user
+        qs = Hospital.objects.filter(application_status = 1)
+        query = self.request.GET.get('q')
+        if query:
+            qs = qs.filter(name__icontains=query)
+        return qs 
+
+
+
+class HospitalsUpdatedUploadListView(StaffRequiredMixin, ListView):
+    template_name = "monitoring/hospitals_upload_list.html"
+    def get_queryset(self):
+        # request = self.request
+        # user = request.user
+        qs = Hospital.objects.filter(application_status = 2)
+        query = self.request.GET.get('q')
+        if query:
+            qs = qs.filter(name__icontains=query)
+        return qs 
+
+class UploadInternshipList1(StaffRequiredMixin, View):
     def get(self, request):
         internship_list = InternshipList.objects.all()
         return render(self.request, 'monitoring/file_upload.html', {'list': internship_list})
@@ -93,7 +139,7 @@ class UploadInternshipList1(View):
             data = {'is_valid': False}
         return JsonResponse(data)
 
-class UploadInternshipList(View):
+class UploadInternshipList(StaffRequiredMixin, View):
     def get(self, request):
         internship_list = InternshipList.objects.all()
         return render(self.request, 'monitoring/file_upload.html', {'list': internship_list})
@@ -120,9 +166,118 @@ class MyUserAccount(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'monitoring/my_profile.html')
 
+def downloadfile(request):
+     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+     filename = 'hospital_list.csv'
+     filepath = base_dir + '/static/csv/' + filename
+     thefile = filepath
+     filename = os.path.basename(thefile) 
+     chunk_size = 8192
+     response = StreamingHttpResponse(FileWrapper(open(thefile, 'rb'),chunk_size), content_type=mimetypes.guess_type(thefile)[0])
+     response['Content-Length'] = os.path.getsize(thefile)
+     response['Content-Disposition'] = "Attachment;filename=%s" % filename
+     return response
 
 
-class AllHospitalsView(LoginRequiredMixin, ListView):
+class HospitalProfileCreateView(StaffRequiredMixin, SuccessMessageMixin, CreateView):
+    form = HospitalProfileModelForm
+    def get(self, request, *args, **kwargs):
+        form = HospitalProfileModelForm()
+        template_name = 'monitoring/bulk_create_hospitals.html'
+        return render(request, template_name, {'form':form})
+ 
+    # def get_context_data(self, request, *args, **kwarg):
+    #     user = self.request.user
+    #     form = HospitalProfileModelForm()
+    #     qs1 = Hospital.objects.filter(name=user.get_indexing_officer_profile.institution)
+    #     obj = qs1.first().studentprofile_set.all()
+    #     context['object'] = obj
+    #     context['form'] = form
+            
+    def post(self, request, *args, **kwargs):
+        # user = self.request.user
+        # institution = Hospital.objects.filter(name=user.get_indexing_officer_profile.institution).first()
+        # print("Institution:", institution)
+        # session = request.POST.get('academic_session')
+        # academic_session = AcademicSession.objects.get(id=session)
+        # print("Academic Session:", academic_session)
+        # quota = AdmissionQuota.objects.get_or_none(institution = institution, academic_session = academic_session)
+        # print("Quota:", quota)
+        # if quota is None:
+        #     admission_quota = 0;
+        # else:
+        #     admission_quota = quota.admission_quota
+        # print("Admission Quota:", admission_quota)
+        # students_qs = institution.studentprofile_set.all()
+
+        # students_list = students_qs.filter(academic_session = academic_session)
+        paramFile = io.TextIOWrapper(request.FILES['hospitals_list'].file)
+        portfolio1 = csv.DictReader(paramFile)
+        list_of_dict = list(portfolio1)
+
+        try:
+            context = {}
+            # if admission_quota == 0:
+            #     messages.error(request, "No Quota Assigned for Selected Academic Session")
+            #     print("Number in List:",  len(list_of_dict))
+            #     print("Number of students registered:", len(students_list))
+            #     print("Admission Quota:", int(admission_quota))
+            #     return redirect("monitoring:create_hospital_profile")
+
+            # elif len(students_list) > admission_quota or len(list_of_dict) > admission_quota or len(list_of_dict) + int(len(students_list)) > admission_quota:
+            #     messages.error(request, "Admission Quota exceeded!")
+            #     print("Number in List:",  len(list_of_dict))
+            #     print("Number of students registered:", len(students_list))
+            #     print("Admission Quotas:", int(admission_quota))
+            #     return redirect("monitoring:create_hospital_profile")
+
+            # else:
+            
+            for row in list_of_dict:
+                data = row['email']
+                # hospital_name = row['hospital_name']
+                # phone_no = row['phone_no']
+                hospitals_list = User.objects.filter(email = data)
+                # print("Students:", students_list)
+                try:
+                    if hospitals_list.exists():
+                        for hospital_admin in hospitals_list:
+                            messages.error(request, f'This User: {hospital_admin} and possibly other users on this list exit already exist')
+                        return redirect("monitoring:create_hospital_profile")
+                    else:
+                        hospital_admin = User.objects.create(email=row['email'], last_name=row['last_name'], first_name=row['first_name'], is_active = True, hospital = True, password = make_password('rrbnhq123%'),)
+                        
+                except Exception as e:
+                    messages.error(request, e)
+
+            objs = [
+                Hospital(
+                    hospital_admin = User.objects.get(email=row['email']),
+                    type = request.POST['type'],
+                    hospital_name = row['hospital_name'],
+                    phone_no = row['phone_no'],
+                )
+                for row in list_of_dict     
+             ]
+            # for obj in objs:
+            #     obj.slug = create_slug3(instance=obj)
+            nmsg = Hospital.objects.bulk_create(objs)
+            messages.success(request, "Bulk Creation of Hospitals successful!")
+            returnmsg = {"status_code": 200}
+            for obj in objs:
+                user = obj.hospital_admin
+                print("User:", user)
+                # reset_password(user, request)
+            # return redirect(institution.first().get_student_profiles_list())
+            return redirect("monitoring:create_hospital_profile")          
+        except Exception as e:
+            print('Error While Importing Data: ', e)
+            returnmsg = {"status_code": 500}
+        return JsonResponse(returnmsg)
+
+
+
+class AllHospitalsView(StaffRequiredMixin, LoginRequiredMixin, ListView):
     template_name = "monitoring/hospitals_application_table2.html"
     context_object_name = 'object'
     # model = Document 
@@ -248,61 +403,202 @@ class AllHospitalsView(LoginRequiredMixin, ListView):
         return context 
 
 
+class NewHospitalProfileDetails(StaffRequiredMixin, LoginRequiredMixin, DetailView):
+    template_name = "monitoring/new_hospital_profile_details.html"
+    model = Hospital
 
-class HospitalProfileDetails(LoginRequiredMixin, DetailView):
+
+
+class UpdateHospitalProfileDetails (StaffRequiredMixin, SuccessMessageMixin, UpdateView):
+    user_form = UserUpdateForm
+    form = HospitalProfileModelForm
+    template_name = "monitoring/update_hospital_profile_details.html"
+
+    def get_object(self, queryset=None):
+        pk = self.kwargs.get("pk")
+        hospital_profile = Hospital.objects.get(id=pk)
+        return hospital_profile
+   
+    def get(self, request, *args, **kwargs):
+        context = {}
+        obj = self.get_object()
+        user = User.objects.filter(email=obj.hospital_admin.email).first()
+        print ("User:", user)
+        if obj and user is not None:
+            form = HospitalProfileModelForm(instance=obj)
+            user_form = UserUpdateForm(instance=user)
+            context['object'] = obj
+            context['form'] = form
+            context['user_form'] = user_form
+        
+        return render(request, self.template_name, context)
+    # success_message = "Student Profile Update Successful"
+
+    success_message = "%(hospital_admin)s  Hospital Profile Update Successful"
+    
+    def get_success_message(self, cleaned_data):
+      return self.success_message % dict(
+            cleaned_data,
+            hospital_admin=self.object.hospital_admin.get_full_name,
+        )
+
+    def get_success_url(self):
+        return reverse("monitoring:hospitals_upload_list") 
+
+
+    def post(self, request, *args, **kwargs):
+        # email = request.POST['email']
+        # pk = self.kwargs.get("pk")
+        # obj = get_object_or_404(User, id=pk)
+        # obj = StudentProfile.objects.get(student__email= form.cleaned_data["email"]).student.email
+        obj = self.get_object()
+        user = User.objects.filter(email=obj.hospital_admin.email).first()
+        print("User1:", user)
+        print("Object:", obj)
+
+        form = HospitalProfileModelForm(request.POST or None, instance=obj)
+        user_form = UserUpdateForm(request.POST or None, instance=user)
+        for field in form:
+            print("Field Error:", field.name,  field.errors)
+
+
+        for field in user_form:
+            print("Field Error:", field.name,  field.errors)
+
+        print ("Valid:", user_form.is_valid())
+        print ("Form Valid:", form.is_valid())
+        if user_form.is_valid() and form.is_valid():
+            print ("Valid:", user_form.is_valid())
+            hospital_profile = form.save(commit = False)
+            if hospital_profile.application_status >2:
+                pass
+            else:
+                hospital_profile.application_status = 2
+            hospital_profile.save()
+            
+
+            user = user_form.save(commit=False)
+            user.is_active = True  # Deactivate account till it is confirmed
+            user.hospital = True
+            user.set_password('rrbnhq123%') 
+            # user.password = make_password('rrbnhq123%') 
+            user.save()
+            hospital = Hospital.objects.filter(hospital_admin=user).first()        
+            # reset_password(user, request)
+            # reset_user_password(user, self.request)
+            messages.success(request, 'Hospital Profile Update Successful')
+            return redirect(hospital.get_absolute_url())
+        else:
+            messages.error(request, 'Hospital Profile Update Failed.')
+            hospital = Hospital.objects.filter(hospital_admin=user).first() 
+            return redirect(hospital.get_absolute_url())
+        return super(UpdateHospitalProfileDetails, self).form_valid(form and user_form)
+
+
+
+
+
+
+class UpdateHospitalProfileDetails1 (StaffRequiredMixin, SuccessMessageMixin, UpdateView):
+    form_class = SignupForm
+    template_name = "monitoring/update_hospital_profile_details.html"
+    # success_message = "Student Profile Update Successful"
+
+    success_message = "%(student)s  Hospital Profile Update Successful"
+    def get_object(self, queryset=None):
+        pk = self.kwargs.get("pk")
+        user = User.objects.get(id=pk)
+        return user
+
+    def get_success_message(self, cleaned_data):
+      return self.success_message % dict(
+            cleaned_data,
+            student=self.object.get_full_name,
+        )
+
+    def get_success_url(self):
+        return reverse("monitoring:hospitals_upload_list") 
+
+
+    def post(self, request, *args, **kwargs):
+        email = request.POST['email']
+        pk = self.kwargs.get("pk")
+        obj = get_object_or_404(User, id=pk)
+        # obj = StudentProfile.objects.get(student__email= form.cleaned_data["email"]).student.email
+        form = self.form_class(request.POST or None, instance = obj)
+        if form.is_valid():
+            hospital_profile = form.save()
+            user = hospital_profile
+            hospital_profile = Hospital.objects.filter(hospital_admin=user).first()
+            print("User:", user)
+            # reset_password(user, request)
+            # reset_user_password(user, self.request)
+            messages.success(request, 'Hospital Profile Update Successful')
+            return redirect(hospital_profile.get_absolute_url())
+        else:
+            messages.error(request, 'The email you are trying to assign to this user is already in use')
+            user = get_object_or_404(User, id=pk)
+            hospital_profile = Hospital.objects.filter(hospital_admin=user).first()
+            return redirect(hospital_profile.get_absolute_url())
+        return super(UpdateHospitalProfileDetails, self).form_valid(form)
+
+
+
+
+class HospitalProfileDetails(StaffRequiredMixin, LoginRequiredMixin, DetailView):
     template_name = "monitoring/hospital_profile_details.html"
     model = Hospital
 
-class HospitalRegistrationDetails(LoginRequiredMixin, DetailView):
+class HospitalRegistrationDetails(StaffRequiredMixin, LoginRequiredMixin, DetailView):
     template_name = "monitoring/hospital_registration_details.html"
     model = Document
 
-class HospitalPaymentDetails(LoginRequiredMixin, DetailView):
+class HospitalPaymentDetails(StaffRequiredMixin, LoginRequiredMixin, DetailView):
     template_name = "monitoring/hospital_payment_details.html"
     model = Payment
 
 
-class HospitalVerificationDetails(LoginRequiredMixin, DetailView):
+class HospitalVerificationDetails(StaffRequiredMixin, LoginRequiredMixin, DetailView):
     template_name = "monitoring/hospital_verification_details.html"
     model = Payment
 
-class HospitalScheduleDetails(LoginRequiredMixin, DetailView):
+class HospitalScheduleDetails(StaffRequiredMixin,LoginRequiredMixin, DetailView):
     template_name = "monitoring/hospital_schedule_details.html"
     model = Schedule
 
-class HospitalInspectionDetails(LoginRequiredMixin, DetailView):
+class HospitalInspectionDetails(StaffRequiredMixin, LoginRequiredMixin, DetailView):
     template_name = "monitoring/hospital_inspection_details.html"
     model = Inspection
 
-class HospitalAccreditationDetails(LoginRequiredMixin, DetailView):
+class HospitalAccreditationDetails(StaffRequiredMixin, LoginRequiredMixin, DetailView):
     template_name = "monitoring/hospital_accreditation_details.html"
     model = Appraisal
 
 
-class HospitalInspectionApprovalDetails(LoginRequiredMixin, DetailView):
+class HospitalInspectionApprovalDetails(StaffRequiredMixin, LoginRequiredMixin, DetailView):
     template_name = "monitoring/hospital_inspection_approval_details.html"
     model = Inspection
 
 
-class HospitalAccreditationApprovalDetails(LoginRequiredMixin, DetailView):
+class HospitalAccreditationApprovalDetails(StaffRequiredMixin, LoginRequiredMixin, DetailView):
     template_name = "monitoring/hospital_accreditation_approval_details.html"
     model = Appraisal
 
-class HospitalInspectionRegistrarApprovalDetails(LoginRequiredMixin, DetailView):
+class HospitalInspectionRegistrarApprovalDetails(StaffRequiredMixin, LoginRequiredMixin, DetailView):
     template_name = "monitoring/hospital_inspection_registrar_approval_details.html"
     model = Inspection
 
-class HospitalAccreditationRegistrarApprovalDetails(LoginRequiredMixin, DetailView):
+class HospitalAccreditationRegistrarApprovalDetails(StaffRequiredMixin, LoginRequiredMixin, DetailView):
     template_name = "monitoring/hospital_accreditation_registrar_approval_details.html"
     model = Appraisal
     
 
-class HospitalLicenseDetails(LoginRequiredMixin, DetailView):
+class HospitalLicenseDetails(StaffRequiredMixin, LoginRequiredMixin, DetailView):
     template_name = "monitoring/hospital_license_details.html"
     model = License
 
 
-class RegistrationListView(LoginRequiredMixin, ListView):
+class RegistrationListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
     template_name = "monitoring/list-applications.html"
     context_object_name = 'object'
 
@@ -349,7 +645,7 @@ class PaymentObjectMixin(object):
         #context['registration'] = Document.objects.filter (application_no=obj.application_no)
         #return render(request, self.template_name, context) 
 
-class VetApplication(LoginRequiredMixin, PaymentObjectMixin, View):
+class VetApplication(StaffRequiredMixin, LoginRequiredMixin, PaymentObjectMixin, View):
     template_name = "monitoring/view-applications2.html" # DetailView
     def get(self, request, id=None, *args, **kwargs):
         # GET method
@@ -403,7 +699,7 @@ class RegistrationObjectMixin(object):
             obj = get_object_or_404(self.model, id=id)
         return obj 
 
-class InspectionScheduleListView(LoginRequiredMixin, ListView):
+class InspectionScheduleListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
     template_name = 'monitoring/inspection_schedule_list.html'
     #context_object_name = 'object'
 
@@ -460,7 +756,7 @@ class InspectionScheduleListView(LoginRequiredMixin, ListView):
 
 
 
-class InspectionCreateView(LoginRequiredMixin, PaymentObjectMixin, SuccessMessageMixin, CreateView):
+class InspectionCreateView(StaffRequiredMixin, LoginRequiredMixin, PaymentObjectMixin, SuccessMessageMixin, CreateView):
     model = Schedule
     template_name = 'monitoring/schedule_inspection.html'
     form_class = ScheduleModelForm
@@ -498,7 +794,7 @@ class InspectionCreateView(LoginRequiredMixin, PaymentObjectMixin, SuccessMessag
 
 
 
-class AppraisalCreateView(LoginRequiredMixin, PaymentObjectMixin, SuccessMessageMixin, CreateView):
+class AppraisalCreateView(StaffRequiredMixin, LoginRequiredMixin, PaymentObjectMixin, SuccessMessageMixin, CreateView):
     model = Schedule
     template_name = 'monitoring/schedule_inspection.html'
     form_class = ScheduleModelForm
@@ -549,7 +845,7 @@ class ScheduleObjectMixin(object):
 
 
 
-class InspectionCreateDetailView(LoginRequiredMixin, ScheduleObjectMixin, View):
+class InspectionCreateDetailView(StaffRequiredMixin, LoginRequiredMixin, ScheduleObjectMixin, View):
     template_name = 'monitoring/inspection_scheduled.html' 
     def get(self, request, id=None, *args, **kwargs):
         context = {}
@@ -572,7 +868,7 @@ class InspectionCreateDetailView(LoginRequiredMixin, ScheduleObjectMixin, View):
 
 
 
-class InspectionCompletedListView(LoginRequiredMixin, ListView):
+class InspectionCompletedListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
     template_name = 'monitoring/inspections_completed_list.html'
     context_object_name = 'object'
 
@@ -598,7 +894,7 @@ class InspectionObjectMixin(object):
         return obj 
 
 
-class InspectionCompletedDetailView(LoginRequiredMixin, InspectionObjectMixin, View):
+class InspectionCompletedDetailView(StaffRequiredMixin, LoginRequiredMixin, InspectionObjectMixin, View):
     template_name = "monitoring/inspections_detail.html" # DetailView
     def get(self, request, id=None, *args, **kwargs):
         # GET method
@@ -618,7 +914,7 @@ class AccreditationObjectMixin(object):
         return obj 
 
 
-class AccreditationCompletedDetailView(LoginRequiredMixin, AccreditationObjectMixin, View):
+class AccreditationCompletedDetailView(StaffRequiredMixin, LoginRequiredMixin, AccreditationObjectMixin, View):
     template_name = "monitoring/appraisals_detail.html" # DetailView
     def get(self, request, id=None, *args, **kwargs):
         # GET method
@@ -728,7 +1024,7 @@ def view_appraisal_report(request, id):
         #return obj
 
 
-class LicenseIssueListView(LoginRequiredMixin, ListView):
+class LicenseIssueListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
     template_name = 'monitoring/license_issue_list.html'
     context_object_name = 'object'
 
@@ -742,7 +1038,7 @@ class LicenseIssueListView(LoginRequiredMixin, ListView):
         obj['appraisal'] = Appraisal.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Internship Accreditation').count()   
         return obj   
 
-class LicenseIssueListTable(LoginRequiredMixin, ListView):
+class LicenseIssueListTable(StaffRequiredMixin, LoginRequiredMixin, ListView):
     template_name = "monitoring/license_list_table.html"
     context_object_name = 'object'  
     def get_queryset(self):
@@ -752,7 +1048,7 @@ class LicenseIssueListTable(LoginRequiredMixin, ListView):
         obj['issue_license_qs'] = Inspection.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')  
         return obj   
 
-class AccreditationIssueListTable(LoginRequiredMixin, ListView):
+class AccreditationIssueListTable(StaffRequiredMixin, LoginRequiredMixin, ListView):
     template_name = "monitoring/accreditation_list_table.html"
     context_object_name = 'object'   
     def get_queryset(self):
@@ -763,7 +1059,7 @@ class AccreditationIssueListTable(LoginRequiredMixin, ListView):
         return obj     
 
 
-class RenewalIssueListTable(LoginRequiredMixin, ListView):
+class RenewalIssueListTable(StaffRequiredMixin, LoginRequiredMixin, ListView):
     template_name = "monitoring/renewal_list_table2.html"
     context_object_name = 'object'   
     def get_queryset(self):
@@ -773,27 +1069,27 @@ class RenewalIssueListTable(LoginRequiredMixin, ListView):
         obj['issue_renewal_qs'] = Payment.objects.select_related("hospital_name").filter(application_status=7, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')         
         return obj   
 
-class RecordsCreateView(LoginRequiredMixin, CreateView):
+class RecordsCreateView(StaffRequiredMixin, LoginRequiredMixin, CreateView):
     template_name = 'monitoring/create_hospital_records.html'
     form_class = RecordsModelForm
     def get_success_url(self):
         return reverse('monitoring:hospital_record_details', kwargs={'id' : self.object.id})
 
-class PermitRenewalDetails(LoginRequiredMixin, PaymentObjectMixin, View):
+class PermitRenewalDetails(StaffRequiredMixin, LoginRequiredMixin, PaymentObjectMixin, View):
     template_name = "monitoring/practice_permit_renewal_details.html" # DetailView
     def get(self, request, id=None, *args, **kwargs):
         # GET method
         context = {'object': self.get_object()}
         return render(request, self.template_name, context)   
 
-class LicenseDetailView(LoginRequiredMixin, InspectionObjectMixin, View):
+class LicenseDetailView(StaffRequiredMixin, LoginRequiredMixin, InspectionObjectMixin, View):
     template_name = "monitoring/licenses_detail.html" # DetailView
     def get(self, request, id=None, *args, **kwargs):
         # GET method
         context = {'object': self.get_object()}
         return render(request, self.template_name, context)
 
-class AccreditationDetailView(LoginRequiredMixin, AccreditationObjectMixin, View):
+class AccreditationDetailView(StaffRequiredMixin, LoginRequiredMixin, AccreditationObjectMixin, View):
     template_name = "monitoring/accreditation_detail.html" # DetailView
     def get(self, request, id=None, *args, **kwargs):
         # GET method
@@ -823,14 +1119,14 @@ class RecordsObjectMixin(object):
         return obj 
 
 
-class RecordsDetailView(LoginRequiredMixin, RecordsObjectMixin, View):
+class RecordsDetailView(StaffRequiredMixin, LoginRequiredMixin, RecordsObjectMixin, View):
     template_name = "monitoring/hospitals_records_confirmation.html" # DetailView
     def get(self, request, id=None, *args, **kwargs):
         # GET method
         context = {'object': self.get_object()}
         return render(request, self.template_name, context)
 
-class HospitalRecordsListView(LoginRequiredMixin, ListView):
+class HospitalRecordsListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
     template_name = "monitoring/hospital_records_list.html"
     context_object_name = 'object'
 
@@ -842,7 +1138,7 @@ class HospitalRecordsListView(LoginRequiredMixin, ListView):
         return obj
 
 
-class HospitalRecordsDetailView(LoginRequiredMixin, RecordsObjectMixin, View):
+class HospitalRecordsDetailView(StaffRequiredMixin, LoginRequiredMixin, RecordsObjectMixin, View):
     template_name = "monitoring/hospital_records_detail.html" # DetailView
     def get(self, request, id=None, *args, **kwargs):
         # GET method
@@ -870,7 +1166,7 @@ class AccreditationObjectMixin(object):
         return obj 
 
 
-class IssueLicenseView(LoginRequiredMixin, InspectionObjectMixin, SuccessMessageMixin, CreateView):
+class IssueLicenseView(StaffRequiredMixin, LoginRequiredMixin, InspectionObjectMixin, SuccessMessageMixin, CreateView):
     model = License
     template_name = 'monitoring/issue_license.html'
     form_class = LicenseModelForm
@@ -898,7 +1194,7 @@ class IssueLicenseView(LoginRequiredMixin, InspectionObjectMixin, SuccessMessage
 
   
 
-class IssueRadCertPermitView(LoginRequiredMixin, InspectionObjectMixin, SuccessMessageMixin, CreateView):
+class IssueRadCertPermitView(StaffRequiredMixin, LoginRequiredMixin, InspectionObjectMixin, SuccessMessageMixin, CreateView):
     model = License
     template_name = 'monitoring/issue_license.html'
     form_class = LicenseModelForm
@@ -924,7 +1220,7 @@ class IssueRadCertPermitView(LoginRequiredMixin, InspectionObjectMixin, SuccessM
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data())
 
-class IssueRadPracticePermitView(LoginRequiredMixin, InspectionObjectMixin, SuccessMessageMixin, CreateView):
+class IssueRadPracticePermitView(StaffRequiredMixin, LoginRequiredMixin, InspectionObjectMixin, SuccessMessageMixin, CreateView):
     model = License
     template_name = 'monitoring/issue_license.html'
     form_class = LicenseModelForm
@@ -952,7 +1248,7 @@ class IssueRadPracticePermitView(LoginRequiredMixin, InspectionObjectMixin, Succ
 
 
 
-class IssueRadPracticePermitRenewal(LoginRequiredMixin, PaymentObjectMixin, SuccessMessageMixin, CreateView):
+class IssueRadPracticePermitRenewal(StaffRequiredMixin, LoginRequiredMixin, PaymentObjectMixin, SuccessMessageMixin, CreateView):
     model = License
     template_name = 'monitoring/issue_practice_permit_renewal.html'
     form_class = PermitRenewalModelForm
@@ -991,7 +1287,7 @@ class LicenseObjectMixin(object):
         return obj 
 
 
-class LicenseIssuedDetailView(LoginRequiredMixin, LicenseObjectMixin, View):
+class LicenseIssuedDetailView(StaffRequiredMixin, LoginRequiredMixin, LicenseObjectMixin, View):
     template_name = 'monitoring/license_issued2.html' 
     def get(self, request, id=None, *args, **kwargs):
         context = {}
@@ -1011,7 +1307,7 @@ class LicenseIssuedDetailView(LoginRequiredMixin, LicenseObjectMixin, View):
         return render(request, self.template_name, context)
 
 
-class RegPermitCertDetailView(LoginRequiredMixin, LicenseObjectMixin, View):
+class RegPermitCertDetailView(StaffRequiredMixin, LoginRequiredMixin, LicenseObjectMixin, View):
     template_name = 'monitoring/license_issued2.html' 
     def get(self, request, id=None, *args, **kwargs):
         context = {}
@@ -1031,7 +1327,7 @@ class RegPermitCertDetailView(LoginRequiredMixin, LicenseObjectMixin, View):
         return render(request, self.template_name, context)
 
 
-class RadPracticePermitDetailView(LoginRequiredMixin, LicenseObjectMixin, View):
+class RadPracticePermitDetailView(StaffRequiredMixin, LoginRequiredMixin, LicenseObjectMixin, View):
     template_name = 'monitoring/practice_permit_issued.html' 
     def get(self, request, id=None, *args, **kwargs):
         context = {}
@@ -1058,7 +1354,7 @@ class RadPracticePermitDetailView(LoginRequiredMixin, LicenseObjectMixin, View):
 
 
 
-class IssueAccreditationView(LoginRequiredMixin, AccreditationObjectMixin, SuccessMessageMixin, CreateView):
+class IssueAccreditationView(StaffRequiredMixin, LoginRequiredMixin, AccreditationObjectMixin, SuccessMessageMixin, CreateView):
     model = License
     template_name = 'monitoring/issue_accreditation.html'
     form_class = AccreditationModelForm
@@ -1105,7 +1401,7 @@ class IssueAccreditationView(LoginRequiredMixin, AccreditationObjectMixin, Succe
 
 
 
-class AccreditationIssuedDetailView(LoginRequiredMixin, LicenseObjectMixin, View):
+class AccreditationIssuedDetailView(StaffRequiredMixin, LoginRequiredMixin, LicenseObjectMixin, View):
     template_name = 'monitoring/accreditation_issued2.html' 
     def get(self, request, id=None, *args, **kwargs):
         context = {}
@@ -1128,7 +1424,7 @@ class AccreditationIssuedDetailView(LoginRequiredMixin, LicenseObjectMixin, View
 
 
 
-class RadRegCerttificateListView(LoginRequiredMixin, ListView):
+class RadRegCerttificateListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
     template_name = "monitoring/radiography_reg_cert_list.html"
     context_object_name = 'object'   
     def get_queryset(self):
@@ -1139,7 +1435,7 @@ class RadRegCerttificateListView(LoginRequiredMixin, ListView):
         return obj    
 
 
-class RadPracticePermitListView(LoginRequiredMixin, ListView):
+class RadPracticePermitListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
     template_name = "monitoring/rad_practice_permit_list.html"
     context_object_name = 'object'   
     def get_queryset(self):
@@ -1150,7 +1446,7 @@ class RadPracticePermitListView(LoginRequiredMixin, ListView):
         return obj  
 
 
-class AccreditationCertificateListView(LoginRequiredMixin, ListView):
+class AccreditationCertificateListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
     template_name = "monitoring/accreditation_cert_list.html"
     context_object_name = 'object'   
     def get_queryset(self):
@@ -1215,7 +1511,7 @@ def link_callback(uri, rel):
     return path
 
 
-class GeneratePdfView(LoginRequiredMixin, GenerateObjectMixin, View):
+class GeneratePdfView(StaffRequiredMixin, LoginRequiredMixin, GenerateObjectMixin, View):
     
     def get(self, request, *args, **kwargs):
         template = get_template('pdf/license.html')
@@ -1231,7 +1527,7 @@ class GeneratePdfView(LoginRequiredMixin, GenerateObjectMixin, View):
 
 
 
-class GenerateLicense(LoginRequiredMixin, GenerateObjectMixin, View):   
+class GenerateLicense(StaffRequiredMixin, LoginRequiredMixin, GenerateObjectMixin, View):   
     def get(self, request, *args, **kwargs):
         template = get_template('pdf/license.html')
         context = {
@@ -1624,7 +1920,7 @@ class PdfCreator:
         return pdf_value
 
 
-class RegisteredHospitalsListView(LoginRequiredMixin, ListView):
+class RegisteredHospitalsListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
     template_name = "monitoring/registered_hospitals_list.html"
     context_object_name = 'object'
 
@@ -1648,7 +1944,7 @@ class RegisteredObjectMixin(object):
         return obj 
 
 
-class RegisterdHospitalsDetailView(LoginRequiredMixin, RegisteredObjectMixin, View):
+class RegisterdHospitalsDetailView(StaffRequiredMixin, LoginRequiredMixin, RegisteredObjectMixin, View):
     template_name = "monitoring/hospital_details.html" # DetailView
     def get(self, request, id=None, *args, **kwargs):
         # GET method

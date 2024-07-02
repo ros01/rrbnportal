@@ -1,7 +1,14 @@
 from django.urls import path
-
 from . import views
+
+
+
 from .views import (
+    HospitalProfileCreateView,
+    NewHospitalProfileDetails,
+    HospitalUploadListView,
+    HospitalsUpdatedUploadListView,
+    UpdateHospitalProfileDetails,
     InspectionScheduleListView,
     EnuguScheduleListView,
     MyUserAccount,
@@ -72,6 +79,12 @@ app_name = 'zonal_offices'
 urlpatterns = [
     path('', DashboardTemplateView.as_view(), name='zonal_offices_dashboard'),
     path('my_user_account/', MyUserAccount.as_view(), name='my_user_account'),
+    path('create_hospital_profile',  HospitalProfileCreateView.as_view(), name='create_hospital_profile'),
+    path('downloadfile', views.downloadfile, name='downloadfile'),
+    path('hospitals_upload_list',  HospitalUploadListView.as_view(), name='hospitals_upload_list'),
+    path('hospitals_updated_upload_list',  HospitalsUpdatedUploadListView.as_view(), name='hospitals_updated_upload_list'),
+    path('<uuid:pk>/new_hospital_profile_details/', NewHospitalProfileDetails.as_view(), name='new_hospital_profile_details'),
+    path('<uuid:pk>/update_hospital_profile_details/', UpdateHospitalProfileDetails.as_view(), name='update_hospital_profile_details'),
     path('offices', views.offices, name='rrbn_offices'),
     path('inspection_list/', InspectionScheduleListView.as_view(), name='inspection_list'),
     path('enugu_list/', EnuguScheduleListView.as_view(), name='enugu_list'),

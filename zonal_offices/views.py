@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import user_passes_test
 from accounts.decorators import zonaloffices_required
 from accounts.models import Hospital
 from hospitals.models import Schedule, Inspection, License, Records, Ultrasound, Xray, Nuclearmedicine, Radiotherapy, Mri, Ctscan, Xray, Flouroscopy, Mamography, Dentalxray, Echocardiography, Angiography, Carm, Appraisal
-from .forms import InspectionModelForm, RecordsModelForm, AccreditationModelForm, UltrasoundModelForm, XrayModelForm, FlouroscopyModelForm, CtscanModelForm, MriModelForm, NuclearMedicineModelForm, RadiotherapyModelForm,  MamographyModelForm, DentalXrayModelForm, EchocardiographyModelForm, AngiographyModelForm, CarmModelForm
 from django.views import View
 from django.views.generic import (
      CreateView,
@@ -16,7 +15,8 @@ from django.views.generic import (
      TemplateView
 )
 
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse, StreamingHttpResponse
+from wsgiref.util import FileWrapper
 from django.conf import settings
 from django.template.loader import get_template
 from django.core.mail import send_mail
@@ -26,16 +26,39 @@ from django.contrib.messages.views import SuccessMessageMixin
 from bootstrap_modal_forms.generic import BSModalCreateView
 from bootstrap_modal_forms.mixins import PassRequestMixin, CreateUpdateAjaxMixin
 from django.contrib import messages
+from . import views
+from .forms import *
+from monitoring.forms import *
+from .models import *
+from accounts.forms import *
+import os
+import mimetypes
+from django.contrib.messages.views import SuccessMessageMixin
+import io, csv
+from django.contrib.auth.hashers import make_password
 
+
+class StaffRequiredMixin(object):
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.role == 'Zonal Offices':
+            messages.error(
+                request,
+                'You do not have the permission required to perform the '
+                'requested operation.')
+            return redirect(settings.LOGIN_URL)
+        return super(StaffRequiredMixin, self).dispatch(request,
+            *args, **kwargs)
+
+
+
+@login_required
+def monitoring_dashboard(request):
+    return render(request, 'monitoring/monitoring_dashboard.html')
 
 
 
 class LoginRequiredMixin(object):
-    #@classmethod
-    #def as_view(cls, **kwargs):
-        #view = super(LoginRequiredMixin, cls).as_view(**kwargs)
-        #return login_required(view)
-
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
@@ -56,6 +79,186 @@ class MyUserAccount(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'zonal_offices/my_profile.html')
         
+def downloadfile(request):
+     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+     filename = 'hospital_list.csv'
+     filepath = base_dir + '/static/csv/' + filename
+     thefile = filepath
+     filename = os.path.basename(thefile) 
+     chunk_size = 8192
+     response = StreamingHttpResponse(FileWrapper(open(thefile, 'rb'),chunk_size), content_type=mimetypes.guess_type(thefile)[0])
+     response['Content-Length'] = os.path.getsize(thefile)
+     response['Content-Disposition'] = "Attachment;filename=%s" % filename
+     return response
+
+class HospitalProfileCreateView(StaffRequiredMixin, SuccessMessageMixin, CreateView):
+    form = HospitalProfileModelForm
+    def get(self, request, *args, **kwargs):
+        form = HospitalProfileModelForm()
+        template_name = 'zonal_offices/bulk_create_hospitals.html'
+        return render(request, template_name, {'form':form})
+            
+    def post(self, request, *args, **kwargs):
+        paramFile = io.TextIOWrapper(request.FILES['hospitals_list'].file)
+        portfolio1 = csv.DictReader(paramFile)
+        list_of_dict = list(portfolio1)
+
+        try:
+            context = {}
+            
+            for row in list_of_dict:
+                data = row['email']
+                hospitals_list = User.objects.filter(email = data)
+                try:
+                    if hospitals_list.exists():
+                        for hospital_admin in hospitals_list:
+                            messages.error(request, f'This User: {hospital_admin} and possibly other users on this list exit already exist')
+                        return redirect("zonal_offices:create_hospital_profile")
+                    else:
+                        hospital_admin = User.objects.create(email=row['email'], last_name=row['last_name'], first_name=row['first_name'], is_active = True, hospital = True, password = make_password('rrbnhq123%'),)
+                        
+                except Exception as e:
+                    messages.error(request, e)
+
+            objs = [
+                Hospital(
+                    hospital_admin = User.objects.get(email=row['email']),
+                    type = request.POST['type'],
+                    hospital_name = row['hospital_name'],
+                    phone_no = row['phone_no'],
+                )
+                for row in list_of_dict     
+             ]
+            nmsg = Hospital.objects.bulk_create(objs)
+            messages.success(request, "Bulk Creation of Hospitals successful!")
+            returnmsg = {"status_code": 200}
+            for obj in objs:
+                user = obj.hospital_admin
+            return redirect("zonal_offices:create_hospital_profile")          
+        except Exception as e:
+            print('Error While Importing Data: ', e)
+            returnmsg = {"status_code": 500}
+        return JsonResponse(returnmsg)
+
+
+
+
+class HospitalsUpdatedUploadListView(StaffRequiredMixin, ListView):
+    template_name = "zonal_offices/hospitals_upload_list.html"
+    def get_queryset(self):
+        # request = self.request
+        # user = request.user
+        qs = Hospital.objects.filter(application_status = 2)
+        query = self.request.GET.get('q')
+        if query:
+            qs = qs.filter(name__icontains=query)
+        return qs 
+
+
+class HospitalUploadListView(StaffRequiredMixin, ListView):
+    template_name = "zonal_offices/hospitals_upload_list.html"
+    def get_queryset(self):
+        # request = self.request
+        # user = request.user
+        qs = Hospital.objects.filter(application_status = 1)
+        query = self.request.GET.get('q')
+        if query:
+            qs = qs.filter(name__icontains=query)
+        return qs 
+
+
+class NewHospitalProfileDetails(StaffRequiredMixin, LoginRequiredMixin, DetailView):
+    template_name = "zonal_offices/new_hospital_profile_details.html"
+    model = Hospital
+
+
+
+class UpdateHospitalProfileDetails (StaffRequiredMixin, SuccessMessageMixin, UpdateView):
+    user_form = UserUpdateForm
+    form = HospitalProfileModelForm
+    template_name = "zonal_offices/update_hospital_profile_details.html"
+
+    def get_object(self, queryset=None):
+        pk = self.kwargs.get("pk")
+        hospital_profile = Hospital.objects.get(id=pk)
+        return hospital_profile
+   
+    def get(self, request, *args, **kwargs):
+        context = {}
+        obj = self.get_object()
+        user = User.objects.filter(email=obj.hospital_admin.email).first()
+        print ("User:", user)
+        if obj and user is not None:
+            form = HospitalProfileModelForm(instance=obj)
+            user_form = UserUpdateForm(instance=user)
+            context['object'] = obj
+            context['form'] = form
+            context['user_form'] = user_form
+        
+        return render(request, self.template_name, context)
+    # success_message = "Student Profile Update Successful"
+
+    success_message = "%(hospital_admin)s  Hospital Profile Update Successful"
+    
+    def get_success_message(self, cleaned_data):
+      return self.success_message % dict(
+            cleaned_data,
+            hospital_admin=self.object.hospital_admin.get_full_name,
+        )
+
+    def get_success_url(self):
+        return reverse("zonal_offices_dashboard:hospitals_upload_list") 
+
+
+    def post(self, request, *args, **kwargs):
+        # email = request.POST['email']
+        # pk = self.kwargs.get("pk")
+        # obj = get_object_or_404(User, id=pk)
+        # obj = StudentProfile.objects.get(student__email= form.cleaned_data["email"]).student.email
+        obj = self.get_object()
+        user = User.objects.filter(email=obj.hospital_admin.email).first()
+        print("User1:", user)
+        print("Object:", obj)
+
+        form = HospitalProfileModelForm(request.POST or None, instance=obj)
+        user_form = UserUpdateForm(request.POST or None, instance=user)
+        for field in form:
+            print("Field Error:", field.name,  field.errors)
+
+
+        for field in user_form:
+            print("Field Error:", field.name,  field.errors)
+
+        print ("Valid:", user_form.is_valid())
+        print ("Form Valid:", form.is_valid())
+        if user_form.is_valid() and form.is_valid():
+            print ("Valid:", user_form.is_valid())
+            hospital_profile = form.save(commit = False)
+            if hospital_profile.application_status >2:
+                pass
+            else:
+                hospital_profile.application_status = 2
+            hospital_profile.save()
+            
+
+            user = user_form.save(commit=False)
+            user.is_active = True  # Deactivate account till it is confirmed
+            user.hospital = True
+            user.set_password('rrbnhq123%') 
+            # user.password = make_password('rrbnhq123%') 
+            user.save()
+            hospital = Hospital.objects.filter(hospital_admin=user).first()        
+            # reset_password(user, request)
+            # reset_user_password(user, self.request)
+            messages.success(request, 'Hospital Profile Update Successful')
+            return redirect(hospital.get_zonal_absolute_url())
+        else:
+            messages.error(request, 'Hospital Profile Update Failed.')
+            hospital = Hospital.objects.filter(hospital_admin=user).first() 
+            return redirect(hospital.get_zonal_absolute_url())
+        return super(UpdateHospitalProfileDetails, self).form_valid(form and user_form)
+
+
 
 
 
@@ -78,6 +281,7 @@ class InspectionScheduleListView(LoginRequiredMixin, ListView):
         obj['awka_qs'] = Schedule.objects.filter(inspection_zone="Awka", application_status=4)
         obj['calabar_qs'] = Schedule.objects.filter(inspection_zone="Calabar", application_status=4)
         obj['ilesha_qs'] = Schedule.objects.filter(inspection_zone="Ilesha", application_status=4)
+        obj['maiduguri_qs'] = Schedule.objects.filter(inspection_zone="Maiduguri", application_status=4)
         return obj
 
 

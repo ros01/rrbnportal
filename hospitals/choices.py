@@ -79,7 +79,8 @@ INSPECTION_ZONE = (
         ('Port Harcourt', 'Port Harcourt'), 
         ('Awka', 'Awka'), 
         ('Calabar', 'Calabar'), 
-        ('Ilesha', 'Ilesha'),  
+        ('Ilesha', 'Ilesha'), 
+        ('Maiduguri', 'Maiduguri'), 
         )
 
 

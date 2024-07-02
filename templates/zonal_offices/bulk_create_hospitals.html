@@ -1,0 +1,112 @@
+{% extends 'monitoring/monitoring_base_view.html'%}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block title%}| Welcome {% endblock %}
+
+{% block styles %}
+
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
+
+<div class="container">
+<div class="col-md-12 ml-3 mb-3 mt-4">
+<!-- <div class="col-md-12 col-xl-9"> -->
+<div class="card m-b-30">
+<div class="card-header profile-tabs pb-0">
+<!-- <ul class="nav nav-tabs">
+<li class="nav-item">
+<a class="nav-link active" href="#profile" data-toggle="tab" aria-expanded="false"><i class="ti-user mr-2"></i>Hospital Profiles Creation</a>
+</li>
+
+<li class="nav-item">
+</li>
+</ul> -->
+</div>
+<div class="card-body">
+<div class="">
+<div class="tab-content">
+<div class="tab-pane active" id="profile">
+<div class="row">
+ 
+<div class="col-md-12  profile-detail">
+{% include 'partials/_alerts.html' %}
+<div class="">
+<h5 class="mb-3"> <i class="fa fa-graduation-cap text-primary"></i> Create Hospital Profiles</h5>
+</div>
+
+<div class="col-md-12 alert alert-primary mt-1 mb-3 py-2" role="alert">
+<h4 class="alert-heading font-18"><span class="text-danger">Important! </span>Download csv template from link below. Open downloaded file with MS-Excel and fill in all the hospital details. Maintain fileformat of .csv when saving data. Select and Upload saved file to bulk create hospitals</h4>
+</div>
+
+
+
+<div class="d-flex justify-content-end mb-3">   
+<a href="{% url 'zonal_offices:downloadfile' %}" class="btn btn-outline-success py-0 mt-1 mb-3"><i class="fas fa-arrow-circle-down" aria-hidden="true"></i> Download CSV</a>  
+</div>
+
+<p class="lead text-primary ">Batch create hospital profiles from csv file.
+</p>
+
+</div>
+
+<div class="row ml-1">
+
+<form class="form-horizontal form-material" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+
+
+<div class="form-group row">
+<div class="col-md-12 mt-2">
+
+<label for="id_hospitals_list" class="ml-3">Upload Hospitals List:</label>
+<input type="file" name="hospitals_list"  class="form-control pt-1 px-0 ml-3">
+</div>
+</div>
+
+
+
+<input type="hidden" name="type" class="form-control" value="Radiography Practice Permit" required id="id_type"  id="div_id_type">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+
+<div class="d-flex justify-content-end">  
+
+ <a href="{% url 'zonal_offices:hospitals_upload_list' %}" class="btn btn-outline-primary btn-sm mt-2 mr-4"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Hospitals List</a> 
+
+
+<input type="submit" class="btn btn-outline-primary btn-sm mt-2 float-right" value="Create Hospital Profiles" onclick="return confirm('Are you sure you want to submit this form?')">
+</div>
+
+</form>
+</div>
+</div>
+
+<!-- </div> -->
+</div>
+</div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    $('.alert').alert()
+  })
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+
+{% endblock %}
