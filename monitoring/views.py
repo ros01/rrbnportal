@@ -106,7 +106,7 @@ class HospitalUploadListView(StaffRequiredMixin, ListView):
     def get_queryset(self):
         # request = self.request
         # user = request.user
-        qs = Hospital.objects.filter(application_status = 1)
+        qs = Hospital.objects.filter(application_status = 1).order_by('-date')
         query = self.request.GET.get('q')
         if query:
             qs = qs.filter(name__icontains=query)
@@ -119,7 +119,7 @@ class HospitalsUpdatedUploadListView(StaffRequiredMixin, ListView):
     def get_queryset(self):
         # request = self.request
         # user = request.user
-        qs = Hospital.objects.filter(application_status = 2)
+        qs = Hospital.objects.filter(application_status = 2).order_by('-date')
         query = self.request.GET.get('q')
         if query:
             qs = qs.filter(name__icontains=query)
@@ -283,7 +283,7 @@ class AllHospitalsView(StaffRequiredMixin, LoginRequiredMixin, ListView):
     # model = Document 
 
     def get_queryset(self):
-         queryset = Document.objects.order_by('submission_date')
+         queryset = Document.objects.order_by('-date')
          return queryset
     
     
