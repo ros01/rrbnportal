@@ -34,14 +34,11 @@ Enter Scores for Each Parameter Below.  Final Score is calculated automatically 
 
 <input type="hidden" name="inspection_zone" {% if user.is_authenticated %} value="{{ user.module_name }}" {% endif %} required id="id_inspection_zone">
 
-
 <div class="row ml-2">
 <p class="col-12 text-success lead">Hospital Details</p>
 </div>
 <div class="row px-4"> 
-<div class="col-md-4"> <div class="form-group"> 
-{{ form.application_no|as_crispy_field }}
-</div>
+
 </div>
 <div class="col-md-8"><div class="form-group">
 {% if schedule_qss %}
@@ -86,71 +83,6 @@ Enter Scores for Each Parameter Below.  Final Score is calculated automatically 
 <p class="col-12 text-success lead">Accreditation Scores</p>
 </div>
 
-
-<div class="row px-4 justify-content">
-<div class="col-md-6">
-<div class="form-group">    
-</div>
-</div>
-
-<div class="col-md-6">
-<div class="form-group">
-{{ form.appraisal_comments|as_crispy_field }}       
-</div>
-</div>
-
-</div>
-
-
-<div class="row ml-2">
-<p class="col-12 text-success lead">Picture Uploads</p>
-</div>
-
-<div class="row px-4">
-<div class="col-md-3">
-<div class="form-group">
-{{ form.photo_main|as_crispy_field }}
-</div>
-</div>
-
-<div class="col-md-3">
-<div class="form-group">
-{{ form.photo_1|as_crispy_field }}  
-</div>
-</div>
-      
-<div class="col-md-3">
-<div class="form-group">
-{{ form.photo_2|as_crispy_field }}       
-</div>
-</div>
-
-<div class="col-md-3">
-<div class="form-group">
-{{ form.photo_3|as_crispy_field }}
-</div>
-</div>
-</div>
-
-<div class="row px-4">
-<div class="col-md-3">
-<div class="form-group">
-{{ form.photo_4|as_crispy_field }}
-</div>
-</div>
-
-<div class="col-md-3">
-<div class="form-group">
-{{ form.photo_5|as_crispy_field }}  
-</div>
-</div>
-      
-      
-<div class="col-md-3">
-<div class="form-group">
-{{ form.photo_6|as_crispy_field }}       
-</div>
-</div>
 </div>
 <hr>
 <div class="d-flex justify-content-end">   
