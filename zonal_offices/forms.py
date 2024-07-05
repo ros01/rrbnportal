@@ -11,36 +11,6 @@ from bootstrap_modal_forms.mixins import PassRequestMixin, PopRequestMixin, Crea
 
 
 
-
-
-
-class InspectionModelForm(forms.ModelForm):
-
-    class Meta:
-        model = Inspection
-        fields = ('application_no', 'hospital_name', 'hospital', 'payment', 'schedule', 'inspection_comments', 'photo_main', 'photo_1', 'photo_2', 'photo_3', 'photo_4', 'photo_5', 'photo_6',)
-            
-        
-        widgets = {
-        'hospital_name': forms.HiddenInput(),
-        'hospital': forms.HiddenInput(),
-        'payment': forms.HiddenInput(),
-        'schedule': forms.HiddenInput(),
-        'application_no': forms.TextInput(attrs={'readonly': True}),
-        'inspection_comments': forms.Textarea(attrs={'rows':6, 'cols':12}),
-        }
-
-    def __init__(self, *args, **kwargs):
-       super(InspectionModelForm, self).__init__(*args, **kwargs)
-       for name in self.fields.keys():
-            self.fields[name].widget.attrs.update({
-                'class': 'form-control',
-            })
-       #self.fields['inspection_zone'].label = False
-       #self.fields['inspection_total'].label = "Total Score"
-       self.fields['inspection_comments'].label = "Enter Observations and Comments"
-
-
 class UltrasoundModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
 
     class Meta:
@@ -1103,6 +1073,137 @@ class CarmModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
       return instance
 
 
+class InspectionModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Inspection
+        fields = ('application_no', 'hospital_name', 'hospital', 'payment', 'schedule', 'inspection_comments', 'photo_main', 'photo_1', 'photo_2', 'photo_3', 'photo_4', 'photo_5', 'photo_6',)
+            
+        
+        widgets = {
+        'hospital_name': forms.HiddenInput(),
+        'hospital': forms.HiddenInput(),
+        'payment': forms.HiddenInput(),
+        'schedule': forms.HiddenInput(),
+        'application_no': forms.TextInput(attrs={'readonly': True}),
+        'inspection_comments': forms.Textarea(attrs={'rows':6, 'cols':12}),
+        }
+
+    def __init__(self, *args, **kwargs):
+       super(InspectionModelForm, self).__init__(*args, **kwargs)
+       for name in self.fields.keys():
+            self.fields[name].widget.attrs.update({
+                'class': 'form-control',
+            })
+       #self.fields['inspection_zone'].label = False
+       #self.fields['inspection_total'].label = "Total Score"
+       self.fields['inspection_comments'].label = "Enter Observations and Comments"
+
+
+class InternshipModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Appraisal
+        fields = ('application_no', 'hospital_name', 'hospital', 'payment', 'schedule', 'radiographers_score', 'radiologists_score', 'support_staff_score', 'offices_score', 'library_score', 'call_room_score', 'waiting_room_score', 'toilets_score', 'static_xray_score', 'mobile_xray_score', 'ct_score', 'mri_score', 'fluoroscopy_score', 'nuclear_medicine_score', 'radiation_therapy_score', 'ultrasound_score', 'mammography_score', 'dental_equipment_score', 'carm_score', 'processing_unit_score', 'diagnostic_room_score', 'personnel_score', 'room_design_score', 'licence_status_score', 'cpds_score', 'departmental_seminars_score', 'appraisal_total',  'appraisal_comments', 'photo_main', 'photo_1', 'photo_2', 'photo_3', 'photo_4', 'photo_5', 'photo_6',)      
+        
+        widgets = {
+        'hospital_name': forms.HiddenInput(),
+        'hospital': forms.HiddenInput(),
+        'payment': forms.HiddenInput(),
+        'schedule': forms.HiddenInput(),
+        'application_no': forms.TextInput(attrs={'readonly': True}),
+        'appraisal_comments': forms.Textarea(attrs={'rows':6, 'cols':12}),
+        'radiographers_score': forms.NumberInput(attrs={'min':0,'max':6,'type': 'number'}),
+        'radiologists_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}), 
+        'support_staff_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}), 
+        'offices_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'library_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'call_room_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'waiting_room_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'toilets_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'room_design_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'static_xray_score': forms.NumberInput(attrs={'min':0,'max':15,'type': 'number'}),
+        'mobile_xray_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'ct_score': forms.NumberInput(attrs={'min':0,'max':5,'type': 'number'}),
+        'mri_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'fluoroscopy_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'nuclear_medicine_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'radiation_therapy_score': forms.NumberInput(attrs={'min':0,'max':1,'type': 'number'}), 
+        'ultrasound_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
+        'mammography_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),
+        'dental_equipment_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'carm_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'processing_unit_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        'diagnostic_room_score': forms.NumberInput(attrs={'min':0,'max':6,'type': 'number'}),
+        'personnel_score': forms.NumberInput(attrs={'min':0,'max':8,'type': 'number'}),
+        'cpds_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'departmental_seminars_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}),
+        'licence_status_score': forms.NumberInput(attrs={'min':0,'max':4,'type': 'number'}),
+        
+        }
+
+    def __init__(self, *args, **kwargs):
+       super(InternshipModelForm, self).__init__(*args, **kwargs)
+       for name in self.fields.keys():
+            self.fields[name].widget.attrs.update({
+                'class': 'form-control',
+            })
+       self.fields['radiographers_score'].label = "Radiographers Score"
+       self.fields['radiographers_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
+       self.fields['radiologists_score'].label = "Radiologists Score"
+       self.fields['radiologists_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+       self.fields['support_staff_score'].label = "Support Score"
+       self.fields['support_staff_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+       self.fields['offices_score'].label = "Offices Score"
+       self.fields['offices_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+       self.fields['library_score'].label = "Library Score"
+       self.fields['library_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+       self.fields['call_room_score'].label = "Call Room"
+       self.fields['call_room_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+       self.fields['waiting_room_score'].label = "Waiting Room"
+       self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+       self.fields['toilets_score'].label = "Toilets Score"
+       self.fields['toilets_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+       self.fields['static_xray_score'].label = "Static X-Ray Score"
+       self.fields['static_xray_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
+       self.fields['mobile_xray_score'].label = "Mobile X-Ray Score"
+       self.fields['mobile_xray_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+       self.fields['ct_score'].label = "CT Scan Score"
+       self.fields['ct_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+       self.fields['mri_score'].label = "MRI Score"
+       self.fields['mri_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+       self.fields['fluoroscopy_score'].label = "Flouroscopy Score"
+       self.fields['fluoroscopy_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+       self.fields['nuclear_medicine_score'].label = "Nuclear Medicine"
+       self.fields['nuclear_medicine_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+       self.fields['radiation_therapy_score'].label = "Radiation Therapy Score"
+       self.fields['radiation_therapy_score'].widget.attrs['placeholder'] = "(Max Score = 1)"
+       self.fields['ultrasound_score'].label = "Ultrasound Score"
+       self.fields['ultrasound_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+       self.fields['mammography_score'].label = "Mammography Score"
+       self.fields['mammography_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+       self.fields['dental_equipment_score'].label = "Dental Equipment Score"
+       self.fields['dental_equipment_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+       self.fields['carm_score'].label = "C-Arm Score"
+       self.fields['carm_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+       self.fields['processing_unit_score'].label = "Processing Unit Score"
+       self.fields['processing_unit_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+       self.fields['diagnostic_room_score'].label = "Diagnostic Room Score"
+       self.fields['diagnostic_room_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
+       self.fields['personnel_score'].label = "Personnel Monitoring Sc"
+       self.fields['personnel_score'].widget.attrs['placeholder'] = "(Max Score = 8)"
+       self.fields['cpds_score'].label = "CPDs Score"
+       self.fields['cpds_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+       self.fields['departmental_seminars_score'].label = "Dept Seminars Score"
+       self.fields['departmental_seminars_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+       self.fields['room_design_score'].label = "Room Design Score"
+       self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+       self.fields['licence_status_score'].label = "Current License Score"
+       self.fields['licence_status_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+       self.fields['appraisal_total'].label = "Total Score"
+       self.fields['appraisal_comments'].label = "Enter Observations and Comments"
+
+
 
 class AccreditationModelForm(forms.ModelForm):
 
@@ -1117,11 +1218,7 @@ class AccreditationModelForm(forms.ModelForm):
         'payment': forms.HiddenInput(),
         'schedule': forms.HiddenInput(),
         'application_no': forms.TextInput(attrs={'readonly': True}),
-
-        #'hospital_name': forms.TextInput(attrs={'readonly': True}),
-        #'application_no': forms.TextInput(attrs={'readonly': True}),
         'appraisal_comments': forms.Textarea(attrs={'rows':6, 'cols':12}),
-        'shielding_score': forms.NumberInput(attrs={'min':1,'max':10,'type': 'number'}),
         'radiographers_score': forms.NumberInput(attrs={'min':0,'max':6,'type': 'number'}),
         'radiologists_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}), 
         'support_staff_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}), 
@@ -1157,7 +1254,6 @@ class AccreditationModelForm(forms.ModelForm):
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       #self.fields['inspection_zone'].label = False
        self.fields['radiographers_score'].label = "Radiographers Score"
        self.fields['radiographers_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
        self.fields['radiologists_score'].label = "Radiologists Score"

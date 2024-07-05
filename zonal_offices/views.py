@@ -580,8 +580,8 @@ class InspectionCompleteDetailView(LoginRequiredMixin, InspectionObjectMixin, Vi
 
 class AccreditationReportView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Appraisal
-    template_name = 'zonal_offices/accreditation_report_creation.html'
-    form_class = AccreditationModelForm
+    template_name = 'zonal_offices/accreditation_report_form.html'
+    form_class = InternshipModelForm
 
     def get_success_url(self):
         return reverse("zonal_offices:accreditation_complete_details", kwargs={"id": self.object.id})
@@ -619,7 +619,7 @@ class AccreditationReportView(LoginRequiredMixin, SuccessMessageMixin, CreateVie
         kwargs['initial']['hospital'] = self.schedule.hospital
         kwargs['initial']['payment'] = self.schedule.payment
         kwargs['initial']['application_no'] = self.schedule.application_no
-        #kwargs['initial']['hospital'] = self.payment.hospital
+      
         
         return kwargs
 

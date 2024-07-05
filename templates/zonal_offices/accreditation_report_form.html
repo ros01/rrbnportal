@@ -1,0 +1,820 @@
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block title%}| Facility Inspection {% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+<link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+{% endblock %}
+{% block content %}
+<main class="container">
+<div class="row">
+<div class="col col-lg-12">
+<p class="mt-2 text-info display-4 paragraph2">Internship Accreditation Report Submission</p>
+<hr>
+</div>
+</div>
+<div class="row rounded ml-1 mr-0 pl-1 pr-0 mt-2 mb-3 justify-content-center align-items-center" style="background-color: #bfe3f8;">
+<div class="col-md-1 mt-1 pt-1">
+<i class="fa fa-info-circle fa-2x" aria-hidden="true"></i>
+</div>
+<div class="col-md-11 mt-1 pt-1 px-0">
+<p class="lead" style="color: #05567b;">
+Enter Scores for Each Parameter Below.  Final Score is calculated automatically once input is complete</p>
+</div>
+</div>
+
+  
+<form method='POST' action="." enctype='multipart/form-data'>
+         
+{% csrf_token %}
+
+<input type="hidden" name="inspection_zone" {% if user.is_authenticated %} value="{{ user.module_name }}" {% endif %} required id="id_inspection_zone">
+
+{{ form.hospital_name|as_crispy_field }}
+{{ form.hospital|as_crispy_field }}
+{{ form.schedule|as_crispy_field }}
+{{ form.payment|as_crispy_field }}
+<div class="row ml-2">
+<p class="col-12 text-success lead">Hospital Details</p>
+</div>
+<div class="row px-4"> 
+<div class="col-md-4"> <div class="form-group"> 
+{{ form.application_no|as_crispy_field }}
+</div>
+</div>
+<div class="col-md-8"><div class="form-group">
+{% if schedule_qss %}
+{% for object in schedule_qss %}
+<span class="col-2 text-info">Hospital Name:  </span>
+<span class="col-8">  {{object.hospital.hospital_name}}</span>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if schedule_qsss %}
+{% for object in schedule_qsss %}
+<span class="col-2 text-info">Hospital Name:  </span>
+<span class="col-8">  {{object.hospital.hospital_name}}</span>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if schedule_qssr %}
+{% for object in schedule_qssr %}
+<span class="col-2 text-info">Hospital Name:  </span>
+<span class="col-8">  {{object.hospital.hospital_name}}</span>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if schedule_qgssr %}
+{% for object in schedule_qgssr %}
+<span class="col-2 text-info">Hospital Name:  </span>
+<span class="col-8">  {{object.hospital.hospital_name}}</span>
+</div>
+{% endfor %}
+{% endif %}
+
+</div>
+
+
+</div>
+
+</div>
+<div class="row ml-2">
+<p class="col-12 text-success lead">Accreditation Scores</p>
+</div>
+<div class="row px-4">
+<div class="col-md-3">
+<div class="form-group">
+{{ form.radiographers_score|as_crispy_field }}
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.radiologists_score|as_crispy_field }}  
+</div>
+</div>
+        
+<div class="col-md-3">
+<div class="form-group">
+{{ form.support_staff_score|as_crispy_field }}       
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.offices_score|as_crispy_field }}
+</div>
+</div>
+</div>
+
+
+<div class="row px-4">
+<div class="col-md-3">
+<div class="form-group">
+{{ form.library_score|as_crispy_field }}  
+</div>
+</div>
+       
+<div class="col-md-3">
+<div class="form-group">
+{{ form.call_room_score|as_crispy_field }}       
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.waiting_room_score|as_crispy_field }}
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.toilets_score|as_crispy_field }}  
+</div>
+</div>
+</div>
+
+<div class="row px-4">
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.static_xray_score|as_crispy_field }}       
+</div>
+</div>
+
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.mobile_xray_score|as_crispy_field }}
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.ct_score|as_crispy_field }}  
+</div>
+</div>
+        
+<div class="col-md-3">
+<div class="form-group">
+{{ form.mri_score|as_crispy_field }}       
+</div>
+</div>
+    
+</div>
+
+<div class="row px-4">
+<div class="col-md-3">
+<div class="form-group">
+{{ form.fluoroscopy_score|as_crispy_field }}       
+</div>
+</div>
+
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.nuclear_medicine_score|as_crispy_field }}
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.radiation_therapy_score|as_crispy_field }}  
+</div>
+</div>
+        
+<div class="col-md-3">
+<div class="form-group">
+{{ form.ultrasound_score|as_crispy_field }}       
+</div>
+</div>
+    
+</div>
+
+<div class="row px-4">
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.mammography_score|as_crispy_field }}       
+</div>
+</div>
+
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.dental_equipment_score|as_crispy_field }}
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.carm_score|as_crispy_field }}  
+</div>
+</div>
+        
+<div class="col-md-3">
+<div class="form-group">
+{{ form.processing_unit_score|as_crispy_field }}       
+</div>
+</div>
+    
+</div>
+
+<div class="row px-4">
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.diagnostic_room_score|as_crispy_field }}       
+</div>
+</div>
+
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.personnel_score|as_crispy_field }}
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.room_design_score|as_crispy_field }}  
+</div>
+</div>
+        
+<div class="col-md-3">
+<div class="form-group">
+{{ form.licence_status_score|as_crispy_field }}  
+</div>
+</div>
+    
+</div>
+
+<div class="row px-4">
+<div class="col-md-3">
+<div class="form-group">
+{{ form.cpds_score|as_crispy_field }}       
+</div>
+</div>
+
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.departmental_seminars_score|as_crispy_field }}
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.appraisal_total|as_crispy_field }}       
+</div>
+</div>
+    
+</div>
+
+<div class="row px-4 justify-content">
+<div class="col-md-6">
+<div class="form-group">    
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="form-group">
+{{ form.appraisal_comments|as_crispy_field }}       
+</div>
+</div>
+
+</div>
+
+
+<div class="row ml-2">
+<p class="col-12 text-success lead">Picture Uploads</p>
+</div>
+
+<div class="row px-4">
+<div class="col-md-3">
+<div class="form-group">
+{{ form.photo_main|as_crispy_field }}
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.photo_1|as_crispy_field }}  
+</div>
+</div>
+      
+<div class="col-md-3">
+<div class="form-group">
+{{ form.photo_2|as_crispy_field }}       
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.photo_3|as_crispy_field }}
+</div>
+</div>
+</div>
+
+<div class="row px-4">
+<div class="col-md-3">
+<div class="form-group">
+{{ form.photo_4|as_crispy_field }}
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="form-group">
+{{ form.photo_5|as_crispy_field }}  
+</div>
+</div>
+      
+      
+<div class="col-md-3">
+<div class="form-group">
+{{ form.photo_6|as_crispy_field }}       
+</div>
+</div>
+</div>
+<hr>
+<div class="d-flex justify-content-end">   
+<a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
+
+<button type="submit" class="btn btn btn-success ml-4 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Post Accreditation Report</button>
+</form>
+</div>
+</main>
+      
+
+
+
+<!--Jquery plugin-->
+<script src="{% static 'js/jquery.js' %}"></script>
+
+<!--other javascript plugins-->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+  
+
+
+
+
+<!--Jquery plugin-->
+  <div class="container">
+
+
+<p class="text-success m-0 p-0"> <b>Scoring Legend: </b></p>
+i.  50%=Pass mark for internship, Undergraduate B.Sc. Attachment (50 -59: = Provisional; above 60=Full)  <br>
+ii. Only functional equipment is to be considered <br>
+<br>
+1.   (a) Each Senior Radiographer (not less than 3 years post graduate experience) = 2 marks, while each Radiographer of less than 3 years post graduate experience = 1 mark); <br>
+(b) each Radiologist = 1mark; (c) each support staff = 0.5 mark <br>
+2.   Offices include Office of Radiographer-in-Charge = 2 marks, and Radiographers’ common Room = 2 marks) <br>
+3.   Physical or e-library is to be considered. Each current book in the relevant subject = 0.2 mark. At least ten relevant books must be available. <br>
+4.  (a) If a facility is running 24hrs and placed the Radiographers on call, it must have a call room.  Presence of spacious and conducive call room = 1 mark, adequate furnishing of the call room = 1 mark. 
+<br>(b) If a facility did not place the Radiographers on call being that it does not run on call then score 2 marks <br>
+5.  Adequacy of waiting room should comprise of its cleanliness (1 mark), ventilation/air conditioning (0.5mark) and furnishing (0.5 mark) <br>
+6.  Toilets include General Toilet (1 mark), & Staff Toilet (1 mark) <br>
+7.  Room design and layout for all radiation emitting equipment should be in strict compliance to high radiation safety standards <br>
+8.  Conventional X-Ray machines are to be considered based on functionality, capacity and adequacy of accessories <br>
+9.  Other imaging modalities as listed above are to be considered based on functionality, capacity and adequacy of accessories <br>
+10. Processing unit includes Manual Processing (each tank = 0.3 mark, Standard Dryer = 0.5 mark, wet bench = 0.4 mark., Dry bench = 0.4 mark, actinic marker 0.25mark, safelight = 0.25 mark, hatch = 0.3 mark, film carrier = 0.2 mark, film storage system = 0.25 mark, hangers & cassettes = 0.25), Automatic Processing (automatic processing machine = 2 marks, Dry bench = 0.4 mark, actinic marker 0.25mark, safelight = 0.25 mark, hatch = 0.3 mark, film carrier = 0.25 mark, film storage system = 0.25 mark, hangers & cassettes = 0.3), Digitized processing  = 4 marks <br>
+11. Radiation Protection for Diagnostic Rooms/Environment include shielding = 4marks, warning light = 1 mark, and warning signs = 1 mark) <br>
+12.   Radiation Protection for personnel include Personnel Radiation Monitoring Devices (PRMD) like TLD or Instadose which attracts 5 marks and Personnel Radiation Protective Equipment (PRPE) like lead apron, lead goggle, etc) which attracts 3 marks  <br>
+13. Only RRBN recognized CPDPs and trainings are to be considered. <br>
+14. Each current licence of the Radiographer = 1mark, and each support staff = 0.5 mark <br>
+
+
+<br>
+<br>
+</div>
+
+<script>
+$(function () {
+       $( "#id_radiographers_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_radiologists_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_support_staff_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_offices_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_library_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_call_room_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_waiting_room_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_toilets_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_room_design_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_static_xray_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_mobile_xray_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_ct_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_mri_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_fluoroscopy_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_nuclear_medicine_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_radiation_therapy_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_ultrasound_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_mammography_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_dental_equipment_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_carm_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_processing_unit_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_diagnostic_room_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_personnel_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+$(function () {
+       $( "#id_cpds_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+
+
+$(function () {
+       $( "#id_departmental_seminars_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+$(function () {
+       $( "#id_licence_status_score" ).change(function() {
+          var max = parseInt($(this).attr('max'));
+          var min = parseInt($(this).attr('min'));
+          if ($(this).val() > max)
+          {
+              $(this).val(max);
+          }
+          else if ($(this).val() < min)
+          {
+              $(this).val(min);
+          }       
+        }); 
+    });
+
+</script>
+
+
+  <!--other javascript plugins-->
+  <script>
+  $('#id_radiographers_score, #id_radiologists_score, #id_support_staff_score, #id_offices_score, #id_library_score, #id_call_room_score, #id_waiting_room_score, #id_toilets_score, #id_room_design_score, #id_static_xray_score, #id_mobile_xray_score, #id_ct_score, #id_mri_score, #id_fluoroscopy_score, #id_nuclear_medicine_score, #id_radiation_therapy_score, #id_ultrasound_score, #id_mammography_score, #id_dental_equipment_score, #id_carm_score, #id_processing_unit_score, #id_diagnostic_room_score, #id_personnel_score, #id_cpds_score, #id_departmental_seminars_score, #id_licence_status_score').on('input',function(e){$('#id_appraisal_total').val(parseInt($('#id_radiographers_score').val()) + parseInt($('#id_radiologists_score').val()) + parseInt($('#id_support_staff_score').val()) + parseInt($('#id_offices_score').val()) + parseInt($('#id_library_score').val()) + parseInt($('#id_call_room_score').val()) + parseInt($('#id_waiting_room_score').val()) + parseInt($('#id_toilets_score').val()) + parseInt($('#id_room_design_score').val())+ parseInt($('#id_static_xray_score').val()) + parseInt($('#id_mobile_xray_score').val()) + parseInt($('#id_ct_score').val()) + parseInt($('#id_mri_score').val()) + parseInt($('#id_fluoroscopy_score').val()) + parseInt($('#id_nuclear_medicine_score').val()) + parseInt($('#id_radiation_therapy_score').val()) + parseInt($('#id_ultrasound_score').val()) + parseInt($('#id_mammography_score').val()) + parseInt($('#id_dental_equipment_score').val()) + parseInt($('#id_carm_score').val()) + parseInt($('#id_processing_unit_score').val()) + parseInt($('#id_diagnostic_room_score').val()) + parseInt($('#id_personnel_score').val()) + parseInt($('#id_cpds_score').val()) + parseInt($('#id_departmental_seminars_score').val()) + parseInt($('#id_licence_status_score').val()));
+        });
+
+  </script>
+
+<script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+
+
+
+
+
+
+
+{% endblock %}
