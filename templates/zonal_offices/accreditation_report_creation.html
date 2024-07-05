@@ -34,10 +34,7 @@ Enter Scores for Each Parameter Below.  Final Score is calculated automatically 
 
 <input type="hidden" name="inspection_zone" {% if user.is_authenticated %} value="{{ user.module_name }}" {% endif %} required id="id_inspection_zone">
 
-{{ form.hospital_name|as_crispy_field }}
-{{ form.hospital|as_crispy_field }}
-{{ form.schedule|as_crispy_field }}
-{{ form.payment|as_crispy_field }}
+
 <div class="row ml-2">
 <p class="col-12 text-success lead">Hospital Details</p>
 </div>

@@ -1108,7 +1108,7 @@ class AccreditationModelForm(forms.ModelForm):
 
     class Meta:
         model = Appraisal
-        fields = ('application_no', 'hospital_name', 'hospital', 'payment', 'schedule', 'radiographers_score', 'radiologists_score', 'support_staff_score', 'offices_score', 'library_score', 'call_room_score', 'waiting_room_score', 'toilets_score', 'room_design_score', 'static_xray_score', 'mobile_xray_score', 'ct_score', 'mri_score', 'fluoroscopy_score', 'nuclear_medicine_score', 'radiation_therapy_score', 'ultrasound_score', 'mammography_score', 'dental_equipment_score', 'carm_score', 'processing_unit_score', 'diagnostic_room_score', 'personnel_score',  'cpds_score', 'departmental_seminars_score', 'licence_status_score', 'appraisal_total',  'appraisal_comments', 'photo_main', 'photo_1', 'photo_2', 'photo_3', 'photo_4', 'photo_5', 'photo_6',)      
+        fields = ('application_no', 'hospital_name', 'hospital', 'payment', 'schedule', 'radiographers_score', 'radiologists_score', 'support_staff_score', 'offices_score', 'library_score', 'call_room_score', 'waiting_room_score', 'toilets_score', 'static_xray_score', 'mobile_xray_score', 'ct_score', 'mri_score', 'fluoroscopy_score', 'nuclear_medicine_score', 'radiation_therapy_score', 'ultrasound_score', 'mammography_score', 'dental_equipment_score', 'carm_score', 'processing_unit_score', 'diagnostic_room_score', 'personnel_score', 'room_design_score', 'licence_status_score', 'cpds_score', 'departmental_seminars_score', 'appraisal_total',  'appraisal_comments', 'photo_main', 'photo_1', 'photo_2', 'photo_3', 'photo_4', 'photo_5', 'photo_6',)      
         
         widgets = {
         
