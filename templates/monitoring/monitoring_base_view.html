@@ -47,7 +47,7 @@
                                     class=" ml-1 text-white font-weight-bold size22">{{ user.first_name}} {{user.last_name}}</span></div>
                             <div class="col-md-4 mr-md-0 col-sm-12 mx-auto px-0">
                   <div class="d-flex justify-content-end mr-4 mr-md-0">
-                                    <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-warning text-white mr-3 pt-1"><i class="fas fa-tachometer-alt"></i></i> Dashboard</a>
+                                    <a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="btn btn-warning text-white mr-3 pt-1"><i class="fas fa-tachometer-alt"></i></i> Dashboard</a>
 
                                     <a href="javascript:{document.getElementById('logout').submit()}" onclick="" class="btn btn-danger pb-1 px-2">
                                       <form id="logout" method="POST" action="{% url 'accounts:logout' %}">

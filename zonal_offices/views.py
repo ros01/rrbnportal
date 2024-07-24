@@ -102,39 +102,60 @@ class HospitalProfileCreateView(StaffRequiredMixin, SuccessMessageMixin, CreateV
         paramFile = io.TextIOWrapper(request.FILES['hospitals_list'].file)
         portfolio1 = csv.DictReader(paramFile)
         list_of_dict = list(portfolio1)
+        email_check = list_of_dict[0]["email"] == None
+      
 
         try:
             context = {}
-            
-            for row in list_of_dict:
-                data = row['email']
-                hospitals_list = User.objects.filter(email = data)
-                try:
-                    if hospitals_list.exists():
-                        for hospital_admin in hospitals_list:
-                            messages.error(request, f'This User: {hospital_admin} and possibly other users on this list exit already exist')
-                        return redirect("zonal_offices:create_hospital_profile")
-                    else:
-                        hospital_admin = User.objects.create(email=row['email'], last_name=row['last_name'], first_name=row['first_name'], is_active = True, hospital = True, password = make_password('rrbnhq123%'),)
-                        
-                except Exception as e:
-                    messages.error(request, e)
+            if len(list_of_dict) == 0:
+                messages.error(request, "No Data in List. Please populate list and try again")
+                print("Number in List:",  len(list_of_dict))
+                return redirect("zonal_offices:create_hospital_profile")
 
-            objs = [
-                Hospital(
-                    hospital_admin = User.objects.get(email=row['email']),
-                    type = request.POST['type'],
-                    hospital_name = row['hospital_name'],
-                    phone_no = row['phone_no'],
-                )
-                for row in list_of_dict     
-             ]
-            nmsg = Hospital.objects.bulk_create(objs)
-            messages.success(request, "Bulk Creation of Hospitals successful!")
-            returnmsg = {"status_code": 200}
-            for obj in objs:
-                user = obj.hospital_admin
-            return redirect("zonal_offices:create_hospital_profile")          
+
+            
+
+
+            elif email_check:
+                messages.error(request, "No email in list. Please add email and try again")
+                print("Number of emails in List:",  len(data[0]["email"]))
+                return redirect("zonal_offices:create_hospital_profile")
+
+
+            else:            
+                for row in list_of_dict:
+                    data = row['email']
+                    print("Email in Data:", data)
+                    userslist = User.objects.filter(email=data)
+                    print("Userslist:", userslist)
+                    try:
+                        if userslist.exists():
+                            messages.error(request, f'This User: {data} and possibly other users on this list exit already exist')
+                            return redirect("zonal_offices:create_hospital_profile")
+                        else:
+                            for data in list_of_dict:
+                                data = User.objects.create(email=row['email'], last_name=row['last_name'], first_name=row['first_name'], is_active = True, hospital = True, password = make_password('rrbnhq123%'),) 
+
+                                objs = [
+                                    Hospital(
+                                        hospital_admin = User.objects.get(email=data),
+                                        type = request.POST['type'],
+                                        hospital_name = row['hospital_name'],
+                                        phone_no = row['phone_no'],
+                                    )
+                                    for row in list_of_dict     
+                                 ]
+                                nmsg = Hospital.objects.bulk_create(objs)
+                                messages.success(request, "Bulk Creation of Hospitals successful!")
+                                # print("Number of emails in List:",  len(list_of_dict))
+                                returnmsg = {"status_code": 200}
+                                # for obj in objs:
+                                #     user = obj.hospital_admin
+                                return redirect("zonal_offices:create_hospital_profile")               
+                    except Exception as e:
+                        messages.error(request, e)
+
+                        
         except Exception as e:
             print('Error While Importing Data: ', e)
             returnmsg = {"status_code": 500}
@@ -208,6 +229,8 @@ class UpdateHospitalProfileDetails (StaffRequiredMixin, SuccessMessageMixin, Upd
 
     def get_success_url(self):
         return reverse("zonal_offices_dashboard:hospitals_upload_list") 
+
+    
 
 
     def post(self, request, *args, **kwargs):
