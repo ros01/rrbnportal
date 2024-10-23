@@ -15,11 +15,11 @@ Email Address: {{hospital.hospital_admin}} {% endfor %}
 
 Application Category: {{object.license_type}}
 
-Submission Time: {{object.submission_date}} {% if object.license_type == "Radiography Practice" %}
+Submission Time: {{object.date}} {% if object.license_type == "Radiography Practice Permit" %}
 
-Kindly proceed to pay your registration fee of N50,000 plus cost of available modalities by generating RRR on remita and either paying online or at any commercial bank of your choice. {% else %}
+Kindly proceed to pay your registration fee of N200,000 plus cost of available modalities by generating RRR on remita and either paying online or at any commercial bank of your choice. {% else %}
 
-Kindly proceed to pay your accreditation fee of N200,000 by generating RRR on remita and either paying online or at any commercial bank of your choice. {% endif %}
+Kindly proceed to pay the accreditation fee specified on the invoice by generating RRR on remita and either paying online or at any commercial bank of your choice. {% endif %}
 
 Thank You!
 
