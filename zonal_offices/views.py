@@ -113,8 +113,6 @@ class HospitalProfileCreateView(StaffRequiredMixin, SuccessMessageMixin, CreateV
                 return redirect("zonal_offices:create_hospital_profile")
 
 
-            
-
 
             elif email_check:
                 messages.error(request, "No email in list. Please add email and try again")
