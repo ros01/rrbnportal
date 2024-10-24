@@ -119,6 +119,11 @@ class MyApplicationListView(LoginRequiredMixin, ListView):
     template_name = "hospitals/my_applications_table.html"
     context_object_name = 'object'
     model = Document
+
+
+    # def get_queryset(self, **kwargs):
+    #    qs = super().get_queryset(**kwargs)
+    #    return qs.filter(application_no=self.kwargs['application_no'])
    
     
     def get_context_data(self, **kwargs):
