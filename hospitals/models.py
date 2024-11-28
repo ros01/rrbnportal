@@ -157,7 +157,7 @@ class Document(models.Model):
        
 
     def __str__(self):
-        return  str(self.hospital_name)
+        return  str(self.application_no)
 
     def equipment_count(self):
         equipment_count = self.equipment
@@ -246,7 +246,7 @@ class Schedule(models.Model):
         unique_together = ('application_no','hospital_name')
 
     def __str__(self):
-        return str(self.hospital_name)
+        return str(self.application_no)
 
     def save(self, *args, **kwargs):
         super(Schedule, self).save(*args, **kwargs)
@@ -718,6 +718,7 @@ class Inspection(models.Model):
     inspection_status = models.IntegerField(default=1)
     inspection_total = models.DecimalField(blank=True, max_digits=5, decimal_places=2)
     inspection_comments = models.TextField(blank=True)
+    inspection_date = models.DateField(default=date.today)
     photo_main = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     photo_1 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     photo_2 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
@@ -730,7 +731,7 @@ class Inspection(models.Model):
         unique_together = ('application_no','hospital_name')
 
     def __str__(self):
-        return str (self.hospital_name)
+        return str(self.application_no)
      
     def save(self, *args, **kwargs):
         #super(Inspection, self).save(*args, **kwargs)
@@ -825,6 +826,7 @@ class Appraisal(models.Model):
     licence_status_score = models.IntegerField()
     appraisal_total = models.IntegerField()
     appraisal_comments = models.TextField(blank=True)
+    appraisal_date = models.DateField(default=date.today)
     photo_main = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     photo_1 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     photo_2 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
@@ -838,7 +840,7 @@ class Appraisal(models.Model):
 
 
     def __str__(self):
-        return str (self.hospital_name)
+        return str(self.application_no)
 
     def save(self, *args, **kwargs):
         super(Appraisal, self).save(*args, **kwargs)

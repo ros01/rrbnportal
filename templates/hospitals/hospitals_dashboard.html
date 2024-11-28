@@ -83,11 +83,11 @@ My e-Payment History
                         
 <!-- Next Row -->
 <div class="row">
-<div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='#';" style="cursor: pointer;">
+<div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='{% url 'monitoring:new_hospital_profile_details' object.id %}';" style="cursor: pointer;">
 <div class="card">
 <div class="card-body text-dark">
 <i class="fa fa-edit big text-success ss-icon"></i><br>
-License Types & Fees
+View/Edit Hospital Profile
 </div>
 </div>
 </div>
@@ -145,7 +145,7 @@ Download User Guide (PDF)
 </tr>
 <tr>
 <td>Pending Applications:</td>
-<td>0</td>
+<td>{{ pending_license_applications }}</td>
 </tr>
 <tr class="border-bottom">
 <td>Upcoming Renewals:</td>

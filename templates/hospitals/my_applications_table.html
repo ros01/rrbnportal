@@ -1,4 +1,4 @@
-{% extends 'hospitals/hospital_base.html'%}
+{% extends 'hospitals/hospital_base_ai.html'%}
 {% load static %}
 {% block title%}| Radiography Practice License Applications{% endblock %}
 {% block styles %}
@@ -11,7 +11,76 @@
 {% endblock %}
 
 
+
+
+
+
+
+
+
 {% block content %}
+
+<h1>Document List</h1>
+
+<form method="get">
+    <label for="application_no">Filter by Application No:</label>
+    <input type="text" name="application_no" id="application_no" value="{{ request.GET.application_no }}">
+    <button type="submit">Filter</button>
+</form>
+
+<ul>
+    {% for document in documents %}
+        <li>
+            {{ document.application_no }} - {{ document.hospital_name }} - {{ document.license_type }}
+        </li>
+    {% empty %}
+        <li>No documents found.</li>
+    {% endfor %}
+</ul>
+
+{% if is_paginated %}
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?application_no={{ request.GET.application_no }}&page=1">First</a>
+            <a href="?application_no={{ request.GET.application_no }}&page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+            <a href="?application_no={{ request.GET.application_no }}&page={{ page_obj.next_page_number }}">Next</a>
+            <a href="?application_no={{ request.GET.application_no }}&page={{ page_obj.paginator.num_pages }}">Last</a>
+        {% endif %}
+    </div>
+{% endif %}
+
+
+<table>
+    <thead>
+        <tr>
+            <th>Application No</th>
+            <th>Model</th>
+            <th>Last Updated</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for application in applications %}
+        <tr>
+            <td>{{ application.application_no }}</td>
+            <td>{{ application.__class__.__name__ }}</td>
+            <td>{{ application.last_updated }}</td>
+            <td>{{ application.application_status }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+
+
 
 <div class="container">
        <div class="row">
@@ -43,7 +112,6 @@
 <th class="small-text" style="color: #fff; "width="15%">Action</th>
 </tr> </thead> 
 
- 
 
  {% if license_issue_qs %}
  {% for object in license_issue_qs %}
@@ -58,6 +126,7 @@
  <td width="15%"><a href="{% url 'hospitals:license_details' object.id %}"class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a></td> 
  </tr> 
  {% endfor %}
+ 
 
  
  {% elif registrar_approval_qs %}
@@ -150,6 +219,7 @@
  
  {% elif document_qs %}
  {% for object in document_qs %}
+ {% if object.application_no in application_nos %}
  <tbody> 
  <tr> 
  <td width="2%">{{forloop.counter}}</td>
@@ -160,6 +230,7 @@
  <td width="16%">Payment Processing</td> 
  <td width="15%"><a href= "{% url 'hospitals:generate_invoice' object.pk %}"  class="btn btn-outline-success btn-sm">Continue <i class="fa fa-play text-success"></i></a> </td> 
  </tr> 
+ {% endif %}
  {% endfor %}
 
  

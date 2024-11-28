@@ -38,10 +38,10 @@ from django.contrib.staticfiles import finders
 from io import BytesIO
 from django.utils.decorators import method_decorator
 import uuid
+from django.db.models.functions import Coalesce
 from itertools import chain
-
-
-
+from django.db.models import Max, Value, CharField
+from django.contrib.auth.mixins import LoginRequiredMixin
 from reportlab.platypus import SimpleDocTemplate, Paragraph, PageBreak, BaseDocTemplate, PageTemplate, Frame
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import mm, inch
@@ -58,6 +58,10 @@ from django.views.generic.detail import SingleObjectMixin
 User = get_user_model()
 
 
+
+
+
+
 class LoginRequiredMixin(object):
     #@classmethod
     #def as_view(cls, **kwargs):
@@ -72,11 +76,21 @@ class LoginRequiredMixin(object):
 def hospitals_dashboard(request):
      hospitals = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=request.user, application_status=8)
      license = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=request.user, application_status=8).count()
+
+     user = request.user
+     # Fetch application numbers from Document and License models
+     document_applications = Document.objects.filter(hospital_name__hospital_admin=user)
+     license_application_numbers = License.objects.filter(hospital_name__hospital_admin=user).values_list("application_no", flat=True)
+     # Filter Document applications that are not in License model
+     pending_license_applications = document_applications.exclude(application_no__in=license_application_numbers).count()
+     
+
      hospital = Hospital.objects.filter(hospital_admin=request.user)
      context = {
           'hospitals': hospitals,
           'hospital': hospital,
-          'license': license
+          'license': license,
+          'pending_license_applications': pending_license_applications
      }
      return render(request, 'hospitals/hospitals_dashboard.html', context)
 
@@ -91,6 +105,435 @@ class InspectionObjectMixin(object):
         if id is not None:
             obj = get_object_or_404(self.model, id=id)
         return obj 
+
+
+
+class MyApplicationListView(LoginRequiredMixin, ListView):
+    template_name = "hospitals/my_applications_tables.html"
+    context_object_name = "applications"
+
+    def get_queryset(self):
+        user = self.request.user
+
+        # Fetch related data from models with annotations
+        models = [
+            (Document, "Document"),
+            (Payment, "Payment"),
+            (Schedule, "Schedule"),
+            (Inspection, "Inspection"),
+            (License, "License"),
+            (Appraisal, "Internship"),
+        ]
+        querysets = [
+            model.objects.filter(hospital_name__hospital_admin=user)
+            .annotate(model_name=Value(name, output_field=CharField()))
+            for model, name in models
+        ]
+
+        combined_qs = list(chain(*querysets))
+
+        # Priority mapping for sorting
+        model_priority = {
+            "Document": 6,
+            "Payment": 5,
+            "Schedule": 4,
+            "Inspection": 3,
+            "Internship": 2,
+             "License": 1,
+        }
+
+        # Sorting and grouping
+        combined_qs.sort(
+            key=lambda obj: (
+                obj.application_no,
+                model_priority.get(obj.model_name, 0),
+            )
+        )
+
+        most_recent = {}
+        for obj in combined_qs:
+            if obj.application_no not in most_recent:
+                most_recent[obj.application_no] = obj
+
+        return list(most_recent.values())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        applications = self.get_queryset()
+        hospitals = Hospital.objects.filter(hospital_admin=self.request.user)
+        context["applications"] = applications
+        context["hospitals"] = hospitals
+
+        # Safely add hospital_name
+        if applications:
+            context["hospital_name"] = applications[0].hospital_name
+        else:
+            context["hospital"] = hospitals
+
+        return context
+
+
+class MyApplicationListView00001(LoginRequiredMixin, ListView):
+    template_name = "hospitals/my_applications_tables.html"
+    context_object_name = "applications"
+
+    def get_queryset(self):
+        user = self.request.user
+
+        # Get all application numbers for the user
+        application_nos = Document.objects.filter(
+            hospital_name__hospital_admin=user
+        ).values_list("application_no", flat=True).distinct()
+
+        # Fetch all related data
+        documents = Document.objects.filter(
+            hospital_name__hospital_admin=user, application_no__in=application_nos
+        ).annotate(model_name=Value("Document", output_field=CharField()))
+
+        payments = Payment.objects.filter(
+            hospital_name__hospital_admin=user, application_no__in=application_nos
+        ).annotate(model_name=Value("Payment", output_field=CharField()))
+
+        schedules = Schedule.objects.filter(
+            hospital_name__hospital_admin=user, application_no__in=application_nos
+        ).annotate(model_name=Value("Schedule", output_field=CharField()))
+
+        inspections = Inspection.objects.filter(
+            hospital_name__hospital_admin=user, application_no__in=application_nos
+        ).annotate(model_name=Value("Inspection", output_field=CharField()))
+
+        licenses = License.objects.filter(
+            hospital_name__hospital_admin=user, application_no__in=application_nos
+        ).annotate(model_name=Value("License", output_field=CharField()))
+
+        internship = Appraisal.objects.filter(
+            hospital_name__hospital_admin=user, application_no__in=application_nos
+        ).annotate(model_name=Value("Internship", output_field=CharField()))
+
+        # Combine all querysets into a list
+        combined_qs = list(chain(documents, payments, schedules, inspections, licenses, internship))
+
+        # Create a priority order for model processing
+        model_priority = {
+            "Document": 6,
+            "Payment": 5,
+            "Schedule": 4,
+            "Inspection": 3,
+            "License": 2,
+            "Internship": 1,
+        }
+
+        # Sort by application_no and priority of the model
+        combined_qs.sort(
+            key=lambda obj: (
+                obj.application_no,
+                model_priority[obj.model_name],
+            )
+        )
+
+        # Group by application_no, keeping only the highest priority entry
+        most_recent = {}
+        for obj in combined_qs:
+            if obj.application_no not in most_recent:
+                most_recent[obj.application_no] = obj
+
+        return list(most_recent.values())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        applications = self.get_queryset()
+        hospital = Hospital.objects.filter(hospital_admin=self.request.user)
+        context["hospitals"] = hospital
+        context["applications"] = applications
+        print("my applications list:", applications)
+        print("my hospitals list:", hospital)
+
+        # Safely add hospital_name to context
+        if applications:
+            context["hospital_name"] = applications[0].hospital_name
+        else:
+            context["hospital"] = hospital
+
+        return context
+
+class MyApplicationListView00000(LoginRequiredMixin, ListView):
+    template_name = "hospitals/my_applications_tables.html"
+    context_object_name = "applications"
+
+    def get_queryset(self):
+        user = self.request.user
+
+        # Get all application numbers for the user
+        application_nos = Document.objects.filter(
+            hospital_name__hospital_admin=user
+        ).values_list("application_no", flat=True).distinct()
+
+        # Fetch all related data
+        documents = Document.objects.filter(
+            hospital_name__hospital_admin=user, application_no__in=application_nos
+        ).annotate(model_name=Value("Document", output_field=CharField()))
+
+        payments = Payment.objects.filter(
+            hospital_name__hospital_admin=user, application_no__in=application_nos
+        ).annotate(model_name=Value("Payment", output_field=CharField()))
+
+        schedules = Schedule.objects.filter(
+            hospital_name__hospital_admin=user, application_no__in=application_nos
+        ).annotate(model_name=Value("Schedule", output_field=CharField()))
+
+        inspections = Inspection.objects.filter(
+            hospital_name__hospital_admin=user, application_no__in=application_nos
+        ).annotate(model_name=Value("Inspection", output_field=CharField()))
+
+        internship = Appraisal.objects.filter(
+            hospital_name__hospital_admin=user, application_no__in=application_nos
+        ).annotate(model_name=Value("Internship", output_field=CharField()))
+
+        licenses = License.objects.filter(
+            hospital_name__hospital_admin=user, application_no__in=application_nos
+        ).annotate(model_name=Value("License", output_field=CharField()))
+
+        # Combine all querysets into a list
+        combined_qs = list(chain(documents, payments, schedules, inspections, internship, licenses))
+
+        # Create a priority order for model processing
+        model_priority = {
+            "Document": 1,
+            "Payment": 2,
+            "Schedule": 3,
+            "Inspection": 4,
+            "Internship": 5,
+            "License": 6,
+        }
+
+        # Sort by application_no and priority of the model
+        combined_qs.sort(
+            key=lambda obj: (
+                obj.application_no,
+                model_priority[obj.model_name],
+            )
+        )
+
+        # Group by application_no, keeping only the highest priority entry
+        most_recent = {}
+        for obj in combined_qs:
+            if obj.application_no not in most_recent:
+                most_recent[obj.application_no] = obj
+
+        return list(most_recent.values())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        applications = self.get_queryset()
+        context["applications"] = applications
+        print("my applications list:", applications)
+
+
+        # Safely add hospital_name to context
+        if applications:
+            context["hospital_name"] = applications[0].hospital_name
+        else:
+            context["hospital_name"] = None
+
+        return context
+
+
+class MyApplicationListView000(LoginRequiredMixin, ListView):
+    template_name = "hospitals/my_applications_tables.html"
+    context_object_name = 'applications'
+
+    def get_queryset(self):
+        # Filter data for the logged-in user
+        user = self.request.user
+        application_nos = Document.objects.filter(hospital_name__hospital_admin=user).values_list('application_no', flat=True).distinct()
+        
+        # Query all relevant models
+        documents = Document.objects.filter(
+            hospital_name__hospital_admin=user, application_no__in=application_nos
+        ).annotate(last_updated=Coalesce('date', 'date'))
+        
+
+        payments = Payment.objects.filter(
+            hospital_name__hospital_admin=user, application_no__in=application_nos
+        ).annotate(last_updated=Coalesce('payment_date', 'payment_date'))
+
+        schedules = Schedule.objects.filter(
+            hospital_name__hospital_admin=user, application_no__in=application_nos
+        ).annotate(last_updated=Coalesce('inspection_schedule_date', 'inspection_schedule_date'))
+
+        inspections = Inspection.objects.filter(
+            hospital_name__hospital_admin=user, application_no__in=application_nos
+        ).annotate(last_updated=Coalesce('inspection_date', 'inspection_date'))
+
+        licenses = License.objects.filter(
+            hospital_name__hospital_admin=user, application_no__in=application_nos
+        ).annotate(last_updated=Coalesce('issue_date', 'issue_date'))
+        
+        internship = Appraisal.objects.filter(
+            hospital_name__hospital_admin=user, application_no__in=application_nos
+        ).annotate(last_updated=Coalesce('appraisal_date', 'appraisal_date'))
+
+
+        # Combine all querysets
+        combined_qs = sorted(
+            chain(documents, payments, schedules, inspections, licenses, internship),
+            key=lambda x: x.last_updated,
+            reverse=True
+        )
+
+        # Group by application_no and take the most recent entry for each
+        most_recent = {}
+        for obj in combined_qs:
+            if obj.application_no not in most_recent:
+                most_recent[obj.application_no] = obj
+
+        return list(most_recent.values())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['applications'] = self.get_queryset()
+        applications = self.get_queryset()
+        hospital_name = applications[0]
+        context['hospital_name'] = hospital_name
+        print("my applications list:", applications)
+        return context
+
+
+
+
+class MyApplicationListView0(LoginRequiredMixin, ListView):
+    template_name = "hospitals/my_applications_table.html"
+    context_object_name = 'object'
+    model = Document
+
+
+    def get_hospital_query(self, license_type, application_type, application_status=None):
+        qs = Hospital.objects.select_related("hospital_admin").filter(
+        hospital_admin=self.request.user,
+        type=license_type
+        )
+        if application_status:
+            qs = qs.filter(application_status=application_status)
+        return qs
+
+
+    def generate_application_queries(self, model, license_types, application_types, application_statuses):
+        context = {}
+        for license_type in license_types:
+            for application_type in application_types:
+                for status in application_statuses:
+                    context[f"{license_type}_{application_type}_{status}"] = model.objects.filter(
+                    hospital_name__hospital_admin=self.request.user,
+                    license_type=license_type,
+                    application_type=application_type,
+                    application_status=status)
+        return context
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        hospital_types = [
+            'Radiography Practice Permit',
+            'Gov Internship Accreditation',
+            'Pri Internship Accreditation',
+            'Radiography Practice Permit Renewal',
+            'Pri Internship Accreditation Renewal',
+            'Gov Internship Accreditation Renewal'
+            ]
+    
+        # Get hospital queries dynamically
+        for hospital_type in hospital_types:
+            context[f'hospital_qs_{hospital_type}'] = Hospital.objects.select_related("hospital_admin").filter(
+            hospital_admin=self.request.user, type=hospital_type
+            )
+    
+            # Get document, payment, schedule, etc. queries in a similar manner
+        license_types = ['Radiography Practice Permit', 'Internship Accreditation']
+        application_types = [
+            'New Registration - Radiography Practice Permit', 
+            'New Registration - Government Hospital Internship',
+            'New Registration - Private Hospital Internship',
+            'Renewal - Radiography Practice Permit',
+            'Renewal - Private Hospital Internship',
+            'Renewal - Government Hospital Internship'
+            ]
+    
+        context.update(self.generate_application_queries(Document, license_types, application_types, application_statuses=[1, 2, 3, 4, 5, 6, 7, 8]))
+    
+            # You can do something similar for other models like Payment, Schedule, etc.
+    
+        return context
+
+
+class MyApplicationListView99(LoginRequiredMixin, ListView):
+    template_name = "hospitals/my_applications_table.html"
+    context_object_name = 'object'
+    model = Document
+
+    APPLICATION_STATUSES = [1, 2, 3, 4, 5, 6, 7, 8]  # Move statuses to a constant for reusability
+
+    def get_hospital_query(self, license_type, application_status=None):
+        qs = Hospital.objects.select_related("hospital_admin").filter(
+            hospital_admin=self.request.user,
+            type=license_type
+        )
+        if application_status:
+            qs = qs.filter(application_status=application_status)
+        return qs
+
+    def generate_application_queries(self, model, license_types, application_types, application_statuses, application_no):
+        context = {
+            f"{license}_{app_type}_{status}": model.objects.filter(
+                hospital_name__hospital_admin=self.request.user,
+                license_type=license,
+                application_type=app_type,
+                application_status=status,
+                application_no=application_no
+            )
+            for license in license_types
+            for app_type in application_types
+            for status in application_statuses
+        }
+        return context
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Fetch all relevant hospital types in a single query to avoid redundancy
+        hospital_types = [
+            'Radiography Practice Permit',
+            'Gov Internship Accreditation',
+            'Pri Internship Accreditation',
+            'Radiography Practice Permit Renewal',
+            'Pri Internship Accreditation Renewal',
+            'Gov Internship Accreditation Renewal'
+        ]
+        hospitals = Hospital.objects.select_related("hospital_admin").filter(
+            hospital_admin=self.request.user, type__in=hospital_types
+        )
+
+        # Update context with hospitals categorized by type
+        for hospital_type in hospital_types:
+            context[f'hospital_qs_{hospital_type}'] = hospitals.filter(type=hospital_type)
+
+        # Define license and application types for querying
+        license_types = ['Radiography Practice Permit', 'Internship Accreditation']
+        application_types = [
+            'New Registration - Radiography Practice Permit', 
+            'New Registration - Government Hospital Internship',
+            'New Registration - Private Hospital Internship',
+            'Renewal - Radiography Practice Permit',
+            'Renewal - Private Hospital Internship',
+            'Renewal - Government Hospital Internship'
+        ]
+
+        # Generate and update context with application queries
+        context.update(
+            self.generate_application_queries(
+                Document, license_types, application_types, self.APPLICATION_STATUSES
+            )
+        )
+
+        return context
 
 
 class MyApplicationListView2(LoginRequiredMixin, ListView):
@@ -115,99 +558,137 @@ class MyApplicationListView2(LoginRequiredMixin, ListView):
         context['doc_stage'] = q1        
         return context
 
-class MyApplicationListView(LoginRequiredMixin, ListView):
-    template_name = "hospitals/my_applications_table.html"
-    context_object_name = 'object'
+class MyApplicationListView00(LoginRequiredMixin, ListView):
+    template_name = "hospitals/my_applications_tables.html"
+    context_object_name = 'documents'
     model = Document
 
+    # def get_queryset(self):
+    #     queryset = super().get_queryset()
+    #     application_no = self.request.GET.get("application_no", None)  # Get 'application_no' from the query parameters
+    #     if application_no:
+    #         queryset = queryset.filter(application_no=application_no)
+    #     return queryset
 
-    # def get_queryset(self, **kwargs):
-    #    qs = super().get_queryset(**kwargs)
-    #    return qs.filter(application_no=self.kwargs['application_no'])
-   
-    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        application_no = self.request.GET.get("application_no")
+        if application_no:
+            queryset = queryset.filter(
+            hospital_name__hospital_admin=self.request.user,
+            application_no=application_no
+            )
+        else:
+            queryset = queryset.filter(hospital_name__hospital_admin=self.request.user)
+        return queryset
+
+
+
     def get_context_data(self, **kwargs):
         context = super(MyApplicationListView, self).get_context_data(**kwargs)
+
+        user_application_nos = Document.objects.filter(hospital_name__hospital_admin=self.request.user).values_list('application_no', flat=True).distinct()
+        document_qs = Document.objects.filter(hospital_name__hospital_admin=self.request.user, application_status=1, license_type='Radiography Practice Permit', application_type='New Registration - Radiography Practice Permit', application_no__in=user_application_nos).distinct('application_no')  # Ensure each application_no is unique if needed
+        context['document_qs'] = document_qs
+
+        user_applications = License.objects.filter(hospital_name__hospital_admin=self.request.user).values_list('application_no', flat=True).distinct()
+        license_issue_qs = License.objects.filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit', application_no__in=user_application_nos).distinct('application_no')  # Ensure each application_no is unique if needed
+        context['license_issue_qs'] = license_issue_qs
+
+
+        application_nos = Document.objects.filter(hospital_name__hospital_admin=self.request.user).values_list('application_no', flat=True) 
+        # user_documents = Document.objects.filter(hospital_name__hospital_admin=self.request.user, application_status=1, license_type='Radiography Practice Permit', application_type='New Registration - Radiography Practice Permit')
+        # unique_documents = user_documents.order_by('application_no').distinct('application_no')
+        # context['document_qs'] = unique_documents
+        context['application_nos'] = application_nos
+
+        # user_li_docs = License.objects.filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
+        # li_unique_docs = user_li_docs.order_by('application_no').distinct('application_no')
+        # license_issue_qs = li_unique_docs
+        print ("License N Set:", license_issue_qs)
+        # context['license_issue_qs'] = li_unique_docs
+
         context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user, type = 'Radiography Practice Permit')
         context['hospital_qss'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user, type = 'Gov Internship Accreditation')
         context['hospital_qsss'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user, type = 'Pri Internship Accreditation')
         context['hospital_qsr'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user, type = 'Radiography Practice Permit Renewal')
         context['hospital_qssr'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user, type = 'Pri Internship Accreditation Renewal')
         context['hospital_qgssr'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user, type = 'Gov Internship Accreditation Renewal')
-        context['document_qs'] = Document.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=1, license_type = 'Radiography Practice Permit', application_type = 'New Registration - Radiography Practice Permit')
+
+        # context['document_qs'] = Document.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user,  application_status=1, license_type='Radiography Practice Permit', application_type='New Registration - Radiography Practice Permit', application_no__in=application_nos )
+        context['document_qs'] = Document.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=1, license_type = 'Radiography Practice Permit', application_type = 'New Registration - Radiography Practice Permit', **({'application_no': application_no} if application_no else {}))
         context['document_qss'] = Document.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=1, license_type = 'Internship Accreditation', application_type = 'New Registration - Government Hospital Internship')
         context['document_qsss'] = Document.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=1, license_type = 'Internship Accreditation', application_type = 'New Registration - Private Hospital Internship')
         context['document_qsr'] = Document.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=1, license_type = 'Radiography Practice Permit', application_type = 'Renewal - Radiography Practice Permit')
         context['document_qssr'] = Document.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=1, license_type = 'Internship Accreditation', application_type = 'Renewal - Private Hospital Internship')
         context['document_qgssr'] = Document.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=1, license_type = 'Internship Accreditation', application_type = 'Renewal - Government Hospital Internship')
+        
         context['payment_qs'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
         context['payment_qss'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
         context['payment_qsss'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
         context['payment_qsr'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
         context['payment_qssr'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
         context['payment_qgssr'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
+        
+
         context['payment_verified_qs'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=3, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
         context['payment_verified_qss'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=3, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
         context['payment_verified_qsss'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=3, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
         context['payment_verified_qsr'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=3, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
         context['payment_verified_qssr'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=3, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
         context['payment_verified_qgssr'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=3, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
+        
+
         context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=4, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
         context['schedule_qss'] = Schedule.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=4, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
         context['schedule_qsss'] = Schedule.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=4, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
-        #context['schedule_qsr'] = Schedule.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=4, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
         context['schedule_qssr'] = Schedule.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=4, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
         context['schedule_qgssr'] = Schedule.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=4, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
+        
+
         context['inspection_qs'] = Inspection.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=5, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
+        context['inspection_qsr'] = Inspection.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=5, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
+        context['inspection_approved_qs'] = Inspection.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=6, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
+
         context['accreditation_qss'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=5, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
         context['accreditation_qsss'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=5, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
-        context['inspection_qsr'] = Inspection.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=5, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
         context['accreditation_qssr'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=5, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
         context['accreditation_qgssr'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=5, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
-        context['inspection_approved_qs'] = Inspection.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=6, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
+        
         context['accreditation_approved_qss'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=6, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
         context['accreditation_approved_qsss'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=6, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
-        #context['inspection_approved_qsr'] = Inspection.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=6, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
         context['accreditation_approved_qssr'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=6, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
         context['accreditation_approved_qgssr'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=6, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
+        
+
+
+
         context['registrar_approval_qs'] = Inspection.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=7, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
         context['registrar_approval_qss'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=7, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
         context['registrar_approval_qsss'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=7, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
-        #context['registrar_approval_qsr'] = Inspection.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=7, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
         context['registrar_approval_qsr'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=7, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
         context['registrar_approval_qssr'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=7, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
         context['registrar_approval_qgssr'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=7, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
+        
+
+
         context['license_issue_qs'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
         context['license_issue_qss'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
         context['license_issue_qsss'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
         context['license_issue_qsr'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
         context['license_issue_qssr'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
         context['license_issue_qgssr'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
-        # print (context)
+        
+
+        #context['schedule_qsr'] = Schedule.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=4, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
+        #context['inspection_approved_qsr'] = Inspection.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=6, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
+        #context['registrar_approval_qsr'] = Inspection.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=7, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
+        # license_issue_qs = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit', application_no__in=application_nos )
+       
+        # print ("License Set:", license_issue_qs)
+        # document_qs = Document.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user,  application_status=1, license_type='Radiography Practice Permit', application_type='New Registration - Radiography Practice Permit', application_no__in=application_nos )
+        # print ("Document Set:", document_qs)
         return context 
-
-class MyApplicationListView3(LoginRequiredMixin, ListView):
-    template_name = "hospitals/my_applications_table.html"
-    context_object_name = 'object'
-    model = Document
-   
-    def get_context_data(self, *args, **kwargs):
-        context = super(MyApplicationListView, self).get_context_data(*args, **kwargs)
-        print(dir(context.get('page_obj')))
-        return context
-
-    def get_queryset(self):
-        request = self.request
-        qs = Document.objects.all()
-        query = request.GET.get('q')
-        user = self.request.user
-        if query:
-            qs = qs.filter(title__icontains=query)
-        # if user.is_authenticated():
-        #     qs = qs.owned(user)
-        return qs 
-
-
 
 
 class HospitalObjectMixin(object):
