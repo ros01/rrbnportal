@@ -1,0 +1,242 @@
+{% extends 'hospitals/hospital_base2.html'%}
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block title%}| Update Hospital Profile {% endblock %}
+{% block styles %}
+
+
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+<link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+{% endblock %}
+
+
+{% block content %}
+
+    <main class="container">
+    <div class="row" style="border-bottom:1px solid #ddd">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    <h3 class="text-success">New Hospital Profile Creation</h3>
+    </div>
+    
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-right">
+    <h3 class="text-default">
+    <span style="font-size:14px;"><b>Category:</b></span>
+    <span class="text-success">Radiography Practice</span>
+    </h3>
+    </div>
+    </div>
+
+    <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <br>            
+    <section class="portlet" style="background:#FFFFFF"> 
+    <div class="alert alert-info text-center" style="color:#333"> Fill the Form below. All fields in asterisk (<span class="req">*</span>) are required. 
+    </div> 
+    </div> 
+    </div> 
+
+    <form method="POST" action="." enctype="multipart/form-data">
+     {% csrf_token %}
+
+
+    <!--
+    <input type="hidden" name="hospital" class="form-control" value="True" required id="id_hospital"  id="div_id_hospital"> -->
+
+    <!-- <input type="hidden" name="type" class="form-control" value="Radiography Practice Permit" required id="id_type"  id="div_id_type"> -->
+
+    {{form.hospital_admin | as_crispy_field}}
+    {{form.type | as_crispy_field}}
+
+    <div class="row"> 
+    <div class="col-md-4"> 
+    <div class="form-group">
+    {{form.hospital_name | as_crispy_field}}
+    </div>
+    </div>
+
+    <div class="col-md-4">
+    <div class="form-group">
+    {{form.rc_number | as_crispy_field}}   </div>
+    </div>
+    
+    <div class="col-md-4">
+    <div class="form-group">
+    {{form.phone_no | as_crispy_field}}
+    </div>
+    </div>
+
+    </div>
+
+    <div class="row">
+                
+    <div class="col-md-4">
+    <div class="form-group">
+    {{user_form.email | as_crispy_field}}
+    </div>
+    </div>
+                
+    <div class="col-md-4">
+    <div class="form-group">
+    {{user_form.first_name | as_crispy_field}}
+    </div>
+    </div>
+
+    
+    <div class="col-md-4">
+    <div class="form-group">
+    {{user_form.last_name | as_crispy_field}}
+    </div>
+    </div>
+    </div>
+    
+    <div class="row">  
+
+    <div class="col-md-4">
+    <div class="form-group">
+    {{form.contact_address | as_crispy_field}}
+    </div>
+    </div>
+
+    <div class="col-md-4">
+    <div class="form-group">
+    {{form.city | as_crispy_field}}
+    </div>
+    </div>
+
+    <div class="col-md-4">
+    <div class="form-group">
+    {{form.state | as_crispy_field}}
+    </div>
+    </div>
+
+    </div>
+
+    <div class="row">
+
+    <div class="col-md-4">
+    <div class="form-group">
+    {{user_form.password1 | as_crispy_field}}
+    </div>
+    </div>
+
+
+    <div class="col-md-4">
+    <div class="form-group">
+    {{user_form.password2 | as_crispy_field}}
+    </div>
+    </div>
+
+    </div>
+
+
+    
+    
+    <div class="row"> 
+    <hr>
+    <div class="d-flex justify-content-end">   
+    
+    
+    <!-- <a href="{% url 'index' %}" class="text-dark py-1 mr-3 mt-2 mb-4 btn btn-outline-dark"><i class="fas fa-times"></i> Cancel</a> -->
+
+    <a href="{% url 'hospitals:hospitals_dashboard' %}" class="text-white py-1 mr-3 mt-2 mb-4 btn btn-warning"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Back to Dashboard</a>
+    
+    <button type="submit" class="btn btn-success py-1 mt-2 mb-4"> Update Hospital Profile &#x21E8;</button> </div> 
+    </div> 
+    </form> 
+
+    </main> 
+
+
+                     
+
+
+
+
+<!--Jquery plugin-->
+  <script src="{% static 'js/jquery.js' %}"></script>
+
+<!--other javascript plugins-->
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  
+
+  <!--Jquery plugin-->
+
+
+  <!--other javascript plugins-->
+  <script>
+
+      (function(){
+
+      window.addEventListener('load', function(){
+
+      var sourceControlId = 34743361, /** THE ID OF THE SENDER CONTROL */
+
+      targetControlId = 34743365, /** THE ID OF THE RECEIVER CONTROL **/
+
+      domAbstractionLayer = loader.getDOMAbstractionLayer(),
+
+      sourceControlInstance = loader.getEngine().getDocument().getElementById(sourceControlId);
+
+      sourceControlInstance.on('value-change', function(){
+
+      domAbstractionLayer.setControlValueById(
+
+      String(targetControlId),
+
+      domAbstractionLayer.getControlValueById(
+
+      String(sourceControlId)
+
+      )
+
+      );
+
+      });
+
+      domAbstractionLayer.setControlValueById(
+
+      String(targetControlId),
+
+      domAbstractionLayer.getControlValueById(
+
+      String(sourceControlId)
+
+      )
+
+      );
+
+      });
+
+      })();
+
+  </script>
+
+
+
+    
+    <script>
+            // Example starter JavaScript for disabling form submissions if there are invalid fields
+            (function() {
+              'use strict';
+              window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                  form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                      event.preventDefault();
+                      event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                  }, false);
+                });
+              }, false);
+            })();
+            </script>
+{% endblock %}

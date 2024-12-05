@@ -32,8 +32,8 @@ from django.contrib.staticfiles import finders
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from itertools import chain
+from django.db.models import Max, Value, CharField, Q, Count
 from operator import attrgetter
-from django.db.models import Count
 from django.db import models
 from django.contrib.messages.views import SuccessMessageMixin
 import itertools
@@ -276,8 +276,133 @@ class HospitalProfileCreateView(StaffRequiredMixin, SuccessMessageMixin, CreateV
         return JsonResponse(returnmsg)
 
 
+class HospitalProfileListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
+    template_name = "monitoring/hospital_profile_list.html"
+    context_object_name = 'object'
 
-class AllHospitalsView(StaffRequiredMixin, LoginRequiredMixin, ListView):
+    def get_queryset(self):
+        # request = self.request
+        # user = request.user
+        qs = Hospital.objects.filter(application_status = 1).order_by('-date')
+        query = self.request.GET.get('q')
+        if query:
+            qs = qs.filter(name__icontains=query)
+        return qs 
+
+
+
+class AllHospitalsView(LoginRequiredMixin, ListView):
+    template_name = "monitoring/hospitals_applications_table.html"
+    context_object_name = "applications"
+
+    def get_queryset(self):
+        user = self.request.user
+
+        # Fetch related data from models with annotations
+        models = [
+            # (Hospital, "Hospital"),
+            (Document, "Document"),
+            (Payment, "Payment"),
+            (Schedule, "Schedule"),
+            (Inspection, "Inspection"),
+            (License, "License"),
+            (Appraisal, "Internship"),
+        ]
+        querysets = [
+            model.objects.annotate(model_name=Value(name, output_field=CharField()))
+            for model, name in models
+        ]
+
+        combined_qs = list(chain(*querysets))
+
+        # Priority mapping for sorting
+        model_priority = {
+            "Hospital": 7,
+            "Document": 6,
+            "Payment": 5,
+            "Schedule": 4,
+            "Inspection": 3,
+            "Internship": 2,
+             "License": 1,
+        }
+
+        # Sorting and grouping
+        combined_qs.sort(
+            key=lambda obj: (
+                obj.application_no,
+                model_priority.get(obj.model_name, 0),
+            )
+        )
+
+        most_recent = {}
+        for obj in combined_qs:
+            if obj.application_no not in most_recent:
+                most_recent[obj.application_no] = obj
+
+        return list(most_recent.values())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        applications = self.get_queryset()
+        context["applications"] = applications 
+        return context
+
+
+class AllHospitalsView00(StaffRequiredMixin, LoginRequiredMixin, ListView):
+    template_name = "monitoring/hospitals_application_table2.html"
+    context_object_name = "all_hospitals_list"
+
+    def get_queryset(self):
+        # Consolidate stages into a single queryset with annotations
+        stages = list(chain(
+            Hospital.objects.filter(application_status=1),
+            Document.objects.filter(application_status=1),
+            Payment.objects.filter(application_status=2),
+            Schedule.objects.filter(application_status=4),
+            Inspection.objects.filter(application_status=5),
+            Appraisal.objects.filter(application_status=5),
+            License.objects.filter(application_status=8),
+        ))
+        # Sort by primary key (or date if applicable)
+        return sorted(stages, key=lambda instance: instance.pk, reverse=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Filter hospitals by type for specific categories
+        hospital_types = {
+            "hospital_rpp": "Radiography Practice Permit",
+            "hospital_gia": "Gov Internship Accreditation",
+            "hospital_pia": "Pri Internship Accreditation",
+            "hospital_rppr": "Radiography Practice Permit Renewal",
+            "hospital_piar": "Pri Internship Accreditation Renewal",
+            "hospital_giar": "Gov Internship Accreditation Renewal",
+        }
+
+        for key, hospital_type in hospital_types.items():
+            context[key] = Hospital.objects.filter(
+                application_status=1, type=hospital_type
+            )
+
+        # General stage filtering
+        context["stage_one"] = Hospital.objects.filter(application_status=1)
+        context["stage_two"] = Document.objects.filter(application_status=1)
+        context["stage_three"] = Payment.objects.filter(application_status=2)
+        context["stage_four"] = Payment.objects.filter(application_status=3)
+        context["stage_five"] = Schedule.objects.filter(application_status=4)
+        context["stage_six"] = Inspection.objects.filter(application_status=5)
+        context["stage_seven"] = Appraisal.objects.filter(application_status=5)
+        context["stage_eight"] = Inspection.objects.filter(application_status=6)
+        context["stage_nine"] = Appraisal.objects.filter(application_status=6)
+        context["stage_ten"] = Inspection.objects.filter(application_status=7)
+        context["stage_eleven"] = Appraisal.objects.filter(application_status=7)
+        context["stage_twelve"] = License.objects.filter(application_status=8)
+
+        return context
+
+
+
+class AllHospitalsView1(StaffRequiredMixin, LoginRequiredMixin, ListView):
     template_name = "monitoring/hospitals_application_table2.html"
     context_object_name = 'object'
     # model = Document 
@@ -439,7 +564,7 @@ class UpdateHospitalProfileDetails (StaffRequiredMixin, SuccessMessageMixin, Upd
     def get_success_message(self, cleaned_data):
       return self.success_message % dict(
             cleaned_data,
-            hospital_admin=self.object.hospital_admin.get_full_name,
+            hospital_admin=self.object.hospital_admin.get_full_name(),
         )
 
     def get_success_url(self):
@@ -657,6 +782,7 @@ class VetApplication(StaffRequiredMixin, LoginRequiredMixin, PaymentObjectMixin,
 def approve(request, id):
   if request.method == 'POST':
      object = get_object_or_404(Payment, pk=id)
+     object.hospital_name.application_status = 3
      object.vet_status = 2
      object.application_status = 3
      object.vetting_officer = request.user

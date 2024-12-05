@@ -8,9 +8,37 @@ from django.forms import MultipleChoiceField
 from django.forms.models import ModelMultipleChoiceField
 from django.forms import MultipleChoiceField
 from django.contrib.auth import get_user_model
+from accounts.models import Hospital
+
+
 User = get_user_model()
 
 
+class HospitalProfileModelForm(forms.ModelForm):
+      
+    class Meta:
+         model = Hospital
+         fields = ('hospital_name', 'hospital_admin', 'phone_no', 'rc_number', 'state', 'city', 'type', 'contact_address')
+         
+
+         widgets = {
+            'contact_address': forms.Textarea(attrs={'rows':2, 'cols':3}),
+            'hospital_admin': forms.HiddenInput(),
+            'type': forms.HiddenInput(),
+            # 'dob': DatePickerInput(),
+            
+         }
+
+    def __init__(self, *args, **kwargs):
+       super(HospitalProfileModelForm, self).__init__(*args, **kwargs)
+       self.fields['hospital_name'].label = "Hospital Name"
+       self.fields['phone_no'].label = "Mobile Telephone Number"
+       self.fields['state'].label = "State of Location"
+       self.fields['city'].label = "City of Location"
+       self.fields['contact_address'].label = "Contact Address"
+       self.fields['rc_number'].label = "RC Number"
+       self.fields['rc_number'].widget.attrs['placeholder'] = "Leave blank if no RC Number"
+      
 
 
 class HospitalDetailModelForm(forms.ModelForm):

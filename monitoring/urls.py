@@ -2,6 +2,7 @@ from django.urls import path
 from django.shortcuts import render
 from . import views
 from .views import (
+    HospitalProfileListView,
     HospitalUploadListView,
     HospitalsUpdatedUploadListView,
     AllHospitalsView,
@@ -70,6 +71,7 @@ urlpatterns = [
     path('clear_database', views.clear_database, name='clear_database'),
     path('create_hospital_profile',  HospitalProfileCreateView.as_view(), name='create_hospital_profile'),
     path('downloadfile', views.downloadfile, name='downloadfile'),
+    path('hospitals_profile_list',  HospitalProfileListView.as_view(), name='hospitals_profile_list'),
     path('hospitals_upload_list',  HospitalUploadListView.as_view(), name='hospitals_upload_list'),
     path('hospitals_updated_upload_list',  HospitalsUpdatedUploadListView.as_view(), name='hospitals_updated_upload_list'),
     path('<uuid:pk>/new_hospital_profile_details/', NewHospitalProfileDetails.as_view(), name='new_hospital_profile_details'),

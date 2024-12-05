@@ -1,4 +1,4 @@
-{% extends 'monitoring/monitoring_base.html'%}
+{% extends 'hospitals/hospital_base2.html'%}
 {% load static %}
 {% load humanize %}
 {% block title%}| Welcome {% endblock %}
@@ -8,9 +8,10 @@
 {% block content %}
     <div class="container">
     <section class="p-2">
+    {% include 'partials/_alerts.html' %} 
    
     <div class="row mt-2 ">
-    <div class="col text-center ml-2 mb-0">
+    <div class="col text-center mb-0">
     <p class="text-success display-4 paragraph3">Hospital {{object.type}} Application Summary</p>
     <hr>
     </div>
@@ -50,11 +51,18 @@
        </div> 
       <div class="row pl-2" style="background:#f7dedd"> 
 
+      <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Hospital Admin:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.hospital_admin.get_full_name}}</div> 
+
       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Phone Number:</b></div> <br>
        <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.phone_no}}</div> 
 
         <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Email:</b></div> <br>
        <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.hospital_admin.email}}</div> 
+
+
+       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">Address:</b></div> <br>
+       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.contact_address}}</div> 
 
        <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"><b style="color:#888">City:</b></div> <br>
        <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.city}}</div> 
@@ -71,21 +79,45 @@
         <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12"> {{object.date}}</div> 
 
         </div> <!-- buttons --> 
+         <br/> 
+
+
+       
 
         <div class="d-flex justify-content-end mb-3">   
 
-         <a href="{% url 'monitoring:hospitals_profile_list' %}" class="btn btn-outline-success py-0 mr-3 mt-3 mb-3"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Back to Hospital Profiles List</a>  
+         <a href="{% url 'hospitals:hospitals_dashboard' %}" class="btn btn-outline-success py-0 mr-3 mt-1 mb-3"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Back to Dashboard</a>  
 
+         {% if object.application_status >= 3 %}
 
-         <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-outline-success py-0 mt-3 mb-3"><i class="fas fa-times" aria-hidden="true"></i> Return to Dashboard </a>  
+         <button type="button" class="btn btn-outline-success py-0 mt-1 mb-3" disabled><i class="fa fa-toggle-on" aria-hidden="true"></i> Update Hospital Profile</button>
+
+         {% else %}
+
+         <a href="{% url 'hospitals:update_hospital_profile_details' object.pk %}" class="btn btn-outline-success py-0 mt-1 mb-3"><i class="fa fa-toggle-on" aria-hidden="true"></i> Update Hospital Profile </a> 
+
+         {% endif %}
+
          </div>
 
+         
+
+
+
+
+
+
+
+
+
 
         </div>
         </div>
         
-        
+
         </div>
+
+
 
 
         {% endblock %}

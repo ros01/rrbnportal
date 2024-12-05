@@ -169,8 +169,11 @@ class Hospital(models.Model):
     def __str__(self):
         return  str (self.hospital_name)
 
-
     def get_absolute_url(self):
+        return reverse("hospitals:hospital_profile_details", kwargs={"pk": self.id})
+
+
+    def get_monitoring_absolute_url(self):
         return reverse("monitoring:new_hospital_profile_details", kwargs={"pk": self.id})
 
 

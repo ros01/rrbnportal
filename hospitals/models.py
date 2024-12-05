@@ -186,7 +186,8 @@ class Payment(models.Model):
     payment_date = models.DateField(default=date.today)  
     vet_status = models.IntegerField(default=1)
     vetting_officer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, related_name='vetted_by', blank=True, null=True)
-    vet_date =models.DateField(null=True, blank=True, auto_now=False, auto_now_add=True)
+    # vet_date =models.DateField(null=True, blank=True, auto_now=False, auto_now_add=True)
+    vet_date =models.DateField(null=True, blank=True)
 
 
     class Meta:

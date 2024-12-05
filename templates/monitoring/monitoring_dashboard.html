@@ -79,8 +79,10 @@ style="font-size: 15px; margin:0 7px 0 60px;"></i>
 <ul class="list-unstyled d-flex m-up">
 <i class="fa fa-check-circle text-success mt-1"
 style="font-size: 15px; margin:0 7px 0 60px;"></i>
-<li><a class="text-dark" href="{% url 'monitoring:hospitals_upload_list' %}">Hospitals Upload List</a></li>
+<li><a class="text-dark" href="{% url 'monitoring:hospitals_profile_list' %}"> View Hospital Profiles</a></li>
 </ul>
+
+
 
 <ul class="list-unstyled d-flex m-up">
 <i class="fa fa-check-circle text-success mt-1"
@@ -94,152 +96,155 @@ style="font-size: 15px; margin:0 7px 0 60px;"></i>
 <li><a class="text-dark" href="{% url 'monitoring:registration_list' %}"> Vet Applications</a></li>
 </ul>
 
+
+
 <!--  <ul class="list-unstyled d-flex">
 <i class="fa fa-check-circle text-success mt-1"
 style="font-size: 15px; margin:0 7px 0 60px;"></i>
 <li><a class="text-dark" href="{% url 'monitoring:upload_internship_centers' %}"> Upload Internship Centers</a></li>
 </ul> -->
 
-<ul class="list-unstyled d-flex m-up">
-<i class="fa fa-check-circle text-success mt-1"
-style="font-size: 15px; margin:0 7px 0 60px;"></i>
-<li><a class="text-dark" href="{% url 'monitoring:upload_internship_list' %}"> Upload Internship Centers</a></li>
-</ul>
 
 </div>
 </div>
 </div>
-        <div class="col-md-12 col-lg-4">
-            <div class="card card-style-2">
-                <div class="card-body">
-                    <i class="fa fa-lightbulb" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
-                    <h5 class="pb-2" style="margin: -45px 0 0 60px; font-weight: bold;">Inspections</h5>
-                    <ul class="list-unstyled d-flex">
-                        <i class="fa fa-check-circle text-success mt-1"
-                            style="font-size: 15px; margin:0 7px 0 60px;"></i>
-                        <li><a class="text-dark" href="{% url 'monitoring:inspection_list' %}"> Schedule Inspections</a></li>
-                    </ul>
-                    <ul class="list-unstyled d-flex m-up">
-                        <i class="fa fa-check-circle text-success mt-1"
-                            style="font-size: 15px; margin:0 7px 0 60px;"></i>
-                        <li><a class="text-dark" href="{% url 'monitoring:inspections_list' %}"> Inspection Reports</a></li>
-                    </ul>
-                    <ul class="list-unstyled d-flex m-up">
-                        <i class="fa fa-check-circle text-success mt-1"
-                            style="font-size: 15px; margin:0 7px 0 60px;"></i>
-                        <li><a class="text-dark" href="{% url 'monitoring:create_hospital_record' %}"> Create Hospital Records</a></li>
-                    </ul>
-                    <ul class="list-unstyled d-flex m-up">
-                        <i class="fa fa-check-circle text-success mt-1"
-                            style="font-size: 15px; margin:0 7px 0 60px;"></i>
-                        <li><a class="text-dark" href="{% url 'monitoring:hospital_records_list' %}"> Hospital Records Details</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 col-lg-4">
-            <div class="card card-style-2">
-                <div class="card-body">
-                    <i class="fa fa-wrench" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
-                    <h5 class="pb-2" style="margin: -50px 0 0 60px; font-weight: bold;">Certificates & Permits</h5>
-                    <ul class="list-unstyled d-flex">
-                        <i class="fa fa-check-circle text-success mt-1"
-                            style="font-size: 15px; margin:0 5px 0 60px;"></i>
-                        <li><a class="text-dark" href="{% url 'monitoring:license_list' %}"> Issue Certificates & Permits</a></li>
-                    </ul>
-                    <ul class="list-unstyled d-flex m-up">
-                        <i class="fa fa-check-circle text-success mt-1"
-                            style="font-size: 15px; margin:0 5px 0 60px;"></i>
-                        <li><a class="text-dark" href="{% url 'monitoring:rad_cert_reg_list' %}">Certificates of Registration</a></li>
-                    </ul>
-
-                    <ul class="list-unstyled d-flex m-up">
-                        <i class="fa fa-check-circle text-success mt-1"
-                            style="font-size: 15px; margin:0 5px 0 60px;"></i>
-                        <li><a class="text-dark" href="{% url 'monitoring:rad_practice_permit_list' %}">Practice Permits</a></li>
-                    </ul>
-
-                    <ul class="list-unstyled d-flex m-up">
-                        <i class="fa fa-check-circle text-success mt-1"
-                            style="font-size: 15px; margin:0 7px 0 60px;"></i>
-                        <li><a class="text-dark" href="{% url 'monitoring:accreditation_cert_list' %}">Accreditation Certificates</a></li>
-                    </ul>
-
-                </div>
-            </div>
-        </div>
+<div class="col-md-12 col-lg-4">
+<div class="card card-style-2">
+    <div class="card-body">
+        <i class="fa fa-lightbulb" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
+        <h5 class="pb-2" style="margin: -45px 0 0 60px; font-weight: bold;">Inspections</h5>
+        <ul class="list-unstyled d-flex">
+            <i class="fa fa-check-circle text-success mt-1"
+                style="font-size: 15px; margin:0 7px 0 60px;"></i>
+            <li><a class="text-dark" href="{% url 'monitoring:inspection_list' %}"> Schedule Inspections</a></li>
+        </ul>
+        <ul class="list-unstyled d-flex m-up">
+            <i class="fa fa-check-circle text-success mt-1"
+                style="font-size: 15px; margin:0 7px 0 60px;"></i>
+            <li><a class="text-dark" href="{% url 'monitoring:inspections_list' %}"> Inspection Reports</a></li>
+        </ul>
+        <ul class="list-unstyled d-flex m-up">
+            <i class="fa fa-check-circle text-success mt-1"
+                style="font-size: 15px; margin:0 7px 0 60px;"></i>
+            <li><a class="text-dark" href="{% url 'monitoring:create_hospital_record' %}"> Create Hospital Records</a></li>
+        </ul>
+        <ul class="list-unstyled d-flex m-up">
+            <i class="fa fa-check-circle text-success mt-1"
+                style="font-size: 15px; margin:0 7px 0 60px;"></i>
+            <li><a class="text-dark" href="{% url 'monitoring:hospital_records_list' %}"> Hospital Records Details</a></li>
+        </ul>
     </div>
+</div>
+</div>
+<div class="col-md-12 col-lg-4">
+<div class="card card-style-2">
+<div class="card-body">
+    <i class="fa fa-wrench" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
+    <h5 class="pb-2" style="margin: -50px 0 0 60px; font-weight: bold;">Certificates & Permits</h5>
+    <ul class="list-unstyled d-flex">
+        <i class="fa fa-check-circle text-success mt-1"
+            style="font-size: 15px; margin:0 5px 0 60px;"></i>
+        <li><a class="text-dark" href="{% url 'monitoring:license_list' %}"> Issue Certificates & Permits</a></li>
+    </ul>
+    <ul class="list-unstyled d-flex m-up">
+        <i class="fa fa-check-circle text-success mt-1"
+            style="font-size: 15px; margin:0 5px 0 60px;"></i>
+        <li><a class="text-dark" href="{% url 'monitoring:rad_cert_reg_list' %}">Certificates of Registration</a></li>
+    </ul>
+
+    <ul class="list-unstyled d-flex m-up">
+        <i class="fa fa-check-circle text-success mt-1"
+            style="font-size: 15px; margin:0 5px 0 60px;"></i>
+        <li><a class="text-dark" href="{% url 'monitoring:rad_practice_permit_list' %}">Practice Permits</a></li>
+    </ul>
+
+    <ul class="list-unstyled d-flex m-up">
+        <i class="fa fa-check-circle text-success mt-1"
+            style="font-size: 15px; margin:0 7px 0 60px;"></i>
+        <li><a class="text-dark" href="{% url 'monitoring:accreditation_cert_list' %}">Accreditation Certificates</a></li>
+    </ul>
+
+</div>
+</div>
+</div>
+</div>
 
 
     
-    <div class="row mt-1 m-top mobile-bottom">
-         <div class="col-md-12 col-lg-4">
-            <div class="card card-style-2">
-                <div class="card-body">
-                    <i class="fa fa-wrench" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
-                    <h5 class="pb-2" style="margin: -50px 0 0 60px; font-weight: bold;">Utilities</h5>
-                    <ul class="list-unstyled d-flex">
-                        <i class="fa fa-check-circle text-success mt-1"
-                            style="font-size: 15px; margin:0 7px 0 60px;"></i>
-                        <li><a class="text-dark" href="{% url 'monitoring:hospitals_updated_upload_list' %}"> Hospitals Upload List (Updated)</a></li>
-                    </ul>
+<div class="row mt-1 m-top mobile-bottom">
+<div class="col-md-12 col-lg-4">
+<div class="card card-style-2">
+<div class="card-body">
+    <i class="fa fa-wrench" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
+    <h5 class="pb-2" style="margin: -50px 0 0 60px; font-weight: bold;">Utilities</h5>
+   
 
-                    <ul class="list-unstyled d-flex m-up">
-                        <i class="fa fa-check-circle text-success mt-1"
-                            style="font-size: 15px; margin:0 7px 0 60px;"></i>
-                        <li><a class="text-dark" href="{% url 'monitoring:hospitals_lookup' %}"> Registered Hospitals/Centers</a></li>
-                    </ul>
-                    <ul class="list-unstyled d-flex m-up">
-                        <i class="fa fa-check-circle text-success mt-1"
-                            style="font-size: 15px; margin:0 7px 0 60px;"></i>
-                        <li><a class="text-dark" href="{% url 'utilities:offices' %}"> List of RRBN Zonal Offices</a>
-                        </li>
-                    </ul>
+    <ul class="list-unstyled d-flex">
+        <i class="fa fa-check-circle text-success mt-1"
+            style="font-size: 15px; margin:0 7px 0 60px;"></i>
+        <li><a class="text-dark" href="{% url 'monitoring:hospitals_updated_upload_list' %}"> Hospitals Upload List (Updated)</a></li>
+    </ul>
 
-                    <ul class="list-unstyled d-flex m-up">
-                        <i class="fa fa-check-circle text-success mt-1"
-                            style="font-size: 15px; margin:0 7px 0 60px;"></i>
-                        <li><a class="text-dark" href="#"> License Categories & Processing Fees</a></li>
-                    </ul>
-                    <ul class="list-unstyled d-flex m-up">
-                        <i class="fa fa-check-circle text-success mt-1"
-                            style="font-size: 15px; margin:0 7px 0 60px;"></i>
-                        <li><a class="text-dark" href="#"> Document Verification Service</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 col-lg-4">
-            <div class="card card-style-2">
-                <div class="card-body">
-                    <i class="fa fa-chart-bar" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
-                    <h5 class="pb-2" style="margin: -45px 0 0 60px; font-weight: bold;"> Reports and Analytics</h5>
-                    <ul class="list-unstyled d-flex">
-                        <i class="fa fa-check-circle text-success mt-1"
-                            style="font-size: 15px; margin:0 7px 0 60px;"></i>
-                        <li><a class="text-dark" href="#"> BI Reports</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+     <ul class="list-unstyled d-flex m-up">
+    <i class="fa fa-check-circle text-success mt-1"
+    style="font-size: 15px; margin:0 7px 0 60px;"></i>
+    <li><a class="text-dark" href="{% url 'monitoring:hospitals_upload_list' %}">Hospitals Upload List</a></li>
+    </ul>
 
-        
+    <ul class="list-unstyled d-flex m-up">
+        <i class="fa fa-check-circle text-success mt-1"
+            style="font-size: 15px; margin:0 7px 0 60px;"></i>
+        <li><a class="text-dark" href="{% url 'monitoring:hospitals_lookup' %}"> Registered Hospitals/Centers</a></li>
+    </ul>
+    <ul class="list-unstyled d-flex m-up">
+        <i class="fa fa-check-circle text-success mt-1"
+            style="font-size: 15px; margin:0 7px 0 60px;"></i>
+        <li><a class="text-dark" href="{% url 'utilities:offices' %}"> List of RRBN Zonal Offices</a>
+        </li>
+    </ul>
 
-        
-        <div class="col-md-12 col-lg-4">
-            <div class="card card-style-2">
-                <div class="card-body">
-                    <i class="fa fa-user-tie" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
-                    <h5 class="pb-2" style="margin: -45px 0 0 60px; font-weight: bold;">My Portal Account</h5>
-                    <ul class="list-unstyled d-flex">
-                        <i class="fa fa-check-circle text-success mt-1"
-                            style="font-size: 15px; margin:0 7px 0 60px;"></i>
-                        <li><a class="text-dark" href="{% url 'monitoring:my_user_account' %}"> My User Account</a></li>
-                    </ul>
-                </div>
-            </div>
+    <!-- <ul class="list-unstyled d-flex m-up">
+        <i class="fa fa-check-circle text-success mt-1"
+            style="font-size: 15px; margin:0 7px 0 60px;"></i>
+        <li><a class="text-dark" href="#"> License Categories & Processing Fees</a></li>
+    </ul> -->
+    <ul class="list-unstyled d-flex m-up">
+        <i class="fa fa-check-circle text-success mt-1"
+            style="font-size: 15px; margin:0 7px 0 60px;"></i>
+        <li><a class="text-dark" href="{% url 'monitoring:upload_internship_list' %}"> Upload Internship Centers</a></li>
+    </ul>
+</div>
+</div>
+</div>
+<div class="col-md-12 col-lg-4">
+    <div class="card card-style-2">
+        <div class="card-body">
+            <i class="fa fa-chart-bar" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
+            <h5 class="pb-2" style="margin: -45px 0 0 60px; font-weight: bold;"> Reports and Analytics</h5>
+            <ul class="list-unstyled d-flex">
+                <i class="fa fa-check-circle text-success mt-1"
+                    style="font-size: 15px; margin:0 7px 0 60px;"></i>
+                <li><a class="text-dark" href="#"> BI Reports</a></li>
+            </ul>
         </div>
     </div>
+</div>
+
+    
+<div class="col-md-12 col-lg-4">
+<div class="card card-style-2">
+<div class="card-body">
+    <i class="fa fa-user-tie" style="font-size: 55px; margin-right: 15px; color: #EFB465;"></i>
+    <h5 class="pb-2" style="margin: -45px 0 0 60px; font-weight: bold;">My Portal Account</h5>
+    <ul class="list-unstyled d-flex">
+        <i class="fa fa-check-circle text-success mt-1"
+            style="font-size: 15px; margin:0 7px 0 60px;"></i>
+        <li><a class="text-dark" href="{% url 'monitoring:my_user_account' %}"> My User Account</a></li>
+    </ul>
+</div>
+</div>
+</div>
+</div>
 
     <!--utility items ends-->
 </main>

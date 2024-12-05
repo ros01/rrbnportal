@@ -53,6 +53,9 @@ from .views import (
     StartLicenseRenewal,
     StartNewApplication,
     HospitalRenewView,
+    NewHospitalProfileDetails,
+    UpdateHospitalProfileDetails
+
 )
 
 
@@ -64,6 +67,8 @@ urlpatterns = [
     path('', views.hospitals_dashboard, name='hospitals_dashboard'),
     path('application_list/', MyApplicationListView.as_view(), name='application_list'),
     path('start_new_application/', StartNewApplication.as_view(), name='start_new_application'),
+    path('<uuid:pk>/hospital_profile_details/', NewHospitalProfileDetails.as_view(), name='hospital_profile_details'),
+    path('<uuid:pk>/update_hospital_profile_details/', UpdateHospitalProfileDetails.as_view(), name='update_hospital_profile_details'),
     path('<uuid:pk>/start_new_radiography_license_application/', StartNewRadApplication.as_view(), name='start_new_radiography_license_application'),
     path('<uuid:pk>/start_gov_internship_accreditation_application/', StartGovInternshipApplication.as_view(), name='start_gov_internship_accreditation_application'),
     path('<uuid:pk>/start_pri_internship_accreditation_application/', StartPriInternshipApplication.as_view(), name='start_pri_internship_accreditation_application'),

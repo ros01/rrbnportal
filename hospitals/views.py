@@ -9,7 +9,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.list import MultipleObjectMixin
 from django.core.mail import send_mail
 from django.views import View
-from .forms import HospitalDetailModelForm, PaymentDetailsModelForm, ReceiptUploadModelForm
+from .forms import *
+from accounts.forms import *
 from django.urls import reverse, reverse_lazy
 from django.template.loader import get_template
 from django.conf import settings
@@ -57,20 +58,34 @@ from django.views.generic.detail import SingleObjectMixin
 
 User = get_user_model()
 
+class StaffRequiredMixin(object):
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.role == 'Hospital':
+            messages.error(
+                request,
+                'You do not have the permission required to perform the '
+                'requested operation.')
+            return redirect(settings.LOGIN_URL)
+        return super(StaffRequiredMixin, self).dispatch(request,
+            *args, **kwargs)
 
 
-
-
-
-class LoginRequiredMixin(object):
+# class LoginRequiredMixin(object):
     #@classmethod
     #def as_view(cls, **kwargs):
         #view = super(LoginRequiredMixin, cls).as_view(**kwargs)
         #return login_required(view)
 
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
+    # @method_decorator(login_required)
+    # def dispatch(self, request, *args, **kwargs):
+    #     return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
+
+
+
+
+
+
 
 @login_required
 def hospitals_dashboard(request):
@@ -83,12 +98,16 @@ def hospitals_dashboard(request):
      license_application_numbers = License.objects.filter(hospital_name__hospital_admin=user).values_list("application_no", flat=True)
      # Filter Document applications that are not in License model
      pending_license_applications = document_applications.exclude(application_no__in=license_application_numbers).count()
+
      
 
      hospital = Hospital.objects.filter(hospital_admin=request.user)
+     object = hospital[0]
+
      context = {
           'hospitals': hospitals,
           'hospital': hospital,
+          'object': object,
           'license': license,
           'pending_license_applications': pending_license_applications
      }
@@ -171,6 +190,140 @@ class MyApplicationListView(LoginRequiredMixin, ListView):
             context["hospital"] = hospitals
 
         return context
+
+
+class NewHospitalProfileDetails(DetailView, LoginRequiredMixin):
+    template_name = "hospitals/hospital_profile_details.html"
+    model = Hospital
+
+
+class UpdateHospitalProfileDetails(SuccessMessageMixin, UpdateView, LoginRequiredMixin):
+    template_name = "hospitals/update_hospital_profile.html"
+    success_message = "%(hospital)s Hospital Profile Update Successful"
+    
+    def get_object(self, queryset=None):
+        """Get the hospital profile object based on the primary key."""
+        return get_object_or_404(Hospital, id=self.kwargs.get("pk"))
+    
+    def get_success_message(self, cleaned_data):
+        return self.success_message % {
+            "hospital": self.object.hospital_name,
+        }
+
+    def get(self, request, *args, **kwargs):
+        """Render the update form with the hospital and associated user data."""
+        hospital = self.get_object()
+        user = hospital.hospital_admin
+
+        context = {
+            "object": hospital,
+            "form": HospitalProfileModelForm(instance=hospital),
+            "user_form": UserUpdateForm(instance=user),
+        }
+        return render(request, self.template_name, context)
+    
+    def post(self, request, *args, **kwargs):
+        """Handle POST requests for updating the hospital profile."""
+        hospital = self.get_object()
+        user = hospital.hospital_admin
+
+        form = HospitalProfileModelForm(request.POST, instance=hospital)
+        user_form = UserUpdateForm(request.POST, instance=user)
+
+        if form.is_valid() and user_form.is_valid():
+            # Update hospital profile
+            self.object = form.save(commit=False)  # Set self.object explicitly
+            if self.object.application_status <= 2:
+                self.object.application_status = 2
+            self.object.save()
+
+            # Update user profile
+            user_instance = user_form.save(commit=False)
+            user_instance.is_active = True
+            user_instance.hospital = True
+            user_instance.save()
+
+            messages.success(request, self.get_success_message(form.cleaned_data))
+            return redirect(hospital.get_absolute_url())
+        
+        # Handle invalid form submission
+        messages.error(request, "Hospital Profile Update Failed.")
+        return render(request, self.template_name, {
+            "object": hospital,
+            "form": form,
+            "user_form": user_form,
+        })
+
+
+
+class UpdateHospitalProfileDetails2 (LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    user_form = UserUpdateForm
+    form = HospitalProfileModelForm
+    template_name = "hospitals/update_hospital_profile.html"
+
+    def get_object(self, queryset=None):
+        pk = self.kwargs.get("pk")
+        hospital_profile = Hospital.objects.get(id=pk)
+        return hospital_profile
+   
+    def get(self, request, *args, **kwargs):
+        context = {}
+        obj = self.get_object()
+        user = User.objects.filter(email=obj.hospital_admin.email).first()
+        print ("User:", user)
+        if obj and user is not None:
+            form = HospitalProfileModelForm(instance=obj)
+            user_form = UserUpdateForm(instance=user)
+            context['object'] = obj
+            context['form'] = form
+            context['user_form'] = user_form
+        
+        return render(request, self.template_name, context)
+  
+
+    success_message = "%(hospital_admin)s  Hospital Profile Update Successful"
+    
+    def get_success_message(self, cleaned_data):
+      return self.success_message % dict(
+            cleaned_data,
+            hospital_admin=self.object.hospital_admin.get_full_name,
+        )
+
+
+    def post(self, request, *args, **kwargs):
+        obj = self.get_object()
+        user = User.objects.filter(email=obj.hospital_admin.email).first()
+        print("User1:", user)
+        print("Object:", obj)
+
+        form = HospitalProfileModelForm(request.POST or None, instance=obj)
+        user_form = UserUpdateForm(request.POST or None, instance=user)
+        
+        if user_form.is_valid() and form.is_valid():
+            hospital_profile = form.save(commit = False)
+            if hospital_profile.application_status >2:
+                pass
+            else:
+                hospital_profile.application_status = 2
+            hospital_profile.save()
+            
+
+            user = user_form.save(commit=False)
+            user.is_active = True  
+            user.hospital = True
+            user.save()
+            hospital = Hospital.objects.filter(hospital_admin=user).first()        
+            messages.success(request, 'Hospital Profile Update Successful')
+            return redirect(hospital.get_absolute_url())
+        else:
+            messages.error(request, 'Hospital Profile Update Failed.')
+            hospital = Hospital.objects.filter(hospital_admin=user).first() 
+            return redirect(hospital.get_absolute_url())
+        return super(UpdateHospitalProfileDetails, self).form_valid(form and user_form)
+
+
+
+
 
 
 class MyApplicationListView00001(LoginRequiredMixin, ListView):

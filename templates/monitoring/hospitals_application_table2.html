@@ -303,6 +303,96 @@
 </div>
 </div>
 
+
+
+
+<div class="container">
+        <h1>Hospitals Applications Overview</h1>
+        
+        <!-- Summary of Applications by Stages -->
+        <h2>Application Stages Summary</h2>
+        <ul>
+            <li>Stage One (New Applications): {{ stage_one.count }}</li>
+            <li>Stage Two (Documents Submitted): {{ stage_two.count }}</li>
+            <li>Stage Three (Payments Made): {{ stage_three.count }}</li>
+            <li>Stage Four (Payments Verified): {{ stage_four.count }}</li>
+            <li>Stage Five (Schedules Created): {{ stage_five.count }}</li>
+            <li>Stage Six (Inspections Ongoing): {{ stage_six.count }}</li>
+            <li>Stage Seven (Appraisals Completed): {{ stage_seven.count }}</li>
+            <li>Stage Eight (Inspections Approved): {{ stage_eight.count }}</li>
+            <li>Stage Nine (Appraisals Approved): {{ stage_nine.count }}</li>
+            <li>Stage Ten (Registrar Approval): {{ stage_ten.count }}</li>
+            <li>Stage Eleven (Appraisal Registrar Approval): {{ stage_eleven.count }}</li>
+            <li>Stage Twelve (Licenses Issued): {{ stage_twelve.count }}</li>
+        </ul>
+
+        <!-- Table of All Applications -->
+        <h2>All Applications</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Hospital Name</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Application Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for hospital in all_hospitals_list %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ hospital.hospital_name }}</td>
+                    <td>{{ hospital.type }}</td>
+                    <td>
+                        {% if hospital.application_status == 1 %} Stage One
+                        {% elif hospital.application_status == 2 %} Stage Two
+                        {% elif hospital.application_status == 3 %} Stage Three
+                        {% elif hospital.application_status == 4 %} Stage Four
+                        {% elif hospital.application_status == 5 %} Stage Five
+                        {% elif hospital.application_status == 6 %} Stage Six
+                        {% elif hospital.application_status == 7 %} Stage Seven
+                        {% elif hospital.application_status == 8 %} Stage Eight
+                        {% else %} Unknown Stage
+                        {% endif %}
+                    </td>
+                    <td>{{ hospital.date|date:"d M Y" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <!-- Filtered Hospital Types -->
+        <h2>Filtered Applications</h2>
+        <h3>Radiography Practice Permit Applications</h3>
+        <ul>
+            {% for hospital in hospital_rpp %}
+            <li>{{ hospital.hospital_name }} - {{ hospital.date|date:"d M Y" }}</li>
+            {% empty %}
+            <li>No applications found.</li>
+            {% endfor %}
+        </ul>
+        <h3>Government Internship Accreditation</h3>
+        <ul>
+            {% for hospital in hospital_gia %}
+            <li>{{ hospital.hospital_name }} - {{ hospital.date|date:"d M Y" }}</li>
+            {% empty %}
+            <li>No applications found.</li>
+            {% endfor %}
+        </ul>
+        <h3>Private Internship Accreditation</h3>
+        <ul>
+            {% for hospital in hospital_pia %}
+            <li>{{ hospital.hospital_name }} - {{ hospital.date|date:"d M Y" }}</li>
+            {% empty %}
+            <li>No applications found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+    
+
   <!--Jquery plugin-->
 
 

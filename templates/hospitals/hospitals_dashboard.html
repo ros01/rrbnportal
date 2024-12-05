@@ -83,11 +83,11 @@ My e-Payment History
                         
 <!-- Next Row -->
 <div class="row">
-<div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='';" style="cursor: pointer;">
+<div class="col-lg-3 col-md-12 col-sm-12" onclick="window.location='{% url 'hospitals:hospital_profile_details' object.pk %}';" style="cursor: pointer;">
 <div class="card">
 <div class="card-body text-dark">
 <i class="fa fa-edit big text-success ss-icon"></i><br>
-View/Edit Hospital Profile
+View/Edit Hospital Profile 
 </div>
 </div>
 </div>
