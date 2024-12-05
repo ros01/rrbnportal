@@ -265,7 +265,7 @@ def get_monitoring_action_url(object):
         ("Payment", "Renewal - Government Hospital Internship", 3): 
             lambda app: reverse("monitoring:hospital_verification_details", args=[app.id]),
         ("Payment", "Renewal - Radiography Practice Permit", 3): 
-            lambda app: reverse("monitoring:hospital_inspection_registrar_approval_detailsl", args=[app.pk]),
+            lambda app: reverse("monitoring:hospital_inspection_registrar_approval_details", args=[app.pk]),
 
 
         # Schedule mappings
