@@ -26,7 +26,7 @@ def get_status_message(object):
         ("Hospital", 1): "Start Registration",
         ("Document", 1): "Payment Processing",
         ("Payment", 2): "Payment Verification",
-        ("Payment", 3): "Payment Verified",
+        ("Payment", 3): "Verifications Completed",
         ("Schedule", 4): "Inspection Scheduled",
         ("Inspection", 5): "Facility Inspection",
         ("Inspection", 6): "Inspection Approved",
@@ -93,18 +93,20 @@ def get_action_url(object):
             lambda app: reverse("hospitals:accreditation_payment_verifications", args=[app.pk]),
         ("Payment", "Renewal - Government Hospital Internship", 2): 
             lambda app: reverse("hospitals:accreditation_payment_verifications", args=[app.pk]),
+        
+
         ("Payment", "New Registration - Radiography Practice Permit", 3): 
-            lambda app: reverse("hospitals:license_verifications_successful", args=[app.id]),
+            lambda app: reverse("hospitals:verifications_completed", args=[app.id]),
         ("Payment", "New Registration - Government Hospital Internship", 3): 
-            lambda app: reverse("hospitals:accreditation_verifications_successful", args=[app.id]),
+            lambda app: reverse("hospitals:accreditation_verifications_completed", args=[app.id]),
         ("Payment", "New Registration - Private Hospital Internship", 3): 
-            lambda app: reverse("hospitals:accreditation_verifications_successful", args=[app.id]),
+            lambda app: reverse("hospitals:accreditation_verifications_completed", args=[app.id]),
         ("Payment", "Renewal - Radiography Practice Permit", 3): 
-            lambda app: reverse("hospitals:license_verifications_successful", args=[app.id]),
+            lambda app: reverse("hospitals:verifications_completed", args=[app.id]),
         ("Payment", "Renewal - Private Hospital Internship", 3): 
-            lambda app: reverse("hospitals:accreditation_verifications_successful", args=[app.id]),
+            lambda app: reverse("hospitals:accreditation_verifications_completed", args=[app.id]),
         ("Payment", "Renewal - Government Hospital Internship", 3): 
-            lambda app: reverse("hospitals:accreditation_verifications_successful", args=[app.id]),
+            lambda app: reverse("hospitals:accreditation_verifications_completed", args=[app.id]),
         ("Payment", "Renewal - Radiography Practice Permit", 7): 
             lambda app: reverse("hospitals:practice_permit_renewal_final_approval", args=[app.pk]),
 

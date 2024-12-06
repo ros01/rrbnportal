@@ -1,0 +1,492 @@
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+{% load humanize %}
+{% block title%}| Vet Registration Applications {% endblock %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles-vet.css' %}" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+{% endblock %}
+
+
+{% block content %}
+
+<main class="container">
+
+<!-- Banner -->
+{% if object.hospital.license_type == "Radiography Practice Permit" %}
+<section class="pt-2 pl-3">
+<div class="row ">
+<div class="col mb-0">
+<p class="text-info display-4 paragraph2">Vet New Radiography Practice Permit Application</p>
+<hr>
+    
+</div>
+</div>
+</section>
+
+{% else %}
+<section class="pt-2 pl-3">
+<div class="row ">
+<div class="col mb-0">
+<p class="text-info display-4 paragraph2">Vet New Internship Accreditation Application</p>
+<hr>
+    
+</div>
+</div>
+</section>
+
+
+
+{% endif %}
+<div class="row">
+<div class="col-md-7 mt-0">
+<div class="col-md-12">
+<div class="row">
+<p class="col-12 text-success lead">Application Summary</p>
+</div>
+<div class="row">
+<span class="col-5"><strong>Application No:</strong></span>
+<span class="col-6 ">{{object.application_no}}</span>
+</div>
+<div class="row">
+<span class="col-5"><strong>Hospital Name:</strong></span>
+<span class="col-6">{{object.hospital_name}}</span>
+</div>
+
+
+
+<div class="row">
+<span class="col-5"><strong>RC Number:</strong></span>
+<span class="col-6">{{object.hospital_name.rc_number}}</span>
+</div>
+
+<div class="row">
+<span class="col-5"><strong>Application Type:</strong></span>
+<span class="col-6">{{object.hospital.application_type}}</span>
+</div>
+
+
+
+<div class="row">
+<span class="col-5"><strong>Telephone:</strong></span>
+<span class="col-6">{{object.hospital_name.phone_no}}</span>
+</div>
+
+<div class="row">
+<span class="col-5"><strong>Email:</strong></span>       
+<span class="col-6">{{object.hospital_name.hospital_admin}}</span>
+</div>  
+
+
+<div class="row">
+<span class="col-5"><strong>Contact Address:</strong></span>
+<span class="col-6">{{object.hospital.facility_address}}</span>
+</div>
+
+<div class="row">
+<span class="col-5"><strong>License Type:</strong></span>
+<span class="col-6">{{object.hospital.license_type }}
+</span>
+</div>
+
+<div class="row">
+<span class="col-5"><strong>Available Equipment:</strong></span>
+<span class="col-6">{{object.hospital.equipment}}</span>
+</div>
+
+
+<div class="row">
+  <span class="col-5"><strong>Radiographer In Charge:</strong></span>
+  <span class="col-6">
+    {{ object.hospital.radiographer_in_charge|default:"Not Available" }}
+  </span>
+</div>
+
+<div class="row">
+  <span class="col-5"><strong>R-I-C License No:</strong></span>
+  <span class="col-6">
+    {{ object.hospital.radiographer_in_charge_license_no|default:"Not Available" }}
+  </span>
+</div>
+
+{% if object.hospital.radiographer1 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 1:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer1}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer1_license_no  %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 1 License No:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer1_license_no }}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer2 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 2:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer2}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer2_license_no  %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 2 License No:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer2_license_no }}</span>
+</div>
+{% endif %}
+                
+{% if object.hospital.radiographer3 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 3:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer3}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.radiographer3_license_no  %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Radiographer 3 License No:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer3_license_no }}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname1 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 1 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname1}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation1 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 1 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation1}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname2 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 2 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname2}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation2 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 2 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation2}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname3 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 3 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname3}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation3 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 3 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation3}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname4 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 4 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname4}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation4 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 4 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation4}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffname5 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 5 Name:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffname5}}</span>
+</div>
+{% endif %}
+
+{% if object.hospital.staffdesignation5 %}
+<div class="row">
+<span class="col-5" style="font-size:1.1em;"><strong>Staff 5 Designation:</strong></span>
+<span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation5}}</span>
+</div>
+{% endif %}
+
+<div class="row">
+<span class="col-5"><strong>Payment Amount:</strong></span>
+<span class="col-6">{{object.payment_amount | intcomma}}
+</span>
+</div>
+
+<div class="row">
+<span class="col-5"><strong>RRR Number:</strong></span>
+<span class="col-6">{{object.rrr_number}}
+</span>
+</div>
+
+<div class="row">
+<span class="col-5"><strong>Payment Date:</strong></span>
+<span class="col-6">{{object.payment_date}}
+</span>
+</div>
+</div><br>
+</div>
+
+              
+<div class="col-md-5 mt-0">
+<p class="text-success lead">Uploads</p>
+
+<div class="row py-0">
+<table class="table table-hover">
+<thead style="background-color: #bfe3f8;">
+<tr>
+<th scope="col lead" style="color: #05567b;">Parameter</th>
+<th scope="col lead" style="color: #05567b;">Value</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% if object.hospital.radiographer_in_charge_passport  %}
+<tr> <td width="40%" scope="col">R.I.C Passport Photo:</td> 
+<td width="60%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.radiographer_in_charge_passport.url}}" target="_blank">&nbsp; View R.I.C Passport Photo</a></td>  
+</tr>
+{% endif %}
+
+{% if object.hospital.radiographer_in_charge_nysc  %}
+<tr> <td width="40%" scope="col">R.I.C NYSC Certificate:</td> 
+<td width="60%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.radiographer_in_charge_nysc.url}}" target="_blank">&nbsp; View R.I.C NYSC Certificate</a></td>  
+</tr>
+{% endif %}
+
+{% if object.hospital.radiographer_in_charge_practice_license  %}
+<tr> <td width="40%" scope="col">R.I.C Practice License:</td> 
+<td width="60%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.radiographer_in_charge_practice_license.url}}" target="_blank">&nbsp; View R.I.C Practice License</a></td>  
+</tr>
+{% endif %}
+
+{% if object.hospital.radiographer1_practice_license  %}
+<tr> <td width="40%" scope="col">Radiographer 1 Practice License:</td> 
+<td width="60%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.radiographer1_practice_license.url}}" target="_blank">&nbsp; View Radiographer 1 Practice License</a></td>  
+</tr>
+{% endif %}
+
+{% if object.hospital.radiographer2_practice_license  %}
+<tr> <td width="40%" scope="col">Radiographer 2 Practice License:</td> 
+<td width="60%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.radiographer2_practice_license.url}}" target="_blank">&nbsp; View Radiographer 2 Practice License</a></td>  
+</tr>
+{% endif %}
+
+{% if object.hospital.radiographer3_practice_license  %}
+<tr> <td width="40%" scope="col">Radiographer 3 Practice License:</td> 
+<td width="60%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.radiographer3_practice_license.url}}" target="_blank">&nbsp; View Radiographer 3 Practice License</a></td>  
+</tr>
+{% endif %}
+
+
+{% if object.hospital.cac_certificate %}
+<tr> <td width="40%" scope="col">CAC Document:</td> 
+<td width="60%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.cac_certificate.url}}" target="_blank">&nbsp; View CAC Certificate</a></td>  
+</tr>
+{% endif %}
+
+{% if object.hospital.form_c07 %}
+<tr> <td width="40%" scope="col">Form C07:</td> 
+<td width="60%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.hospital.form_c07.url}}"
+target="_blank">&nbsp; View Form C07</a></td>  
+</tr>
+{% endif %}
+
+
+{% if object.payment_receipt %}
+<tr> <td width="40%" scope="col">Payment Receipt:</td> 
+<td width="60%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.payment_receipt.url}}" target="_blank">&nbsp; View Payment Receipt</a></td>  
+</tr>
+{% endif %}
+
+
+                       
+</tbody>
+</table>
+</div>  
+
+            
+            
+<div class="row">
+<p class="col-12 text-success lead">Control Details</p>
+</div>
+
+<div class="row">
+<span class="col-6"><strong>Submitted on:</strong></span>
+<span class="col-6">{{object.hospital.date}}</span>
+</div>
+
+                    
+<div class="row">
+<span class="col-6"><strong>Vetted on:</strong></span>
+{% if object.vet_date %}
+<span class="col-6">{{object.vet_date}}</span>
+{% else %} 
+<span class="col-6"></span>
+{% endif %}
+</div>
+
+<div class="row">
+<span class="col-6"><strong>Vetted by:</strong></span>
+{% if object.vetting_officer %}
+<span class="col-6">{{ object.vetting_officer.first_name }} {{ object.vetting_officer.last_name }}</span>
+{% else %} 
+<span class="col-6"></span>
+{% endif %}
+</div>
+
+
+
+<hr>
+<div class="d-flex justify-content-end"> 
+<!-- Approve Button -->
+<button class="btn btn-success py-1 mr-2 mt-1 mb-1" data-toggle="modal" data-target="#approveModal">
+  Approve Application <i class="fa fa-check" aria-hidden="true"></i>
+</button>
+
+<!-- <a href="javascript:{document.getElementById('approve{{object.id }}').submit()}"><button class="btn btn-success py-1 mr-2 mt-1 mb-1"> Approve Application <i class="fa fa-check" aria-hidden="true"></i></button> </a> -->
+
+<!-- Reject Button -->
+<button class="btn btn-danger py-1 mr-2 mt-1 mb-1" data-toggle="modal" data-target="#rejectModal">
+  Reject Application <i class="fa fa-reply" aria-hidden="true"></i>
+</button>
+
+<!-- <a href="javascript:{document.getElementById('reject{{object.id }}').submit()}"><button class="btn btn-danger py-1 mr-2 mt-1 mb-1"> Reject Application <i class="fa fa-reply" aria-hidden="true"></i></button></a>  -->
+
+<a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-warning text-white py-1 px-1 mt-1 mb-1"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Return to Dashboard</a>  
+</div>
+</div>
+
+
+
+
+</main>
+
+
+<!-- Approve Modal -->
+<div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="approveModalLabel">Confirm Approval</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to approve this application?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <a href="javascript:{document.getElementById('approve{{object.id }}').submit()}">
+          <button class="btn btn-success">Confirm</button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Reject Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form id="rejectForm{{ object.id }}" method="post" action="{% url 'monitoring:reject_application' object.id %}">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title" id="rejectModalLabel">Confirm Rejection</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Please provide a reason for rejecting this application:</p>
+          <div class="form-group">
+            <textarea 
+              name="rejection_reason" 
+              class="form-control" 
+              rows="3" 
+              placeholder="Enter reason for rejection" 
+              required>
+            </textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger">Reject Application</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<form id="approve{{object.id }}" method="POST" action="{% url 'monitoring:approve' object.id %}">
+  {% csrf_token%}
+
+ <input type="hidden" name="vetting_officer" {% if user.is_authenticated %} value="{{ request.user.first_name }} {{ request.user.last_name }}" {% endif %} required id="id_vetting_officer">
+  <input type="hidden">
+</form>
+
+<form id="reject{{object.id }}" method="POST" action="{% url 'monitoring:reject_application' object.id %}">
+  {% csrf_token%}
+  <input type="hidden" name="vetting_officer" {% if user.is_authenticated %} value="{{ request.user.first_name }} {{ request.user.last_name }}" {% endif %} required id="id_vetting_officer">
+  <input type="hidden">
+</form>
+
+
+<!--Jquery plugin-->
+<script src="{% static 'js/jquery.js' %}"></script>
+
+<!--other javascript plugins-->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'js/dataTables.bootstrap.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+$('#mydata').dataTable();
+
+let urlMenu = document.getElementById('dropdown');
+urlMenu.onchange = function(){
+let userOption = this.options[this.selectedIndex];
+if(userOption.value != "nothing"){
+      window.open(userOption.value, "_self", "");
+    }
+  }
+</script>
+
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+
+
+{% endblock %}

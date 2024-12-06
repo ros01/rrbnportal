@@ -1544,8 +1544,8 @@ class AccreditationPaymentVerifications(LoginRequiredMixin, DetailView):
         context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
         return context
 
-class LicenseVerificationsSuccessful(LoginRequiredMixin, DetailView):
-    template_name = "hospitals/license_verifications_successful.html"
+class VerificationsCompleted(LoginRequiredMixin, DetailView):
+    template_name = "hospitals/verifications_done.html"
     model = Payment
     
     def get_context_data(self, **kwargs):
@@ -1555,8 +1555,8 @@ class LicenseVerificationsSuccessful(LoginRequiredMixin, DetailView):
         context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
         return context
 
-class AccreditationVerificationsSuccessful(LoginRequiredMixin, DetailView):
-    template_name = "hospitals/accreditation_verifications_successful.html"
+class AccreditationVerificationsCompleted(LoginRequiredMixin, DetailView):
+    template_name = "hospitals/accreditation_verifications_done.html"
     model = Payment
     
     def get_context_data(self, **kwargs):

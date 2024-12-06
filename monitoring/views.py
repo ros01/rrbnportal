@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib import messages, admin
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test
 from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse, StreamingHttpResponse
@@ -47,7 +48,6 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import mm, inch
 from reportlab.lib.pagesizes import letter, A4
 from reportlab.lib.pagesizes import landscape, portrait
-from django.contrib import admin
 import io, csv
 from django.contrib.auth.hashers import make_password
 from django.http import FileResponse
@@ -771,7 +771,7 @@ class PaymentObjectMixin(object):
         #return render(request, self.template_name, context) 
 
 class VetApplication(StaffRequiredMixin, LoginRequiredMixin, PaymentObjectMixin, View):
-    template_name = "monitoring/view-applications2.html" # DetailView
+    template_name = "monitoring/vet_application.html" # DetailView
     def get(self, request, id=None, *args, **kwargs):
         # GET method
         context = {'object': self.get_object()}
@@ -798,21 +798,61 @@ def approve(request, id):
      messages.success(request, ('Application vetted successfully. Please proceed to Schedule Hospital for Inspection in case of New Practice Permit Application or Internship Accreditation Application.'))
      return render(request, 'monitoring/verification_successful.html',context)
 
+# @login_required 
+# def reject_application(request, id):
+#   if request.method == 'POST':
+#      object = get_object_or_404(Payment, pk=id)
+#      object.vet_status = 3
+#      object.save()
+#      context = {}
+#      context['object'] = object
+#      subject = 'Failed verification of Registration and Payment Details'
+#      from_email = settings.DEFAULT_FROM_EMAIL
+#      to_email = [object.hospital_name.hospital_admin] 
+#      contact_message = get_template('monitoring/verification_failed.txt').render(context)
+#      send_mail(subject, contact_message, from_email, to_email, fail_silently=True)
+#      messages.error(request, ('Verification failed.  Hospital has been sent an email to re-apply with the correct details.'))
+#      return redirect('/monitoring/'+str(object.id))
+
+
 @login_required 
-def reject(request, id):
-  if request.method == 'POST':
-     object = get_object_or_404(Payment, pk=id)
-     object.vet_status = 3
-     object.save()
-     context = {}
-     context['object'] = object
-     subject = 'Failed verification of Registration and Payment Details'
-     from_email = settings.DEFAULT_FROM_EMAIL
-     to_email = [object.email] 
-     contact_message = get_template('monitoring/verification_failed.txt').render(context)
-     send_mail(subject, contact_message, from_email, to_email, fail_silently=True)
-     messages.error(request, ('Verification failed.  Hospital has been sent an email to re-apply with the correct details.'))
-     return redirect('/monitoring/'+str(object.id))
+def reject_application(request, id):
+    if request.method == "POST":
+        application = get_object_or_404(Payment, pk=id)
+        rejection_reason = request.POST.get("rejection_reason")
+
+        # Save the rejection reason to the application
+        application.vet_status = 3
+        application.is_rejected = True
+        application.rejection_reason = rejection_reason
+        application.application_status = 3
+        application.vetting_officer = request.user
+        application.save()
+
+        messages.error(request, "Application rejected with reason: " + rejection_reason)
+        return redirect("monitoring:rejection_details", id=application.id)
+
+
+
+# def reject_application(request, application_id):
+#     if request.method == "POST":
+#         application = get_object_or_404(Application, id=application_id)
+#         rejection_reason = request.POST.get("rejection_reason")
+
+#         # Save the rejection reason to the application
+#         application.is_rejected = True
+#         application.rejection_reason = rejection_reason
+#         application.save()
+
+#         messages.error(request, "Application rejected with reason: " + rejection_reason)
+#         return redirect("monitoring:application_list")
+
+
+
+
+def rejection_details(request, id):
+    object = get_object_or_404(Payment, pk=id)
+    return render(request, "monitoring/application_rejected.html", {"object": object})
 
 
 

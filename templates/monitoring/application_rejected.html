@@ -10,12 +10,10 @@
 {% block content %}
 
 
-{% if object.hospital.application_type == "Renewal - Radiography Practice" %}
-
 <section class="p-2">
     <div class="container mt-2 ">
     <div class="col mb-2">
-    <p class="text-info display-4 paragraph3">Applications Due for Registrar's Approval</p>
+    <p class="text-info display-4 paragraph3">Applications Rejection Details</p>
     <hr>
     </div>
     </div>
@@ -26,37 +24,12 @@
     <div class="row rounded pl-3 mx-3" style="background-color: #bfe3f8;">
     <div class="col-md-12 pt-2 pb-0 mx-auto">
     <p class="lead" style="color: #05567b;">
-    <strong>{{object.hospital_name}}</strong> Radiography Practice Permit is due for Registrar's final approval.  See brief details of application below:</p>           
+    <strong>{{object.hospital_name}}</strong> Radiography Practice Permit was rejected.  See brief details of application below:</p>           
     </div>
     </div>
     </div>
 </section>
 
-
-{% else %}
-
-<section class="p-2">
-    <div class="container mt-2 ">
-    <div class="col mb-2">
-    <p class="text-info display-4 paragraph3">Applications Due for Inspection Scheduling</p>
-    <hr>
-    </div>
-    </div>
-</section>
-
-<section class="my-0">
-    <div class="container">
-    <div class="row rounded pl-3 mx-3" style="background-color: #bfe3f8;">
-    <div class="col-md-12 pt-2 pb-0 mx-auto">
-    <p class="lead" style="color: #05567b;">
-    <strong>{{object.hospital_name}}</strong> is due for facility inspection. Kindly click on Schedule Inspections button on Dashboard to proceed</p>           
-    </div>
-    </div>
-    </div>
-</section>
-
-
-{% endif %}
 
 <!-- Skills -->
 
@@ -122,6 +95,15 @@
         <p class="lead text-secondary text-capitalize m-0"><strong>{{object.vet_date}}</strong></p>   
         
     </div>
+    {% if object.is_rejected %}
+        <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
+        <p class="lead text-secondary m-0">Rejection Reason:</p>
+        <p class="lead text-secondary m-0 text-danger"><strong>{{ object.rejection_reason }}</strong></p> 
+        <br>   
+        
+    </div>
+
+      {% endif %}
     </div>
     
 

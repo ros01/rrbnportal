@@ -184,9 +184,13 @@ class Payment(models.Model):
     payment_method = models.CharField(max_length=100, choices = PAYMENT_METHOD)
     payment_receipt = models.FileField(upload_to='%Y/%m/%d/')
     payment_date = models.DateField(default=date.today)  
+
+    # Approval and vetting fields
+    is_approved = models.BooleanField(default=False)
+    is_rejected = models.BooleanField(default=False)
+    rejection_reason = models.TextField(blank=True, null=True)
     vet_status = models.IntegerField(default=1)
     vetting_officer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, related_name='vetted_by', blank=True, null=True)
-    # vet_date =models.DateField(null=True, blank=True, auto_now=False, auto_now_add=True)
     vet_date =models.DateField(null=True, blank=True)
 
 
