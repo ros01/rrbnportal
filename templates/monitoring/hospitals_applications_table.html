@@ -32,10 +32,10 @@
 <thead>
 <tr style="background: #41963F;">
 <th class="small-text" style="color: #fff;" width="2%">SN</th>
+<th class="small-text" style="color: #fff;" width="18%">Hospital Name</th>
 <th class="small-text" style="color: #fff;" width="14%">Application No</th>
-<th class="small-text" style="color: #fff;" width="13%">Submitted On</th>
-<th class="small-text" style="color: #fff;" width="18%">Application Category</th>
 <th class="small-text" style="color: #fff;" width="22%">Application Type</th>
+<th class="small-text" style="color: #fff;" width="13%">Submitted On</th>
 <th class="small-text" style="color: #fff;" width="16%">Stage</th>
 <th class="small-text" style="color: #fff;" width="15%">Action</th>
 </tr>
@@ -45,26 +45,29 @@
 {% for object in applications %}
 <tr>
 <td width="2%">{{ forloop.counter }}</td>
+<td width="18%">{{ object.hospital_name|default:"Unknown" }}</td>
 <td width="14%">{{ object.application_no|default:"N/A" }}</td>
-<td width="13%">
-    {% if object.model_name == "Document" %}
-        {{ object.date|default:"N/A" }}
-    {% else %}
-        {{ object.hospital.date|default:"N/A" }}
-    {% endif %}
-</td>
-<td width="18%">
+
+
+<!-- <td width="18%">
     {% if object.model_name == "Document" %}
         {{ object.license_type|default:"N/A" }}
     {% else %}
         {{ object.hospital.license_type|default:"N/A" }}
     {% endif %}
-</td>
+</td> -->
 <td width="22%">
     {% if object.model_name == "Document" %}
         {{ object.application_type|default:"N/A" }}
     {% else %}
         {{ object.hospital.application_type|default:"N/A" }}
+    {% endif %}
+</td>
+<td width="13%">
+    {% if object.model_name == "Document" %}
+        {{ object.date|default:"N/A" }}
+    {% else %}
+        {{ object.hospital.date|default:"N/A" }}
     {% endif %}
 </td>
 <td width="16%">{{ object|get_status_message|default:"Unknown" }}</td>

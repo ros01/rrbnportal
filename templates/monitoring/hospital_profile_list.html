@@ -31,12 +31,12 @@
 <thead>
 <tr style="background: #41963F;">
 <th class="small-text" style="color: #fff;" width="2%">SN</th>
-<th class="small-text" style="color: #fff;" width="14%">Application No</th>
+<th class="small-text" style="color: #fff;" width="22%">Hospital Name</th>
+<th class="small-text" style="color: #fff;" width="22%">Application Category</th>
+<th class="small-text" style="color: #fff;" width="15%">Application Type</th>
 <th class="small-text" style="color: #fff;" width="13%">Submitted On</th>
-<th class="small-text" style="color: #fff;" width="18%">Application Category</th>
-<th class="small-text" style="color: #fff;" width="22%">Application Type</th>
-<th class="small-text" style="color: #fff;" width="16%">Stage</th>
-<th class="small-text" style="color: #fff;" width="15%">Action</th>
+<th class="small-text" style="color: #fff;" width="14%">Stage</th>
+<th class="small-text" style="color: #fff;" width="12%">Action</th>
 </tr>
 </thead>
 <tbody>
@@ -44,12 +44,12 @@
 {% for object in object_list %}
 <tr>
 <td width="2%">{{ forloop.counter }}</td>
-<td width="14%">Not applicable</td>
+<td width="22%">{{ object.hospital_name}}</td>
+<td width="22%">{{ object.type|default:"N/A" }}</td>
+<td width="15%">New Application</td>
 <td width="13%">{{ object.date|default:"N/A" }}</td>
-<td width="18%">{{ object.type|default:"N/A" }}</td>
-<td width="22%">New Application</td>
-<td width="16%">Start Application</td>
-<td width="15%">
+<td width="14%">Start Application</td>
+<td width="12%">
 {% get_monitoring_hospital_action_url object as action_url %}
 {% if action_url %}
 <a href="{{ action_url }}" class="btn btn-outline-warning btn-sm">
