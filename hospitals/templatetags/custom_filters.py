@@ -344,6 +344,8 @@ def get_monitoring_action_url(object):
 
         elif object.model_name == "Hospital":
             application_type = object.type
+        elif object.model_name == "Appraisal":
+            application_type = object.hospital.application_type
         # elif hasattr(object, 'hospital') and hasattr(object.hospital, 'application_type'):
             # For other modules, use object.hospital.application_type
             # application_type = object.hospital.application_type
