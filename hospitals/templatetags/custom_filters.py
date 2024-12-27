@@ -295,22 +295,22 @@ def get_monitoring_action_url(object):
 
         # Internship mappings
         ("Appraisal", "New Registration - Government Hospital Internship", 5): 
-            lambda app: reverse("monitoring:hospital_accreditation_details", args=[app.id]),
+            lambda app: reverse("monitoring:hospital_accreditation_details", args=[app.pk]),
         ("Appraisal", "New Registration - Private Hospital Internship", 5): 
-            lambda app: reverse("monitoring:hospital_accreditation_details", args=[app.id]),
+            lambda app: reverse("monitoring:hospital_accreditation_details", args=[app.pk]),
         ("Appraisal", "Renewal - Private Hospital Internship", 5): 
-            lambda app: reverse("monitoring:hospital_accreditation_details", args=[app.id]),
+            lambda app: reverse("monitoring:hospital_accreditation_details", args=[app.pk]),
         ("Appraisal", "Renewal - Government Hospital Internship", 5): 
-            lambda app: reverse("monitoring:hospital_accreditation_details", args=[app.id]),
+            lambda app: reverse("monitoring:hospital_accreditation_details", args=[app.pk]),
             
         ("Appraisal", "New Registration - Government Hospital Internship", 6): 
-            lambda app: reverse("monitoring:hospital_accreditation_approval_details", args=[app.id]),
+            lambda app: reverse("monitoring:hospital_accreditation_approval_details", args=[app.pk]),
         ("Appraisal", "New Registration - Private Hospital Internship", 6): 
-            lambda app: reverse("monitoring:hospital_accreditation_approval_details", args=[app.id]),
+            lambda app: reverse("monitoring:hospital_accreditation_approval_details", args=[app.pk]),
         ("Appraisal", "Renewal - Private Hospital Internship", 6): 
-            lambda app: reverse("monitoring:hospital_accreditation_approval_details", args=[app.id]),
+            lambda app: reverse("monitoring:hospital_accreditation_approval_details", args=[app.pk]),
         ("Appraisal", "Renewal - Government Hospital Internship", 6): 
-            lambda app: reverse("monitoring:hospital_accreditation_approval_details", args=[app.id]),
+            lambda app: reverse("monitoring:hospital_accreditation_approval_details", args=[app.pk]),
 
         ("Appraisal", "New Registration - Government Hospital Internship", 7): 
             lambda app: reverse("monitoring:hospital_accreditation_registrar_approval_details", args=[app.pk]),
@@ -323,13 +323,13 @@ def get_monitoring_action_url(object):
 
         # License mappings
         ("License", "New Registration - Radiography Practice Permit", 8): 
-            lambda app: reverse("monitoring:hospital_license_details", args=[app.id]),
+            lambda app: reverse("monitoring:hospital_license_details", args=[app.pk]),
         ("License", "New Registration - Government Hospital Internship", 8): 
             lambda app: reverse("monitoring:hospital_license_details", args=[app.pk]),
         ("License", "New Registration - Private Hospital Internship", 8): 
             lambda app: reverse("monitoring:hospital_license_details", args=[app.pk]),
         ("License", "Renewal - Radiography Practice Permit", 8): 
-            lambda app: reverse("monitoring:hospital_license_details", args=[app.id]),
+            lambda app: reverse("monitoring:hospital_license_details", args=[app.pk]),
         ("License", "Renewal - Private Hospital Internship", 8): 
             lambda app: reverse("monitoring:hospital_license_details", args=[app.pk]),
         ("License", "Renewal - Government Hospital Internship", 8): 
