@@ -73,6 +73,7 @@
 <td width="16%">{{ object|get_status_message|default:"Unknown" }}</td>
 <td width="15%">
     {% with object|get_monitoring_action_url as action_url %}
+    {{ action_url }}
     {% if action_url %}
     <a href="{{ action_url }}" class="btn btn-outline-warning btn-sm">
     View <i class="fa fa-eye text-danger"></i>
