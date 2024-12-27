@@ -7,7 +7,7 @@ class DocumentAdmin(admin.ModelAdmin):
   list_display = ('application_no', 'application_type', 'license_type', 'hospital_name', 'hospital_type', 'equipment', 'date')
   list_display_links = ('application_no', 'application_type', 'license_type', 'date')
   list_filter = ('hospital_name', 'date')
-  search_fields = ('application_type', 'license_type', 'hospital_type', 'equipment', 'date')
+  search_fields = ('hospital_name', 'application_no', 'application_type', 'license_type', 'hospital_type', 'equipment', 'date')
   list_per_page = 25
 
 
