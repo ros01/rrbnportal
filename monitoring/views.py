@@ -53,6 +53,7 @@ from django.contrib.auth.hashers import make_password
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
 from django.contrib.messages.views import SuccessMessageMixin
+from datetime import date
 
 User = get_user_model()
 
@@ -778,26 +779,71 @@ class VetApplication(StaffRequiredMixin, LoginRequiredMixin, PaymentObjectMixin,
         #context = {'object': self.get_object()}
         return render(request, self.template_name, context)  
 
+# @login_required
+# def approve(request, id):
+#   if request.method == 'POST':
+#      object = get_object_or_404(Payment, pk=id)
+#      object.hospital_name.application_status = 3
+#      object.vet_status = 2
+#      object.application_status = 3
+#      object.vetting_officer = request.user
+#      object.vet_date = date.today
+#      object.save()
+#      context = {}
+#      context['object'] = object
+#      context['registration'] = Document.objects.filter (application_no=object.application_no)
+#      subject = 'Successful verification of Registration and Payment Details'
+#      from_email = settings.DEFAULT_FROM_EMAIL
+#      to_email = [object.hospital_name.hospital_admin]
+#      contact_message = get_template('monitoring/contact_message.txt').render(context)
+#      send_mail(subject, contact_message, from_email, to_email, fail_silently=True)
+#      messages.success(request, ('Application vetted successfully. Please proceed to Schedule Hospital for Inspection in case of New Practice Permit Application or Internship Accreditation Application.'))
+#      return render(request, 'monitoring/verification_successful.html',context)
+
 @login_required
 def approve(request, id):
-  if request.method == 'POST':
-     object = get_object_or_404(Payment, pk=id)
-     object.hospital_name.application_status = 3
-     object.vet_status = 2
-     object.application_status = 3
-     object.vetting_officer = request.user
-     object.save()
-     context = {}
-     context['object'] = object
-     context['registration'] = Document.objects.filter (application_no=object.application_no)
-     subject = 'Successful verification of Registration and Payment Details'
-     from_email = settings.DEFAULT_FROM_EMAIL
-     to_email = [object.hospital_name.hospital_admin]
-     contact_message = get_template('monitoring/contact_message.txt').render(context)
-     send_mail(subject, contact_message, from_email, to_email, fail_silently=True)
-     messages.success(request, ('Application vetted successfully. Please proceed to Schedule Hospital for Inspection in case of New Practice Permit Application or Internship Accreditation Application.'))
-     return render(request, 'monitoring/verification_successful.html',context)
+    if request.method == 'POST':
+        # Retrieve and update the Payment object
+        payment = get_object_or_404(Payment, pk=id)
+        payment.hospital_name.application_status = 3
+        payment.vet_status = 2
+        payment.application_status = 3
+        payment.vetting_officer = request.user
+        payment.vet_date = date.today()
+        payment.save()
 
+        # Prepare context for the email and rendering
+        context = {
+            'object': payment,
+            'registration': Document.objects.filter(application_no=payment.application_no),
+        }
+
+        # Email details
+        subject = 'Successful Verification of Registration and Payment Details'
+        from_email = settings.DEFAULT_FROM_EMAIL
+        to_email = [payment.hospital_name.hospital_admin]
+        contact_message = get_template('monitoring/contact_message.txt').render(context)
+
+        # Send the email
+        try:
+            send_mail(subject, contact_message, from_email, to_email, fail_silently=False)
+        except Exception as e:
+            messages.error(request, f"Error sending email: {e}")
+            return render(request, 'monitoring/verification_failed.html', context)
+
+        # Success message and response
+        messages.success(request, (
+            "Application vetted successfully. Please proceed to Schedule Hospital for Inspection in case "
+            "of New Practice Permit Application or Internship Accreditation Application."
+        ))
+        return render(request, 'monitoring/verification_successful.html', context)
+
+    # Handle non-POST requests (optional)
+    messages.error(request, "Invalid request method.")
+    return render(request, 'monitoring/verification_failed.html')
+
+
+    
 # @login_required 
 # def reject_application(request, id):
 #   if request.method == 'POST':

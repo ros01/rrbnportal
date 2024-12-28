@@ -135,31 +135,31 @@ def get_action_url(object):
             lambda app: reverse("hospitals:license_issuance", args=[app.pk]),
 
         # Internship mappings
-        ("Appraisal", "New Registration - Government Hospital Internship", 5): 
-            lambda app: reverse("hospitals:appraisal_processing", args=[app.id]),
-        ("Appraisal", "New Registration - Private Hospital Internship", 5): 
-            lambda app: reverse("hospitals:appraisal_processing", args=[app.id]),
-        ("Appraisal", "Renewal - Private Hospital Internship", 5): 
-            lambda app: reverse("hospitals:appraisal_processing", args=[app.id]),
-        ("Appraisal", "Renewal - Government Hospital Internship", 5): 
-            lambda app: reverse("hospitals:appraisal_processing", args=[app.id]),
+        ("Internship", "New Registration - Government Hospital Internship", 5): 
+            lambda app: reverse("hospitals:appraisal_processing", args=[app.pk]),
+        ("Internship", "New Registration - Private Hospital Internship", 5): 
+            lambda app: reverse("hospitals:appraisal_processing", args=[app.pk]),
+        ("Internship", "Renewal - Private Hospital Internship", 5): 
+            lambda app: reverse("hospitals:appraisal_processing", args=[app.pk]),
+        ("Internship", "Renewal - Government Hospital Internship", 5): 
+            lambda app: reverse("hospitals:appraisal_processing", args=[app.pk]),
             
-        ("Appraisal", "New Registration - Government Hospital Internship", 6): 
+        ("Internship", "New Registration - Government Hospital Internship", 6): 
             lambda app: reverse("hospitals:appraisal_passed", args=[app.id]),
-        ("Appraisal", "New Registration - Private Hospital Internship", 6): 
+        ("Internship", "New Registration - Private Hospital Internship", 6): 
             lambda app: reverse("hospitals:appraisal_passed", args=[app.id]),
-        ("Appraisal", "Renewal - Private Hospital Internship", 6): 
+        ("Internship", "Renewal - Private Hospital Internship", 6): 
             lambda app: reverse("hospitals:appraisal_passed", args=[app.id]),
-        ("Appraisal", "Renewal - Government Hospital Internship", 6): 
+        ("Internship", "Renewal - Government Hospital Internship", 6): 
             lambda app: reverse("hospitals:hospitals:appraisal_passed", args=[app.id]),
 
-        ("Appraisal", "New Registration - Government Hospital Internship", 7): 
+        ("Internship", "New Registration - Government Hospital Internship", 7): 
             lambda app: reverse("hospitals:internship_license_issuance", args=[app.pk]),
-        ("Appraisal", "New Registration - Private Hospital Internship", 7): 
+        ("Internship", "New Registration - Private Hospital Internship", 7): 
             lambda app: reverse("hospitals:internship_license_issuance", args=[app.pk]),
-        ("Appraisal", "Renewal - Private Hospital Internship", 7): 
+        ("Internship", "Renewal - Private Hospital Internship", 7): 
             lambda app: reverse("hospitals:internship_license_issuance", args=[app.pk]),
-        ("Appraisal", "Renewal - Government Hospital Internship", 7): 
+        ("Internship", "Renewal - Government Hospital Internship", 7): 
             lambda app: reverse("hospitals:internship_license_issuance", args=[app.pk]),
 
         # License mappings
@@ -294,31 +294,31 @@ def get_monitoring_action_url(object):
             lambda app: reverse("monitoring:hospital_inspection_registrar_approval_details", args=[app.pk]),
 
         # Internship mappings
-        ("Appraisal", "New Registration - Government Hospital Internship", 5): 
+        ("Internship", "New Registration - Government Hospital Internship", 5): 
             lambda app: reverse("monitoring:hospital_accreditation_details", args=[app.pk]),
-        ("Appraisal", "New Registration - Private Hospital Internship", 5): 
+        ("Internship", "New Registration - Private Hospital Internship", 5): 
             lambda app: reverse("monitoring:hospital_accreditation_details", args=[app.pk]),
-        ("Appraisal", "Renewal - Private Hospital Internship", 5): 
+        ("Internship", "Renewal - Private Hospital Internship", 5): 
             lambda app: reverse("monitoring:hospital_accreditation_details", args=[app.pk]),
-        ("Appraisal", "Renewal - Government Hospital Internship", 5): 
+        ("Internship", "Renewal - Government Hospital Internship", 5): 
             lambda app: reverse("monitoring:hospital_accreditation_details", args=[app.pk]),
             
-        ("Appraisal", "New Registration - Government Hospital Internship", 6): 
+        ("Internship", "New Registration - Government Hospital Internship", 6): 
             lambda app: reverse("monitoring:hospital_accreditation_approval_details", args=[app.pk]),
-        ("Appraisal", "New Registration - Private Hospital Internship", 6): 
+        ("Internship", "New Registration - Private Hospital Internship", 6): 
             lambda app: reverse("monitoring:hospital_accreditation_approval_details", args=[app.pk]),
-        ("Appraisal", "Renewal - Private Hospital Internship", 6): 
+        ("Internship", "Renewal - Private Hospital Internship", 6): 
             lambda app: reverse("monitoring:hospital_accreditation_approval_details", args=[app.pk]),
-        ("Appraisal", "Renewal - Government Hospital Internship", 6): 
+        ("Internship", "Renewal - Government Hospital Internship", 6): 
             lambda app: reverse("monitoring:hospital_accreditation_approval_details", args=[app.pk]),
 
-        ("Appraisal", "New Registration - Government Hospital Internship", 7): 
+        ("Internship", "New Registration - Government Hospital Internship", 7): 
             lambda app: reverse("monitoring:hospital_accreditation_registrar_approval_details", args=[app.pk]),
-        ("Appraisal", "New Registration - Private Hospital Internship", 7): 
+        ("Internship", "New Registration - Private Hospital Internship", 7): 
             lambda app: reverse("monitoring:hospital_accreditation_registrar_approval_details", args=[app.pk]),
-        ("Appraisal", "Renewal - Private Hospital Internship", 7): 
+        ("Internship", "Renewal - Private Hospital Internship", 7): 
             lambda app: reverse("monitoring:hospital_accreditation_registrar_approval_details", args=[app.pk]),
-        ("Appraisal", "Renewal - Government Hospital Internship", 7): 
+        ("Internship", "Renewal - Government Hospital Internship", 7): 
             lambda app: reverse("monitoring:hospital_accreditation_registrar_approval_details", args=[app.pk]),
 
         # License mappings

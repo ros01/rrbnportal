@@ -1556,7 +1556,7 @@ class VerificationsCompleted(LoginRequiredMixin, DetailView):
         return context
 
 class AccreditationVerificationsCompleted(LoginRequiredMixin, DetailView):
-    template_name = "hospitals/accreditation_verifications_done.html"
+    template_name = "hospitals/verifications_done.html"
     model = Payment
     
     def get_context_data(self, **kwargs):

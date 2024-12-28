@@ -216,8 +216,8 @@ class Payment(models.Model):
             self.vet_date = datetime.now()
 
 
-    def vet_date_pretty(self):
-        return self.vet_date.strftime('%b %e %Y')
+    # def vet_date_pretty(self):
+    #     return self.vet_date.strftime('%b %e %Y')
 
 
 
