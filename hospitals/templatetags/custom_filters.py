@@ -462,11 +462,16 @@ def get_monitoring_hospital_action_url(object):
     return None
 
 
+# @register.filter
+# def instanceof(obj, class_name):
+#     return obj.__class__.__name__.lower() == class_name.lower()
+
+
+
 @register.filter
 def instanceof(obj, class_name):
-    return obj.__class__.__name__.lower() == class_name.lower()
-
-
+    """Custom template filter to check if an object is an instance of a given class."""
+    return obj.__class__.__name__ == class_name
 
 
 

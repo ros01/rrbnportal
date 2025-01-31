@@ -72,20 +72,16 @@
 {% elif object|instanceof:"Appraisal" %}
 {{object.schedule.inspection_zone}}{% endif %}
 </td>
+
 <td>
-
-
-{% if object|instanceof:"License" %}
-<span class="badge badge-success">Completed</span>
-{% elif object|instanceof:"Inspection" %}
-<span class="badge badge-success">Completed</span>
-{% elif object|instanceof:"Appraisal" %}
-<span class="badge badge-success">Completed</span>
-{% else %}
-<span class="badge badge-warning">Pending</span>
-
-{% endif %}
+    {% if object.is_inspection or object.is_appraisal %}
+        <span class="badge badge-success">Completed</span>
+    {% elif object.is_pending %}
+        <span class="badge badge-warning">Pending</span>
+    {% endif %}
 </td>
+
+
 {% if object|instanceof:"Schedule" %}
 <td width="10%"><a href="{% url 'monitoring:inspection_details' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a></td>
 {% elif object|instanceof:"Inspection" %}
@@ -98,6 +94,8 @@
 
 </table>
 </div>
+
+
 </div>
 </div>
 </div>

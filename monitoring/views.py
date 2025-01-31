@@ -1170,52 +1170,6 @@ class InspectionScheduleCreateView(StaffRequiredMixin, LoginRequiredMixin, Payme
         self.object.save()  # Save the Schedule instance with inspector details
         return super().form_valid(form)
 
-
-
-    # def form_valid(self, form):
-    #     print("POST Data:", self.request.POST)
-    #     print("Inspector 1 Name:", self.request.POST.get('inspector1_name'))
-    #     print("Inspector 1 Phone:", self.request.POST.get('inspector1_phone'))
-
-    #     self.object = form.save(commit=False)  # Save the main form but don't commit yet
-
-    #     # Save additional inspectors dynamically
-    #     request = self.request
-    #     for i in range(1, 7):  # Process up to six inspectors
-    #         name_key = f"inspector{i}_name"
-    #         phone_key = f"inspector{i}_phone"
-    #         name = request.POST.get(name_key)
-    #         phone = request.POST.get(phone_key)
-
-    #         if name and phone:  # If values exist, assign them dynamically
-    #             setattr(self.object, name_key, name)
-    #             setattr(self.object, phone_key, phone)
-
-    #     self.object.save()  # Commit the form and additional data
-    #     return super().form_valid(form)
-
-
-    
-    # def form_valid(self, form):
-    #     self.object = form.save()  # Save the main form
-
-    #     # Save additional inspectors
-    #     request = self.request
-    #     for i in range(2, 7):  # Support up to six inspectors
-    #         name_key = f"inspector{i}_name"
-    #         phone_key = f"inspector{i}_phone"
-    #         name = request.POST.get(name_key)
-    #         phone = request.POST.get(phone_key)
-
-    #         if name and phone:  # If values exist, assign them dynamically
-    #             setattr(self.object, f"inspector{i}_name", name)
-    #             setattr(self.object, f"inspector{i}_phone", phone)
-
-    #     self.object.save()  # Save the updated object
-    #     return super().form_valid(form)
-
-
-
     def get_form_kwargs(self):
         # Use get_object_or_404 for safety
         kwargs = super().get_form_kwargs()
@@ -1360,6 +1314,51 @@ class InspectionCreateDetailView1(StaffRequiredMixin, LoginRequiredMixin, Schedu
 
 class ScheduledInspectionsListView(LoginRequiredMixin, ListView):
     template_name = "monitoring/scheduled_inspections_list.html"
+    context_object_name = "combined_records"
+
+    def get_queryset(self):
+        schedules = Schedule.objects.select_related("hospital").all()
+        inspections = Inspection.objects.select_related("hospital").all()
+        appraisals = Appraisal.objects.select_related("hospital").all()
+
+        # Convert QuerySets to dictionaries for quick lookup
+        inspection_ids = {insp.schedule_id for insp in inspections}
+        appraisal_ids = {appr.schedule_id for appr in appraisals}
+
+        # Add flags to each object
+        for obj in schedules:
+            obj.is_schedule = True
+            obj.is_inspection = obj.id in inspection_ids
+            obj.is_appraisal = obj.id in appraisal_ids
+            obj.is_pending = not obj.is_inspection and not obj.is_appraisal  # True if neither exist
+
+        for obj in inspections:
+            obj.is_schedule = True
+            obj.is_inspection = True
+            obj.is_appraisal = False
+            obj.is_pending = False  # Inspections are never pending
+
+        for obj in appraisals:
+            obj.is_schedule = True
+            obj.is_inspection = False
+            obj.is_appraisal = True
+            obj.is_pending = False  # Appraisals are never pending
+
+        # Combine into a single iterable
+        combined_records = sorted(
+            chain(schedules, inspections, appraisals),
+            key=lambda obj: not obj.is_pending  # Sorts `is_pending=True` first
+        )
+
+        return combined_records
+
+
+
+
+
+
+class ScheduledInspectionsListView1(LoginRequiredMixin, ListView):
+    template_name = "monitoring/scheduled_inspections_list.html"
     context_object_name = 'combined_records'
 
     def get_queryset(self):
@@ -1376,6 +1375,7 @@ class ScheduledInspectionsListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['combined_records'] = self.get_queryset()  # Combined records
         return context
+
 
 
 

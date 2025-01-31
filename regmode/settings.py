@@ -182,7 +182,7 @@ CAPTCHA_FONT_SIZE = 30
 
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = 'GkXGyiI'
+EMAIL_HOST_PASSWORD = '4kBoc'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = '"RRBN" <noreply@monitoring.rrbn.gov.ng>'
