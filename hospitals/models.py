@@ -12,6 +12,7 @@ from accounts.models import Hospital
 from django.conf import settings
 from datetime import datetime
 from datetime import date
+from django.utils.timezone import now
 
 
 
@@ -179,7 +180,7 @@ class Payment(models.Model):
     #hospital_admin = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)
     application_status = models.IntegerField(default=2)
     rrr_number = models.CharField(max_length=100)
-    receipt_number = models.CharField(max_length=100)
+    # receipt_number = models.CharField(max_length=100)
     payment_amount = models.CharField(max_length=100)
     payment_method = models.CharField(max_length=100, choices = PAYMENT_METHOD)
     payment_receipt = models.FileField(upload_to='%Y/%m/%d/')
@@ -220,6 +221,15 @@ class Payment(models.Model):
     #     return self.vet_date.strftime('%b %e %Y')
 
 
+class Inspector(models.Model):
+    name = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=15)
+    zone = models.CharField(max_length=100, choices = INSPECTION_ZONE)
+    is_approved = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.phone_number})"
+
 
 class Schedule(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -229,10 +239,31 @@ class Schedule(models.Model):
     payment = models.ForeignKey(Payment, null=True, related_name='payment_py', on_delete=models.CASCADE)
     application_status = models.IntegerField(default=4)
     inspection_scheduler = models.CharField(max_length=300)
-    inspection_schedule_date = models.DateField(default=date.today)
-    inspection_date = models.DateField(default=date.today)
-    inspection_report_deadline = models.DateField(default=date.today)
+    # inspectors = models.ManyToManyField(Inspector, related_name='schedules')
+    inspection_schedule_date = models.DateField(default=now, blank=True)
+    inspection_date = models.DateField(default=now)
+    inspection_report_deadline = models.DateField(default=now)
     inspection_zone = models.CharField(max_length=100, choices = INSPECTION_ZONE)
+
+    # Inspector fields
+    inspector1_name = models.CharField(max_length=255, blank=True, null=True)
+    inspector1_phone = models.CharField(max_length=15, blank=True, null=True)
+
+    inspector2_name = models.CharField(max_length=255, blank=True, null=True)
+    inspector2_phone = models.CharField(max_length=15, blank=True, null=True)
+
+    inspector3_name = models.CharField(max_length=255, blank=True, null=True)
+    inspector3_phone = models.CharField(max_length=15, blank=True, null=True)
+
+    inspector4_name = models.CharField(max_length=255, blank=True, null=True)
+    inspector4_phone = models.CharField(max_length=15, blank=True, null=True)
+
+    inspector5_name = models.CharField(max_length=255, blank=True, null=True)
+    inspector5_phone = models.CharField(max_length=15, blank=True, null=True)
+
+    inspector6_name = models.CharField(max_length=255, blank=True, null=True)
+    inspector6_phone = models.CharField(max_length=15, blank=True, null=True)
+
     nuclear_medicine_total = models.IntegerField(blank=True, null=True)
     carm_total = models.IntegerField(blank=True, null=True)
     radiotherapy_total = models.IntegerField(blank=True, null=True)
@@ -251,7 +282,9 @@ class Schedule(models.Model):
         unique_together = ('application_no','hospital_name')
 
     def __str__(self):
-        return str(self.application_no)
+        return f"{self.hospital_name} - {self.application_no}"
+
+    
 
     def save(self, *args, **kwargs):
         super(Schedule, self).save(*args, **kwargs)
@@ -721,6 +754,9 @@ class Inspection(models.Model):
     application_status = models.IntegerField(default=5)
     vet_status = models.IntegerField(default=4)
     inspection_status = models.IntegerField(default=1)
+    rejection_reason = models.TextField(blank=True, null=True)
+    is_approved = models.BooleanField(default=False)
+    is_rejected = models.BooleanField(default=False)
     inspection_total = models.DecimalField(blank=True, max_digits=5, decimal_places=2)
     inspection_comments = models.TextField(blank=True)
     inspection_date = models.DateField(default=date.today)
@@ -803,6 +839,9 @@ class Appraisal(models.Model):
     schedule = models.ForeignKey(Schedule, null=True, related_name='schedule_16', on_delete=models.CASCADE)
     vet_status = models.IntegerField(default=4)
     inspection_status = models.IntegerField(default=1)
+    rejection_reason = models.TextField(blank=True, null=True)
+    is_approved = models.BooleanField(default=False)
+    is_rejected = models.BooleanField(default=False)
     radiographers_score = models.IntegerField()
     radiologists_score = models.IntegerField()
     support_staff_score = models.IntegerField()
@@ -859,7 +898,7 @@ class License(models.Model):
     hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospital_15', on_delete=models.CASCADE)
     hospital = models.ForeignKey(Document, null=True, related_name='hospital_15', on_delete=models.CASCADE)
     payment = models.ForeignKey(Payment, null=True, related_name='payment_15', on_delete=models.CASCADE)
-    schedule = models.ForeignKey(Schedule, null=True, related_name='schedule_15', on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, null=True, blank=True, related_name='schedule_15', on_delete=models.CASCADE)
     inspection = models.ForeignKey(Inspection, null=True, blank=True, related_name='inspection_15', on_delete=models.CASCADE)
     appraisal = models.ForeignKey(Appraisal, null=True, blank=True, related_name='appraisal_15', on_delete=models.CASCADE)
     hospital_code = models.CharField(max_length=500, null=True, blank=True, 

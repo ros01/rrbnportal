@@ -1,0 +1,7 @@
+<option value="">Select an inspector</option>
+{% for inspector in inspectors %}
+    <option value="{{ inspector.id }}">{{ inspector.name }} ({{ inspector.phone_number }})</option>
+{% endfor %}
+
+
+

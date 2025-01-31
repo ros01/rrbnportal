@@ -33,7 +33,7 @@ from django.contrib.staticfiles import finders
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from itertools import chain
-from django.db.models import Max, Value, CharField, Q, Count
+from django.db.models import Max, Value, IntegerField, CharField, Q, Count
 from operator import attrgetter
 from django.db import models
 from django.contrib.messages.views import SuccessMessageMixin
@@ -54,6 +54,7 @@ from django.http import FileResponse
 from reportlab.pdfgen import canvas
 from django.contrib.messages.views import SuccessMessageMixin
 from datetime import date
+from django.core.paginator import Paginator
 
 User = get_user_model()
 
@@ -289,6 +290,44 @@ class HospitalProfileListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
         if query:
             qs = qs.filter(name__icontains=query)
         return qs 
+
+class InspectionScheduleListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
+    template_name = 'monitoring/inspection_schedule_list.html'
+    paginate_by = 10  # Default items per page
+
+    def get_queryset(self):
+        """
+        Combine two querysets filtering payments based on specific conditions
+        and return as a list to support pagination.
+        """
+        payment_qs = Payment.objects.select_related("hospital_name").filter(
+            vet_status=2,
+            hospital__license_type='Radiography Practice Permit',
+            hospital__application_type='New Registration - Radiography Practice Permit',
+        )
+        payment_qss = Payment.objects.select_related("hospital_name").filter(
+            vet_status=2,
+            hospital__license_type='Internship Accreditation',
+        )
+        # Combine querysets and convert to list
+        return list(chain(payment_qs, payment_qss))
+
+    def get_context_data(self, **kwargs):
+        """
+        Add additional context data, including paginated combined payments.
+        """
+        context = super().get_context_data(**kwargs)
+
+        combined_payments = self.get_queryset()  # Get the combined queryset
+        paginator = Paginator(combined_payments, self.paginate_by)  # Handle pagination
+        page_number = self.request.GET.get('page')  # Get the current page number
+        page_obj = paginator.get_page(page_number)  # Get the appropriate page
+
+        # Add pagination context
+        context['page_obj'] = page_obj
+        context['combined_payments'] = page_obj.object_list  # Paginated objects
+
+        return context
 
 
 
@@ -843,7 +882,7 @@ def approve(request, id):
     return render(request, 'monitoring/verification_failed.html')
 
 
-    
+
 # @login_required 
 # def reject_application(request, id):
 #   if request.method == 'POST':
@@ -911,7 +950,7 @@ class RegistrationObjectMixin(object):
             obj = get_object_or_404(self.model, id=id)
         return obj 
 
-class InspectionScheduleListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
+class InspectionScheduleListView2(StaffRequiredMixin, LoginRequiredMixin, ListView):
     template_name = 'monitoring/inspection_schedule_list.html'
     #context_object_name = 'object'
 
@@ -923,6 +962,73 @@ class InspectionScheduleListView(StaffRequiredMixin, LoginRequiredMixin, ListVie
         context['payment_qs'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
         context['payment_qss'] = Payment.objects.select_related("hospital_name").filter(vet_status=2, hospital__license_type = 'Internship Accreditation')
         return context
+
+
+
+
+
+class InspectionScheduleListView1(StaffRequiredMixin, LoginRequiredMixin, ListView):
+    template_name = 'monitoring/inspection_schedule_list.html'
+    
+    def get_queryset(self):
+        # Combine both querysets into one
+        payment_qs = Payment.objects.select_related("hospital_name").filter(
+            vet_status=2,
+            hospital__license_type='Radiography Practice Permit',
+            hospital__application_type='New Registration - Radiography Practice Permit',
+        )
+        payment_qss = Payment.objects.select_related("hospital_name").filter(
+            vet_status=2,
+            hospital__license_type='Internship Accreditation',
+        )
+        return list(payment_qs) + list(payment_qss)  # Combine both querysets
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['combined_payments'] = self.get_queryset()  # Pass combined queryset
+        return context
+
+
+
+class InspectionScheduleListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
+    template_name = 'monitoring/inspection_schedule_list.html'
+    paginate_by = 10  # Default items per page
+
+    def get_queryset(self):
+        """
+        Combine two querysets filtering payments based on specific conditions
+        and return as a list to support pagination.
+        """
+        payment_qs = Payment.objects.select_related("hospital_name").filter(
+            vet_status=2,
+            hospital__license_type='Radiography Practice Permit',
+            hospital__application_type='New Registration - Radiography Practice Permit',
+        )
+        payment_qss = Payment.objects.select_related("hospital_name").filter(
+            vet_status=2,
+            hospital__license_type='Internship Accreditation',
+        )
+        # Combine querysets and convert to list
+        return list(chain(payment_qs, payment_qss))
+
+    def get_context_data(self, **kwargs):
+        """
+        Add additional context data, including paginated combined payments.
+        """
+        context = super().get_context_data(**kwargs)
+
+        combined_payments = self.get_queryset()  # Get the combined queryset
+        paginator = Paginator(combined_payments, self.paginate_by)  # Handle pagination
+        page_number = self.request.GET.get('page')  # Get the current page number
+        page_obj = paginator.get_page(page_number)  # Get the appropriate page
+
+        # Add pagination context
+        context['page_obj'] = page_obj
+        context['combined_payments'] = page_obj.object_list  # Paginated objects
+
+        return context
+
+
 
 #class InspectionCreateView(LoginRequiredMixin, PaymentObjectMixin, View):
     #template_name = 'monitoring/schedule_inspection.html'
@@ -968,7 +1074,7 @@ class InspectionScheduleListView(StaffRequiredMixin, LoginRequiredMixin, ListVie
 
 
 
-class InspectionCreateView(StaffRequiredMixin, LoginRequiredMixin, PaymentObjectMixin, SuccessMessageMixin, CreateView):
+class InspectionScheduleCreateView1(StaffRequiredMixin, LoginRequiredMixin, PaymentObjectMixin, SuccessMessageMixin, CreateView):
     model = Schedule
     template_name = 'monitoring/schedule_inspection.html'
     form_class = ScheduleModelForm
@@ -995,14 +1101,156 @@ class InspectionCreateView(StaffRequiredMixin, LoginRequiredMixin, PaymentObject
         kwargs = super().get_form_kwargs()
         kwargs['initial']['hospital_name'] = self.payment.hospital_name
         kwargs['initial']['hospital'] = self.payment.hospital
-        kwargs['initial']['application_no'] = self.payment.application_no
-        #kwargs['initial']['hospital'] = self.payment.hospital
-        
+        kwargs['initial']['application_no'] = self.payment.application_no  
         return kwargs
       
 
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data())
+
+
+
+class InspectionScheduleCreateView(StaffRequiredMixin, LoginRequiredMixin, PaymentObjectMixin, SuccessMessageMixin, CreateView):
+    model = Schedule
+    template_name = 'monitoring/schedule_inspection.html'
+    form_class = ScheduleModelForm
+
+    def get_success_url(self):
+        return reverse("monitoring:inspection_details", kwargs={"pk": self.object.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Combine the querysets into one list
+        combined_payments = Payment.objects.select_related("hospital_name").filter(
+            vet_status=2,
+            hospital_name=self.payment.hospital_name,
+            application_no=self.payment.application_no,
+        ).filter(
+            Q(hospital__license_type='Radiography Practice Permit', hospital__application_type='New Registration - Radiography Practice Permit') |
+            Q(hospital__license_type='Internship Accreditation')
+        )
+        context['combined_payments'] = combined_payments
+        
+        return context
+
+    def get_initial(self):
+        return {
+            'payment': self.kwargs["pk"],
+        }
+
+
+    def form_valid(self, form):
+        # Debug: Print POST data
+        print("POST Data:", self.request.POST)
+        for i in range(1, 7):
+            name_key = f'inspector{i}_name'
+            phone_key = f'inspector{i}_phone'
+            name = self.request.POST.get(name_key)
+            phone = self.request.POST.get(phone_key)
+            print(f"{name_key}: {name}, {phone_key}: {phone}")
+
+        # Save the main form
+        self.object = form.save(commit=False)
+        
+        # Manually assign additional inspector fields
+        for i in range(1, 7):  # Inspectors 1 to 6
+            name_key = f'inspector{i}_name'
+            phone_key = f'inspector{i}_phone'
+            name = self.request.POST.get(name_key)
+            phone = self.request.POST.get(phone_key)
+            
+            if name and phone:
+                setattr(self.object, name_key, name)
+                setattr(self.object, phone_key, phone)
+            elif i == 1:
+                # Inspector 1 is required
+                messages.error(self.request, "Inspector 1 details are required.")
+                return self.form_invalid(form)
+        
+        self.object.save()  # Save the Schedule instance with inspector details
+        return super().form_valid(form)
+
+
+
+    # def form_valid(self, form):
+    #     print("POST Data:", self.request.POST)
+    #     print("Inspector 1 Name:", self.request.POST.get('inspector1_name'))
+    #     print("Inspector 1 Phone:", self.request.POST.get('inspector1_phone'))
+
+    #     self.object = form.save(commit=False)  # Save the main form but don't commit yet
+
+    #     # Save additional inspectors dynamically
+    #     request = self.request
+    #     for i in range(1, 7):  # Process up to six inspectors
+    #         name_key = f"inspector{i}_name"
+    #         phone_key = f"inspector{i}_phone"
+    #         name = request.POST.get(name_key)
+    #         phone = request.POST.get(phone_key)
+
+    #         if name and phone:  # If values exist, assign them dynamically
+    #             setattr(self.object, name_key, name)
+    #             setattr(self.object, phone_key, phone)
+
+    #     self.object.save()  # Commit the form and additional data
+    #     return super().form_valid(form)
+
+
+    
+    # def form_valid(self, form):
+    #     self.object = form.save()  # Save the main form
+
+    #     # Save additional inspectors
+    #     request = self.request
+    #     for i in range(2, 7):  # Support up to six inspectors
+    #         name_key = f"inspector{i}_name"
+    #         phone_key = f"inspector{i}_phone"
+    #         name = request.POST.get(name_key)
+    #         phone = request.POST.get(phone_key)
+
+    #         if name and phone:  # If values exist, assign them dynamically
+    #             setattr(self.object, f"inspector{i}_name", name)
+    #             setattr(self.object, f"inspector{i}_phone", phone)
+
+    #     self.object.save()  # Save the updated object
+    #     return super().form_valid(form)
+
+
+
+    def get_form_kwargs(self):
+        # Use get_object_or_404 for safety
+        kwargs = super().get_form_kwargs()
+        self.payment = get_object_or_404(Payment, pk=self.kwargs['pk']) 
+        # zone = self.request.GET.get('inspection_zone')  # Get zone from request
+        # kwargs['zone'] = zone  
+        kwargs['initial']['hospital_name'] = self.payment.hospital_name
+        kwargs['initial']['hospital'] = self.payment.hospital
+        kwargs['initial']['application_no'] = self.payment.application_no  
+        return kwargs
+
+    def form_invalid(self, form):
+        # Render the form with errors and context data
+        print("Form errors:", form.errors)
+        messages.error(self.request, "There was an error with your submission. Please review and try again.")
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+@login_required
+
+def get_inspectors_by_zone_htmx(request):
+    zone = request.GET.get('inspection_zone')
+    if zone:
+        inspectors = Inspector.objects.filter(zone=zone)  # Filter inspectors by the selected zone
+    else:
+        inspectors = []
+    # inspectors = Inspector.objects.filter(zone=zone) if zone else []
+    print("Inspection Zone:", zone)
+    print("Inspectors:", inspectors)
+    print("Request GET:", request.GET)
+    print("Request GET Zone:", request.GET.get('zone'))
+    # return render(request, 'partials/inspectors_dropdown.html', {'inspectors': inspectors})
+    return render(request, 'partials/inspectors_checkboxes.html', {'inspectors': inspectors, 'zone':zone })
+
+
 
 
 
@@ -1056,9 +1304,39 @@ class ScheduleObjectMixin(object):
         return obj 
 
 
+class InspectionCreateDetailView(StaffRequiredMixin, LoginRequiredMixin, DetailView):
+    model = Schedule
+    template_name = "monitoring/inspection_scheduled.html"
+    context_object_name = "object"
 
-class InspectionCreateDetailView(StaffRequiredMixin, LoginRequiredMixin, ScheduleObjectMixin, View):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        inspectors = [
+            {"name": self.object.inspector1_name, "phone": self.object.inspector1_phone},
+            {"name": self.object.inspector2_name, "phone": self.object.inspector2_phone},
+            {"name": self.object.inspector3_name, "phone": self.object.inspector3_phone},
+            {"name": self.object.inspector4_name, "phone": self.object.inspector4_phone},
+            {"name": self.object.inspector5_name, "phone": self.object.inspector5_phone},
+            {"name": self.object.inspector6_name, "phone": self.object.inspector6_phone},
+        ]
+        # Filter out empty entries
+        context['approved_inspectors'] = [inspector for inspector in inspectors if inspector['name'] and inspector['phone']]
+        return context
+
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     # context['inspectors'] = self.object.inspectors.all()
+    #     return context
+
+class InspectionCreateDetailView1(StaffRequiredMixin, LoginRequiredMixin, ScheduleObjectMixin, View):
     template_name = 'monitoring/inspection_scheduled.html' 
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['inspectors'] = self.object.inspectors.all()
+        return context
+
     def get(self, request, id=None, *args, **kwargs):
         context = {}
         obj = self.get_object()
@@ -1080,7 +1358,94 @@ class InspectionCreateDetailView(StaffRequiredMixin, LoginRequiredMixin, Schedul
 
 
 
+class ScheduledInspectionsListView(LoginRequiredMixin, ListView):
+    template_name = "monitoring/scheduled_inspections_list.html"
+    context_object_name = 'combined_records'
+
+    def get_queryset(self):
+        # Fetch schedules, inspections, and appraisals
+        schedules = Schedule.objects.select_related('hospital').all()
+        inspections = Inspection.objects.select_related('hospital').all()
+        appraisals = Appraisal.objects.select_related('hospital').all()
+
+        # Combine the querysets into one iterable using chain
+        combined_records = chain(schedules, inspections, appraisals)
+        return combined_records
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['combined_records'] = self.get_queryset()  # Combined records
+        return context
+
+
+
 class InspectionCompletedListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
+    template_name = 'monitoring/inspections_completed_lists.html'
+
+    def get_queryset(self):
+        inspections = Inspection.objects.annotate(
+            appraisal_status_placeholder=Value(None, output_field=IntegerField())  # Placeholder for appraisal status
+        ).select_related("hospital_name").filter(vet_status=4)
+
+        appraisals = Appraisal.objects.annotate(
+            inspection_status_placeholder=Value(None, output_field=IntegerField())  # Placeholder for inspection status
+        ).select_related("hospital_name").filter(vet_status=4)
+
+        # Combine the two querysets into one
+        return list(inspections) + list(appraisals)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['combined_records'] = self.get_queryset()
+        return context
+
+
+
+
+
+class InspectionCompletedListView3(StaffRequiredMixin, LoginRequiredMixin, ListView):
+    template_name = 'monitoring/inspections_completed_list.html'
+
+    def get_queryset(self):
+        inspections = Inspection.objects.annotate(
+            appraisal_status=Value(None)  # Add a placeholder for objects without appraisal_status
+        ).select_related("hospital_name").filter(vet_status=4)
+
+        appraisals = Appraisal.objects.annotate(
+            inspection_status=Value(None)  # Add a placeholder for objects without inspection_status
+        ).select_related("hospital_name").filter(vet_status=4)
+
+        return list(inspections) + list(appraisals)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['combined_records'] = self.get_queryset()
+        return context
+
+class InspectionCompletedListView2(StaffRequiredMixin, LoginRequiredMixin, ListView):
+    template_name = 'monitoring/inspections_completed_lists.html'
+    context_object_name = 'combined_records'
+
+    def get_queryset(self):
+        # Fetch completed inspections
+        inspection_qs = Inspection.objects.select_related("hospital_name").filter(vet_status=4)
+        # Fetch completed appraisals
+        appraisal_qs = Appraisal.objects.select_related("hospital_name").filter(vet_status=4)
+        # Combine both querysets using chain
+        return list(chain(inspection_qs, appraisal_qs))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        combined_qs = self.get_queryset()
+        context['combined_qs'] = combined_qs
+        # Pass additional context if needed
+        context['inspection_count'] = sum(1 for obj in combined_qs if isinstance(obj, Inspection))
+        context['appraisal_count'] = sum(1 for obj in combined_qs if isinstance(obj, Appraisal))
+        
+        return context
+
+
+class InspectionCompletedListView1(StaffRequiredMixin, LoginRequiredMixin, ListView):
     template_name = 'monitoring/inspections_completed_list.html'
     context_object_name = 'object'
 
@@ -1106,16 +1471,6 @@ class InspectionObjectMixin(object):
         return obj 
 
 
-class InspectionCompletedDetailView(StaffRequiredMixin, LoginRequiredMixin, InspectionObjectMixin, View):
-    template_name = "monitoring/inspections_detail.html" # DetailView
-    def get(self, request, id=None, *args, **kwargs):
-        # GET method
-        context = {'object': self.get_object()}
-        #context = {'object': self.get_object()}
-        return render(request, self.template_name, context)
-
-
-
 class AccreditationObjectMixin(object):
     model = Appraisal
     def get_object(self):
@@ -1126,13 +1481,75 @@ class AccreditationObjectMixin(object):
         return obj 
 
 
-class AccreditationCompletedDetailView(StaffRequiredMixin, LoginRequiredMixin, AccreditationObjectMixin, View):
+class AccreditationCompletedDetailView1(StaffRequiredMixin, LoginRequiredMixin, AccreditationObjectMixin, View):
     template_name = "monitoring/appraisals_detail.html" # DetailView
     def get(self, request, id=None, *args, **kwargs):
         # GET method
         context = {'object': self.get_object()}
         #context = {'object': self.get_object()}
         return render(request, self.template_name, context)
+
+class InspectionCompletedDetailView(StaffRequiredMixin, LoginRequiredMixin, DetailView):
+    model = Inspection
+    template_name = "monitoring/inspections_detail.html" # DetailView
+    context_object_name = 'object'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Additional context or derived data
+        inspection = self.object
+        context['photos'] = [
+            {'label': 'Main Photo', 'image': inspection.photo_main} if inspection.photo_main else None,
+            {'label': 'Photo 1', 'image': inspection.photo_1} if inspection.photo_1 else None,
+            {'label': 'Photo 2', 'image': inspection.photo_2} if inspection.photo_2 else None,
+            {'label': 'Photo 3', 'image': inspection.photo_3} if inspection.photo_3 else None,
+            {'label': 'Photo 4', 'image': inspection.photo_4} if inspection.photo_4 else None,
+            {'label': 'Photo 5', 'image': inspection.photo_5} if inspection.photo_5 else None,
+            {'label': 'Photo 6', 'image': inspection.photo_6} if inspection.photo_6 else None,
+        ]
+
+        # Remove None values from the list
+        context['photos'] = [photo for photo in context['photos'] if photo is not None]
+
+        return context
+    # def get(self, request, id=None, *args, **kwargs):
+    #     # GET method
+    #     context = {'object': self.get_object()}
+    #     #context = {'object': self.get_object()}
+    #     return render(request, self.template_name, context)
+
+
+class AccreditationCompletedDetailView(StaffRequiredMixin, LoginRequiredMixin, DetailView):
+    model = Appraisal
+    template_name = 'monitoring/appraisals_detail.html'  # Replace with the path to your template
+    context_object_name = 'object'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Additional context or derived data
+        appraisal = self.object
+        context['photos'] = [
+            {'label': 'Main Photo', 'image': appraisal.photo_main} if appraisal.photo_main else None,
+            {'label': 'Photo 1', 'image': appraisal.photo_1} if appraisal.photo_1 else None,
+            {'label': 'Photo 2', 'image': appraisal.photo_2} if appraisal.photo_2 else None,
+            {'label': 'Photo 3', 'image': appraisal.photo_3} if appraisal.photo_3 else None,
+            {'label': 'Photo 4', 'image': appraisal.photo_4} if appraisal.photo_4 else None,
+            {'label': 'Photo 5', 'image': appraisal.photo_5} if appraisal.photo_5 else None,
+            {'label': 'Photo 6', 'image': appraisal.photo_6} if appraisal.photo_6 else None,
+        ]
+
+        # Remove None values from the list
+        context['photos'] = [photo for photo in context['photos'] if photo is not None]
+
+        return context
+
+        # context['radiographers'] = report.hospital.radiographers.all() if report.hospital else None
+        # context['staff'] = report.hospital.staff.all() if report.hospital else None
+
+        # return context
+
 
 @login_required
 def inspection_report(request, id):
@@ -1142,12 +1559,16 @@ def inspection_report(request, id):
            }
     return render(request, 'monitoring/inspections_detail.html', context)
 
+
+
+
 @login_required
 def approve_report(request, id):
     if request.method == 'POST':
         object = get_object_or_404(Inspection, pk=id)
         object.inspection_status = 2
         object.application_status = 6
+        object.is_approved = True
         object.save()
         context = {}
         context['object'] = object
@@ -1168,6 +1589,7 @@ def approve_appraisal_report(request, id):
       object = get_object_or_404(Appraisal, pk=id)
       object.appraisal_status = 2
       object.application_status = 6
+      object.is_approved = True
       object.save()
       context = {}
       context['object'] = object
@@ -1179,37 +1601,98 @@ def approve_appraisal_report(request, id):
       messages.success(request, ('Internship Accreditation Report Validation Successful'))    
       return render(request, 'monitoring/appraisal_successful.html',context)
 
+
+
+
+
+
+# @login_required
+# def reject_appraisal_report(request, id):
+#     if request.method == 'POST':
+#       object = get_object_or_404(Appraisal, pk=id)
+#       object.appraisal_status = 3
+#       object.save()
+#       context = {}
+#       context['object'] = object
+#       subject = 'Failed Accreditation Report Validation'
+#       from_email = settings.DEFAULT_FROM_EMAIL
+#       to_email = [object.hospital_name.hospital_admin]    
+#       contact_message = get_template('monitoring/appraisal_failed.txt').render(context)
+#       send_mail(subject, contact_message, from_email, to_email, fail_silently=True)
+#       messages.error(request, ('Accreditation report not approved.'))
+#       return render(request, 'monitoring/inspection_failed.html',context)
+
+# @login_required 
+# def reject_application(request, id):
+#     if request.method == "POST":
+#         application = get_object_or_404(Payment, pk=id)
+#         rejection_reason = request.POST.get("rejection_reason")
+
+#         # Save the rejection reason to the application
+#         application.vet_status = 3
+#         application.is_rejected = True
+#         application.rejection_reason = rejection_reason
+#         application.application_status = 3
+#         application.vetting_officer = request.user
+#         application.save()
+
+#         messages.error(request, "Application rejected with reason: " + rejection_reason)
+#         return redirect("monitoring:rejection_details", id=application.id)
+
+
+
 @login_required
 def reject_report(request, id):
     if request.method == 'POST':
-      object = get_object_or_404(Inspection, pk=id)
-      object.inspection_status = 3
-      object.save()
-      context = {}
-      context['object'] = object
-      subject = 'Failed Inpsection Report Validation'
-      from_email = settings.DEFAULT_FROM_EMAIL
-      to_email = [object.hospital_name.hospital_admin]    
-      contact_message = get_template('monitoring/inspection_failed.txt').render(context)
-      send_mail(subject, contact_message, from_email, to_email, fail_silently=True)
-      messages.error(request, ('Inspection failed.  Hospital will be contacted and guided on how to remedy inspection shortfalls.'))
-      return render(request, 'monitoring/inspection_failed.html',context)
+      report = get_object_or_404(Inspection, pk=id)
+      rejection_reason = request.POST.get("rejection_reason")
+      report.rejection_reason = rejection_reason
+      report.inspection_status = 3
+      report.is_rejected = True
+      report.save()
+      messages.error(request, "Report rejected with reason: " + rejection_reason)
+      return redirect("monitoring:inspection_rejection_details", id=report.id) 
+
+
+
+
+
+      # object = get_object_or_404(Inspection, pk=id)
+      # object.inspection_status = 3
+      # object.save()
+      # context = {}
+      # context['object'] = object
+      # subject = 'Failed Inpsection Report Validation'
+      # from_email = settings.DEFAULT_FROM_EMAIL
+      # to_email = [object.hospital_name.hospital_admin]    
+      # contact_message = get_template('monitoring/inspection_failed.txt').render(context)
+      # send_mail(subject, contact_message, from_email, to_email, fail_silently=True)
+      # messages.error(request, ('Inspection failed.  Hospital will be contacted and guided on how to remedy inspection shortfalls.'))
+      # return render(request, 'monitoring/inspection_failed.html',context)
+
 
 @login_required
 def reject_appraisal_report(request, id):
     if request.method == 'POST':
-      object = get_object_or_404(Appraisal, pk=id)
-      object.inspection_status = 3
-      object.save()
-      context = {}
-      context['object'] = object
-      subject = 'Failed Accreditation Report Validation'
-      from_email = settings.DEFAULT_FROM_EMAIL
-      to_email = [object.hospital_name.hospital_admin]    
-      contact_message = get_template('monitoring/inspection_failed.txt').render(context)
-      send_mail(subject, contact_message, from_email, to_email, fail_silently=True)
-      messages.error(request, ('Accreditation failed.  Hospital will be contacted and guided on how to remedy accreditation shortfalls.'))
-      return render(request, 'monitoring/inspection_failed.html',context)
+      report = get_object_or_404(Appraisal, pk=id)
+      rejection_reason = request.POST.get("rejection_reason")
+      report.rejection_reason = rejection_reason
+      report.appraisal_status = 3
+      report.is_rejected = True
+      report.save()
+      messages.error(request, "Application rejected with reason: " + rejection_reason)
+      return redirect("monitoring:appraisal_rejection_details", id=report.id)    
+
+
+def appraisal_rejection_details(request, id):
+    object = get_object_or_404(Appraisal, pk=id)
+    return render(request, "monitoring/appraisal_rejection_details.html", {"object": object})
+
+
+
+def inspection_rejection_details(request, id):
+    object = get_object_or_404(Inspection, pk=id)
+    return render(request, "monitoring/inspection_rejection_details.html", {"object": object})
 
 @login_required
 def validate(request, id):

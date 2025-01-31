@@ -24,210 +24,146 @@
 {% block content %}
 
 <div class="container">
-<div class="row ml-1 my-2">
-<div class="col col-lg-12">
-<p class="mt-2 text-success display-4 paragraph3">Facility Inspection Scheduling</p>
-<hr>
+    <div class="row ml-1 my-2">
+        <div class="col col-lg-12">
+            <p class="mt-2 text-success display-4 paragraph3">Facility Inspection Scheduling</p>
+            <hr>
+        </div>
+    </div>
+
+    <div class="row rounded ml-3 mr-1 mr-0 pl-1 pr-0 justify-content-center align-items-center" style="background-color: #bfe3f8;">
+        <div class="col-md-1 mt-1 pt-1">
+            <i class="fa fa-info-circle fa-3x" aria-hidden="true"></i>
+        </div>
+        <div class="col-md-11 mt-2 pt-2 pr-0">
+            <p class="lead" style="color: #05567b;">
+                Facility Inspection is scheduled to the closest Zonal Office to the Hospital/Centre under consideration
+            </p>
+        </div>
+    </div>
+
+    <div class="col col-lg-12 mt-3 mb-0 pb-0">
+        <p class="mb-0 text-success display-4 paragraph3">Showing All Applications Due for Facility Inspection</p>
+        <hr>
+    </div>
+
+    <form method="post" action="."> <!-- Ensure form element wraps all fields -->
+        {% csrf_token %}
+        <div class="table-responsive-lg">
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="bg-secondary">
+                        <th class="small-text" style="color: #fff;" width="2%">SN</th>
+                        <th class="small-text" style="color: #fff;" width="12%">Application No</th>
+                        <th class="small-text" style="color: #fff;" width="17%">Hospital Name</th>
+                        <th class="small-text" style="color: #fff;" width="14%">Application Date</th>
+                        <th class="small-text" style="color: #fff;" width="18%">Application Type</th>
+                        <th class="small-text" style="color: #fff;" width="17%">Hospital Address</th>
+                        <th class="small-text" style="color: #fff;" width="20%">Zonal Office</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in combined_payments %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ payment.application_no }}</td>
+                            <td>{{ payment.hospital_name }}</td>
+                            <td>{{ payment.hospital_name.date|date:"d M Y" }}</td>
+                            <td>{{ payment.hospital.application_type }}</td>
+                            <td>{{ payment.hospital.facility_address }}</td>
+                            <td>{{ form.inspection_zone|as_crispy_field }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Hidden Fields -->
+        <div class="row ml-2 mb-2">
+            <div class="col-md-3">
+                <input type="hidden" name="inspection_scheduler" {% if user.is_authenticated %} value="{{ request.user.first_name }} {{ request.user.last_name }}" {% endif %} required id="id_inspection_scheduler">
+                {{ form.hospital_name|as_crispy_field }}
+                {{ form.hospital|as_crispy_field }}
+                {{ form.payment|as_crispy_field }}
+                {{ form.application_no|as_crispy_field }}
+            </div>
+        </div>
+
+        <!-- Add Inspectors Section -->
+        <div class="col col-lg-12 mt-3 mb-0 pb-0">
+            <p class="mb-0 text-success display-4 paragraph3">Add Inspectors</p>
+            <hr>
+        </div>
+
+        <div id="inspectors-section" class="row mx-2 mb-3">
+            <div class="col-md-3 mb-3">
+                <label for="inspector1_name">Inspector 1 Name</label>
+                <input type="text" name="inspector1_name" id="inspector1_name" class="form-control" placeholder="Inspector 1 Name">
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="inspector1_phone">Inspector 1 Phone</label>
+                <input type="text" name="inspector1_phone" id="inspector1_phone" class="form-control" placeholder="Inspector 1 Phone">
+            </div>
+        </div>
+
+        <div class="row mx-2 mb-3">
+            <div class="col-md-12">
+                <button type="button" id="add-inspector-btn" class="btn btn-outline-success">
+                    <i class="fa fa-plus"></i> Add More Inspectors
+                </button>
+            </div>
+        </div>
+
+        <!-- Other Form Fields -->
+        <div class="row mx-2 mb-3">
+            <div class="col-md-3">
+                {{ form.inspection_date|as_crispy_field }}
+            </div>
+            <div class="col-md-3">
+                {{ form.inspection_report_deadline|as_crispy_field }}
+            </div>
+        </div>
+
+        <!-- Submit Buttons -->
+        <div class="col col-lg-12 mt-3 mb-0 pb-0">
+            <hr>
+        </div>
+        <div class="d-flex justify-content-end mr-2 mb-2">
+            <button type="submit" class="btn btn-warning pt-2 pb-1"><i class="fa fa-check"></i> Post Inspection Schedule</button>
+            <button class="btn btn-outline-secondary pt-2 pb-1 ml-3 mr-2"><i class="fa fa-times"></i> Close</button>
+        </div>
+    </form>
 </div>
-</div>
 
-<div class="row rounded ml-3 mr-0 pl-1 pr-0 justify-content-center align-items-center" style="background-color: #bfe3f8;">
-<div class="col-md-1 mt-1 pt-1">
-<i class="fa fa-info-circle fa-3x" aria-hidden="true"></i>
-</div>
-
-<div class="col-md-11 mt-2 pt-2 px-0">
-<p class="lead" style="color: #05567b;">
-Facility Inspection is scheduled to the closest Zonal Office to the Hospital/Centre under consideration</p>
-</div>
-</div>
-
-<div class="col col-lg-12 mt-3 mb-0 pb-0">
-<p class="mb-0 text-success display-4 paragraph3">Showing All Applications Due for Facility Inspection</p>
-<hr>
-</div>
-        
-<!-- Insert Datepicker here -->
-      
-<div class="row ml-2 mb-3">
-<div class="col-md-3">
-          
-<form method="post" action=".">
-{% csrf_token %}
-
-<input type="hidden" name="inspection_scheduler" {% if user.is_authenticated %} value="{{ request.user.first_name }} {{ request.user.last_name }}" {% endif %} required id="id_inspection_scheduler">
-
-{{ form.hospital_name|as_crispy_field }}
-{{ form.hospital|as_crispy_field }}
-{{ form.payment|as_crispy_field }}
-{{ form.application_no|as_crispy_field }}
-
-{{ form.inspection_date|as_crispy_field }}
-</div>
-<div class="col-md-3"> 
-{{ form.inspection_report_deadline|as_crispy_field }}
-</div>
-
-<div class="col-md-4">
-<h6 class="pt-4"></h6>
-<button type="submit" class="btn btn btn-warning pt-2 pb-1"><i class="fa fa-check"></i> Post Inspection Schedule</button>
-<button class="btn btn btn-outline-secondary pt-2 pb-1"><i class="fa fa-times"></i> Close</button>
-</div>
-</div>
-<div class="table-responsive-lg">
-<table class="table table-bordered">
-<thead>  
-<tr class="bg-secondary">
-
-<th class="small-text" style="color: #fff; "width="2%">SN</th>
-<th class="small-text" style="color: #fff; "width="12%">Application No</th>
-<th class="small-text" style="color: #fff; "width="17%">Hospital Name</th>
-<th class="small-text" style="color: #fff; "width="12%">Application Date</th>
-<th class="small-text" style="color: #fff; "width="18%">Application Type</th>
-<th class="small-text" style="color: #fff; "width="17%">Hospital Address</th>
-<th class="small-text" style="color: #fff; "width="12%">Zonal Office</th>
-
-</tr>
-</thead> 
-<tbody>
-{% if payment_qs %}
-{% for object in payment_qs %}
-
-<tr>
-<td>{{forloop.counter}}</td>
-<td>{{object.application_no}}</td>
-<td>{{object.hospital_name}}</td>
-<td>{{object.hospital_name.date}}</td>
-<td>{{object.hospital.application_type}}</td>
-<td>{{object.hospital.facility_address}}</td>
-<td>{{form.inspection_zone|as_crispy_field }}</td>
-{% endfor %}
-{% endif %}
-</tr>  
-
-{% if payment_qss %}
-{% for object in payment_qss %}
-
-<tr>
-<td>{{forloop.counter}}</td>
-<td>{{object.application_no}}</td>
-<td>{{object.hospital_name}}</td>
-<td>{{object.hospital_name.date}}</td>
-<td>{{object.hospital.application_type}}</td>
-<td>{{object.hospital.facility_address}}</td>
-<td>{{form.inspection_zone|as_crispy_field }}</td>
-{% endfor %}
-{% endif %}
-
-</tr>  
-
-{% if payment_qsss %}
-{% for object in payment_qsss %}
-
-<tr>
-<td>{{forloop.counter}}</td>
-<td>{{object.application_no}}</td>
-<td>{{object.hospital_name}}</td>
-<td>{{object.hospital_name.date}}</td>
-<td>{{object.hospital.application_type}}</td>
-<td>{{object.hospital.facility_address}}</td>
-<td>{{form.inspection_zone|as_crispy_field }}</td>
-{% endfor %}
-{% endif %}
-</tr>  
-
-
-{% if payment_qsr %}
-{% for object in payment_qsr %}
-
-<tr>
-<td>{{forloop.counter}}</td>
-<td>{{object.application_no}}</td>
-<td>{{object.hospital_name}}</td>
-<td>{{object.hospital_name.date}}</td>
-<td>{{object.hospital.application_type}}</td>
-<td>{{object.hospital.facility_address}}</td>
-<td>{{form.inspection_zone|as_crispy_field }}</td>
-{% endfor %}
-{% endif %}
-</tr>  
-
-{% if payment_qssr %}
-{% for object in payment_qssr %}
-
-<tr>
-<td>{{forloop.counter}}</td>
-<td>{{object.application_no}}</td>
-<td>{{object.hospital_name}}</td>
-<td>{{object.hospital_name.date}}</td>
-<td>{{object.hospital.application_type}}</td>
-<td>{{object.hospital.facility_address}}</td>
-<td>{{form.inspection_zone|as_crispy_field }}</td>
-{% endfor %}
-{% endif %}
-</tr>  
-
-{% if payment_qgssr %}
-{% for object in payment_qgssr %}
-
-<tr>
-<td>{{forloop.counter}}</td>
-<td>{{object.application_no}}</td>
-<td>{{object.hospital_name}}</td>
-<td>{{object.hospital_name.date}}</td>
-<td>{{object.hospital.application_type}}</td>
-<td>{{object.hospital.facility_address}}</td>
-<td>{{form.inspection_zone|as_crispy_field }}</td>
-{% endfor %}
-{% endif %}
-</tr>  
-
-
-
-<!-- Insert Datepicker here -->  
-</tbody>
-</table>
-</div>
-</form>
-</div>
-      
- <!--Jquery plugin-->
- <!--other javascript plugins-->
 <script>
-let urlMenu = document.getElementById('dropdown');
-urlMenu.onchange = function(){
-let userOption = this.options[this.selectedIndex];
-if(userOption.value != "nothing"){window.open(userOption.value, "_self", "");
-}
-}
+    document.getElementById("add-inspector-btn").addEventListener("click", function () {
+        const inspectorsSection = document.getElementById("inspectors-section");
+
+        // Count existing inspector fields
+        const inspectorCount = inspectorsSection.querySelectorAll('input[name^="inspector"]').length / 2;
+
+        if (inspectorCount >= 6) {
+            alert("You can only add a maximum of six inspectors.");
+            return;
+        }
+
+        const newInspectorCount = inspectorCount + 1;
+
+        // Create a new row of inputs for the next inspector
+        const newInspectorRow = `
+            <div class="col-md-3 mb-3">
+                <label for="inspector${newInspectorCount}_name">Inspector ${newInspectorCount} Name</label>
+                <input type="text" name="inspector${newInspectorCount}_name" id="inspector${newInspectorCount}_name" class="form-control" placeholder="Inspector ${newInspectorCount} Name">
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="inspector${newInspectorCount}_phone">Inspector ${newInspectorCount} Phone</label>
+                <input type="text" name="inspector${newInspectorCount}_phone" id="inspector${newInspectorCount}_phone" class="form-control" placeholder="Inspector ${newInspectorCount} Phone">
+            </div>
+        `;
+
+        inspectorsSection.insertAdjacentHTML("beforeend", newInspectorRow);
+    });
 </script>
-
-
-<script>
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        (function () {
-            'use strict';
-            window.addEventListener('load', function () {
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.getElementsByClassName('needs-validation');
-                // Loop over them and prevent submission
-                var validation = Array.prototype.filter.call(forms, function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                        form.classList.add('was-validated');
-                    }, false);
-                });
-            }, false);
-        })();
-    </script>
-
-
-
-
-
 
 
 {% endblock %}

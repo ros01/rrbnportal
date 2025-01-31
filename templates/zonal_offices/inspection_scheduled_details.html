@@ -9,70 +9,85 @@
 {% endblock %}
 
 {% block content %}
+
 <main class="container">
-{% if object.hospital.license_type == "Internship Accreditation" %}
-<section class="pt-2 pl-3">   
-<div class="row ">
-<div class="col mb-0">
-<p class="text-info display-4 paragraph3">Internship Accreditation Applications Due for Inspection</p>
-<hr>           
-</div>
-</div>
-</section>
-{% else %}
-<section class="pt-2 pl-3">  
-<div class="row ">
-<div class="col mb-0">
-<p class="text-info display-4 paragraph3">Radiography Practice License Applications Due for Inspection</p>
-<hr>           
-</div>
-</div>
-</section>
-{% endif %}
-<div class="row">
-<div class="col-md-7 mt-0">
-<div class="col-md-12">
-<div class="row">
-<p class="col-12 text-success lead">Application Summary</p>
-</div>
-<div class="row">
-<span class="col-5"><strong>Application No:</strong></span>
-<span class="col-6 ">{{object.application_no}}</span>  </div>
-<div class="row">
-<span class="col-5"><strong>Hospital Name:</strong></span>
-<span class="col-6 ">{{object.hospital_name}}</span>
-</div>
-<div class="row">
-<span class="col-5"><strong>Application Category:</strong></span>
-<span class="col-6">{{object.hospital.license_type}}</span>
-</div>
-<div class="row">
-<span class="col-5"><strong>Application Type:</strong></span>
-<span class="col-6">{{object.hospital.application_type}}</span>
-</div>
-<div class="row">
-<span class="col-5"><strong>Phone:</strong></span>
-<span class="col-6">{{object.hospital_name.phone_no}}</span>
-</div>
-<div class="row">
-<span class="col-5"><strong>Email:</strong></span>
-<span class="col-6">{{object.hospital_name.hospital_admin}}</span>
-</div>
-<div class="row">
-<span class="col-5"><strong>Address:</strong></span>
-<span class="col-6">{{object.hospital.facility_address}}</span>
-</div>
-<div class="row">
-<span class="col-5"><strong>State:</strong></span>
-<span class="col-6">{{object.hospital_name.state}}</span>
-</div>
+    {% if object.hospital.license_type == "Internship Accreditation" %}
+    <section class="pt-2 pl-3">
+        <div class="row">
+            <div class="col mb-0">
+                <p class="text-info display-4 paragraph3">
+                    Internship Accreditation Applications Due for Inspection
+                </p>
+                <hr>
+            </div>
+        </div>
+    </section>
+    {% elif object.hospital.license_type == "Radiography Practice Permit" %}
+    <section class="pt-2 pl-3">
+        <div class="row">
+            <div class="col mb-0">
+                <p class="text-info display-4 paragraph3">
+                    Radiography Practice License Applications Due for Inspection
+                </p>
+                <hr>
+            </div>
+        </div>
+    </section>
+    {% else %}
+    <section class="pt-2 pl-3">
+        <div class="row">
+            <div class="col mb-0">
+                <p class="text-warning display-4 paragraph3">Unknown License Type</p>
+                <hr>
+            </div>
+        </div>
+    </section>
+    {% endif %}
 
-<div class="row">
-<span class="col-5"><strong>Listed Modalities:</strong></span>
-<span class="col-6">{{object.hospital.equipment}}</span>
-</div>
-
-<div class="row">
+    <div class="row">
+        <div class="col-md-7 mt-0">
+            <div class="col-md-12">
+                <div class="row">
+                    <p class="col-12 text-success lead">Application Summary</p>
+                </div>
+                <div class="row">
+                    <span class="col-5"><strong>Application No:</strong></span>
+                    <span class="col-6">{{ object.application_no }}</span>
+                </div>
+                <div class="row">
+                    <span class="col-5"><strong>Hospital Name:</strong></span>
+                    <span class="col-6">{{ object.hospital_name }}</span>
+                </div>
+                <div class="row">
+                    <span class="col-5"><strong>Application Category:</strong></span>
+                    <span class="col-6">{{ object.hospital.license_type }}</span>
+                </div>
+                <div class="row">
+                    <span class="col-5"><strong>Application Type:</strong></span>
+                    <span class="col-6">{{ object.hospital.application_type }}</span>
+                </div>
+                <div class="row">
+                    <span class="col-5"><strong>Phone:</strong></span>
+                    <span class="col-6">{{ object.hospital_name.phone_no }}</span>
+                </div>
+                <div class="row">
+                    <span class="col-5"><strong>Email:</strong></span>
+                    <span class="col-6">{{ object.hospital_name.hospital_admin }}</span>
+                </div>
+                <div class="row">
+                    <span class="col-5"><strong>Address:</strong></span>
+                    <span class="col-6">{{ object.hospital.facility_address }}</span>
+                </div>
+                <div class="row">
+                    <span class="col-5"><strong>State:</strong></span>
+                    <span class="col-6">{{ object.hospital_name.state }}</span>
+                </div>
+                <div class="row">
+                    <span class="col-5"><strong>Listed Modalities:</strong></span>
+                    <span class="col-6">{{ object.hospital.equipment }}</span>
+                </div>
+                
+                <div class="row">
 <span class="col-5" style="font-size:1.1em;"><strong>Radiographer In Charge:</strong></span>
 <span class="col-6" style="font-size:1.1em;">{{object.hospital.radiographer_in_charge}}</span>
 </div>
@@ -194,78 +209,96 @@
 <span class="col-6" style="font-size:1.1em;">{{object.hospital.staffdesignation5}}</span>
 </div>
 {% endif %}
-
-
-
-
-</div><br>
-<div class="col-md-12">
-<div class="row">
-<p class="col-12 text-success lead">Control Details</p>
 </div>
-<div class="row">
-<span class="col-5"><strong>Inspection Schedule On:</strong></span>
-<span class="col-6">{{object.inspection_schedule_date}}</span>
-</div>
-<div class="row">
-<span class="col-5"><strong>Inspection Schedule By:</strong></span>
-<span class="col-6">{{object.inspection_scheduler}}</span>
-</div>
-                    
-</div>
-</div>
-<div class="col-md-5 mt-0">
-<p class="text-success lead">Inspection Facility Address</p>
-<span>{{object.hospital.facility_address}}</span>
+            <br>
+            <div class="col-md-12">
+                <div class="row">
+                    <p class="col-12 text-success lead">Control Details</p>
+                </div>
+                <div class="row">
+                    <span class="col-5"><strong>Inspection Schedule On:</strong></span>
+                    <span class="col-6">{{ object.inspection_schedule_date }}</span>
+                </div>
+                <div class="row">
+                    <span class="col-5"><strong>Inspection Schedule By:</strong></span>
+                    <span class="col-6">{{ object.inspection_scheduler }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 mt-0">
+            <p class="text-success lead">Inspection Facility Address</p>
+            <span>{{ object.hospital.facility_address }}</span>
 
-<br>
-<br>
-<p class="text-success lead">Inspection Schedule Details</p>
+            <br><br>
+            <p class="text-success lead">Inspection Schedule Details</p>
+            <div class="row py-0">
+                <table class="table table-hover">
+                    <thead style="background-color: #bfe3f8;">
+                        <tr>
+                            <th scope="col lead" style="color: #05567b;">Parameter</th>
+                            <th scope="col lead" style="color: #05567b;">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Area Office:</td>
+                            <td>{{ object.inspection_zone }}</td>
+                        </tr>
+                        <tr>
+                            <td>Inspection Date:</td>
+                            <td>{{ object.inspection_date }}</td>
+                        </tr>
+                        <tr>
+                            <td>Inspection Report Deadline:</td>
+                            <td>{{ object.inspection_report_deadline }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-<div class="row py-0">
-<table class="table table-hover">
-<thead style="background-color: #bfe3f8;">
-<tr>
-<th scope="col lead" style="color: #05567b;">Parameter</th>
-<th scope="col lead" style="color: #05567b;">Value</th>
-</tr>
-</thead>
+            <p class="mb-0 text-success display-4 paragraph3">Approved Inspectors</p>
+            <hr>
+            <div class="row py-0">
+                <table class="table table-hover">
+                    <thead style="background-color: #bfe3f8;">
+                        <tr>
+                            <th scope="col lead" style="color: #05567b;">Name</th>
+                            <th scope="col lead" style="color: #05567b;">Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for inspector in approved_inspectors %}
+                        <tr>
+                            <td>{{ inspector.name }}</td>
+                            <td>{{ inspector.phone }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="2" class="lead text-left">No approved inspectors found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-
-<tbody>
-<tr> <td width="50%" scope="col">Area Office:</td> <td width="50%" scope="col">{{object.inspection_zone}} </td> </tr> 
-<tr> <td width="50%" scope="col">Inspection Date:</td> <td width="50%" scope="col">{{object.inspection_date}} </td> </tr> 
-<tr> <td width="50%" scope="col">Inspection Report Deadline:</td> <td width="50%" scope="col">{{object.inspection_report_deadline}}</td> </tr> 
-                        
-                       
-</tbody>
-</table>
-</div>
-              
-</div>
-
-</div>
-<hr>
-
-
-<div class="d-flex justify-content-end">   
-             
-<a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
-
-
-{% if object.hospital.license_type == "Internship Accreditation" %}
-
-<a href="{% url 'zonal_offices:accreditation_report' object.pk %}" class="btn btn-success ml-4 px-3"><i class="fa fa-podcast text-white"></i>  Submit Accreditation Report</a>
-
-{% else %}
-<a href="{% url 'zonal_offices:inspection_report' object.pk %}" class="btn btn-success ml-4 px-3"><i class="fa fa-podcast text-white"></i>  Submit Inspection Report</a>
-
-{% endif %}
-       
-</div>
-
-
-
+    <hr>
+    <div class="d-flex justify-content-end">
+        <a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="btn btn-outline-dark px-3">
+            <i class="fa fa-window-close text-danger"></i> Return to Dashboard
+        </a>
+        {% if object.hospital.license_type == "Internship Accreditation" %}
+        <a href="{% url 'zonal_offices:accreditation_report' object.pk %}" class="btn btn-success ml-4 px-3">
+            <i class="fa fa-podcast text-white"></i> Submit Accreditation Report
+        </a>
+        {% else %}
+        <a href="{% url 'zonal_offices:inspection_report' object.pk %}" class="btn btn-success ml-4 px-3">
+            <i class="fa fa-podcast text-white"></i> Submit Inspection Report
+        </a>
+        {% endif %}
+    </div>
 </main>
+
 
 {% endblock %}

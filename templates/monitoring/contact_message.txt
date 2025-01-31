@@ -16,7 +16,7 @@ Application Category: {{object.hospital.license_type}}
 
 Amount Paid: {{object.payment_amount}}
 
-Submission Time: {{object.hospital_name.reg_date}}
+Submission Time: {{object.vet_date}}
 
 
 You will subsequently be notified on the scheduled date for inspection of your facility.

@@ -37,50 +37,92 @@ class UltrasoundModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelFor
         'support_staff_score': forms.NumberInput(attrs={'min':0,'max':2,'type': 'number'}), 
         }
 
-    def __init__(self, *args, **kwargs):                                  
-       super(UltrasoundModelForm, self).__init__(*args, **kwargs)
+    # def __init__(self, *args, **kwargs):  
+    #     self.request = kwargs.pop("request", None)  # Extract request if provided
+    #     super(UltrasoundModelForm, self).__init__(*args, **kwargs)
 
-       for name in self.fields.keys():
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request", None)  # Store request explicitly
+        super(UltrasoundModelForm, self).__init__(*args, **kwargs)
+
+
+        for name in self.fields.keys():
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       self.fields['schedule'].label = ""
-       self.fields['hospital_name'].label = ""
-       self.fields['room_design_score'].label = "Room Design"
-       self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['radiographers_no_score'].label = "No of Radiographers"
-       self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['radiographer_license_score'].label = "Radiographers Current License"
-       self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['ultrasound_qualification_score'].label = "Qualification in Ultrasonography"
-       self.fields['ultrasound_qualification_score'].widget.attrs['placeholder'] = "(Max Score = 20)"
-       self.fields['water_supply_score'].label = "Water Supply"
-       self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
-       self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
-       self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['equipment_installation_location_score'].label = "Equipment Installation"
-       self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 20)"
-       self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
-       self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
-       self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
-       self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['support_staff_score'].label = "Support Staff (Chaperon)"
-       self.fields['support_staff_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['ultrasound_total'].label = "Total Score"
+        self.fields['schedule'].label = ""
+        self.fields['hospital_name'].label = ""
+        self.fields['room_design_score'].label = "Room Design"
+        self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['radiographers_no_score'].label = "No of Radiographers"
+        self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['radiographer_license_score'].label = "Radiographers Current License"
+        self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['ultrasound_qualification_score'].label = "Qualification in Ultrasonography"
+        self.fields['ultrasound_qualification_score'].widget.attrs['placeholder'] = "(Max Score = 20)"
+        self.fields['water_supply_score'].label = "Water Supply"
+        self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
+        self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
+        self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['equipment_installation_location_score'].label = "Equipment Installation"
+        self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 20)"
+        self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
+        self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
+        self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
+        self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['support_staff_score'].label = "Support Staff (Chaperon)"
+        self.fields['support_staff_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['ultrasound_total'].label = "Total Score"
 
-    def save(self):
 
-      if not self.request.is_ajax():
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
-          instance.save()
-      else:
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+    def save(self, commit=True):
+        if self.request and hasattr(self.request, "is_ajax"):
+            if not self.request.is_ajax() or self.request.POST.get("asyncUpdate") == "True":
+                instance = super(UltrasoundModelForm, self).save(commit=True)
+                instance.save()
+            else:
+                instance = super(UltrasoundModelForm, self).save(commit=False)
+        else:
+            # Handle case where request is None (bypass `is_ajax`)
+            instance = super(UltrasoundModelForm, self).save(commit=True)
 
-      return instance
+        return instance
+
+        
+    # def save(self, commit=True):
+    #     instance = super(UltrasoundModelForm, self).save(commit=False)
+        
+    #     if self.request:  # ✅ Check if request exists before using it
+    #         if not self.request.is_ajax():  
+    #             instance.save()
+
+    #     return instance
+
+       
+    # def save(self):
+
+    #   if not self.request.is_ajax():
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+    #       instance.save()
+    #   else:
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+
+
+    #   return instance
+    #   print("instance:", instance)
+
+    # def save(self, commit=True):
+    #     instance = super(UltrasoundModelForm, self).save(commit=False)
+
+    #     if self.request and not self.request.is_ajax():  # Check if request exists
+    #         instance.save()
+
+    #     return instance
 
 
 

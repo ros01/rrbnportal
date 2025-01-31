@@ -297,7 +297,7 @@ target="_blank">&nbsp; View Form C07</a></td>
     <div class="row">
     <span class="col-5"><strong>Inspection 
     Date:</strong></span>
-    <span class="col-6">{{object.schedule.inspection_date}}</span>
+    <span class="col-6">{{object.inspection_date}}</span>
     </div>
     <div class="row">
     <span class="col-5"><strong>Inspection Zone:</strong></span>
@@ -386,9 +386,41 @@ target="_blank">&nbsp; View Form C07</a></td>
 
     </div>
     <hr>
-    <div class="d-flex justify-content-end">   
-    <a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="btn btn-outline-dark px-3"><i class="fa fa-window-close text-danger"></i>  Return to Dashboard</a>
+
+    {% if object.inspection_status == 3 %}
+    <div class="d-flex justify-content-end"> 
+
+    <a href="{% url 'zonal_offices:inspection_report_update' object.id %}" class="btn btn-danger px-3 mr-2">
+    <i class="far fa-edit"></i> Update Report
+    </a>
+    <a href="{% url 'zonal_offices:inspection_reports_list' %}" class="btn btn-outline-info px-3 mr-2">
+    <i class="fas fa-angle-double-left"></i> Return to Inspection Reports
+    </a>  
+    <a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="btn btn-outline-warning px-3"><i class="fas fa-angle-double-left"></i>  Return to Dashboard</a>
     </div>
+
+    {% else %}
+
+    <div class="d-flex justify-content-end"> 
+    <a href="{% url 'zonal_offices:inspection_reports_list' %}" class="btn btn-outline-info px-3 mr-2">
+    <i class="fas fa-angle-double-left"></i> Return to Inspection Reports
+    </a>  
+    <a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="btn btn-outline-warning px-3"><i class="fas fa-angle-double-left"></i>  Return to Dashboard</a>
+    </div>
+
+    {% endif %}
+
+
+
+
+
+    <!-- <div class="d-flex justify-content-end"> 
+
+    <a href="{% url 'zonal_offices:inspection_reports_list' %}" class="btn btn-outline-info px-3 mr-2">
+    <i class="fas fa-angle-double-left"></i> Return to Inspection Reports
+    </a>  
+    <a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="btn btn-outline-warning px-3"><i class="fas fa-angle-double-left"></i>  Return to Dashboard</a>
+    </div> -->
 
 
 

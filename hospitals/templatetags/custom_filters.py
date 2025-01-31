@@ -19,6 +19,55 @@ def intersect(list1, list2):
     return list(set(list1) & set(list2))
 
 
+@register.filter
+def dict_lookup(dictionary, key):
+    if isinstance(dictionary, dict):
+        return dictionary.get(key)
+    return None  # Return None if the input is not a dictionary
+
+
+
+@register.filter
+def get_modality_url_name(modality):
+    """
+    Returns the URL name corresponding to a specific modality.
+    """
+    url_map = {
+        "Ultrasound": "zonal_offices:ultrasound_score",
+        "Conventional X-ray": "zonal_offices:xray_score",
+        "CT Scan": "zonal_offices:ctscan_score",
+        "MRI": "zonal_offices:mri_score",
+        "Radiotherapy": "zonal_offices:radiotherapy_score",
+        "Nuclear Medicine": "zonal_offices:nuclear_medicine_score",
+        "Mammography": "zonal_offices:mammography_score",
+        "Dental X-ray": "zonal_offices:dental_xray_score",
+        "Echocardiography": "zonal_offices:echocardiography_score",
+        "Angiography": "zonal_offices:angiography_score",
+        "C-Arm/O-ARM": "zonal_offices:carm_score",
+    }
+    return url_map.get(modality, None)
+
+
+@register.filter
+def get_modality_update_url_name(modality):
+    """
+    Returns the URL name corresponding to a specific modality.
+    """
+    url_map = {
+        "Ultrasound": "zonal_offices:ultrasound_update",
+        "Conventional X-ray": "zonal_offices:xray_update",
+        "CT Scan": "zonal_offices:ctscan_update",
+        "MRI": "zonal_offices:mri_update",
+        "Radiotherapy": "zonal_offices:radiotherapy_update",
+        "Nuclear Medicine": "zonal_offices:nuclear_medicine_update",
+        "Mammography": "zonal_offices:mammography_update",
+        "Dental X-ray": "zonal_offices:dental_xray_update",
+        "Echocardiography": "zonal_offices:echocardiography_update",
+        "Angiography": "zonal_offices:angiography_update",
+        "C-Arm/O-ARM": "zonal_offices:carm_update",
+    }
+    return url_map.get(modality, None)
+
 
 @register.filter
 def get_status_message(object):
@@ -89,6 +138,8 @@ def get_action_url(object):
             lambda app: reverse("hospitals:accreditation_payment_verifications", args=[app.pk]),
         ("Payment", "New Registration - Private Hospital Internship", 2): 
             lambda app: reverse("hospitals:accreditation_payment_verifications", args=[app.pk]),
+        ("Payment", "Renewal - Radiography Practice Permit", 2): 
+            lambda app: reverse("hospitals:payment_verifications", args=[app.pk]),
         ("Payment", "Renewal - Private Hospital Internship", 2): 
             lambda app: reverse("hospitals:accreditation_payment_verifications", args=[app.pk]),
         ("Payment", "Renewal - Government Hospital Internship", 2): 
@@ -254,6 +305,10 @@ def get_monitoring_action_url(object):
             lambda app: reverse("monitoring:hospital_payment_details", args=[app.pk]),
         ("Payment", "Renewal - Government Hospital Internship", 2): 
             lambda app: reverse("monitoring:hospital_payment_details", args=[app.pk]),
+        
+        ("Payment", "Renewal - Radiography Practice Permit", 2): 
+            lambda app: reverse("monitoring:hospital_payment_details", args=[app.pk]),
+
         ("Payment", "New Registration - Radiography Practice Permit", 3): 
             lambda app: reverse("monitoring:hospital_verification_details", args=[app.id]),
         ("Payment", "New Registration - Government Hospital Internship", 3): 
@@ -407,6 +462,9 @@ def get_monitoring_hospital_action_url(object):
     return None
 
 
+@register.filter
+def instanceof(obj, class_name):
+    return obj.__class__.__name__.lower() == class_name.lower()
 
 
 

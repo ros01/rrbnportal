@@ -1,6 +1,5 @@
 {% extends 'monitoring/monitoring_base.html'%}
 {% load static %}
-{% load custom_filters %}
 {% load crispy_forms_tags %}
 
 {% block title%}| Facility Inspection {% endblock %}
@@ -22,10 +21,10 @@
 {% include "_modal.html" %}
 
 
-<!-- <main class="container">
+<main class="container">
 <div class="row">
 <div class="col col-lg-12">
-<p class="mt-2 text-info display-4 paragraph2">Radiography Practice Permit Inspection Report Submission</p>
+<p class="mt-2 text-info display-4 paragraph2">Edit Radiography Practice Permit Inspection Report</p>
 <hr>
 </div>
 </div>
@@ -266,159 +265,8 @@ Ultrasound
 <button type="submit" class="btn btn btn-success ml-4 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Post Inspection Report</button>
 </form>
 </div>
-</main> -->
-      
-<main class="container">
-  <div class="row">
-    <div class="col col-lg-12">
-      <p class="mt-2 text-info display-4 paragraph2">
-        Radiography Practice Permit Inspection Report Submission
-      </p>
-        <!-- {% if messages %}
-        <div class="alert-messages">
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">
-        {{ message }}
-        </div>
-        {% endfor %}
-        </div>
-        {% endif %} -->
-
-      <hr>
-        <!-- {% if error_message %}
-        <div class="alert alert-danger">
-        {{ error_message }}
-        </div>
-        {% endif %} -->
-
-
-    </div>
-  </div>
-
-  <div class="row rounded ml-1 mr-0 pl-1 pr-0 mt-2 mb-3 justify-content-center align-items-center" style="background-color: #bfe3f8;">
-    <div class="col-md-1 mt-1 pt-1">
-      <i class="fa fa-info-circle fa-2x" aria-hidden="true"></i>
-    </div>
-    <div class="col-md-11 mt-1 pt-1 px-0">
-      <p class="lead" style="color: #05567b;">
-        Enter scores for each parameter below. Final score is calculated automatically once input is complete.
-      </p>
-    </div>
-  </div>
-
-  <div class="container mt-5">
-    <form method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
-      <input type="hidden" name="inspection_zone" {% if user.is_authenticated %} value="{{ user.module_name }}" {% endif %} required id="id_inspection_zone">
-
-      <div class="form-group">
-        <fieldset class="the-fieldset">
-          <legend class="the-legend text-info">Registered Modalities in License Application</legend>
-
-        {% for object in schedule_qs %}
-        {% for modality in modalities %}
-        {% if modality in object.hospital.equipment %}
-        {% with modality_url_names|dict_lookup:modality as url_name %}
-        {% if url_name %}
-        <div class="col d-flex">
-        <div class="form-check mr-3">
-        <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-{{ modality|slugify }}"
-             data-form-url="{% url url_name object.pk %}">
-        <label class="form-check-label" for="score-{{ modality|slugify }}">{{ modality }}</label>
-        </div>
-        {% endif %}
-        {% endwith %}
-        {% endif %}
-        {% endfor %}
-        {% endfor %}
-        </div>
-        </fieldset>
-      </div>
-
-      <div class="row ml-2">
-        <p class="col-12 text-success lead">Hospital Details</p>
-      </div>
-      <div class="row ml-2">
-        {% if schedule_qs %}
-          {% for object in schedule_qs %}
-            <span class="col-2 text-info">Hospital Name:</span>
-            <span class="col-2">{{ object.hospital.hospital_name }}</span>
-          {% endfor %}
-        {% endif %}
-      </div>
-      <br>
-      {{ form.hospital_name|as_crispy_field }}
-      {{ form.hospital|as_crispy_field }}
-      {{ form.schedule|as_crispy_field }}
-      {{ form.payment|as_crispy_field }}
-
-      <div class="row px-4">
-        <div class="col-md-4">
-          <div class="form-group">
-            {{ form.application_no|as_crispy_field }}
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="form-group">
-            {{ form.inspection_comments|as_crispy_field }}
-          </div>
-        </div>
-      </div>
-
-      <div class="row ml-2">
-        <p class="col-12 text-success lead">Picture Uploads</p>
-      </div>
-
-    
-        <div class="row px-4">
-        <div class="col-md-3">
-        <div class="form-group">
-        {{ form.photo_1|as_crispy_field }}
-        </div>
-        </div>
-        <div class="col-md-3">
-        <div class="form-group">
-        {{ form.photo_2|as_crispy_field }}
-        </div>
-        </div>
-        <div class="col-md-3">
-        <div class="form-group">
-        {{ form.photo_3|as_crispy_field }}
-        </div>
-        </div>
-        <div class="col-md-3">
-        <div class="form-group">
-        {{ form.photo_4|as_crispy_field }}
-        </div>
-        </div>
-        <div class="col-md-3">
-        <div class="form-group">
-        {{ form.photo_5|as_crispy_field }}
-        </div>
-        </div>
-        <div class="col-md-3">
-        <div class="form-group">
-        {{ form.photo_6|as_crispy_field }}
-        </div>
-        </div>
-        </div>
-
-
-
-
-
-      <hr>
-      <div class="d-flex justify-content-end">
-        <a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="btn btn-outline-dark px-3">
-          <i class="fa fa-window-close text-danger"></i> Return to Dashboard
-        </a>
-        <button type="submit" class="btn btn btn-success ml-4 pt-2 pb-1 pr-2">
-          <i class="fa fa-podcast text-white"></i> Post Inspection Report
-        </button>
-      </div>
-    </form>
-  </div>
 </main>
+      
 
 
 

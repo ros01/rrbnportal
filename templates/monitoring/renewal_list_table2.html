@@ -56,7 +56,7 @@
  <td>{{object.hospital_name}}</td>
  <td>{{object.hospital.facility_address}}</td>
  <td>{{object.hospital.application_type}}</td>
- <td>{{object.hospital.submission_date}}</td>
+ <td>{{object.hospital.date}}</td>
  <td><a href="{% url 'monitoring:practice_permit_renewal_details' id=object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a></td>
  </tr>
  {% endfor %}

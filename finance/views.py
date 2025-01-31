@@ -86,3 +86,8 @@ class RegisterdHospitalsDetailView(LoginRequiredMixin, RegisteredObjectMixin, Vi
         # GET method
         context = {'object': self.get_object()}
         return render(request, self.template_name, context)
+
+
+
+
+

@@ -1,0 +1,94 @@
+{% extends 'monitoring/monitoring_base.html'%}
+{% load static %}
+{% block title%}| Welcome {% endblock %}
+
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/list_registration.css' %}" >
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+        <h1 class="text-success">Inspection Details</h1>
+        <hr>
+
+        <!-- Application Details Section -->
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Application Details</h4>
+                <p><strong>Application No:</strong> {{ object.application_no }}</p>
+                <p><strong>Hospital Name:</strong> {{ object.hospital_name }}</p>
+                <p><strong>Hospital Address:</strong> {{ object.hospital.facility_address }}</p>
+                <p><strong>Application Date:</strong> {{ object.inspection_schedule_date|date:"d M Y" }}</p>
+            </div>
+
+            <!-- Inspection Details Section -->
+            <div class="col-md-6">
+                <h4>Inspection Details</h4>
+                <p><strong>Scheduled By:</strong> {{ object.inspection_scheduler }}</p>
+                <p><strong>Inspection Date:</strong> {{ object.inspection_date|date:"d M Y" }}</p>
+                <p><strong>Report Deadline:</strong> {{ object.inspection_report_deadline|date:"d M Y" }}</p>
+                <p><strong>Zone:</strong> {{ object.get_inspection_zone_display }}</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- Inspectors Section -->
+        <h4>Inspectors</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if object.inspector1_name and object.inspector1_phone %}
+                <tr>
+                    <td>{{ object.inspector1_name }}</td>
+                    <td>{{ object.inspector1_phone }}</td>
+                </tr>
+                {% endif %}
+                {% if object.inspector2_name and object.inspector2_phone %}
+                <tr>
+                    <td>{{ object.inspector2_name }}</td>
+                    <td>{{ object.inspector2_phone }}</td>
+                </tr>
+                {% endif %}
+                {% if object.inspector3_name and object.inspector3_phone %}
+                <tr>
+                    <td>{{ object.inspector3_name }}</td>
+                    <td>{{ object.inspector3_phone }}</td>
+                </tr>
+                {% endif %}
+                {% if object.inspector4_name and object.inspector4_phone %}
+                <tr>
+                    <td>{{ object.inspector4_name }}</td>
+                    <td>{{ object.inspector4_phone }}</td>
+                </tr>
+                {% endif %}
+                {% if object.inspector5_name and object.inspector5_phone %}
+                <tr>
+                    <td>{{ object.inspector5_name }}</td>
+                    <td>{{ object.inspector5_phone }}</td>
+                </tr>
+                {% endif %}
+                {% if object.inspector6_name and object.inspector6_phone %}
+                <tr>
+                    <td>{{ object.inspector6_name }}</td>
+                    <td>{{ object.inspector6_phone }}</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+        <a href="{% url 'monitoring:inspection_list' %}" class="btn btn-secondary">Back to Schedule List</a>
+    </div>
+<!-- End of Skills -->
+
+{% endblock %}

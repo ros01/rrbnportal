@@ -57,6 +57,8 @@ def index(request):
     return render (request, 'registrars_office/registrar_dashboard.html')
 
 
+
+
 class MyUserAccount(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'registrars_office/my_profile.html')

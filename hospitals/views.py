@@ -52,6 +52,7 @@ import io
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
 from django.views.generic.detail import SingleObjectMixin
+from itertools import chain
 
 
 
@@ -1346,6 +1347,56 @@ class GenerateAccreditationPaymentDetails(LoginRequiredMixin, DetailView):
         #obj['license_history_qs'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user)
         return obj 
 
+class PayAccreditationFee1(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    model = Payment
+    template_name = 'hospitals/pay_accreditation_fee.html'
+    form_class = PaymentDetailsModelForm
+
+    def get_success_url(self):
+        return reverse("hospitals:payment_details", kwargs={"id": self.object.id})
+
+    def get_context_data(self, **kwargs):
+        """Provide additional context for the template."""
+        context = super().get_context_data(**kwargs)
+        
+        # Retrieve the document instance related to the form
+        document = self.get_document()
+
+        # Add related querysets to the context
+        context['document_qs'] = Document.objects.select_related("hospital_name").filter(hospital_name=document.hospital_name)
+        context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
+        
+        return context
+
+    def get_initial(self):
+        """Provide initial values for the form fields."""
+        document = self.get_document()
+        return {
+            'hospital': document.hospital_name.id,
+        }
+
+    def get_form_kwargs(self):
+        """Add additional data to the form."""
+        kwargs = super().get_form_kwargs()
+        document = self.get_document()
+
+        kwargs['initial'] = {
+            'hospital_name': document.hospital_name,
+            'application_no': document.application_no,
+        }
+        return kwargs
+
+    def form_invalid(self, form):
+        """Handle invalid form submissions."""
+        messages.error(self.request, "There was an error with your submission. Please check the form.")
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_document(self):
+        """Retrieve and cache the document object."""
+        if not hasattr(self, '_document'):
+            self._document = get_object_or_404(Document, pk=self.kwargs['pk'])
+        return self._document
+
 
 class PayAccreditationFee(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Payment
@@ -1754,6 +1805,59 @@ class MyLicenseApplicationsHistory(LoginRequiredMixin, ListView):
         obj['certificate_qs'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, hospital__license_type = 'Internship Accreditation')
         return obj  
 
+
+
+class MyLicenseApplicationsHistory(LoginRequiredMixin, ListView):
+    template_name = "hospitals/my_license_history.html"
+    context_object_name = 'object'
+
+    def get_queryset(self):
+        # Get all licenses related to hospitals administered by the current user
+        return License.objects.filter(hospital_name__hospital_admin=self.request.user)
+
+
+    def get_context_data(self, **kwargs):
+        obj = super(MyLicenseApplicationsHistory, self).get_context_data(**kwargs)
+        obj['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(
+            hospital_admin=self.request.user
+        )
+        permit_qs = License.objects.select_related("hospital_name").filter(
+            hospital_name__hospital_admin=self.request.user,
+            hospital__license_type='Radiography Practice Permit'
+        )
+        certificate_qs = License.objects.select_related("hospital_name").filter(
+            hospital_name__hospital_admin=self.request.user,
+            hospital__license_type='Internship Accreditation'
+        )
+
+        combined_qs = list(chain(permit_qs, certificate_qs))
+
+        obj['combined_qs'] = combined_qs
+        return obj
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     user = self.request.user
+
+    #     # Fetch hospital and license querysets
+    #     hospital_qs = Hospital.objects.filter(hospital_admin=user)
+    
+    #     permit_qs = License.objects.filter(
+    #         hospital_name__hospital_admin=user,
+    #         hospital_name__license_type='Radiography Practice Permit'
+    #     )
+    #     certificate_qs = License.objects.filter(
+    #         hospital_name__hospital_admin=user,
+    #         hospital_name__license_type='Internship Accreditation'
+    #     )
+
+    #     # Combine permit_qs and certificate_qs
+    #     combined_qs = list(chain(permit_qs, certificate_qs))
+
+    #     # Add data to the context
+    #     context['hospital_qs'] = hospital_qs
+    #     context['combined_qs'] = combined_qs  # Combined permits and certificates
+    #     return context
 
 
 #class StartLicenseRenewal(LoginRequiredMixin, LicenseObjectMixin, View):

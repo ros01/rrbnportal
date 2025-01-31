@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Payment, Document, Inspection, License, Schedule, Records, Appraisal, Ultrasound, Mri, Xray, Ctscan, Flouroscopy, Nuclearmedicine, Radiotherapy, Mamography, Dentalxray, Echocardiography, Angiography, Carm
+from .models import *
 
 
 class DocumentAdmin(admin.ModelAdmin):
@@ -13,12 +13,19 @@ class DocumentAdmin(admin.ModelAdmin):
 
 admin.site.register(Document, DocumentAdmin)
 
+class InspectorAdmin(admin.ModelAdmin):
+  list_display = ('name', 'phone_number', 'zone', 'is_approved')
+  list_display_links = ('name', 'phone_number')
+  list_filter = ('name', 'phone_number')
+  search_fields = ('name', 'phone_number')
+  list_per_page = 25
 
+
+admin.site.register(Inspector, InspectorAdmin)
 
 
 class PaymentAdmin(admin.ModelAdmin):
-  list_display = ('application_no', 'hospital_name','rrr_number', 'receipt_number', 'payment_amount',
-                  'payment_receipt', 'payment_date')
+  list_display = ('application_no', 'hospital_name','rrr_number', 'payment_amount', 'payment_receipt', 'payment_date')
   list_display_links = ('application_no', 'hospital_name')
   list_filter = ('hospital_name',)
   search_fields = ('hospital_name', 'receipt_number', 'payment_date',

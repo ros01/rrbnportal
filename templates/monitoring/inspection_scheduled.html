@@ -62,7 +62,7 @@
 <br>
 <br>
 <p class="lead text-secondary m-0 mt-4">Inspection Date:</p>
-<p class="lead text-secondary text-capitalize m-0"><strong>{{object.inspection_date}}</strong></p>  
+<p class="lead text-secondary text-capitalize m-0"><strong>{{ object.inspection_date|date:"d M Y" }}</strong></p>  
 <br> 
 </div>
 <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
@@ -70,7 +70,7 @@
 <p class="lead text-secondary m-0"><strong>{{object.hospital.facility_address}}</strong></p>  
 <br>
 <p class="lead text-secondary m-0 mt-4">Inspecting Zonal Office:</p>
-<p class="lead text-secondary text-capitalize m-0"><strong>{{object.inspection_zone}}</strong></p>  
+<p class="lead text-secondary text-capitalize m-0"><strong>{{ object.get_inspection_zone_display }}</strong></p>  
 <br>
 </div>
 
@@ -86,8 +86,37 @@
 
 
 </div>
-<hr>
-<div class="d-flex justify-content-end">   
+
+<div class="col col-lg-12 mt-3 mb-0 pb-0">
+    <p class="mb-0 text-success display-4 paragraph3">Approved Inspectors</p>
+    <hr>
+    <table class="table table-bordered">
+        <thead style="background-color: #bfe3f8;">
+            <tr>
+                <th class="lead text-secondary m-0">Name</th>
+                <th class="lead text-secondary m-0">Phone Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inspector in approved_inspectors %}
+            <tr>
+                <td>{{ inspector.name }}</td>
+                <td>{{ inspector.phone }}</td>
+            </tr>
+            {% endfor %}
+            {% if approved_inspectors|length == 0 %}
+            <tr>
+                <td colspan="2" class="lead text-left">No approved inspectors found.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<div class="d-flex justify-content-end"> 
+
+<a href="{{request.META.HTTP_REFERER}}" class="btn btn-success text-white p-2 mr-3 mt-2 mb-5"><i class="fas fa-angle-double-left" aria-hidden="true"></i> Go Back </a>
+
 <a href="{% url 'monitoring:monitoring_dashboard' %}" class="btn btn-warning text-white p-2 mr-3 mt-2 mb-5 "><i class="fa fa-angle-double-left" aria-hidden="true"></i> Return to Dashboard</a>
  
 </div> 
@@ -95,6 +124,7 @@
 </div>  
     
 </section>
+
 
 <!-- End of Skills -->
 

@@ -55,18 +55,18 @@
 </div>
     
 <div class="form-group col-md-6 mb-0">
-{{ form.receipt_number|as_crispy_field }}
+{{ form.payment_method|as_crispy_field }} 
 </div>
 </div>
 
 <div class="form-row">
 <div class="form-group col-md-6 mb-0">
-{{ form.payment_method|as_crispy_field }} 
-</div>
-    
-<div class="form-group col-md-6 mb-0">
 {{ form.payment_receipt|as_crispy_field }} 
 </div>
+    
+<!-- <div class="form-group col-md-6 mb-0">
+{{ form.payment_receipt|as_crispy_field }} 
+</div> -->
 </div>
 
 <div class="form-group col-md-12 mb-0">

@@ -1,0 +1,13 @@
+{% if inspectors %}
+            <p class="text-muted">Approved Inspectors for {{ zone }} Zone</p>
+            {% for inspector in inspectors %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="inspectors" id="inspector_{{ inspector.id }}" value="{{ inspector.id }}">
+                    <label class="form-check-label" for="inspector_{{ inspector.id }}">
+                        {{ inspector.name }} ({{ inspector.phone_number }})
+                    </label>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted">No inspectors available for the selected zone.</p>
+        {% endif %}

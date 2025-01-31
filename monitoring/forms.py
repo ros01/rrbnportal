@@ -2,7 +2,7 @@ from django import forms
 from django.utils import timezone
 from django.db.models import Q
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from hospitals.models import Schedule, Inspection, License, Payment, Records, Appraisal
+from hospitals.models import *
 from accounts.models import Hospital
 from .models import *
 from tempus_dominus.widgets import DatePicker
@@ -27,7 +27,178 @@ class InternshipListForm(forms.ModelForm):
         fields = ('file', )
 
 
+
 class ScheduleModelForm(forms.ModelForm):
+    inspectors = forms.ModelMultipleChoiceField(
+        queryset=Inspector.objects.none(),  # Dynamically populated
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label="Inspectors"
+    )
+
+    inspection_date = forms.DateField(
+        widget=DatePicker(
+            options={
+                'useCurrent': True,
+                'collapse': False,
+                'minDate': '2020-06-05',
+                # 'maxDate': '2025-12-31',
+            },
+            attrs={
+                'append': 'fa fa-calendar',
+                'icon_toggle': True,
+                }
+                )
+        )
+
+    inspection_report_deadline = forms.DateField(
+        widget=DatePicker(
+            options={
+                'useCurrent': True,
+                'collapse': False,
+                'minDate': '2020-06-05',
+                # 'maxDate': '2025-12-31',
+            },
+            attrs={
+                'append': 'fa fa-calendar',
+                'icon_toggle': True,
+                }
+                )
+        )
+
+    class Meta:
+        model = Schedule
+        fields = [
+            'application_no', 
+            'hospital', 
+            'hospital_name', 
+            'payment', 
+            'inspection_scheduler', 
+            'inspection_schedule_date', 
+            'inspection_date', 
+            'inspection_report_deadline', 
+            'inspection_zone',
+            'inspector1_name',
+            'inspector1_phone',
+            'inspector2_name',
+            'inspector2_phone',
+            'inspector3_name',
+            'inspector3_phone',
+            'inspector4_name',
+            'inspector4_phone',
+            'inspector5_name',
+            'inspector5_phone',
+            'inspector6_name',
+            'inspector6_phone',
+            # 'inspectors',  # Assuming this field is a many-to-many or foreign key for inspectors
+        ]
+
+        widgets = {
+         'application_no': forms.HiddenInput(),
+         'hospital_name': forms.HiddenInput(),
+         'hospital': forms.HiddenInput(),
+         'payment': forms.HiddenInput(),
+         } 
+
+    def __init__(self, *args, **kwargs):
+       super(ScheduleModelForm, self).__init__(*args, **kwargs)
+       self.fields['inspection_zone'].label = False
+       self.fields['inspection_date'].label = "Inspection Date"
+       self.fields['inspector1_name'].label = "Inspector 1 Name"
+       self.fields['inspector1_phone'].label = "Inspector 1 Phone"
+       self.fields['inspector2_name'].label = "Inspector 2 Name"
+       self.fields['inspector2_phone'].label = "Inspector 2 Phone"
+       self.fields['inspector3_name'].label = "Inspector 3 Name"
+       self.fields['inspector3_phone'].label = "Inspector 3 Phone"
+       self.fields['inspector4_name'].label = "Inspector 4 Name"
+       self.fields['inspector4_phone'].label = "Inspector 4 Phone"
+       self.fields['inspector5_name'].label = "Inspector 5 Name"
+       self.fields['inspector5_phone'].label = "Inspector 5 Phone"
+       self.fields['inspector6_name'].label = "Inspector 6 Name"
+       self.fields['inspector6_phone'].label = "Inspector 6 Phone"
+       self.fields['inspection_report_deadline'].label = "Inspection Report Deadline"
+
+
+    def clean(self):
+        cleaned_data = super().clean()
+        inspector1_name = cleaned_data.get('inspector1_name')
+        inspector1_phone = cleaned_data.get('inspector1_phone')
+
+        if not inspector1_name or not inspector1_phone:
+            raise forms.ValidationError("Inspector 1 details are required.")
+        return cleaned_data
+
+
+# 
+
+    # def __init__(self, *args, **kwargs):
+    #     zone = kwargs.pop('zone', None)  # Pass the zone dynamically
+    #     super().__init__(*args, **kwargs)
+    #     if zone:
+            # Filter inspectors based on the selected zone
+        #     self.fields['inspectors'].queryset = Inspector.objects.filter(zone=zone)
+        # else:
+        #     self.fields['inspectors'].queryset = Inspector.objects.all()
+
+
+class ScheduleModelForm0(forms.ModelForm):
+    class Meta:
+        model = Schedule
+        fields = [
+            'application_no', 
+            'hospital', 
+            'hospital_name', 
+            'payment', 
+            'inspection_scheduler', 
+            'inspection_schedule_date', 
+            'inspection_date', 
+            'inspection_report_deadline', 
+            'inspection_zone',
+            # 'inspectors',  # Assuming this field is a many-to-many or foreign key for inspectors
+        ]
+        widgets = {
+            'inspection_schedule_date': forms.DateInput(attrs={'type': 'date'}),
+            'inspection_date': forms.DateInput(attrs={'type': 'date'}),
+            'inspection_report_deadline': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        # Pass additional arguments if needed
+        inspectors_queryset = kwargs.pop('inspectors_queryset', None)
+        super(ScheduleModelForm, self).__init__(*args, **kwargs)
+
+        # Add a placeholder for each field if needed
+        self.fields['application_no'].widget.attrs.update({'placeholder': 'Application Number'})
+        self.fields['inspection_zone'].widget.attrs.update({'hx-get': '/get-inspectors/', 'hx-target': '#inspectors-dropdown', 'hx-trigger': 'change'})
+
+        # Dynamically filter inspectors by zone if provided
+        # if inspectors_queryset is not None:
+        #     self.fields['inspectors'].queryset = inspectors_queryset
+
+        # Optional: Add labels or help texts
+        # self.fields['inspectors'].label = "Select Inspectors"
+        # self.fields['inspectors'].help_text = "Inspectors available for the selected zone."
+
+        # Customize any field as required
+        # self.fields['inspectors'].required = True
+
+
+class ScheduleModelForm1(forms.ModelForm):
+    # inspectors = forms.ModelChoiceField(
+    #     queryset=Inspector.objects.none(),  # Initially empty
+    #     required=True,
+    #     label="Inspector",
+    # )
+
+    inspectors = forms.ModelMultipleChoiceField(
+        queryset=Inspector.objects.filter(is_approved=True),
+        widget=forms.CheckboxSelectMultiple,
+        required=True,
+        label="Select Approved Inspectors"
+    )
+
+
+
     inspection_date = forms.DateField(
     	widget=DatePicker(
     		options={
@@ -71,13 +242,27 @@ class ScheduleModelForm(forms.ModelForm):
          'hospital': forms.HiddenInput(),
          'payment': forms.HiddenInput(),
          } 
-                                                                                                                                                                            
+             
+    # def __init__(self, *args, **kwargs):
+    #     selected_zone = kwargs.pop('selected_zone', None)
+    #     super().__init__(*args, **kwargs)
+    #     if selected_zone:
+    #         self.fields['inspectors'].queryset = Inspector.objects.filter(zone=selected_zone)
+    #     else:
+    #         self.fields['inspectors'].queryset = Inspector.objects.none()                                                                                                                   
 
     def __init__(self, *args, **kwargs):
        super(ScheduleModelForm, self).__init__(*args, **kwargs)
        self.fields['inspection_zone'].label = False
        self.fields['inspection_date'].label = "Inspection Date"
        self.fields['inspection_report_deadline'].label = "Inspection Report Deadline"
+
+       # selected_zone = kwargs.pop('selected_zone', None)
+       # super().__init__(*args, **kwargs)
+       # if selected_zone:
+       #      self.fields['inspectors'].queryset = Inspector.objects.filter(zone=selected_zone)
+       # else:
+       #      self.fields['inspectors'].queryset = Inspector.objects.none() 
 
 
 

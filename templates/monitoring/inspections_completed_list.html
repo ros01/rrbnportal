@@ -31,11 +31,12 @@
 <thead>
 <tr style="background: #41963F;">
 <th class="small-text" style="color: #fff; "width="2%">SN</th>
-<th class="small-text" style="color: #fff; "width="14%">Application No</th>
-<th class="small-text" style="color: #fff; "width="22%">Hospital Name</th>
-<th class="small-text" style="color: #fff; "width="21%">License Category</th>
-<th class="small-text" style="color: #fff; "width="15%">Inspection Date</th>
-<th class="small-text" style="color: #fff; "width="16%">Inspection Zone</th>
+<th class="small-text" style="color: #fff; "width="12%">Application No</th>
+<th class="small-text" style="color: #fff; "width="18%">Hospital Name</th>
+<th class="small-text" style="color: #fff; "width="18%">License Category</th>
+<th class="small-text" style="color: #fff; "width="13%">Inspection Date</th>
+<th class="small-text" style="color: #fff; "width="13%">Inspection Zone</th>
+<th class="small-text" style="color: #fff; "width="14%">Inspection Status</th>
 <th class="small-text" style="color: #fff; "width="10%">Action</th>
 </tr> </thead> 
 
@@ -52,6 +53,9 @@
  <td>{{object.hospital.license_type}}</td>
  <td>{{object.schedule.inspection_date}}</td>
  <td>{{object.schedule.inspection_zone}}</td>
+ <td>
+   <span class="badge badge-success">Approved</span>
+ </td>
  <td><a href="{% url 'monitoring:inspection_report' id=object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a></td>
  </tr>
 

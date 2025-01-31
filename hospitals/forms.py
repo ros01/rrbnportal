@@ -148,7 +148,7 @@ class PaymentDetailsModelForm(forms.ModelForm):
 
     class Meta:
         model = Payment
-        fields = ('application_no', 'hospital', 'hospital_name', 'rrr_number', 'receipt_number',  'payment_amount', 'payment_method',  'payment_receipt',)
+        fields = ('application_no', 'hospital', 'hospital_name', 'rrr_number', 'payment_amount', 'payment_method',  'payment_receipt',)
                                                                                                                                                     
         widgets = {
             'hospital_name': forms.HiddenInput(), 
@@ -164,7 +164,7 @@ class PaymentDetailsModelForm(forms.ModelForm):
        #self.fields['application_no'].widget.attrs['readonly'] = 'readonly'
        #self.fields['hospital_name'].label = "Hospital Name"
        self.fields['rrr_number'].label = "RRR Number"
-       self.fields['receipt_number'].label = "Receipt Number"
+       # self.fields['receipt_number'].label = "Receipt Number"
        self.fields['payment_amount'].label = "Payment Amount"
        self.fields['payment_method'].label = "Payment Method"
        self.fields['payment_receipt'].label = "Payment Receipt"

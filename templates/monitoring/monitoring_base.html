@@ -10,6 +10,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles-reg.css' %}">
+    <script src="https://unpkg.com/htmx.org"></script>
+
 
     
 
@@ -137,7 +139,7 @@
         <form id="logout" method="POST" action="{% url 'accounts:logout' %}">
         {% csrf_token %}
         <input type="hidden"/>
-        </form><i class="fa fa-power-off"> </i>Logout</a>
+        </form><i class="fa fa-power-off"> </i> Logout</a>
         </div>
         </div>
         </div>

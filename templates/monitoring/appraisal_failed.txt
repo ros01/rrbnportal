@@ -12,7 +12,7 @@ Hospital Name: {{object.hospital_name}}
 
 Category: {{object.license_category}}
 
-Actual Inspection Date: {{object.inspection_date}}
+Actual Inspection Date: {{object.appraisal_date}}
 
 
 
@@ -22,5 +22,3 @@ Sincerely,
 
 Radiographers Registration Board of Nigeria (RRBN)
 monitoring.rrbn.gov.ng
-
-

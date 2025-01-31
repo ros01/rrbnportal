@@ -36,6 +36,7 @@ import mimetypes
 from django.contrib.messages.views import SuccessMessageMixin
 import io, csv
 from django.contrib.auth.hashers import make_password
+from django.db.models import Max, Value, IntegerField, CharField, Q, Count
 
 
 class StaffRequiredMixin(object):
@@ -227,8 +228,6 @@ class UpdateHospitalProfileDetails (StaffRequiredMixin, SuccessMessageMixin, Upd
 
     def get_success_url(self):
         return reverse("zonal_offices_dashboard:hospitals_upload_list") 
-
-    
 
 
     def post(self, request, *args, **kwargs):
@@ -427,7 +426,7 @@ class AccreditationObjectMixin(object):
             obj = get_object_or_404(self.model, id=id)
         return obj 
 
-class InspectionView(LoginRequiredMixin, ScheduleObjectMixin, View):
+class InspectionView1(LoginRequiredMixin, ScheduleObjectMixin, View):
     template_name = "zonal_offices/inspection_scheduled_details.html" 
 
       
@@ -435,7 +434,28 @@ class InspectionView(LoginRequiredMixin, ScheduleObjectMixin, View):
         context = {'object': self.get_object()}
         return render(request, self.template_name, context)
 
-class InspectionReportsView(LoginRequiredMixin, ListView):
+
+class InspectionView(StaffRequiredMixin, LoginRequiredMixin, DetailView):
+    model = Schedule
+    template_name = "zonal_offices/inspection_scheduled_details.html"
+    context_object_name = "object"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        inspectors = [
+            {"name": self.object.inspector1_name, "phone": self.object.inspector1_phone},
+            {"name": self.object.inspector2_name, "phone": self.object.inspector2_phone},
+            {"name": self.object.inspector3_name, "phone": self.object.inspector3_phone},
+            {"name": self.object.inspector4_name, "phone": self.object.inspector4_phone},
+            {"name": self.object.inspector5_name, "phone": self.object.inspector5_phone},
+            {"name": self.object.inspector6_name, "phone": self.object.inspector6_phone},
+        ]
+        # Filter out empty entries
+        context['approved_inspectors'] = [inspector for inspector in inspectors if inspector['name'] and inspector['phone']]
+        return context
+
+
+class InspectionReportsView1(LoginRequiredMixin, ListView):
     template_name = 'zonal_offices/inspection_reports_list.html'
     #context_object_name = 'object'
 
@@ -448,6 +468,50 @@ class InspectionReportsView(LoginRequiredMixin, ListView):
         obj['inspection_qs'] = Inspection.objects.select_related("hospital_name")
         obj['accreditation_qs'] = Appraisal.objects.select_related("hospital_name")
         return obj
+
+
+class InspectionReportsView(StaffRequiredMixin, LoginRequiredMixin, ListView):
+    template_name = 'zonal_offices/inspection_reports_list.html'
+
+    def get_queryset(self):
+        inspections = Inspection.objects.annotate(
+            appraisal_status_placeholder=Value(None, output_field=IntegerField())  # Placeholder for appraisal status
+        ).select_related("hospital_name").filter(vet_status=4)
+
+        appraisals = Appraisal.objects.annotate(
+            inspection_status_placeholder=Value(None, output_field=IntegerField())  # Placeholder for inspection status
+        ).select_related("hospital_name").filter(vet_status=4)
+
+        # Combine the two querysets into one
+        return list(inspections) + list(appraisals)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['combined_records'] = self.get_queryset()
+        return context
+
+
+
+
+class InspectionReportsRejectionsView(StaffRequiredMixin, LoginRequiredMixin, ListView):
+    template_name = 'zonal_offices/inspection_reports_list.html'
+
+    def get_queryset(self):
+        inspections = Inspection.objects.annotate(
+            appraisal_status_placeholder=Value(None, output_field=IntegerField())  # Placeholder for appraisal status
+        ).select_related("hospital_name").filter(inspection_status=3)
+
+        appraisals = Appraisal.objects.annotate(
+            inspection_status_placeholder=Value(None, output_field=IntegerField())  # Placeholder for inspection status
+        ).select_related("hospital_name").filter(appraisal_status=3)
+
+        # Combine the two querysets into one
+        return list(inspections) + list(appraisals)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['combined_records'] = self.get_queryset()
+        return context
 
 
 class InspectionReportDetailView(LoginRequiredMixin, InspectionObjectMixin, View):
@@ -467,97 +531,66 @@ class AccreditationReportDetailView(LoginRequiredMixin, AccreditationObjectMixin
     def get(self, request, id=None, *args, **kwargs):
         context = {'object': self.get_object()}
         return render(request, self.template_name, context)
-#def view_inspection_report(request, id):
-  #inspection = get_object_or_404(Inspection, pk=id)
-  
-  #context={'inspection': inspection,
-           
-          # }
-  #return render(request, 'zonal_offices/inspection_details.html', context)
 
 
-#class InspectionView(LoginRequiredMixin, DetailView):
-    #template_name = "zonal_offices/inspection_detail.html"
-    #model = Schedule
-    
-    #def get_context_data(self, **kwargs):
-        #context = super().get_context_data(**kwargs)
-        #context['hospital'] = Hospital.objects.filter(hospital_name=self.object)
-        #return context
-
-#class InspectionReportView(LoginRequiredMixin, InspectionObjectMixin, View):
-    #template_name = "zonal_offices/inspection_report.html" 
-    #def get(self, request, id=None, *args, **kwargs):
-        #context = {'object': self.get_object()}
-        #return render(request, self.template_name, context)
 
 
-#class InspectionReportView(LoginRequiredMixin, InspectionObjectMixin, View):
-    #template_name = "zonal_offices/inspection_report.html"
-    #template_name1 = "zonal_offices/inspection_report_confirmation.html"
-    #def get(self, request,  *args, **kwargs):
-        #context = {}
-        #obj = self.get_object()
-        #if obj is not None:
-            #form = InspectionModelForm(instance=obj)  
-            #context['object'] = obj
-            #context['form'] = form
 
-        #return render(request, self.template_name, context)
-
-
-    #def post(self, request,  *args, **kwargs):
-        #form = InspectionModelForm(request.POST, request.FILES)
-        #if form.is_valid():
-            #form.save()
-
-        #context = {}
-        #obj = self.get_object()
-        #if obj is not None:
-          
-           #context['object'] = obj
-           #context['form'] = form
-
-           #subject = 'Notice of Facility Inspection'
-           #from_email = settings.DEFAULT_FROM_EMAIL
-           #to_email = [form.cleaned_data.get('email')]
-
-           #context['form'] = form
-           #contact_message = get_template(
-               #'zonal_offices/inspection_report.txt').render(context)
-
-           #send_mail(subject, contact_message, from_email,
-                     #to_email, fail_silently=False)
-        #return render(request, self.template_name1, context)
-        
 class InspectionReportView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Inspection
     template_name = 'zonal_offices/inspection_report.html'
     form_class = InspectionModelForm
+    success_message = 'Inspection Report Submitted Successfully'
 
     def get_success_url(self):
         return reverse("zonal_offices:inspection_complete_details", kwargs={"id": self.object.id})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.schedule.hospital_name, hospital__license_type = 'Radiography Practice Permit')
+        schedule_qs = Schedule.objects.select_related("hospital_name").filter(
+            application_status=4,
+            hospital_name=self.schedule.hospital_name,
+            hospital__license_type='Radiography Practice Permit',
+            application_no=self.schedule.application_no
+        )
 
-        
-        #context = {'object': self.get_object()}
-        #context['payment'] = Payment.objects.get(pk=self.object)
-        #context['hospital'] = Hospital.objects.get(id=self.kwargs['id'])
-        #context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
-        #context['hospital_qs'] = Hospital.objects.filter(hospital_name=self.object)
+        # Add modalities and their corresponding URL names
+        modalities = [
+            "Ultrasound",
+            "Conventional X-ray",
+            "CT Scan",
+            "MRI",
+            "Radiotherapy",
+            "Nuclear Medicine",
+            "Mamography",
+            "Dental X-ray",
+            "Echocardiography",
+            "Angiography",
+            "C-Arm/O-ARM",
+        ]
+        context['modality_url_names'] = {
+            "Ultrasound": "zonal_offices:ultrasound_score",
+            "Conventional X-ray": "zonal_offices:xray_score",
+            "CT Scan": "zonal_offices:ctscan_score",
+            "MRI": "zonal_offices:mri_score",
+            "Radiotherapy": "zonal_offices:radiotherapy_score",
+            "Nuclear Medicine": "zonal_offices:nuclear_medicine_score",
+            "Mamography": "zonal_offices:mamography_score",
+            "Dental X-ray": "zonal_offices:dental_xray_score",
+            "Echocardiography": "zonal_offices:echocardiography_score",
+            "Angiography": "zonal_offices:angiography_score",
+            "C-Arm/O-ARM": "zonal_offices:carm_score",
+        }
+        context['photo_range'] = range(1, 7) 
+        context['schedule_qs'] = schedule_qs
+        context['modalities'] = modalities
         return context
 
     def get_initial(self):
-        # You could even get the Book model using Book.objects.get here!
         return {
             'schedule': self.kwargs["pk"],
-            #'license_type': self.kwargs["pk"]
         }
-    
-    
+
     def get_form_kwargs(self):
         self.schedule = Schedule.objects.get(pk=self.kwargs['pk'])
         kwargs = super().get_form_kwargs()
@@ -565,13 +598,31 @@ class InspectionReportView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         kwargs['initial']['hospital'] = self.schedule.hospital
         kwargs['initial']['payment'] = self.schedule.payment
         kwargs['initial']['application_no'] = self.schedule.application_no
-        #kwargs['initial']['hospital'] = self.payment.hospital
-        
         return kwargs
-      
+
+    def form_valid(self, form):
+        if Inspection.objects.filter(schedule=self.schedule).exists():
+            # Add message to context instead of relying solely on messages framework
+            context = self.get_context_data()
+            context['error_message'] = "An inspection report for this schedule already exists."
+            return self.render_to_response(context)
+        return super().form_valid(form)
+    
 
     def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data())
+        # Retrieve all form errors
+        error_messages = form.errors.as_json()  # Get errors in JSON format for better debugging
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+
+        non_field_errors = form.non_field_errors()
+        if non_field_errors:
+            messages.error(self.request, f"{', '.join(non_field_errors)}")
+
+        
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+
 
 
 class InspectionCompleteDetailView(LoginRequiredMixin, InspectionObjectMixin, View):
@@ -599,7 +650,7 @@ class InspectionCompleteDetailView(LoginRequiredMixin, InspectionObjectMixin, Vi
 
 
 
-class AccreditationReportView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+class AccreditationReportView1(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Appraisal
     template_name = 'zonal_offices/accreditation_report_form.html'
     form_class = InternshipModelForm
@@ -647,6 +698,280 @@ class AccreditationReportView(LoginRequiredMixin, SuccessMessageMixin, CreateVie
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data())
       
+class AccreditationReportView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    model = Appraisal
+    template_name = 'zonal_offices/accreditation_report_form.html'
+    form_class = InternshipModelForm
+    success_message = "Accreditation report created successfully."
+
+    def get_success_url(self):
+        return reverse("zonal_offices:accreditation_complete_details", kwargs={"id": self.object.id})
+
+    def get_form_kwargs(self):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['hospital'] = self.schedule.hospital
+        kwargs['initial']['payment'] = self.schedule.payment
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        common_filters = {
+            'application_status': 4,
+            'hospital_name': self.schedule.hospital_name,
+            'application_no': self.schedule.application_no,
+            'hospital__license_type': 'Internship Accreditation'
+        }
+        context['schedule_qss'] = Schedule.objects.filter(
+            **common_filters, hospital__application_type='New Registration - Government Hospital Internship'
+        )
+        context['schedule_qsss'] = Schedule.objects.filter(
+            **common_filters, hospital__application_type='New Registration - Private Hospital Internship'
+        )
+        context['schedule_qssr'] = Schedule.objects.filter(
+            **common_filters, hospital__application_type='Renewal - Private Hospital Internship'
+        )
+        context['schedule_qgssr'] = Schedule.objects.filter(
+            **common_filters, hospital__application_type='Renewal - Government Hospital Internship'
+        )
+        return context
+
+    def get_initial(self, *args, **kwargs):
+        return {'schedule': self.kwargs["pk"]}
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data())
+        
+
+class AccreditationReportUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = Appraisal
+    template_name = 'zonal_offices/accreditation_report_update_form.html'
+    form_class = InternshipModelForm
+    success_message = "Accreditation report updated successfully."
+
+    def get_object(self):
+        # Retrieves the Appraisal object using the `id` from the URL.
+        return get_object_or_404(Appraisal, id=self.kwargs['id'])
+
+    def form_valid(self, form):
+        # Automatically set `appraisal_status` to 1 before saving.
+        form.instance.appraisal_status = 1
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        # Redirects to the detailed view of the updated Appraisal.
+        return reverse("zonal_offices:accreditation_complete_details", kwargs={"id": self.object.id})
+
+    def get_context_data(self, **kwargs):
+        # Add custom context data if needed.
+        context = super().get_context_data(**kwargs)
+        context['custom_message'] = "Edit the Accreditation Report details below:"
+        return context
+
+    def form_invalid(self, form):
+        # Handles invalid form submission by re-rendering the form with errors.
+        return self.render_to_response(self.get_context_data())
+
+class InspectionReportUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = Inspection
+    template_name = "zonal_offices/inspection_report_update.html"
+    form_class = InspectionModelForm
+    success_message = "Inspection Report updated successfully!"
+
+    def get_object(self, queryset=None):
+        # Get the inspection object by its primary key
+        return get_object_or_404(Inspection, pk=self.kwargs["pk"])
+
+    def get_success_url(self):
+        # Redirect to the details view after a successful update
+        return reverse("zonal_offices:inspection_complete_details", kwargs={"id": self.object.id})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        inspection = self.get_object()
+        schedule_qs = Schedule.objects.filter(pk=inspection.schedule.pk)
+        try:
+            ultrasound = Ultrasound.objects.get(schedule=inspection.schedule)
+        except Ultrasound.DoesNotExist:
+            ultrasound = None
+        
+        try:
+            nuclear_medicine = Nuclearmedicine.objects.get(schedule=inspection.schedule)
+        except Nuclearmedicine.DoesNotExist:
+            nuclear_medicine = None
+
+        try:
+            radiotherapy = Radiotherapy.objects.get(schedule=inspection.schedule)
+        except Radiotherapy.DoesNotExist:
+            radiotherapy = None
+
+        try:
+            mri = Mri.objects.get(schedule=inspection.schedule)
+        except Mri.DoesNotExist:
+            mri = None
+
+        try:
+            ctscan = Ctscan.objects.get(schedule=inspection.schedule)
+        except Ctscan.DoesNotExist:
+            ctscan = None
+
+        try:
+            xray = Xray.objects.get(schedule=inspection.schedule)
+        except Xray.DoesNotExist:
+            xray = None
+
+        try:
+            flouroscopy = Flouroscopy.objects.get(schedule=inspection.schedule)
+        except Flouroscopy.DoesNotExist:
+            flouroscopy = None
+
+        try:
+            mamography = Mamography.objects.get(schedule=inspection.schedule)
+        except Mamography.DoesNotExist:
+            mamography = None
+
+        try:
+            echocardiography = Echocardiography.objects.get(schedule=inspection.schedule)
+        except Echocardiography.DoesNotExist:
+            echocardiography = None
+
+        try:
+            dental_xray = Dentalxray.objects.get(schedule=inspection.schedule)
+        except Dentalxray.DoesNotExist:
+            dental_xray = None
+
+        try:
+            angiography = Angiography.objects.get(schedule=inspection.schedule)
+        except Angiography.DoesNotExist:
+            angiography = None
+
+        try:
+            carm = Carm.objects.get(schedule=inspection.schedule)
+        except Carm.DoesNotExist:
+            carm = None
+        # Adding context for modalities and other data
+        context["schedule_qs"] = schedule_qs
+        context["modalities"] = [
+            "Ultrasound",
+            "Conventional X-ray",
+            "CT Scan",
+            "MRI",
+            "Radiotherapy",
+            "Nuclear Medicine",
+            "Mamography",
+            "Dental X-ray",
+            "Echocardiography",
+            "Angiography",
+            "C-Arm/O-ARM",
+        ]
+        context["modality_url_names"] = {
+            "Ultrasound": reverse(
+                "zonal_offices:ultrasound_update", kwargs={"id": ultrasound.id}
+            ) if ultrasound else None,
+
+            "Conventional X-ray": reverse(
+                "zonal_offices:xray_update", kwargs={"id": xray.id}
+            ) if xray else None,
+
+
+            "CT Scan": reverse(
+                "zonal_offices:ctscan_update", kwargs={"id": ctscan.id}
+            ) if ctscan else None,
+
+
+            "MRI": reverse(
+                "zonal_offices:mri_update", kwargs={"id": mri.id}
+            ) if mri else None,
+
+            "Radiotherapy": reverse(
+                "zonal_offices:radiotherapy_update", kwargs={"id": radiotherapy.id}
+            ) if radiotherapy else None,
+
+            "Nuclear Medicine": reverse(
+                "zonal_offices:nuclear_medicine_update", kwargs={"id": nuclear_medicine.id}
+            ) if nuclear_medicine else None,
+
+            "Mamography": reverse(
+                "zonal_offices:mamography_update", kwargs={"id": mamography.id}
+            ) if mamography else None,
+
+            "Dental X-ray": reverse(
+                "zonal_offices:dental_xray_update", kwargs={"id": dental_xray.id}
+            ) if dental_xray else None,
+
+            "Echocardiography": reverse(
+                "zonal_offices:echocardiography_update", kwargs={"id": echocardiography.id}
+            ) if echocardiography else None,
+
+            "Angiography": reverse(
+                "zonal_offices:angiography_update", kwargs={"id": angiography.id}
+            ) if angiography else None,
+
+            "C-Arm/O-ARM": reverse(
+                "zonal_offices:carm_update", kwargs={"id": carm.id}
+            ) if carm else None,
+            
+            # "Ultrasound": "zonal_offices:ultrasound_update",
+            # "Conventional X-ray": "zonal_offices:xray_update",
+            # "CT Scan": "zonal_offices:ctscan_update",
+            # "MRI": "zonal_offices:mri_update",
+            # "Radiotherapy": "zonal_offices:radiotherapy_update",
+            # "Nuclear Medicine": "zonal_offices:nuclear_medicine_update",
+            # "Mammography": "zonal_offices:mammography_update",
+            # "Dental X-ray": "zonal_offices:dental_xray_update",
+            # "Echocardiography": "zonal_offices:echocardiography_update",
+            # "Angiography": "zonal_offices:angiography_update",
+            # "C-Arm/O-ARM": "zonal_offices:carm_update",
+        }
+
+        return context
+
+
+    def form_valid(self, form):
+        # Automatically set `appraisal_status` to 1 before saving.
+        form.instance.inspection_status = 1
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        # Display detailed error messages
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        messages.error(self.request, "There was an error updating the form. Please review the details.")
+        return self.render_to_response(self.get_context_data(form=form))
+
+class InspectionReportUpdateViewx(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = Inspection
+    template_name = 'zonal_offices/inspection_report_update_form.html'
+    form_class = InspectionModelForm
+    success_message = "Inspection report updated successfully."
+
+    def get_object(self):
+        # Retrieves the Appraisal object using the `id` from the URL.
+        return get_object_or_404(Inspection, id=self.kwargs['id'])
+
+    def form_valid(self, form):
+        # Automatically set `appraisal_status` to 1 before saving.
+        form.instance.inspection_status = 1
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        # Redirects to the detailed view of the updated Appraisal.
+        return reverse("zonal_offices:inspection_complete_details", kwargs={"id": self.object.id})
+
+    def get_context_data(self, **kwargs):
+        # Add custom context data if needed.
+        context = super().get_context_data(**kwargs)
+        context['schedule_qs'] = Inspection.objects.select_related("hospital_name").filter(application_status=4, hospital_name=self.hospital_name, hospital__license_type = 'Radiography Practice Permit')
+        context['custom_message'] = "Edit the Inspection Report details below:"
+        return context
+
+    def form_invalid(self, form):
+        # Handles invalid form submission by re-rendering the form with errors.
+        return self.render_to_response(self.get_context_data())
+
 
     
 class AccreditationCompleteDetailView(LoginRequiredMixin, AccreditationObjectMixin, View):
@@ -678,6 +1003,1213 @@ class UltrasoundScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin,
     template_name = 'zonal_offices/ultrasound_score2.html'
     form_class = UltrasoundModelForm
     success_message = 'Ultrasound Score Entered Successfully'
+    
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")  # Fallback in case schedule is missing
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        schedule_qs = Schedule.objects.select_related("hospital_name").filter(
+            application_status=4, hospital_name=self.schedule.hospital_name
+        )
+        context['schedule_qs'] = schedule_qs
+        
+        # Ensure ultrasound object exists
+        ultrasound = Ultrasound.objects.filter(schedule=self.schedule).first()
+        if ultrasound:
+            context["ultrasound"] = ultrasound
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+
+    def form_invalid(self, form):
+        messages.error(self.request, "There was an error submitting the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+
+class UltrasoundScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
+    model = Ultrasound
+    template_name = "zonal_offices/ultrasound_score_update.html" 
+    # template_name = "zonal_offices/ultrasound_update.html"
+    form_class = UltrasoundModelForm
+    success_message = "Ultrasound details updated successfully!"
+
+    def get_object(self, queryset=None):
+        # Get the ultrasound object based on its ID
+        return get_object_or_404(Ultrasound, id=self.kwargs["id"])
+
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            try:
+                # Fetch the related Inspection object
+                inspection = Inspection.objects.get(schedule=self.object.schedule)
+                return reverse("zonal_offices:inspection_report_update", kwargs={"pk": inspection.pk})
+            except Inspection.DoesNotExist:
+                messages.error(self.request, "Inspection report not found for this schedule.")
+                return reverse("zonal_offices:dashboard")
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request  # Pass request to form
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        ultrasound = self.get_object()
+        schedule_qs = Schedule.objects.filter(pk=ultrasound.schedule.pk)
+
+        context["schedule_qs"] = schedule_qs
+        context["ultrasound"] = ultrasound
+        return context
+
+    def form_invalid(self, form):
+        # Show error messages if the form submission fails
+        messages.error(self.request, "There was an error updating the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class NuclearMedicineScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/nuclear_medicine_score.html'
+    form_class = NuclearMedicineModelForm
+    success_message = 'Nuclear Medicine Score Entered Successfully'
+    
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")  # Fallback in case schedule is missing
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        schedule_qs = Schedule.objects.select_related("hospital_name").filter(
+            application_status=4, hospital_name=self.schedule.hospital_name
+        )
+        context['schedule_qs'] = schedule_qs
+        
+        # Ensure ultrasound object exists
+        nuclear_medicine = Nuclearmedicine.objects.filter(schedule=self.schedule).first()
+        if nuclear_medicine:
+            context["nuclear_medicine"] = nuclear_medicine
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+
+    def form_invalid(self, form):
+        messages.error(self.request, "There was an error submitting the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+
+class NuclearMedicineScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
+    model = Nuclearmedicine
+    template_name = "zonal_offices/nuclearmedicine_score_update.html" 
+    # template_name = "zonal_offices/ultrasound_update.html"
+    form_class = NuclearMedicineModelForm
+    success_message = "Nuclearmedicine details updated successfully!"
+
+    def get_object(self, queryset=None):
+        # Get the ultrasound object based on its ID
+        return get_object_or_404(Nuclearmedicine, id=self.kwargs["id"])
+
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            try:
+                # Fetch the related Inspection object
+                inspection = Inspection.objects.get(schedule=self.object.schedule)
+                return reverse("zonal_offices:inspection_report_update", kwargs={"pk": inspection.pk})
+            except Inspection.DoesNotExist:
+                messages.error(self.request, "Inspection report not found for this schedule.")
+                return reverse("zonal_offices:dashboard")
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request  # Pass request to form
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        nuclear_medicine = self.get_object()
+        schedule_qs = Schedule.objects.filter(pk=nuclear_medicine.schedule.pk)
+
+        context["schedule_qs"] = schedule_qs
+        context["nuclear_medicine"] = nuclear_medicine
+        return context
+
+    def form_invalid(self, form):
+        # Show error messages if the form submission fails
+        messages.error(self.request, "There was an error updating the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class RadiotherapyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/radiotherapy_score.html'
+    form_class = RadiotherapyModelForm
+    success_message = 'Radiotherapy Score Entered Successfully'
+    
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")  # Fallback in case schedule is missing
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        schedule_qs = Schedule.objects.select_related("hospital_name").filter(
+            application_status=4, hospital_name=self.schedule.hospital_name
+        )
+        context['schedule_qs'] = schedule_qs
+        
+        # Ensure ultrasound object exists
+        radiotherapy = Radiotherapy.objects.filter(schedule=self.schedule).first()
+        if radiotherapy:
+            context["radiotherapy"] = radiotherapy
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+
+    def form_invalid(self, form):
+        messages.error(self.request, "There was an error submitting the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+
+class RadiotherapyScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
+    model = Radiotherapy
+    template_name = "zonal_offices/radiotherapy_score_update.html" 
+    # template_name = "zonal_offices/ultrasound_update.html"
+    form_class = RadiotherapyModelForm
+    success_message = "Radiotherapy details updated successfully!"
+
+    def get_object(self, queryset=None):
+        # Get the ultrasound object based on its ID
+        return get_object_or_404(Radiotherapy, id=self.kwargs["id"])
+
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            try:
+                # Fetch the related Inspection object
+                inspection = Inspection.objects.get(schedule=self.object.schedule)
+                return reverse("zonal_offices:inspection_report_update", kwargs={"pk": inspection.pk})
+            except Inspection.DoesNotExist:
+                messages.error(self.request, "Inspection report not found for this schedule.")
+                return reverse("zonal_offices:dashboard")
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request  # Pass request to form
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        radiotherapy = self.get_object()
+        schedule_qs = Schedule.objects.filter(pk=radiotherapy.schedule.pk)
+
+        context["schedule_qs"] = schedule_qs
+        context["radiotherapy"] = radiotherapy
+        return context
+
+    def form_invalid(self, form):
+        # Show error messages if the form submission fails
+        messages.error(self.request, "There was an error updating the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class MriScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/mri_score.html'
+    form_class = MriModelForm
+    success_message = 'MRI Score Entered Successfully'
+    
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")  # Fallback in case schedule is missing
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        schedule_qs = Schedule.objects.select_related("hospital_name").filter(
+            application_status=4, hospital_name=self.schedule.hospital_name
+        )
+        context['schedule_qs'] = schedule_qs
+        
+        # Ensure ultrasound object exists
+        mri = Mri.objects.filter(schedule=self.schedule).first()
+        if mri:
+            context["mri"] = mri
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+
+    def form_invalid(self, form):
+        messages.error(self.request, "There was an error submitting the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+
+class MriScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
+    model = Mri
+    template_name = "zonal_offices/mri_score_update.html" 
+    # template_name = "zonal_offices/ultrasound_update.html"
+    form_class = MriModelForm
+    success_message = "MRI details updated successfully!"
+
+    def get_object(self, queryset=None):
+        # Get the ultrasound object based on its ID
+        return get_object_or_404(Mri, id=self.kwargs["id"])
+
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            try:
+                # Fetch the related Inspection object
+                inspection = Inspection.objects.get(schedule=self.object.schedule)
+                return reverse("zonal_offices:inspection_report_update", kwargs={"pk": inspection.pk})
+            except Inspection.DoesNotExist:
+                messages.error(self.request, "Inspection report not found for this schedule.")
+                return reverse("zonal_offices:dashboard")
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request  # Pass request to form
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        mri = self.get_object()
+        schedule_qs = Schedule.objects.filter(pk=mri.schedule.pk)
+
+        context["schedule_qs"] = schedule_qs
+        context["mri"] = mri
+        return context
+
+    def form_invalid(self, form):
+        # Show error messages if the form submission fails
+        messages.error(self.request, "There was an error updating the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class CtscanScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/ctscan_score.html'
+    form_class = CtscanModelForm
+    success_message = 'CT Scan Score Entered Successfully'
+    
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")  # Fallback in case schedule is missing
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        schedule_qs = Schedule.objects.select_related("hospital_name").filter(
+            application_status=4, hospital_name=self.schedule.hospital_name
+        )
+        context['schedule_qs'] = schedule_qs
+        
+        # Ensure ultrasound object exists
+        ctscan = Ctscan.objects.filter(schedule=self.schedule).first()
+        if ctscan:
+            context["ctscan"] = ctscan
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+
+    def form_invalid(self, form):
+        messages.error(self.request, "There was an error submitting the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+
+class CtscanScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
+    model = Ctscan
+    template_name = "zonal_offices/ctscan_score_update.html"  
+    # template_name = "zonal_offices/ultrasound_update.html"
+    form_class = CtscanModelForm
+    success_message = "Ctscan details updated successfully!"
+
+    def get_object(self, queryset=None):
+        # Get the ultrasound object based on its ID
+        return get_object_or_404(Ctscan, id=self.kwargs["id"])
+
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            try:
+                # Fetch the related Inspection object
+                inspection = Inspection.objects.get(schedule=self.object.schedule)
+                return reverse("zonal_offices:inspection_report_update", kwargs={"pk": inspection.pk})
+            except Inspection.DoesNotExist:
+                messages.error(self.request, "Inspection report not found for this schedule.")
+                return reverse("zonal_offices:dashboard")
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request  # Pass request to form
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        ctscan = self.get_object()
+        schedule_qs = Schedule.objects.filter(pk=ctscan.schedule.pk)
+
+        context["schedule_qs"] = schedule_qs
+        context["ctscan"] = ctscan
+        return context
+
+    def form_invalid(self, form):
+        # Show error messages if the form submission fails
+        messages.error(self.request, "There was an error updating the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+class XrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/xray_score.html'
+    form_class = XrayModelForm
+    success_message = 'X-ray Score Entered Successfully'
+    
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")  # Fallback in case schedule is missing
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        schedule_qs = Schedule.objects.select_related("hospital_name").filter(
+            application_status=4, hospital_name=self.schedule.hospital_name
+        )
+        context['schedule_qs'] = schedule_qs
+        
+        # Ensure ultrasound object exists
+        xray = Xray.objects.filter(schedule=self.schedule).first()
+        if xray:
+            context["xray"] = xray
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+
+    def form_invalid(self, form):
+        messages.error(self.request, "There was an error submitting the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+
+class XrayScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
+    model = Xray
+    template_name = "zonal_offices/xray_score_update.html" 
+    # template_name = "zonal_offices/ultrasound_update.html"
+    form_class = XrayModelForm
+    success_message = "Xray details updated successfully!"
+
+    def get_object(self, queryset=None):
+        # Get the ultrasound object based on its ID
+        return get_object_or_404(Xray, id=self.kwargs["id"])
+
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            try:
+                # Fetch the related Inspection object
+                inspection = Inspection.objects.get(schedule=self.object.schedule)
+                return reverse("zonal_offices:inspection_report_update", kwargs={"pk": inspection.pk})
+            except Inspection.DoesNotExist:
+                messages.error(self.request, "Inspection report not found for this schedule.")
+                return reverse("zonal_offices:dashboard")
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request  # Pass request to form
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        xray = self.get_object()
+        schedule_qs = Schedule.objects.filter(pk=xray.schedule.pk)
+
+        context["schedule_qs"] = schedule_qs
+        context["xray"] = xray
+        return context
+
+    def form_invalid(self, form):
+        # Show error messages if the form submission fails
+        messages.error(self.request, "There was an error updating the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class FlouroscopyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/flouroscopy_score.html'
+    form_class = FlouroscopyModelForm
+    success_message = 'Flouroscopy Score Entered Successfully'
+    
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")  # Fallback in case schedule is missing
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        schedule_qs = Schedule.objects.select_related("hospital_name").filter(
+            application_status=4, hospital_name=self.schedule.hospital_name
+        )
+        context['schedule_qs'] = schedule_qs
+        
+        # Ensure ultrasound object exists
+        flouroscopy = Flouroscopy.objects.filter(schedule=self.schedule).first()
+        if flouroscopy:
+            context["flouroscopy"] = flouroscopy
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+
+    def form_invalid(self, form):
+        messages.error(self.request, "There was an error submitting the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+
+class FlouroscopyScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
+    model = Flouroscopy
+    template_name = "zonal_offices/flouroscopy_score_update.html" 
+    # template_name = "zonal_offices/ultrasound_update.html"
+    form_class = FlouroscopyModelForm
+    success_message = "Flouroscopy details updated successfully!"
+
+    def get_object(self, queryset=None):
+        # Get the ultrasound object based on its ID
+        return get_object_or_404(Flouroscopy, id=self.kwargs["id"])
+
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            try:
+                # Fetch the related Inspection object
+                inspection = Inspection.objects.get(schedule=self.object.schedule)
+                return reverse("zonal_offices:inspection_report_update", kwargs={"pk": inspection.pk})
+            except Inspection.DoesNotExist:
+                messages.error(self.request, "Inspection report not found for this schedule.")
+                return reverse("zonal_offices:dashboard")
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request  # Pass request to form
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        flouroscopy = self.get_object()
+        schedule_qs = Schedule.objects.filter(pk=flouroscopy.schedule.pk)
+
+        context["schedule_qs"] = schedule_qs
+        context["flouroscopy"] = flouroscopy
+        return context
+
+    def form_invalid(self, form):
+        # Show error messages if the form submission fails
+        messages.error(self.request, "There was an error updating the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class MamographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/mamography_score.html'
+    form_class = MamographyModelForm
+    success_message = 'Mamography Score Entered Successfully'
+    
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")  # Fallback in case schedule is missing
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        schedule_qs = Schedule.objects.select_related("hospital_name").filter(
+            application_status=4, hospital_name=self.schedule.hospital_name
+        )
+        context['schedule_qs'] = schedule_qs
+        
+        # Ensure ultrasound object exists
+        mamography = Mamography.objects.filter(schedule=self.schedule).first()
+        if mamography:
+            context["mamography"] = mamography
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+
+    def form_invalid(self, form):
+        messages.error(self.request, "There was an error submitting the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+
+class MamographyScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
+    model = Mamography
+    template_name = "zonal_offices/mamography_score_update.html"  
+    # template_name = "zonal_offices/ultrasound_update.html"
+    form_class = MamographyModelForm
+    success_message = "Mamography details updated successfully!"
+
+    def get_object(self, queryset=None):
+        # Get the ultrasound object based on its ID
+        return get_object_or_404(Mamography, id=self.kwargs["id"])
+
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            try:
+                # Fetch the related Inspection object
+                inspection = Inspection.objects.get(schedule=self.object.schedule)
+                return reverse("zonal_offices:inspection_report_update", kwargs={"pk": inspection.pk})
+            except Inspection.DoesNotExist:
+                messages.error(self.request, "Inspection report not found for this schedule.")
+                return reverse("zonal_offices:dashboard")
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request  # Pass request to form
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        mamography = self.get_object()
+        schedule_qs = Schedule.objects.filter(pk=mamography.schedule.pk)
+
+        context["schedule_qs"] = schedule_qs
+        context["mamography"] = mamography
+        return context
+
+    def form_invalid(self, form):
+        # Show error messages if the form submission fails
+        messages.error(self.request, "There was an error updating the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+class DentalXrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/dental_xray_score.html'
+    form_class = DentalXrayModelForm
+    success_message = 'Dental X-ray Score Entered Successfully'
+    
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")  # Fallback in case schedule is missing
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        schedule_qs = Schedule.objects.select_related("hospital_name").filter(
+            application_status=4, hospital_name=self.schedule.hospital_name
+        )
+        context['schedule_qs'] = schedule_qs
+        
+        # Ensure ultrasound object exists
+        dental_xray = Dentalxray.objects.filter(schedule=self.schedule).first()
+        if dental_xray:
+            context["dental_xray"] = dental_xray
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+
+    def form_invalid(self, form):
+        messages.error(self.request, "There was an error submitting the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+
+class DentalXrayScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
+    model = Dentalxray
+    template_name = "zonal_offices/dental_xray_score_update.html"  
+    # template_name = "zonal_offices/ultrasound_update.html"
+    form_class = DentalXrayModelForm
+    success_message = "Dentalxray details updated successfully!"
+
+    def get_object(self, queryset=None):
+        # Get the ultrasound object based on its ID
+        return get_object_or_404(Dentalxray, id=self.kwargs["id"])
+
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            try:
+                # Fetch the related Inspection object
+                inspection = Inspection.objects.get(schedule=self.object.schedule)
+                return reverse("zonal_offices:inspection_report_update", kwargs={"pk": inspection.pk})
+            except Inspection.DoesNotExist:
+                messages.error(self.request, "Inspection report not found for this schedule.")
+                return reverse("zonal_offices:dashboard")
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request  # Pass request to form
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        dental_xray = self.get_object()
+        schedule_qs = Schedule.objects.filter(pk=dental_xray.schedule.pk)
+
+        context["schedule_qs"] = schedule_qs
+        context["dental_xray"] = dental_xray
+        return context
+
+    def form_invalid(self, form):
+        # Show error messages if the form submission fails
+        messages.error(self.request, "There was an error updating the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class EchocardiographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/echocardiography_score.html'
+    form_class = EchocardiographyModelForm
+    success_message = 'Echocardiography Score Entered Successfully'
+    
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")  # Fallback in case schedule is missing
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        schedule_qs = Schedule.objects.select_related("hospital_name").filter(
+            application_status=4, hospital_name=self.schedule.hospital_name
+        )
+        context['schedule_qs'] = schedule_qs
+        
+        # Ensure ultrasound object exists
+        echocardiography = Echocardiography.objects.filter(schedule=self.schedule).first()
+        if echocardiography:
+            context["echocardiography"] = echocardiography
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+
+    def form_invalid(self, form):
+        messages.error(self.request, "There was an error submitting the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+
+class EchocardiographyScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
+    model = Echocardiography
+    template_name = "zonal_offices/echocardiography_score_update.html" 
+    # template_name = "zonal_offices/ultrasound_update.html"
+    form_class = EchocardiographyModelForm
+    success_message = "Echocardiography details updated successfully!"
+
+    def get_object(self, queryset=None):
+        # Get the ultrasound object based on its ID
+        return get_object_or_404(Echocardiography, id=self.kwargs["id"])
+
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            try:
+                # Fetch the related Inspection object
+                inspection = Inspection.objects.get(schedule=self.object.schedule)
+                return reverse("zonal_offices:inspection_report_update", kwargs={"pk": inspection.pk})
+            except Inspection.DoesNotExist:
+                messages.error(self.request, "Inspection report not found for this schedule.")
+                return reverse("zonal_offices:dashboard")
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request  # Pass request to form
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        echocardiography = self.get_object()
+        schedule_qs = Schedule.objects.filter(pk=echocardiography.schedule.pk)
+
+        context["schedule_qs"] = schedule_qs
+        context["echocardiography"] = echocardiography
+        return context
+
+    def form_invalid(self, form):
+        # Show error messages if the form submission fails
+        messages.error(self.request, "There was an error updating the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class AngiographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/angiography_score.html'
+    form_class = AngiographyModelForm
+    success_message = 'Angiography Score Entered Successfully'
+    
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")  # Fallback in case schedule is missing
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        schedule_qs = Schedule.objects.select_related("hospital_name").filter(
+            application_status=4, hospital_name=self.schedule.hospital_name
+        )
+        context['schedule_qs'] = schedule_qs
+        
+        # Ensure ultrasound object exists
+        angiography = Angiography.objects.filter(schedule=self.schedule).first()
+        if angiography:
+            context["angiography"] = angiography
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+
+    def form_invalid(self, form):
+        messages.error(self.request, "There was an error submitting the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+
+class AngiographyScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
+    model = Angiography
+    template_name = "zonal_offices/angiography_score_update.html" 
+    # template_name = "zonal_offices/ultrasound_update.html"
+    form_class = AngiographyModelForm
+    success_message = "Angiography details updated successfully!"
+
+    def get_object(self, queryset=None):
+        # Get the ultrasound object based on its ID
+        return get_object_or_404(Angiography, id=self.kwargs["id"])
+
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            try:
+                # Fetch the related Inspection object
+                inspection = Inspection.objects.get(schedule=self.object.schedule)
+                return reverse("zonal_offices:inspection_report_update", kwargs={"pk": inspection.pk})
+            except Inspection.DoesNotExist:
+                messages.error(self.request, "Inspection report not found for this schedule.")
+                return reverse("zonal_offices:dashboard")
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request  # Pass request to form
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        angiography = self.get_object()
+        schedule_qs = Schedule.objects.filter(pk=angiography.schedule.pk)
+
+        context["schedule_qs"] = schedule_qs
+        context["angiography"] = angiography
+        return context
+
+    def form_invalid(self, form):
+        # Show error messages if the form submission fails
+        messages.error(self.request, "There was an error updating the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class CarmScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/carm_score.html'
+    form_class = CarmModelForm
+    success_message = 'C-Arm Score Entered Successfully'
+    
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")  # Fallback in case schedule is missing
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        schedule_qs = Schedule.objects.select_related("hospital_name").filter(
+            application_status=4, hospital_name=self.schedule.hospital_name
+        )
+        context['schedule_qs'] = schedule_qs
+        
+        # Ensure ultrasound object exists
+        carm = Carm.objects.filter(schedule=self.schedule).first()
+        if carm:
+            context["carm"] = carm
+        return context
+
+    def get_initial(self):
+        return {
+            'schedule': self.kwargs["pk"],
+        }
+    
+    def get_form_kwargs(self):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+        kwargs['initial']['application_no'] = self.schedule.application_no
+        return kwargs
+
+    def form_invalid(self, form):
+        messages.error(self.request, "There was an error submitting the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+
+class CarmScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
+    model = Carm
+    template_name = "zonal_offices/carm_score_update.html" 
+    # template_name = "zonal_offices/ultrasound_update.html"
+    form_class = CarmModelForm
+    success_message = "Carm details updated successfully!"
+
+    def get_object(self, queryset=None):
+        # Get the ultrasound object based on its ID
+        return get_object_or_404(Carm, id=self.kwargs["id"])
+
+    def get_success_url(self):
+        if hasattr(self.object, 'schedule') and self.object.schedule:
+            try:
+                # Fetch the related Inspection object
+                inspection = Inspection.objects.get(schedule=self.object.schedule)
+                return reverse("zonal_offices:inspection_report_update", kwargs={"pk": inspection.pk})
+            except Inspection.DoesNotExist:
+                messages.error(self.request, "Inspection report not found for this schedule.")
+                return reverse("zonal_offices:dashboard")
+        else:
+            messages.error(self.request, "Schedule not found. Please try again.")
+            return reverse("zonal_offices:dashboard")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request  # Pass request to form
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        carm = self.get_object()
+        schedule_qs = Schedule.objects.filter(pk=carm.schedule.pk)
+
+        context["schedule_qs"] = schedule_qs
+        context["carm"] = carm
+        return context
+
+    def form_invalid(self, form):
+        # Show error messages if the form submission fails
+        messages.error(self.request, "There was an error updating the form. Please check the details.")
+        error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+        for error in error_list:
+            messages.error(self.request, error)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+# class UltrasoundScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+#     template_name = 'zonal_offices/ultrasound_score2.html'
+#     form_class = UltrasoundModelForm
+#     success_message = 'Ultrasound Score Entered Successfully'
+    
+#     def get_success_url(self):
+#         if hasattr(self.object, 'schedule') and self.object.schedule:
+#             return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+#         else:
+#             messages.error(self.request, "Schedule not found. Please try again.")
+#             return reverse("zonal_offices:dashboard")  # Fallback in case schedule is missing
+    
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         schedule_qs = Schedule.objects.select_related("hospital_name").filter(
+#             application_status=4, hospital_name=self.schedule.hospital_name
+#         )
+#         context['schedule_qs'] = schedule_qs
+        
+#         # Ensure ultrasound object exists
+#         ultrasound = Ultrasound.objects.filter(schedule=self.schedule).first()
+#         if ultrasound:
+#             context["ultrasound"] = ultrasound
+#         return context
+
+#     def get_initial(self):
+#         return {
+#             'schedule': self.kwargs["pk"],
+#         }
+    
+#     def get_form_kwargs(self):
+#         self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+#         kwargs = super().get_form_kwargs()
+#         kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+#         kwargs['initial']['application_no'] = self.schedule.application_no
+#         return kwargs
+
+#     def form_invalid(self, form):
+#         messages.error(self.request, "There was an error submitting the form. Please check the details.")
+#         error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+#         for error in error_list:
+#             messages.error(self.request, error)
+#         return self.render_to_response(self.get_context_data(form=form))
+
+
+
+# class UltrasoundScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
+#     model = Ultrasound
+#     template_name = "zonal_offices/ultrasound_score_update.html" 
+#     # template_name = "zonal_offices/ultrasound_update.html"
+#     form_class = UltrasoundModelForm
+#     success_message = "Ultrasound details updated successfully!"
+
+#     def get_object(self, queryset=None):
+#         # Get the ultrasound object based on its ID
+#         return get_object_or_404(Ultrasound, id=self.kwargs["id"])
+
+#     def get_success_url(self):
+#         if hasattr(self.object, 'schedule') and self.object.schedule:
+#             try:
+#                 # Fetch the related Inspection object
+#                 inspection = Inspection.objects.get(schedule=self.object.schedule)
+#                 return reverse("zonal_offices:inspection_report_update", kwargs={"pk": inspection.pk})
+#             except Inspection.DoesNotExist:
+#                 messages.error(self.request, "Inspection report not found for this schedule.")
+#                 return reverse("zonal_offices:dashboard")
+#         else:
+#             messages.error(self.request, "Schedule not found. Please try again.")
+#             return reverse("zonal_offices:dashboard")
+
+#     def get_form_kwargs(self):
+#         kwargs = super().get_form_kwargs()
+#         kwargs["request"] = self.request  # Pass request to form
+#         return kwargs
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         ultrasound = self.get_object()
+#         schedule_qs = Schedule.objects.filter(pk=ultrasound.schedule.pk)
+
+#         context["schedule_qs"] = schedule_qs
+#         context["ultrasound"] = ultrasound
+#         return context
+
+#     def form_invalid(self, form):
+#         # Show error messages if the form submission fails
+#         messages.error(self.request, "There was an error updating the form. Please check the details.")
+#         error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+#         for error in error_list:
+#             messages.error(self.request, error)
+#         return self.render_to_response(self.get_context_data(form=form))
+
+
+class UltrasoundScore1(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+    template_name = 'zonal_offices/ultrasound_score2.html'
+    form_class = UltrasoundModelForm
+    success_message = 'Ultrasound Score Entered Successfully'
      
     def get_success_url(self):
         return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
@@ -702,7 +2234,7 @@ class UltrasoundScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin,
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data())
 
-class NuclearMedicineScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+class NuclearMedicineScore1(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/nuclear_medicine_score.html'
     form_class = NuclearMedicineModelForm
     success_message = 'Nuclear Medicine Score Entered Successfully'
@@ -740,7 +2272,7 @@ class NuclearMedicineScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestM
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data())
 
-class RadiotherapyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+class RadiotherapyScore1(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/radiotherapy_score.html'
     form_class = RadiotherapyModelForm
     success_message = 'Radiotherapy Score Entered Successfully'
@@ -768,7 +2300,7 @@ class RadiotherapyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixi
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data())
 
-class MriScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+class MriScore1(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/mri_score.html'
     form_class = MriModelForm
     success_message = 'MRI Score Entered Successfully'
@@ -796,7 +2328,7 @@ class MriScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Succes
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data())
 
-class CtscanScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+class CtscanScore1(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/ctscan_score.html'
     form_class = CtscanModelForm
     success_message = 'CT Scan Score Entered Successfully'
@@ -824,7 +2356,7 @@ class CtscanScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Suc
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data())
 
-class XrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+class XrayScore1(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/xray_score.html'
     form_class = XrayModelForm
     success_message = 'X-ray Score Entered Successfully'
@@ -852,7 +2384,7 @@ class XrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Succe
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data())
 
-class FlouroscopyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+class FlouroscopyScore1(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/flouroscopy_score.html'
     form_class = FlouroscopyModelForm
     success_message = 'Flouroscopy Score Entered Successfully'
@@ -880,7 +2412,7 @@ class FlouroscopyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data())
 
-class MamographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+class MamographyScore1(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/mamography_score.html'
     form_class = MamographyModelForm
     success_message = 'Mamography Score Entered Successfully'
@@ -909,7 +2441,7 @@ class MamographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin,
         return self.render_to_response(self.get_context_data())
 
 
-class DentalXrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+class DentalXrayScore1(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/dental_xray_score.html'
     form_class = DentalXrayModelForm
     success_message = 'Dental X-ray Score Entered Successfully'
@@ -938,7 +2470,7 @@ class DentalXrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin,
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data())
 
-class EchocardiographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+class EchocardiographyScore1(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/echocardiography_score.html'
     form_class = EchocardiographyModelForm
     success_message = 'Echocardiography Score Entered Successfully'
@@ -966,7 +2498,7 @@ class EchocardiographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequest
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data())
         
-class AngiographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+class AngiographyScore1(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/angiography_score.html'
     form_class = AngiographyModelForm
     success_message = 'Angiography Score Entered Successfully'
@@ -995,7 +2527,7 @@ class AngiographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin
         return self.render_to_response(self.get_context_data())
 
 
-class CarmScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+class CarmScore1(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/carm_score.html'
     form_class = CarmModelForm
     success_message = 'C-Arm Score Entered Successfully'
@@ -1058,7 +2590,7 @@ class UltrasoundScoreDetail(LoginRequiredMixin, DetailView):
 
 
  
-class UltrasoundScoreUpdate(UltrasoundObjectMixin, View):
+class UltrasoundScoreUpdate1(UltrasoundObjectMixin, View):
     template_name = "zonal_offices/ultrasound_score_update.html" 
     template_name1 = "zonal_offices/ultrasound_score_details.html" 
     success_message = 'Ultrasound Score Updated Successfully.'
@@ -1111,7 +2643,7 @@ class NuclearMedicineScoreDetail(NuclearMedicineObjectMixin, View):
         return render(request, self.template_name, context)
 
  
-class NuclearMedicineScoreUpdate(NuclearMedicineObjectMixin, View):
+class NuclearMedicineScoreUpdate1(NuclearMedicineObjectMixin, View):
     template_name = "zonal_offices/nuclearmedicine_score_update.html" 
     template_name1 = "zonal_offices/nuclear_medicine_score_details.html" 
     
@@ -1163,7 +2695,7 @@ class RadiotherapyScoreDetail(RadiotherapyObjectMixin, View):
         return render(request, self.template_name, context)
 
  
-class RadiotherapyScoreUpdate(RadiotherapyObjectMixin, View):
+class RadiotherapyScoreUpdate1(RadiotherapyObjectMixin, View):
     template_name = "zonal_offices/radiotherapy_score_update.html" 
     template_name1 = "zonal_offices/radiotherapy_score_details.html" 
     success_message = 'Radiotherapy Score Updated Successfully.'
@@ -1217,7 +2749,7 @@ class MriScoreDetail(MriObjectMixin, View):
         return render(request, self.template_name, context)
 
  
-class MriScoreUpdate(MriObjectMixin, View):
+class MriScoreUpdate1(MriObjectMixin, View):
     template_name = "zonal_offices/mri_score_update.html" 
     template_name1 = "zonal_offices/mri_score_details.html" 
     success_message = 'Mri Score Updated Successfully.'
@@ -1273,7 +2805,7 @@ class CtscanScoreDetail(CtscanObjectMixin, View):
         return render(request, self.template_name, context)
 
  
-class CtscanScoreUpdate(CtscanObjectMixin, View):
+class CtscanScoreUpdate1(CtscanObjectMixin, View):
     template_name = "zonal_offices/ctscan_score_update.html" 
     template_name1 = "zonal_offices/ctscan_score_details.html" 
     success_message = 'Ctscan Score Updated Successfully.'
@@ -1327,7 +2859,7 @@ class XrayScoreDetail(XrayObjectMixin, View):
         return render(request, self.template_name, context)
 
  
-class XrayScoreUpdate(XrayObjectMixin, View):
+class XrayScoreUpdate1(XrayObjectMixin, View):
     template_name = "zonal_offices/xray_score_update.html" 
     template_name1 = "zonal_offices/xray_score_details.html" 
     success_message = 'Xray Score Updated Successfully.'
@@ -1382,7 +2914,7 @@ class FlouroscopyScoreDetail(FlouroscopyObjectMixin, View):
         return render(request, self.template_name, context)
 
  
-class FlouroscopyScoreUpdate(FlouroscopyObjectMixin, View):
+class FlouroscopyScoreUpdate1(FlouroscopyObjectMixin, View):
     template_name = "zonal_offices/flouroscopy_score_update.html" 
     template_name1 = "zonal_offices/flouroscopy_score_details.html" 
     success_message = 'Flouroscopy Score Updated Successfully.'
@@ -1426,7 +2958,7 @@ class MamographyScoreDetail(MamographyObjectMixin, View):
         return render(request, self.template_name, context)
 
  
-class MamographyScoreUpdate(MamographyObjectMixin, View):
+class MamographyScoreUpdate1(MamographyObjectMixin, View):
     template_name = "zonal_offices/mamography_score_update.html" 
     template_name1 = "zonal_offices/mamography_score_details.html" 
     success_message = 'Mamography Score Updated Successfully.'
@@ -1470,7 +3002,7 @@ class DentalXrayScoreDetail(DentalXrayObjectMixin, View):
         return render(request, self.template_name, context)
 
  
-class DentalXrayScoreUpdate(DentalXrayObjectMixin, View):
+class DentalXrayScoreUpdate1(DentalXrayObjectMixin, View):
     template_name = "zonal_offices/dental_xray_score_update.html" 
     template_name1 = "zonal_offices/dental_xray_score_details.html" 
     success_message = 'Dental X-ray Score Updated Successfully.'
@@ -1514,7 +3046,7 @@ class EchocardiographyScoreDetail(EchocardiographyObjectMixin, View):
         return render(request, self.template_name, context)
 
  
-class EchocardiographyScoreUpdate(EchocardiographyObjectMixin, View):
+class EchocardiographyScoreUpdate1(EchocardiographyObjectMixin, View):
     template_name = "zonal_offices/echocardiography_score_update.html" 
     template_name1 = "zonal_offices/echocardiography_score_details.html" 
     success_message = 'Echocardiography Score Updated Successfully.'
@@ -1560,7 +3092,7 @@ class AngiographyScoreDetail(AngiographyObjectMixin, View):
         return render(request, self.template_name, context)
 
  
-class AngiographyScoreUpdate(AngiographyObjectMixin, View):
+class AngiographyScoreUpdate1(AngiographyObjectMixin, View):
     template_name = "zonal_offices/angiography_score_update.html" 
     template_name1 = "zonal_offices/angiography_score_details.html" 
     success_message = 'Angiography Score Updated Successfully.'
@@ -1605,7 +3137,7 @@ class CarmScoreDetail(CarmObjectMixin, View):
         return render(request, self.template_name, context)
 
  
-class CarmScoreUpdate(CarmObjectMixin, View):
+class CarmScoreUpdate1(CarmObjectMixin, View):
     template_name = "zonal_offices/carm_score_update.html" 
     template_name1 = "zonal_offices/carm_score_details.html" 
     success_message = 'C-Arm Score Updated Successfully.'
