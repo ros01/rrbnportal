@@ -55,7 +55,8 @@
 {% endif %}
 </td>
 <td>{{object.schedule.inspection_zone}}</td>
-<td>
+
+<!-- <td>
     {% if object.inspection_status == 2 or object.inspection_status == 4 or object.appraisal_status == 2 or object.appraisal_status == 4 %}
         <span class="badge badge-success">Approved</span>
     {% elif object.inspection_status == 3 or object.appraisal_status == 3 %}
@@ -65,7 +66,22 @@
     {% else %}
         <span class="badge badge-danger">Rejected</span>
     {% endif %}
+</td> -->
+
+
+<td>
+    {% if object.inspection_status == 2 or object.inspection_status == 4 or object.appraisal_status == 2 or object.appraisal_status == 4 %}
+        <span class="badge badge-success">Approved</span>
+    {% elif object.inspection_status == 3 or object.appraisal_status == 3 %}
+        <span class="badge badge-danger">Rejected</span>
+    {% elif object.inspection_status == 1 or object.appraisal_status == 1 %}
+        <span class="badge badge-warning">Pending</span>
+    {% else %}
+        <span class="badge badge-danger">Rejected</span>
+    {% endif %}
 </td>
+
+
 
 
 <td>
@@ -83,42 +99,6 @@
 {% endfor %}
 </tbody>
 
-                    
-<!-- <tbody>
-{% if inspection_qs %}
-{% for object in inspection_qs %}
-
-
-<tr>
-<td>{{forloop.counter}}</td>
-<td>{{object.application_no}}</td>
- <td>{{object.hospital_name}}</td>
- <td>{{object.hospital.license_type}}</td>
- <td>{{object.schedule.inspection_date}}</td>
- <td>{{object.schedule.inspection_zone}}</td>
- <td>
-   <span class="badge badge-success">Approved</span>
- </td>
- <td><a href="{% url 'monitoring:inspection_report' id=object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a></td>
- </tr>
-
-{% endfor %}
-{% endif %}
-
-{% if  appraisal_qs %}
-{% for object in appraisal_qs %}
-<tr>
-<td>{{forloop.counter}}</td>
-<td>{{object.application_no}}</td>
-<td>{{object.hospital_name}}</td>
-<td>{{object.hospital.license_type}}</td>
-<td>{{object.schedule.inspection_date}}</td>
-<td>{{object.schedule.inspection_zone}}</td>
-<td><a href="{% url 'monitoring:accreditation_report' id=object.id %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> View</a></td>
-  </tr>
-{% endfor %}
-{% endif %}
-</tbody> -->
 </table>
 </div>
 </div>

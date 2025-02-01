@@ -1379,7 +1379,7 @@ class ScheduledInspectionsListView1(LoginRequiredMixin, ListView):
 
 
 
-class InspectionCompletedListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
+class InspectionCompletedListView4(StaffRequiredMixin, LoginRequiredMixin, ListView):
     template_name = 'monitoring/inspections_completed_lists.html'
 
     def get_queryset(self):
@@ -1391,12 +1391,48 @@ class InspectionCompletedListView(StaffRequiredMixin, LoginRequiredMixin, ListVi
             inspection_status_placeholder=Value(None, output_field=IntegerField())  # Placeholder for inspection status
         ).select_related("hospital_name").filter(vet_status=4)
 
-        # Combine the two querysets into one
         return list(inspections) + list(appraisals)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['combined_records'] = self.get_queryset()
+        return context
+
+
+
+
+class InspectionCompletedListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
+    template_name = 'monitoring/inspections_completed_lists.html'
+    context_object_name = 'combined_records'
+
+    def get_queryset(self):
+        # Fetch completed inspections and provide a placeholder for appraisal status
+        inspections = Inspection.objects.filter(vet_status=4).select_related("hospital_name").annotate(
+            appraisal_status_placeholder=Value(None, output_field=IntegerField())  # Placeholder for appraisals
+        )
+
+        # Fetch completed appraisals and provide a placeholder for inspection status
+        appraisals = Appraisal.objects.filter(vet_status=4).select_related("hospital_name").annotate(
+            inspection_status_placeholder=Value(None, output_field=IntegerField())  # Placeholder for inspections
+        )
+
+        # Combine records
+        combined_records = list(chain(inspections, appraisals))
+
+        # Sort by pending status (1 = Pending, others follow)
+        sorted_records = sorted(
+            combined_records,
+            key=lambda obj: 0 if (
+                getattr(obj, "inspection_status", None) == 1 or 
+                getattr(obj, "appraisal_status", None) == 1
+            ) else 1
+        )
+
+        return sorted_records
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["combined_records"] = self.get_queryset()
         return context
 
 

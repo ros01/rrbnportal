@@ -382,6 +382,14 @@ target="_blank">&nbsp; View Form C07</a></td>
     </tbody>
     </table>
     </div>
+
+    {% if object.rejection_reason %}
+    
+    <p class="text-success lead">Inspection Rejection Reason</p>
+    <hr>
+    <span><mark>{{object.rejection_reason}}</mark></span>
+    {% endif %}
+
     </div>
 
     </div>
