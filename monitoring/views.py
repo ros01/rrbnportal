@@ -55,6 +55,7 @@ from reportlab.pdfgen import canvas
 from django.contrib.messages.views import SuccessMessageMixin
 from datetime import date
 from django.core.paginator import Paginator
+from django.utils.timezone import now
 
 User = get_user_model()
 
@@ -85,7 +86,139 @@ class LoginRequiredMixin(object):
 
 @login_required
 def monitoring_dashboard(request):
-    return render(request, 'monitoring/monitoring_dashboard.html')
+    current_year = now().year  # Get the current year
+
+    # Count issued licenses where application_status=8
+    license_count = License.objects.select_related("hospital_name").filter(application_status=8).count()
+
+    # Get all document applications for the current year
+    document_applications = Document.objects.filter(date__year=current_year)
+
+    due_for_payment = Document.objects.filter(application_status=1).count()
+
+    current_payments = Payment.objects.filter(payment_date__year=current_year).count()
+
+    # Get application numbers of issued licenses
+    license_application_numbers = License.objects.values_list("application_no", flat=True)
+
+    # Count pending license applications (Documents not in License)
+    pending_license_applications = document_applications.exclude(application_no__in=license_application_numbers).count()
+
+
+
+    # Count payments pending verification (vet_status = 1)
+    pending_verifications = Payment.objects.filter(vet_status=1).count()
+    completed_verifications = Payment.objects.filter(vet_status=2).exclude(hospital__application_type = 'Renewal - Radiography Practice Permit').count()
+
+
+    # schedules = Schedule.objects.select_related("hospital").all()
+    # inspections = Inspection.objects.select_related("hospital").all()
+    # appraisals = Appraisal.objects.select_related("hospital").all()
+
+
+    # Fetch schedules, inspections, and appraisals for the current year
+    schedules = Schedule.objects.filter(inspection_schedule_date__year=current_year).select_related("hospital")
+    inspections = Inspection.objects.filter(inspection_date__year=current_year).select_related("hospital")
+    appraisals = Appraisal.objects.filter(appraisal_date__year=current_year).select_related("hospital")
+
+    reg_approval_int = Appraisal.objects.filter(appraisal_status=2)
+    reg_approval_rpp = Inspection.objects.filter(inspection_status=2)
+    reg_approval_rppr = Payment.objects.select_related("hospital_name").filter(application_status=3, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
+
+    reg_approval_int_count = reg_approval_int.count()
+    reg_approval_rpp_count = reg_approval_rpp.count()
+    reg_approval_rppr_count = reg_approval_rppr.count()
+
+
+
+    # Count inspections and appraisals separately
+    schedules_count = schedules.count()
+    inspections_count = inspections.count()
+    appraisals_count = appraisals.count()
+
+    # Calculate total count of inspections and appraisals
+    total_inspections_appraisals = inspections_count + appraisals_count
+    awaiting_reg_approval = reg_approval_int_count + reg_approval_rpp_count + reg_approval_rppr_count
+
+    # Convert QuerySets to dictionaries for fast lookup
+    inspection_ids = set(inspections.values_list("schedule_id", flat=True))
+    appraisal_ids = set(appraisals.values_list("schedule_id", flat=True))
+
+
+     # Track pending schedules count
+    pending_schedules_count = 0
+
+    # Add flags to schedules
+    for schedule in schedules:
+        schedule.is_inspection = schedule.id in inspection_ids
+        schedule.is_appraisal = schedule.id in appraisal_ids
+        schedule.is_pending = not (schedule.is_inspection or schedule.is_appraisal)
+
+        if schedule.is_pending:
+            pending_schedules_count += 1
+
+    # Set flags for inspections & appraisals
+    for inspection in inspections:
+        inspection.is_inspection = True
+        inspection.is_pending = False
+
+    for appraisal in appraisals:
+        appraisal.is_appraisal = True
+        appraisal.is_pending = False
+
+    # Combine all records and sort with pending schedules first
+    combined_records = sorted(
+        chain(schedules, inspections, appraisals),
+        key=lambda obj: obj.is_pending, 
+        reverse=True  # Sorts `is_pending=True` first
+    )
+
+    # Pass counts to template
+    context = {
+        'license_count': license_count,
+        'due_for_payment': due_for_payment,
+        'pending_verifications': pending_verifications,
+        'pending_license_applications': pending_license_applications,
+        'current_year': current_year,
+        'current_payments': current_payments,
+        'pending_schedules_count': pending_schedules_count,  # New count added
+        'combined_records': combined_records,
+        'completed_verifications': completed_verifications,
+        'total_inspections_appraisals': total_inspections_appraisals,  # Total count added
+        'awaiting_reg_approval': awaiting_reg_approval,
+        'schedules_count': schedules_count,
+    }
+    return render(request, 'monitoring/monitoring_dashboard.html', context)
+
+
+# @login_required
+# def monitoring_dashboard(request):
+#     current_year = now().year
+#     # Count the required data dynamically
+#     license = License.objects.select_related("hospital_name").filter(application_status=8).count()
+#     document_applications = Document.objects.all()
+#     license_application_numbers = License.objects.all().values_list("application_no", flat=True)
+#     pending_license_applications = document_applications.exclude(application_no__in=license_application_numbers, date__year=current_year).count()
+
+#     pending_verifications = Payment.objects.select_related("hospital_name").filter(vet_status=1).count()
+#     # pending_verifications = Document.objects.filter(status='pending_verification').count()
+#     # due_for_payment = Payment.objects.filter(status='due').count()
+#     # due_for_inspection = Inspection.objects.filter(status='scheduled').count()
+#     # pending_inspections = Inspection.objects.filter(status='pending').count()
+#     # awaiting_approval = Inspection.objects.filter(status='awaiting_approval').count()
+
+#     # # Pass counts to template
+#     context = {
+#         'pending_verifications': pending_verifications,
+#         'pending_license_applications': pending_license_applications,
+#         'current_year': current_year,
+#         # 'due_for_payment': due_for_payment,
+#         # 'due_for_inspection': due_for_inspection,
+#         # 'pending_inspections': pending_inspections,
+#         # 'awaiting_approval': awaiting_approval,
+#     }
+#     return render(request, 'monitoring/monitoring_dashboard.html', context )
+
 
 @login_required
 def upload_internship_centers(request):
@@ -1311,8 +1444,40 @@ class InspectionCreateDetailView1(StaffRequiredMixin, LoginRequiredMixin, Schedu
 
 
 
-
 class ScheduledInspectionsListView(LoginRequiredMixin, ListView):
+    template_name = "monitoring/scheduled_inspections_list.html"
+    context_object_name = "combined_records"
+
+    def get_queryset(self):
+        schedules = Schedule.objects.select_related("hospital").all()
+        inspections = Inspection.objects.select_related("hospital").all()
+        appraisals = Appraisal.objects.select_related("hospital").all()
+
+        # Convert QuerySets to dictionaries for fast lookup
+        inspection_map = {insp.schedule_id: insp for insp in inspections}
+        appraisal_map = {appr.schedule_id: appr for appr in appraisals}
+
+        final_records = []  # Prevents duplicates
+
+        # Process schedules and merge related inspections and appraisals
+        for schedule in schedules:
+            schedule.is_inspection = schedule.id in inspection_map
+            schedule.is_appraisal = schedule.id in appraisal_map
+            schedule.is_pending = not (schedule.is_inspection or schedule.is_appraisal)
+
+            # Attach related inspection and appraisal details to schedule object
+            schedule.inspection_date = inspection_map[schedule.id].inspection_date if schedule.is_inspection else None
+            schedule.appraisal_date = appraisal_map[schedule.id].appraisal_date if schedule.is_appraisal else None
+
+            final_records.append(schedule)
+
+        # Sort with pending schedules first
+        combined_records = sorted(final_records, key=lambda obj: obj.is_pending, reverse=True)
+
+        return combined_records
+
+
+class ScheduledInspectionsListView0(LoginRequiredMixin, ListView):
     template_name = "monitoring/scheduled_inspections_list.html"
     context_object_name = "combined_records"
 

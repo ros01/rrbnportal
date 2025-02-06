@@ -25,7 +25,7 @@ admin.site.register(Inspector, InspectorAdmin)
 
 
 class PaymentAdmin(admin.ModelAdmin):
-  list_display = ('application_no', 'hospital_name','rrr_number', 'payment_amount', 'payment_receipt', 'payment_date')
+  list_display = ('application_no', 'hospital_name','rrr_number', 'payment_amount', 'payment_receipt', 'vet_status', 'payment_date')
   list_display_links = ('application_no', 'hospital_name')
   list_filter = ('hospital_name',)
   search_fields = ('hospital_name', 'receipt_number', 'payment_date',
@@ -38,7 +38,7 @@ admin.site.register(Payment, PaymentAdmin)
 
 
 class ScheduleAdmin(admin.ModelAdmin):
-  list_display = ('application_no', 'hospital_name', 'inspection_date', 'inspection_report_deadline', 'inspection_zone',)
+  list_display = ('application_no', 'hospital_name', 'inspection_schedule_date', 'inspection_date', 'inspection_report_deadline', 'inspection_zone',)
   list_display_links = ('application_no', 'hospital_name', 'inspection_date', 'inspection_zone',)
   list_filter = ('application_no', 'hospital_name', 'inspection_date', 'inspection_zone',)
   #fieldsets = (
@@ -185,7 +185,7 @@ admin.site.register(Carm, CarmAdmin)
 
 
 class InspectionAdmin(admin.ModelAdmin):
-  list_display = ('application_no', 'hospital_name', 'inspection_total',)
+  list_display = ('application_no', 'hospital_name', 'inspection_total', 'inspection_date',)
   list_display_links = ('hospital_name', 'application_no', 'inspection_total')
   list_filter = ('hospital_name',)
   search_fields = ('hospital_name', 'inspection_total',)
@@ -195,7 +195,7 @@ class InspectionAdmin(admin.ModelAdmin):
 admin.site.register(Inspection, InspectionAdmin)
 
 class AppraisalAdmin(admin.ModelAdmin):
-  list_display = ('application_no', 'hospital_name', 'appraisal_total',)
+  list_display = ('application_no', 'hospital_name', 'appraisal_total', 'appraisal_date',)
   list_display_links = ('hospital_name', 'application_no', 'appraisal_total')
   list_filter = ('hospital_name',)
   search_fields = ('hospital_name', 'appraisal_total',)

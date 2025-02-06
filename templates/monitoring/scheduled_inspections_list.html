@@ -58,19 +58,22 @@
 <td>{{object.hospital_name}}</td>
 <td>{{object.hospital.license_type}}</td>
 <td>
-{% if object|instanceof:"Schedule" %}
+
+
+{% if object.is_appraisal %}
+{{ object.appraisal_date }} 
+{% elif object.is_inspection %}
 {{object.inspection_date}}
-{% elif object|instanceof:"Inspection" %}
-{{object.schedule.inspection_date}}
-{% elif object|instanceof:"Appraisal" %}
-{{object.schedule.inspection_date}}{% endif %}</td>
+{% elif object.is_pending %}
+{{object.inspection_date}}
+{% endif %}</td>
 <td>
-{% if object|instanceof:"Schedule" %}
-{{object.inspection_zone}}
-{% elif object|instanceof:"Inspection" %}
+{% if object|instanceof:"Inspection" %}
 {{object.schedule.inspection_zone}}
 {% elif object|instanceof:"Appraisal" %}
-{{object.schedule.inspection_zone}}{% endif %}
+{{object.schedule.inspection_zone}}
+{% elif object|instanceof:"Schedule" %}
+{{object.inspection_zone}}{% endif %}
 </td>
 
 <td>
