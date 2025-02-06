@@ -89,7 +89,7 @@ def monitoring_dashboard(request):
     current_year = now().year  # Get the current year
 
     # Count issued licenses where application_status=8
-    license_count = License.objects.select_related("hospital_name").filter(application_status=8).count()
+    license_count = License.objects.select_related("hospital_name").filter(issue_date__year=current_year, application_status=8).count()
 
     # Get all document applications for the current year
     document_applications = Document.objects.filter(date__year=current_year)
