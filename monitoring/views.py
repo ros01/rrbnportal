@@ -104,22 +104,50 @@ def monitoring_dashboard(request):
     # Count pending license applications (Documents not in License)
     pending_license_applications = document_applications.exclude(application_no__in=license_application_numbers).count()
 
-
-
     # Count payments pending verification (vet_status = 1)
     pending_verifications = Payment.objects.filter(vet_status=1).count()
     completed_verifications = Payment.objects.filter(vet_status=2).exclude(hospital__application_type = 'Renewal - Radiography Practice Permit').count()
 
-
     schedules = Schedule.objects.select_related("hospital").all()
+    inspections = Inspection.objects.select_related("hospital").all()
+    appraisals = Appraisal.objects.select_related("hospital").all()
+
+    # Convert QuerySets to dictionaries for fast lookup
+    inspection_map = {insp.schedule_id: insp for insp in inspections}
+    appraisal_map = {appr.schedule_id: appr for appr in appraisals}
+
+    final_records = []  # Prevents duplicates
+
+    # Process schedules and merge related inspections and appraisals
+    pending_schedules_count = 0
+
+    for schedule in schedules:
+        schedule.is_inspection = schedule.id in inspection_map
+        schedule.is_appraisal = schedule.id in appraisal_map
+        schedule.is_pending = not (schedule.is_inspection or schedule.is_appraisal)
+
+        if schedule.is_pending:
+            pending_schedules_count += 1
+
+
+    # Attach related inspection and appraisal details to schedule object
+    schedule.inspection_date = inspection_map[schedule.id].inspection_date if schedule.is_inspection else None
+    schedule.appraisal_date = appraisal_map[schedule.id].appraisal_date if schedule.is_appraisal else None
+
+    final_records.append(schedule)
+
+    # Sort with pending schedules first
+    combined_records = sorted(final_records, key=lambda obj: obj.is_pending, reverse=True)
+
+    # schedules = Schedule.objects.all()
     # inspections = Inspection.objects.select_related("hospital").all()
     # appraisals = Appraisal.objects.select_related("hospital").all()
 
 
     # Fetch schedules, inspections, and appraisals for the current year
     current_schedules = Schedule.objects.filter(inspection_schedule_date__year=current_year).select_related("hospital")
-    inspections = Inspection.objects.filter(inspection_date__year=current_year).select_related("hospital")
-    appraisals = Appraisal.objects.filter(appraisal_date__year=current_year).select_related("hospital")
+    current_inspections = Inspection.objects.filter(inspection_date__year=current_year).select_related("hospital")
+    current_appraisals = Appraisal.objects.filter(appraisal_date__year=current_year).select_related("hospital")
 
     reg_approval_int = Appraisal.objects.filter(appraisal_status=2)
     reg_approval_rpp = Inspection.objects.filter(inspection_status=2)
@@ -129,50 +157,48 @@ def monitoring_dashboard(request):
     reg_approval_rpp_count = reg_approval_rpp.count()
     reg_approval_rppr_count = reg_approval_rppr.count()
 
-
-
     # Count inspections and appraisals separately
     schedules_count = schedules.count()
     current_schedules_count = current_schedules.count()
-    inspections_count = inspections.count()
-    appraisals_count = appraisals.count()
+    current_inspections_count = current_inspections.count()
+    current_appraisals_count = current_appraisals.count()
 
     # Calculate total count of inspections and appraisals
-    total_inspections_appraisals = inspections_count + appraisals_count
+    total_inspections_appraisals = current_inspections_count + current_appraisals_count
     awaiting_reg_approval = reg_approval_int_count + reg_approval_rpp_count + reg_approval_rppr_count
 
     # Convert QuerySets to dictionaries for fast lookup
-    inspection_ids = set(inspections.values_list("schedule_id", flat=True))
-    appraisal_ids = set(appraisals.values_list("schedule_id", flat=True))
+    # inspection_ids = set(inspections.values_list("schedule_id", flat=True))
+    # appraisal_ids = set(appraisals.values_list("schedule_id", flat=True))
 
 
      # Track pending schedules count
-    pending_schedules_count = 0
+    # pending_schedules_count = 0
 
     # Add flags to schedules
-    for schedule in schedules:
-        schedule.is_inspection = schedule.id in inspection_ids
-        schedule.is_appraisal = schedule.id in appraisal_ids
-        schedule.is_pending = not (schedule.is_inspection or schedule.is_appraisal)
+    # for schedule in schedules:
+    #     schedule.is_inspection = schedule.id in inspection_ids
+    #     schedule.is_appraisal = schedule.id in appraisal_ids
+    #     schedule.is_pending = not (schedule.is_inspection or schedule.is_appraisal)
 
-        if schedule.is_pending:
-            pending_schedules_count += 1
+    #     if schedule.is_pending:
+    #         pending_schedules_count += 1
 
     # Set flags for inspections & appraisals
-    for inspection in inspections:
-        inspection.is_inspection = True
-        inspection.is_pending = False
+    # for inspection in inspections:
+    #     inspection.is_inspection = True
+    #     inspection.is_pending = False
 
-    for appraisal in appraisals:
-        appraisal.is_appraisal = True
-        appraisal.is_pending = False
+    # for appraisal in appraisals:
+    #     appraisal.is_appraisal = True
+    #     appraisal.is_pending = False
 
     # Combine all records and sort with pending schedules first
-    combined_records = sorted(
-        chain(schedules, inspections, appraisals),
-        key=lambda obj: obj.is_pending, 
-        reverse=True  # Sorts `is_pending=True` first
-    )
+    # combined_records = sorted(
+    #     chain(schedules, inspections, appraisals),
+    #     key=lambda obj: obj.is_pending, 
+    #     reverse=True  # Sorts `is_pending=True` first
+    # )
 
     # Pass counts to template
     context = {
@@ -192,34 +218,6 @@ def monitoring_dashboard(request):
     }
     return render(request, 'monitoring/monitoring_dashboard.html', context)
 
-
-# @login_required
-# def monitoring_dashboard(request):
-#     current_year = now().year
-#     # Count the required data dynamically
-#     license = License.objects.select_related("hospital_name").filter(application_status=8).count()
-#     document_applications = Document.objects.all()
-#     license_application_numbers = License.objects.all().values_list("application_no", flat=True)
-#     pending_license_applications = document_applications.exclude(application_no__in=license_application_numbers, date__year=current_year).count()
-
-#     pending_verifications = Payment.objects.select_related("hospital_name").filter(vet_status=1).count()
-#     # pending_verifications = Document.objects.filter(status='pending_verification').count()
-#     # due_for_payment = Payment.objects.filter(status='due').count()
-#     # due_for_inspection = Inspection.objects.filter(status='scheduled').count()
-#     # pending_inspections = Inspection.objects.filter(status='pending').count()
-#     # awaiting_approval = Inspection.objects.filter(status='awaiting_approval').count()
-
-#     # # Pass counts to template
-#     context = {
-#         'pending_verifications': pending_verifications,
-#         'pending_license_applications': pending_license_applications,
-#         'current_year': current_year,
-#         # 'due_for_payment': due_for_payment,
-#         # 'due_for_inspection': due_for_inspection,
-#         # 'pending_inspections': pending_inspections,
-#         # 'awaiting_approval': awaiting_approval,
-#     }
-#     return render(request, 'monitoring/monitoring_dashboard.html', context )
 
 
 @login_required
