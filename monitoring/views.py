@@ -111,13 +111,13 @@ def monitoring_dashboard(request):
     completed_verifications = Payment.objects.filter(vet_status=2).exclude(hospital__application_type = 'Renewal - Radiography Practice Permit').count()
 
 
-    # schedules = Schedule.objects.select_related("hospital").all()
+    schedules = Schedule.objects.select_related("hospital").all()
     # inspections = Inspection.objects.select_related("hospital").all()
     # appraisals = Appraisal.objects.select_related("hospital").all()
 
 
     # Fetch schedules, inspections, and appraisals for the current year
-    schedules = Schedule.objects.filter(inspection_schedule_date__year=current_year).select_related("hospital")
+    current_schedules = Schedule.objects.filter(inspection_schedule_date__year=current_year).select_related("hospital")
     inspections = Inspection.objects.filter(inspection_date__year=current_year).select_related("hospital")
     appraisals = Appraisal.objects.filter(appraisal_date__year=current_year).select_related("hospital")
 
@@ -132,7 +132,7 @@ def monitoring_dashboard(request):
 
 
     # Count inspections and appraisals separately
-    schedules_count = schedules.count()
+    current_schedules_count = current_schedules.count()
     inspections_count = inspections.count()
     appraisals_count = appraisals.count()
 
@@ -187,6 +187,7 @@ def monitoring_dashboard(request):
         'total_inspections_appraisals': total_inspections_appraisals,  # Total count added
         'awaiting_reg_approval': awaiting_reg_approval,
         'schedules_count': schedules_count,
+        'current_schedules_count': current_schedules_count,
     }
     return render(request, 'monitoring/monitoring_dashboard.html', context)
 
