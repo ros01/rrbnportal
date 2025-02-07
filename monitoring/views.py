@@ -132,6 +132,7 @@ def monitoring_dashboard(request):
 
 
     # Count inspections and appraisals separately
+    schedules_count = schedules.count()
     current_schedules_count = current_schedules.count()
     inspections_count = inspections.count()
     appraisals_count = appraisals.count()
