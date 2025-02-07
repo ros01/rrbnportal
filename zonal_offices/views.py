@@ -37,6 +37,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 import io, csv
 from django.contrib.auth.hashers import make_password
 from django.db.models import Max, Value, IntegerField, CharField, Q, Count
+from collections import defaultdict
+from itertools import chain
 
 
 class StaffRequiredMixin(object):
@@ -72,6 +74,79 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
     
     def get_context_data(self, *args, **kwargs):
         context = super(DashboardTemplateView, self).get_context_data(*args, **kwargs)
+
+        current_year = now().year  # Get the current year
+
+        # Fetch schedules, inspections, and appraisals for the current year
+        schedules = Schedule.objects.filter(inspection_schedule_date__year=current_year).select_related("hospital")
+        inspections = Inspection.objects.filter(inspection_date__year=current_year).select_related("hospital")
+        appraisals = Appraisal.objects.filter(appraisal_date__year=current_year).select_related("hospital")
+
+        # Count inspections and appraisals separately
+        schedules_count = schedules.count()
+        inspections_count = inspections.count()
+        appraisals_count = appraisals.count()
+
+        # Calculate total count of inspections and appraisals
+        total_inspections_appraisals = inspections_count + appraisals_count
+        
+
+        # Convert QuerySets to dictionaries for fast lookup
+        inspection_ids = set(inspections.values_list("schedule_id", flat=True))
+        appraisal_ids = set(appraisals.values_list("schedule_id", flat=True))
+
+
+         # Track pending schedules count
+        pending_schedules_count = 0
+
+        # Add flags to schedules
+        for schedule in schedules:
+            schedule.is_inspection = schedule.id in inspection_ids
+            schedule.is_appraisal = schedule.id in appraisal_ids
+            schedule.is_pending = not (schedule.is_inspection or schedule.is_appraisal)
+
+            if schedule.is_pending:
+                pending_schedules_count += 1
+
+        # Set flags for inspections & appraisals
+        for inspection in inspections:
+            inspection.is_inspection = True
+            inspection.is_pending = False
+
+        for appraisal in appraisals:
+            appraisal.is_appraisal = True
+            appraisal.is_pending = False
+
+        # Combine all records and sort with pending schedules first
+        combined_records = sorted(
+            chain(schedules, inspections, appraisals),
+            key=lambda obj: obj.is_pending, 
+            reverse=True  # Sorts `is_pending=True` first
+        )
+
+        # Pass counts to template
+        context = {
+            # 'license_count': license_count,
+            # 'due_for_payment': due_for_payment,
+            # 'pending_verifications': pending_verifications,
+            # 'pending_license_applications': pending_license_applications,
+            'current_year': current_year,
+            # 'current_payments': current_payments,
+            'pending_schedules_count': pending_schedules_count,  # New count added
+            'combined_records': combined_records,
+            # 'completed_verifications': completed_verifications,
+            'total_inspections_appraisals': total_inspections_appraisals,  # Total count added
+            # 'awaiting_reg_approval': awaiting_reg_approval,
+            'schedules_count': schedules_count,
+        }
+
+
+
+
+
+
+
+
         context["inspection"] = Schedule.objects.all()
         return context
 
@@ -280,9 +355,69 @@ class UpdateHospitalProfileDetails (StaffRequiredMixin, SuccessMessageMixin, Upd
 
 
 
-
-
 class InspectionScheduleListView(LoginRequiredMixin, ListView):
+    template_name = "zonal_offices/inspection_schedule_list.html"
+    context_object_name = "object"
+
+    def get_queryset(self):
+        return Schedule.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        zone_data = {
+            "Enugu Office": Schedule.objects.filter(inspection_zone="Enugu", application_status=4),
+            "Abuja Office": Schedule.objects.filter(inspection_zone="Abuja", application_status=4),
+            "Lagos Office": Schedule.objects.filter(inspection_zone="Lagos", application_status=4),
+            "Sokoto Office": Schedule.objects.filter(inspection_zone="Sokoto", application_status=4),
+            "Kano Office": Schedule.objects.filter(inspection_zone="Kano", application_status=4),
+            "Port Harcourt Office": Schedule.objects.filter(inspection_zone="Port Harcourt", application_status=4),
+            "Awka Office": Schedule.objects.filter(inspection_zone="Awka", application_status=4),
+            "Calabar Office": Schedule.objects.filter(inspection_zone="Calabar", application_status=4),
+            "Ilesha Office": Schedule.objects.filter(inspection_zone="Ilesha", application_status=4),
+            "Maiduguri Office": Schedule.objects.filter(inspection_zone="Maiduguri", application_status=4),
+        }
+
+        context["zone_data"] = zone_data
+        return context
+
+
+class InspectionScheduleListView0(LoginRequiredMixin, ListView):
+    template_name = "zonal_offices/inspection_schedule_list.html"
+    context_object_name = 'object'
+
+    def get_queryset(self):
+        return Schedule.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Fetch all schedules where application_status = 4
+        schedules = Schedule.objects.filter(application_status=4)
+
+        # Group schedules by inspection_zone
+        zone_mapping = defaultdict(list)
+        for schedule in schedules:
+            zone_mapping[schedule.inspection_zone].append(schedule)
+
+        # Add grouped data to context
+        context.update({
+            'enugu_qs': zone_mapping.get("Enugu", []),
+            'abuja_qs': zone_mapping.get("Abuja", []),
+            'lagos_qs': zone_mapping.get("Lagos", []),
+            'sokoto_qs': zone_mapping.get("Sokoto", []),
+            'kano_qs': zone_mapping.get("Kano", []),
+            'ph_qs': zone_mapping.get("Port Harcourt", []),
+            'awka_qs': zone_mapping.get("Awka", []),
+            'calabar_qs': zone_mapping.get("Calabar", []),
+            'ilesha_qs': zone_mapping.get("Ilesha", []),
+            'maiduguri_qs': zone_mapping.get("Maiduguri", []),
+        })
+
+        return context
+
+
+class InspectionScheduleListView1(LoginRequiredMixin, ListView):
     template_name = "zonal_offices/inspection_schedule_list.html"
     context_object_name = 'object'
 
@@ -998,40 +1133,44 @@ class AccreditationCompleteDetailView(LoginRequiredMixin, AccreditationObjectMix
         return render(request, self.template_name, context)
 
 
-
-class UltrasoundScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+class UltrasoundScore(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/ultrasound_score2.html'
     form_class = UltrasoundModelForm
     success_message = 'Ultrasound Score Entered Successfully'
-    
+
     def get_success_url(self):
         if hasattr(self.object, 'schedule') and self.object.schedule:
             return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
         else:
             messages.error(self.request, "Schedule not found. Please try again.")
-            return reverse("zonal_offices:dashboard")  # Fallback in case schedule is missing
-    
+            return reverse("zonal_offices:dashboard")
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])  # Ensure schedule is set
         schedule_qs = Schedule.objects.select_related("hospital_name").filter(
             application_status=4, hospital_name=self.schedule.hospital_name
         )
         context['schedule_qs'] = schedule_qs
-        
-        # Ensure ultrasound object exists
+
         ultrasound = Ultrasound.objects.filter(schedule=self.schedule).first()
         if ultrasound:
             context["ultrasound"] = ultrasound
         return context
 
     def get_initial(self):
+        schedule = get_object_or_404(Schedule, pk=self.kwargs["pk"])
         return {
-            'schedule': self.kwargs["pk"],
+            'schedule': schedule,  # Pass the actual object
         }
-    
+
     def get_form_kwargs(self):
         self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
         kwargs = super().get_form_kwargs()
+        
+        if 'initial' not in kwargs:
+            kwargs['initial'] = {}  # Ensure it's always a dictionary
+
         kwargs['initial']['hospital_name'] = self.schedule.hospital_name
         kwargs['initial']['application_no'] = self.schedule.application_no
         return kwargs
@@ -1106,6 +1245,7 @@ class NuclearMedicineScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestM
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])  # Ensure schedule is set
         schedule_qs = Schedule.objects.select_related("hospital_name").filter(
             application_status=4, hospital_name=self.schedule.hospital_name
         )
@@ -1118,13 +1258,18 @@ class NuclearMedicineScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestM
         return context
 
     def get_initial(self):
+        schedule = get_object_or_404(Schedule, pk=self.kwargs["pk"])
         return {
-            'schedule': self.kwargs["pk"],
+            'schedule': schedule,  # Pass the actual object
         }
-    
+
     def get_form_kwargs(self):
         self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
         kwargs = super().get_form_kwargs()
+        
+        if 'initial' not in kwargs:
+            kwargs['initial'] = {}  # Ensure it's always a dictionary
+
         kwargs['initial']['hospital_name'] = self.schedule.hospital_name
         kwargs['initial']['application_no'] = self.schedule.application_no
         return kwargs
@@ -1199,6 +1344,7 @@ class RadiotherapyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixi
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])  # Ensure schedule is set
         schedule_qs = Schedule.objects.select_related("hospital_name").filter(
             application_status=4, hospital_name=self.schedule.hospital_name
         )
@@ -1211,13 +1357,18 @@ class RadiotherapyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixi
         return context
 
     def get_initial(self):
+        schedule = get_object_or_404(Schedule, pk=self.kwargs["pk"])
         return {
-            'schedule': self.kwargs["pk"],
+            'schedule': schedule,  # Pass the actual object
         }
-    
+
     def get_form_kwargs(self):
         self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
         kwargs = super().get_form_kwargs()
+        
+        if 'initial' not in kwargs:
+            kwargs['initial'] = {}  # Ensure it's always a dictionary
+
         kwargs['initial']['hospital_name'] = self.schedule.hospital_name
         kwargs['initial']['application_no'] = self.schedule.application_no
         return kwargs
@@ -1292,6 +1443,7 @@ class MriScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Succes
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])  # Ensure schedule is set
         schedule_qs = Schedule.objects.select_related("hospital_name").filter(
             application_status=4, hospital_name=self.schedule.hospital_name
         )
@@ -1304,13 +1456,18 @@ class MriScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Succes
         return context
 
     def get_initial(self):
+        schedule = get_object_or_404(Schedule, pk=self.kwargs["pk"])
         return {
-            'schedule': self.kwargs["pk"],
+            'schedule': schedule,  # Pass the actual object
         }
-    
+
     def get_form_kwargs(self):
         self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
         kwargs = super().get_form_kwargs()
+        
+        if 'initial' not in kwargs:
+            kwargs['initial'] = {}  # Ensure it's always a dictionary
+
         kwargs['initial']['hospital_name'] = self.schedule.hospital_name
         kwargs['initial']['application_no'] = self.schedule.application_no
         return kwargs
@@ -1385,6 +1542,7 @@ class CtscanScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Suc
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])  # Ensure schedule is set
         schedule_qs = Schedule.objects.select_related("hospital_name").filter(
             application_status=4, hospital_name=self.schedule.hospital_name
         )
@@ -1397,13 +1555,18 @@ class CtscanScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Suc
         return context
 
     def get_initial(self):
+        schedule = get_object_or_404(Schedule, pk=self.kwargs["pk"])
         return {
-            'schedule': self.kwargs["pk"],
+            'schedule': schedule,  # Pass the actual object
         }
-    
+
     def get_form_kwargs(self):
         self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
         kwargs = super().get_form_kwargs()
+        
+        if 'initial' not in kwargs:
+            kwargs['initial'] = {}  # Ensure it's always a dictionary
+
         kwargs['initial']['hospital_name'] = self.schedule.hospital_name
         kwargs['initial']['application_no'] = self.schedule.application_no
         return kwargs
@@ -1477,6 +1640,7 @@ class XrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Succe
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])  # Ensure schedule is set
         schedule_qs = Schedule.objects.select_related("hospital_name").filter(
             application_status=4, hospital_name=self.schedule.hospital_name
         )
@@ -1489,13 +1653,18 @@ class XrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Succe
         return context
 
     def get_initial(self):
+        schedule = get_object_or_404(Schedule, pk=self.kwargs["pk"])
         return {
-            'schedule': self.kwargs["pk"],
+            'schedule': schedule,  # Pass the actual object
         }
-    
+
     def get_form_kwargs(self):
         self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
         kwargs = super().get_form_kwargs()
+        
+        if 'initial' not in kwargs:
+            kwargs['initial'] = {}  # Ensure it's always a dictionary
+
         kwargs['initial']['hospital_name'] = self.schedule.hospital_name
         kwargs['initial']['application_no'] = self.schedule.application_no
         return kwargs
@@ -1570,6 +1739,7 @@ class FlouroscopyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])  # Ensure schedule is set
         schedule_qs = Schedule.objects.select_related("hospital_name").filter(
             application_status=4, hospital_name=self.schedule.hospital_name
         )
@@ -1582,13 +1752,18 @@ class FlouroscopyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin
         return context
 
     def get_initial(self):
+        schedule = get_object_or_404(Schedule, pk=self.kwargs["pk"])
         return {
-            'schedule': self.kwargs["pk"],
+            'schedule': schedule,  # Pass the actual object
         }
-    
+
     def get_form_kwargs(self):
         self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
         kwargs = super().get_form_kwargs()
+        
+        if 'initial' not in kwargs:
+            kwargs['initial'] = {}  # Ensure it's always a dictionary
+
         kwargs['initial']['hospital_name'] = self.schedule.hospital_name
         kwargs['initial']['application_no'] = self.schedule.application_no
         return kwargs
@@ -1663,6 +1838,7 @@ class MamographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin,
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])  # Ensure schedule is set
         schedule_qs = Schedule.objects.select_related("hospital_name").filter(
             application_status=4, hospital_name=self.schedule.hospital_name
         )
@@ -1675,13 +1851,18 @@ class MamographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin,
         return context
 
     def get_initial(self):
+        schedule = get_object_or_404(Schedule, pk=self.kwargs["pk"])
         return {
-            'schedule': self.kwargs["pk"],
+            'schedule': schedule,  # Pass the actual object
         }
-    
+
     def get_form_kwargs(self):
         self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
         kwargs = super().get_form_kwargs()
+        
+        if 'initial' not in kwargs:
+            kwargs['initial'] = {}  # Ensure it's always a dictionary
+
         kwargs['initial']['hospital_name'] = self.schedule.hospital_name
         kwargs['initial']['application_no'] = self.schedule.application_no
         return kwargs
@@ -1741,6 +1922,7 @@ class MamographyScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessage
             messages.error(self.request, error)
         return self.render_to_response(self.get_context_data(form=form))
 
+
 class DentalXrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/dental_xray_score.html'
     form_class = DentalXrayModelForm
@@ -1755,6 +1937,7 @@ class DentalXrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin,
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])  # Ensure schedule is set
         schedule_qs = Schedule.objects.select_related("hospital_name").filter(
             application_status=4, hospital_name=self.schedule.hospital_name
         )
@@ -1767,13 +1950,18 @@ class DentalXrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin,
         return context
 
     def get_initial(self):
+        schedule = get_object_or_404(Schedule, pk=self.kwargs["pk"])
         return {
-            'schedule': self.kwargs["pk"],
+            'schedule': schedule,  # Pass the actual object
         }
-    
+
     def get_form_kwargs(self):
         self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
         kwargs = super().get_form_kwargs()
+        
+        if 'initial' not in kwargs:
+            kwargs['initial'] = {}  # Ensure it's always a dictionary
+
         kwargs['initial']['hospital_name'] = self.schedule.hospital_name
         kwargs['initial']['application_no'] = self.schedule.application_no
         return kwargs
@@ -1848,6 +2036,7 @@ class EchocardiographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequest
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])  # Ensure schedule is set
         schedule_qs = Schedule.objects.select_related("hospital_name").filter(
             application_status=4, hospital_name=self.schedule.hospital_name
         )
@@ -1860,13 +2049,18 @@ class EchocardiographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequest
         return context
 
     def get_initial(self):
+        schedule = get_object_or_404(Schedule, pk=self.kwargs["pk"])
         return {
-            'schedule': self.kwargs["pk"],
+            'schedule': schedule,  # Pass the actual object
         }
-    
+
     def get_form_kwargs(self):
         self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
         kwargs = super().get_form_kwargs()
+        
+        if 'initial' not in kwargs:
+            kwargs['initial'] = {}  # Ensure it's always a dictionary
+
         kwargs['initial']['hospital_name'] = self.schedule.hospital_name
         kwargs['initial']['application_no'] = self.schedule.application_no
         return kwargs
@@ -1941,6 +2135,7 @@ class AngiographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])  # Ensure schedule is set
         schedule_qs = Schedule.objects.select_related("hospital_name").filter(
             application_status=4, hospital_name=self.schedule.hospital_name
         )
@@ -1953,13 +2148,18 @@ class AngiographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin
         return context
 
     def get_initial(self):
+        schedule = get_object_or_404(Schedule, pk=self.kwargs["pk"])
         return {
-            'schedule': self.kwargs["pk"],
+            'schedule': schedule,  # Pass the actual object
         }
-    
+
     def get_form_kwargs(self):
         self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
         kwargs = super().get_form_kwargs()
+        
+        if 'initial' not in kwargs:
+            kwargs['initial'] = {}  # Ensure it's always a dictionary
+
         kwargs['initial']['hospital_name'] = self.schedule.hospital_name
         kwargs['initial']['application_no'] = self.schedule.application_no
         return kwargs
@@ -2034,6 +2234,7 @@ class CarmScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Succe
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])  # Ensure schedule is set
         schedule_qs = Schedule.objects.select_related("hospital_name").filter(
             application_status=4, hospital_name=self.schedule.hospital_name
         )
@@ -2046,13 +2247,18 @@ class CarmScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Succe
         return context
 
     def get_initial(self):
+        schedule = get_object_or_404(Schedule, pk=self.kwargs["pk"])
         return {
-            'schedule': self.kwargs["pk"],
+            'schedule': schedule,  # Pass the actual object
         }
-    
+
     def get_form_kwargs(self):
         self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
         kwargs = super().get_form_kwargs()
+        
+        if 'initial' not in kwargs:
+            kwargs['initial'] = {}  # Ensure it's always a dictionary
+
         kwargs['initial']['hospital_name'] = self.schedule.hospital_name
         kwargs['initial']['application_no'] = self.schedule.application_no
         return kwargs

@@ -213,11 +213,38 @@
 <span class="col-5"><strong>Inspection Zone:</strong></span>
 <span class="col-6">{{object.schedule.inspection_zone}}</span>
 </div>  
+
 </div>
 </div>
           
 <div class="col-md-5 mt-0">
+<p class="mb-0 text-success lead">Approved Inspectors</p>
+<hr>
+<div class="row py-0 px-3">
+<table class="table table-hover">
+<thead style="background-color: #bfe3f8;">
+<tr>
+<th scope="col lead" style="color: #05567b;">Name</th>
+<th scope="col lead" style="color: #05567b;">Phone</th>
+</tr>
+</thead>
+<tbody>
+{% for inspector in approved_inspectors %}
+<tr>
+<td>{{ inspector.name }}</td>
+<td>{{ inspector.phone }}</td>
+</tr>
+{% empty %}
+<tr>
+<td colspan="2" class="lead text-left">No approved inspectors found.</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+
 <p class="text-success lead">Inspection Score</p>
+<!-- <hr> -->
 <span><strong><mark>{{object.inspection_total|default:"-" }}</mark></strong></span>
 <br>
 <br>
@@ -225,8 +252,9 @@
 <span><mark>{{object.inspection_comments|default:"No Comments Provided" }}</mark></span>
 <br>
 <br>
+
 <p class="text-success lead">Inspection Uploads</p>
-<div class="row py-0">
+<div class="row py-0 px-3">
 <table class="table table-hover">
 <thead style="background-color: #bfe3f8;">
 <tr>

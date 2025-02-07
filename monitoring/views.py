@@ -1700,6 +1700,14 @@ class InspectionCompletedDetailView(StaffRequiredMixin, LoginRequiredMixin, Deta
         
         # Additional context or derived data
         inspection = self.object
+        inspectors = [
+            {"name": self.object.schedule.inspector1_name, "phone": self.object.schedule.inspector1_phone},
+            {"name": self.object.schedule.inspector2_name, "phone": self.object.schedule.inspector2_phone},
+            {"name": self.object.schedule.inspector3_name, "phone": self.object.schedule.inspector3_phone},
+            {"name": self.object.schedule.inspector4_name, "phone": self.object.schedule.inspector4_phone},
+            {"name": self.object.schedule.inspector5_name, "phone": self.object.schedule.inspector5_phone},
+            {"name": self.object.schedule.inspector6_name, "phone": self.object.schedule.inspector6_phone},
+        ]
         context['photos'] = [
             {'label': 'Main Photo', 'image': inspection.photo_main} if inspection.photo_main else None,
             {'label': 'Photo 1', 'image': inspection.photo_1} if inspection.photo_1 else None,
@@ -1711,6 +1719,7 @@ class InspectionCompletedDetailView(StaffRequiredMixin, LoginRequiredMixin, Deta
         ]
 
         # Remove None values from the list
+        context['approved_inspectors'] = [inspector for inspector in inspectors if inspector['name'] and inspector['phone']]
         context['photos'] = [photo for photo in context['photos'] if photo is not None]
 
         return context

@@ -88,6 +88,48 @@ class RegisterdHospitalsDetailView(LoginRequiredMixin, RegisteredObjectMixin, Vi
         return render(request, self.template_name, context)
 
 
+# class UltrasoundScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+#     template_name = 'zonal_offices/ultrasound_score2.html'
+#     form_class = UltrasoundModelForm
+#     success_message = 'Ultrasound Score Entered Successfully'
+    
+#     def get_success_url(self):
+#         if hasattr(self.object, 'schedule') and self.object.schedule:
+#             return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
+#         else:
+#             messages.error(self.request, "Schedule not found. Please try again.")
+#             return reverse("zonal_offices:dashboard")  # Fallback in case schedule is missing
+    
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         schedule_qs = Schedule.objects.select_related("hospital_name").filter(
+#             application_status=4, hospital_name=self.schedule.hospital_name
+#         )
+#         context['schedule_qs'] = schedule_qs
+        
+#         # Ensure ultrasound object exists
+#         ultrasound = Ultrasound.objects.filter(schedule=self.schedule).first()
+#         if ultrasound:
+#             context["ultrasound"] = ultrasound
+#         return context
 
+#     def get_initial(self):
+#         return {
+#             'schedule': self.kwargs["pk"],
+#         }
+    
+#     def get_form_kwargs(self):
+#         self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+#         kwargs = super().get_form_kwargs()
+#         kwargs['initial']['hospital_name'] = self.schedule.hospital_name
+#         kwargs['initial']['application_no'] = self.schedule.application_no
+#         return kwargs
+
+#     def form_invalid(self, form):
+#         messages.error(self.request, "There was an error submitting the form. Please check the details.")
+#         error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+#         for error in error_list:
+#             messages.error(self.request, error)
+#         return self.render_to_response(self.get_context_data(form=form))
 
 

@@ -11,7 +11,7 @@ from bootstrap_modal_forms.mixins import PassRequestMixin, PopRequestMixin, Crea
 
 
 
-class UltrasoundModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
+class UltrasoundModelForm(forms.ModelForm):
 
     class Meta:
         model = Ultrasound
@@ -22,6 +22,7 @@ class UltrasoundModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelFor
         'hospital_name': forms.HiddenInput(),
         'schedule': forms.HiddenInput(),
         'application_no': forms.TextInput(attrs={'readonly': True}),
+        'ultrasound_total': forms.NumberInput(attrs={'readonly': True}),
         
         'room_design_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),
         'radiographers_no_score': forms.NumberInput(attrs={'min':0,'max':10,'type': 'number'}),  
@@ -41,10 +42,14 @@ class UltrasoundModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelFor
     #     self.request = kwargs.pop("request", None)  # Extract request if provided
     #     super(UltrasoundModelForm, self).__init__(*args, **kwargs)
 
-
     def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request", None)  # Store request explicitly
-        super(UltrasoundModelForm, self).__init__(*args, **kwargs)
+        self.request = kwargs.pop("request", None)  # Extract request if provided
+        super().__init__(*args, **kwargs)
+
+
+    # def __init__(self, *args, **kwargs):
+    #     self.request = kwargs.pop("request", None)  # Store request explicitly
+    #     super(UltrasoundModelForm, self).__init__(*args, **kwargs)
 
 
         for name in self.fields.keys():
@@ -79,54 +84,19 @@ class UltrasoundModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelFor
         self.fields['support_staff_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
         self.fields['ultrasound_total'].label = "Total Score"
 
-
     def save(self, commit=True):
-        if self.request and hasattr(self.request, "is_ajax"):
-            if not self.request.is_ajax() or self.request.POST.get("asyncUpdate") == "True":
-                instance = super(UltrasoundModelForm, self).save(commit=True)
-                instance.save()
-            else:
-                instance = super(UltrasoundModelForm, self).save(commit=False)
-        else:
-            # Handle case where request is None (bypass `is_ajax`)
-            instance = super(UltrasoundModelForm, self).save(commit=True)
+        instance = super().save(commit=False)  # Get instance without saving
 
+        if commit:  # Save only when commit=True
+            instance.save()
+        
         return instance
 
-        
-    # def save(self, commit=True):
-    #     instance = super(UltrasoundModelForm, self).save(commit=False)
-        
-    #     if self.request:  # ✅ Check if request exists before using it
-    #         if not self.request.is_ajax():  
-    #             instance.save()
-
-    #     return instance
-
-       
-    # def save(self):
-
-    #   if not self.request.is_ajax():
-    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
-    #       instance.save()
-    #   else:
-    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
-
-
-    #   return instance
-    #   print("instance:", instance)
-
-    # def save(self, commit=True):
-    #     instance = super(UltrasoundModelForm, self).save(commit=False)
-
-    #     if self.request and not self.request.is_ajax():  # Check if request exists
-    #         instance.save()
-
-    #     return instance
 
 
 
-class NuclearMedicineModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):                     
+# class NuclearMedicineModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm): 
+class NuclearMedicineModelForm(forms.ModelForm):                     
 
     class Meta:
         model = Nuclearmedicine
@@ -167,79 +137,92 @@ class NuclearMedicineModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.Mod
         }
 
     def __init__(self, *args, **kwargs):
-       super(NuclearMedicineModelForm, self).__init__(*args, **kwargs)
+        self.request = kwargs.pop("request", None)  # Extract request if provided
+        super().__init__(*args, **kwargs)
+
+    # def __init__(self, *args, **kwargs):
+    #    super(NuclearMedicineModelForm, self).__init__(*args, **kwargs)
        
-       for name in self.fields.keys():
+        for name in self.fields.keys():
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
 
-       self.fields['schedule'].label = ""
-       self.fields['hospital_name'].label = ""
-       self.fields['shielding_score'].label = "Shielding"
-       self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['room_design_score'].label = "Room Design & Layout"
-       self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
-       self.fields['radiographers_no_score'].label = "No. of Radiographers"
-       self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['nuclear_medicine_physicians_no_score'].label = "Nuclear Medicine Physicians"
-       self.fields['nuclear_medicine_physicians_no_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['other_staff_no_score'].label = "No of Other Staff"
-       self.fields['other_staff_no_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['nuclear_medicine_certification_score'].label = "Nuclear Medicine Certification"
-       self.fields['nuclear_medicine_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['radiographer_license_score'].label = "Radiographers Current License"
-       self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['prmd_prpe_score'].label = "PRMD & PRPE"
-       self.fields['prmd_prpe_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
-       self.fields['radionuclide_storage_unit_score'].label = "Radionuclide Storage Unit "
-       self.fields['radionuclide_storage_unit_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['water_supply_score'].label = "Water Supply"
-       self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['equipment_certification_score'].label = "Equipment Certification"
-       self.fields['equipment_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['radionuclide_accessories_score'].label = "Radionuclide Accessories "
-       self.fields['radionuclide_accessories_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['warning_lights_score'].label = "Warning Lights"
-       self.fields['warning_lights_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['warning_signs_score'].label = "Warning Signs"
-       self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
-       self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['equipment_installation_location_score'].label = "Equipment Installation "
-       self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
-       self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['quality_control_score'].label = "Quality Control"
-       self.fields['quality_control_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['rso_score'].label = "Radiation Safety Officer"
-       self.fields['rso_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['radiation_safety_program_score'].label = "Radiation Safety Program"
-       self.fields['radiation_safety_program_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['labelling_score'].label = "Radiopharmceuticals Labelling"
-       self.fields['labelling_score'].widget.attrs['placeholder'] = "(Max Score = 1)"
-       self.fields['performance_survey_score'].label = "Performance Survey Plan"
-       self.fields['performance_survey_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['radioactive_materials_security_score'].label = "Security of Radioactive Materials"
-       self.fields['radioactive_materials_security_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
-       self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
-       self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['nuclear_medicine_total'].label = "Total Score"
+        self.fields['schedule'].label = ""
+        self.fields['hospital_name'].label = ""
+        self.fields['shielding_score'].label = "Shielding"
+        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['room_design_score'].label = "Room Design & Layout"
+        self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
+        self.fields['radiographers_no_score'].label = "No. of Radiographers"
+        self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['nuclear_medicine_physicians_no_score'].label = "Nuclear Medicine Physicians"
+        self.fields['nuclear_medicine_physicians_no_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['other_staff_no_score'].label = "No of Other Staff"
+        self.fields['other_staff_no_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['nuclear_medicine_certification_score'].label = "Nuclear Medicine Certification"
+        self.fields['nuclear_medicine_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['radiographer_license_score'].label = "Radiographers Current License"
+        self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['prmd_prpe_score'].label = "PRMD & PRPE"
+        self.fields['prmd_prpe_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
+        self.fields['radionuclide_storage_unit_score'].label = "Radionuclide Storage Unit "
+        self.fields['radionuclide_storage_unit_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['water_supply_score'].label = "Water Supply"
+        self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['equipment_certification_score'].label = "Equipment Certification"
+        self.fields['equipment_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['radionuclide_accessories_score'].label = "Radionuclide Accessories "
+        self.fields['radionuclide_accessories_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['warning_lights_score'].label = "Warning Lights"
+        self.fields['warning_lights_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['warning_signs_score'].label = "Warning Signs"
+        self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
+        self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['equipment_installation_location_score'].label = "Equipment Installation "
+        self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
+        self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['quality_control_score'].label = "Quality Control"
+        self.fields['quality_control_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['rso_score'].label = "Radiation Safety Officer"
+        self.fields['rso_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['radiation_safety_program_score'].label = "Radiation Safety Program"
+        self.fields['radiation_safety_program_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['labelling_score'].label = "Radiopharmceuticals Labelling"
+        self.fields['labelling_score'].widget.attrs['placeholder'] = "(Max Score = 1)"
+        self.fields['performance_survey_score'].label = "Performance Survey Plan"
+        self.fields['performance_survey_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['radioactive_materials_security_score'].label = "Security of Radioactive Materials"
+        self.fields['radioactive_materials_security_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
+        self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
+        self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['nuclear_medicine_total'].label = "Total Score"
     
-    def save(self):
 
-      if not self.request.is_ajax():
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
-          instance.save()
-      else:
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+    def save(self, commit=True):
+        instance = super().save(commit=False)  # Get instance without saving
 
-      return instance
+        if commit:  # Save only when commit=True
+            instance.save()
+        
+        return instance
+
+    # def save(self):
+
+    #   if not self.request.is_ajax():
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+    #       instance.save()
+    #   else:
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+
+    #   return instance
 
 
-class RadiotherapyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
+class RadiotherapyModelForm(forms.ModelForm):
 
     class Meta:
         model = Radiotherapy
@@ -274,70 +257,80 @@ class RadiotherapyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelF
         }
 
 
-    
-
     def __init__(self, *args, **kwargs):
-       super(RadiotherapyModelForm, self).__init__(*args, **kwargs)
+        self.request = kwargs.pop("request", None)  # Extract request if provided
+        super().__init__(*args, **kwargs)
+
+    # def __init__(self, *args, **kwargs):
+    #    super(RadiotherapyModelForm, self).__init__(*args, **kwargs)
        
-       for name in self.fields.keys():
+        for name in self.fields.keys():
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       self.fields['schedule'].label = ""
-       self.fields['hospital_name'].label = ""
-       self.fields['shielding_score'].label = "Shielding"
-       self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['room_design_score'].label = "Room Design & Layout"
-       self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['radiographers_no_score'].label = "No. of Radiographers"
-       self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['radiologists_no_score'].label = "No. of Radiologists"
-       self.fields['radiologists_no_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['other_staff_score'].label = "No. of Other Staff"
-       self.fields['other_staff_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['radiotherapy_certification_score'].label = "Radiotherapy Certification"
-       self.fields['radiotherapy_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['radiographer_license_score'].label = "Radiographers Current License"
-       self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['prmd_prpe_score'].label = "PRMD & PRPE"
-       self.fields['prmd_prpe_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['rso_score'].label = "Radiation Safety Officer"
-       self.fields['rso_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['water_supply_score'].label = "Water Supply"
-       self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['equipment_certification_score'].label = "Equipment Certification"
-       self.fields['equipment_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['warning_lights_score'].label = "Warning Lights & Synergies"
-       self.fields['warning_lights_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['warning_signs_score'].label = "Warning Signs"
-       self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
-       self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['equipment_installation_location_score'].label = "Equipment Installation "
-       self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['radiotherapy_accessories_score'].label = "Radiotherapy Accessories"
-       self.fields['radiotherapy_accessories_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
-       self.fields['mould_room_score'].label = "Adequacy of Mould Room"
-       self.fields['mould_room_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
-       self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
-       self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
-       self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['radiotherapy_total'].label = "Total Score"
+        self.fields['schedule'].label = ""
+        self.fields['hospital_name'].label = ""
+        self.fields['shielding_score'].label = "Shielding"
+        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['room_design_score'].label = "Room Design & Layout"
+        self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['radiographers_no_score'].label = "No. of Radiographers"
+        self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['radiologists_no_score'].label = "No. of Radiologists"
+        self.fields['radiologists_no_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['other_staff_score'].label = "No. of Other Staff"
+        self.fields['other_staff_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['radiotherapy_certification_score'].label = "Radiotherapy Certification"
+        self.fields['radiotherapy_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['radiographer_license_score'].label = "Radiographers Current License"
+        self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['prmd_prpe_score'].label = "PRMD & PRPE"
+        self.fields['prmd_prpe_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['rso_score'].label = "Radiation Safety Officer"
+        self.fields['rso_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['water_supply_score'].label = "Water Supply"
+        self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['equipment_certification_score'].label = "Equipment Certification"
+        self.fields['equipment_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['warning_lights_score'].label = "Warning Lights & Synergies"
+        self.fields['warning_lights_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['warning_signs_score'].label = "Warning Signs"
+        self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
+        self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['equipment_installation_location_score'].label = "Equipment Installation "
+        self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['radiotherapy_accessories_score'].label = "Radiotherapy Accessories"
+        self.fields['radiotherapy_accessories_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
+        self.fields['mould_room_score'].label = "Adequacy of Mould Room"
+        self.fields['mould_room_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
+        self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
+        self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
+        self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['radiotherapy_total'].label = "Total Score"
 
 
-    def save(self):
-      if not self.request.is_ajax():
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
-          instance.save()
-      else:
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
-      return instance
+    def save(self, commit=True):
+        instance = super().save(commit=False)  # Get instance without saving
+
+        if commit:  # Save only when commit=True
+            instance.save()
+        
+        return instance
+
+    # def save(self):
+    #   if not self.request.is_ajax():
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+    #       instance.save()
+    #   else:
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+    #   return instance
 
 
-class XrayModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
+class XrayModelForm(forms.ModelForm):
 
     class Meta:
         model = Xray 
@@ -370,65 +363,77 @@ class XrayModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
         } 
 
     def __init__(self, *args, **kwargs):
-       super(XrayModelForm, self).__init__(*args, **kwargs)
+        self.request = kwargs.pop("request", None)  # Extract request if provided
+        super().__init__(*args, **kwargs)
+
+    # def __init__(self, *args, **kwargs):
+    #    super(XrayModelForm, self).__init__(*args, **kwargs)
        
-       for name in self.fields.keys():
+        for name in self.fields.keys():
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
 
-       self.fields['schedule'].label = ""
-       self.fields['hospital_name'].label = ""
-       self.fields['shielding_score'].label = "Shielding"
-       self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
-       self.fields['room_design_score'].label = "Room Design & Layout"
-       self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['radiographers_no_score'].label = "No. of Radiographers"
-       self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['radiologists_no_score'].label = "No. of Radiologists"
-       self.fields['radiologists_no_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['radiographer_license_score'].label = "Radiographers Current License"
-       self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['prmd_prpe_score'].label = "PRMD & PRPE"
-       self.fields['prmd_prpe_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['rso_rsa_score'].label = "Radiation Safety Officer"
-       self.fields['rso_rsa_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['water_supply_score'].label = "Water Supply"
-       self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['equipment_certification_score'].label = "Equipment Certification"
-       self.fields['equipment_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
-       self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['warning_lights_score'].label = "Warning Lights"
-       self.fields['warning_lights_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['warning_signs_score'].label = "Warning Signs"
-       self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
-       self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['equipment_installation_location_score'].label = "Equipment Installation "
-       self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['processing_unit_score'].label = "Adequacy of Processing Unit"
-       self.fields['processing_unit_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
-       self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
-       self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
-       self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['xray_total'].label = "Total Score"
-      
-    def save(self):
+        self.fields['schedule'].label = ""
+        self.fields['hospital_name'].label = ""
+        self.fields['shielding_score'].label = "Shielding"
+        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
+        self.fields['room_design_score'].label = "Room Design & Layout"
+        self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['radiographers_no_score'].label = "No. of Radiographers"
+        self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['radiologists_no_score'].label = "No. of Radiologists"
+        self.fields['radiologists_no_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['radiographer_license_score'].label = "Radiographers Current License"
+        self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['prmd_prpe_score'].label = "PRMD & PRPE"
+        self.fields['prmd_prpe_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['rso_rsa_score'].label = "Radiation Safety Officer"
+        self.fields['rso_rsa_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['water_supply_score'].label = "Water Supply"
+        self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['equipment_certification_score'].label = "Equipment Certification"
+        self.fields['equipment_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
+        self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['warning_lights_score'].label = "Warning Lights"
+        self.fields['warning_lights_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['warning_signs_score'].label = "Warning Signs"
+        self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
+        self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['equipment_installation_location_score'].label = "Equipment Installation "
+        self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['processing_unit_score'].label = "Adequacy of Processing Unit"
+        self.fields['processing_unit_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
+        self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
+        self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
+        self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['xray_total'].label = "Total Score"
+    
+    def save(self, commit=True):
+        instance = super().save(commit=False)  # Get instance without saving
 
-      if not self.request.is_ajax():
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
-          instance.save()
-      else:
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+        if commit:  # Save only when commit=True
+            instance.save()
+        
+        return instance
 
-      return instance
+    # def save(self):
+
+    #   if not self.request.is_ajax():
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+    #       instance.save()
+    #   else:
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+
+    #   return instance
 
 
-class FlouroscopyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
+class FlouroscopyModelForm(forms.ModelForm):
 
     class Meta:
         model = Flouroscopy
@@ -460,63 +465,75 @@ class FlouroscopyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelFo
         }
 
     def __init__(self, *args, **kwargs):
-       super(FlouroscopyModelForm, self).__init__(*args, **kwargs)
+        self.request = kwargs.pop("request", None)  # Extract request if provided
+        super().__init__(*args, **kwargs)
+
+    # def __init__(self, *args, **kwargs):
+    #    super(FlouroscopyModelForm, self).__init__(*args, **kwargs)
        
-       for name in self.fields.keys():
+        for name in self.fields.keys():
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       self.fields['schedule'].label = ""
-       self.fields['hospital_name'].label = ""
-       self.fields['shielding_score'].label = "Shielding"
-       self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
-       self.fields['room_design_score'].label = "Room Design & Layout"
-       self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['radiographers_no_score'].label = "No. of Radiographers"
-       self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['radiologists_no_score'].label = "No. of Radiologists"
-       self.fields['radiologists_no_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['radiographer_license_score'].label = "Radiographers Current License"
-       self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['prmd_prpe_score'].label = "PRMD & PRPE"
-       self.fields['prmd_prpe_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['rso_rsa_score'].label = "Radiation Safety Officer"
-       self.fields['rso_rsa_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['water_supply_score'].label = "Water Supply"
-       self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['equipment_certification_score'].label = "Equipment Certification"
-       self.fields['equipment_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
-       self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['warning_lights_score'].label = "Warning Lights"
-       self.fields['warning_lights_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['warning_signs_score'].label = "Warning Signs"
-       self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
-       self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['equipment_installation_location_score'].label = "Equipment Installation "
-       self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
-       self.fields['processing_unit_score'].label = "Adequacy of Processing Unit"
-       self.fields['processing_unit_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
-       self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
-       self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
-       self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['flouroscopy_total'].label = "Total Score"
+        self.fields['schedule'].label = ""
+        self.fields['hospital_name'].label = ""
+        self.fields['shielding_score'].label = "Shielding"
+        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
+        self.fields['room_design_score'].label = "Room Design & Layout"
+        self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['radiographers_no_score'].label = "No. of Radiographers"
+        self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['radiologists_no_score'].label = "No. of Radiologists"
+        self.fields['radiologists_no_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['radiographer_license_score'].label = "Radiographers Current License"
+        self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['prmd_prpe_score'].label = "PRMD & PRPE"
+        self.fields['prmd_prpe_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['rso_rsa_score'].label = "Radiation Safety Officer"
+        self.fields['rso_rsa_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['water_supply_score'].label = "Water Supply"
+        self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['equipment_certification_score'].label = "Equipment Certification"
+        self.fields['equipment_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
+        self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['warning_lights_score'].label = "Warning Lights"
+        self.fields['warning_lights_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['warning_signs_score'].label = "Warning Signs"
+        self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
+        self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['equipment_installation_location_score'].label = "Equipment Installation "
+        self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
+        self.fields['processing_unit_score'].label = "Adequacy of Processing Unit"
+        self.fields['processing_unit_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
+        self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
+        self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
+        self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['flouroscopy_total'].label = "Total Score"
 
-    def save(self):
-      if not self.request.is_ajax():
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
-          instance.save()
-      else:
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+    def save(self, commit=True):
+        instance = super().save(commit=False)  # Get instance without saving
 
-      return instance
+        if commit:  # Save only when commit=True
+            instance.save()
+        
+        return instance
+
+    # def save(self):
+    #   if not self.request.is_ajax():
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+    #       instance.save()
+    #   else:
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+
+    #   return instance
 
 
-class CtscanModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
+class CtscanModelForm(forms.ModelForm):
 
     class Meta:
         model = Ctscan
@@ -548,63 +565,76 @@ class CtscanModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-       super(CtscanModelForm, self).__init__(*args, **kwargs)
+        self.request = kwargs.pop("request", None)  # Extract request if provided
+        super().__init__(*args, **kwargs)
+
+    # def __init__(self, *args, **kwargs):
+    #    super(CtscanModelForm, self).__init__(*args, **kwargs)
        
-       for name in self.fields.keys():
+        for name in self.fields.keys():
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       self.fields['schedule'].label = ""
-       self.fields['hospital_name'].label = ""
-       self.fields['shielding_score'].label = "Shielding"
-       self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
-       self.fields['room_design_score'].label = "Room Design & Layout"
-       self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['radiographers_no_score'].label = "No. of Radiographers"
-       self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['radiologists_no_score'].label = "No. of Radiologists"
-       self.fields['radiologists_no_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['radiographer_license_score'].label = "Radiographers Current License"
-       self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['prmd_prpe_score'].label = "PRMD & PRPE"
-       self.fields['prmd_prpe_score'].widget.attrs['placeholder'] = "(Max Score = 14)"
-       self.fields['rso_rsa_score'].label = "Radiation Safety Officer"
-       self.fields['rso_rsa_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['water_supply_score'].label = "Water Supply"
-       self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['equipment_certification_score'].label = "Equipment Certification"
-       self.fields['equipment_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
-       self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['warning_lights_score'].label = "Warning Lights"
-       self.fields['warning_lights_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['warning_signs_score'].label = "Warning Signs"
-       self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
-       self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['equipment_installation_location_score'].label = "Equipment Installation "
-       self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
-       self.fields['processing_unit_score'].label = "Adequacy of Processing Unit"
-       self.fields['processing_unit_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['toilets_cleanliness_score'].label = "Toilets & Cleanliness"
-       self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
-       self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
-       self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['ctscan_total'].label = "Total Score"
+        self.fields['schedule'].label = ""
+        self.fields['hospital_name'].label = ""
+        self.fields['shielding_score'].label = "Shielding"
+        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
+        self.fields['room_design_score'].label = "Room Design & Layout"
+        self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['radiographers_no_score'].label = "No. of Radiographers"
+        self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['radiologists_no_score'].label = "No. of Radiologists"
+        self.fields['radiologists_no_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['radiographer_license_score'].label = "Radiographers Current License"
+        self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['prmd_prpe_score'].label = "PRMD & PRPE"
+        self.fields['prmd_prpe_score'].widget.attrs['placeholder'] = "(Max Score = 14)"
+        self.fields['rso_rsa_score'].label = "Radiation Safety Officer"
+        self.fields['rso_rsa_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['water_supply_score'].label = "Water Supply"
+        self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['equipment_certification_score'].label = "Equipment Certification"
+        self.fields['equipment_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
+        self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['warning_lights_score'].label = "Warning Lights"
+        self.fields['warning_lights_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['warning_signs_score'].label = "Warning Signs"
+        self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
+        self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['equipment_installation_location_score'].label = "Equipment Installation "
+        self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
+        self.fields['processing_unit_score'].label = "Adequacy of Processing Unit"
+        self.fields['processing_unit_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['toilets_cleanliness_score'].label = "Toilets & Cleanliness"
+        self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
+        self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
+        self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['ctscan_total'].label = "Total Score"
 
-    def save(self):
 
-      if not self.request.is_ajax():
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
-          instance.save()
-      else:
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+    def save(self, commit=True):
+        instance = super().save(commit=False)  # Get instance without saving
 
-      return instance
+        if commit:  # Save only when commit=True
+            instance.save()
+        
+        return instance
 
-class MriModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
+    # def save(self):
+
+    #   if not self.request.is_ajax():
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+    #       instance.save()
+    #   else:
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+
+    #   return instance
+
+class MriModelForm(forms.ModelForm):
 
     class Meta:
         model = Mri
@@ -635,66 +665,79 @@ class MriModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
         'technical_room_adequacy_score': forms.NumberInput(attrs={'min':0,'max':3,'type': 'number'}),    
         }
 
-
     def __init__(self, *args, **kwargs):
-       super(MriModelForm, self).__init__(*args, **kwargs)
+        self.request = kwargs.pop("request", None)  # Extract request if provided
+        super().__init__(*args, **kwargs)
+
+
+    # def __init__(self, *args, **kwargs):
+    #    super(MriModelForm, self).__init__(*args, **kwargs)
        
-       for name in self.fields.keys():
+        for name in self.fields.keys():
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       self.fields['schedule'].label = ""
-       self.fields['hospital_name'].label = ""
-       self.fields['shielding_score'].label = "Shielding/Faraday Cage"
-       self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['room_design_score'].label = "Room Design & Layout"
-       self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['radiographers_no_score'].label = "No. of Radiographers"
-       self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['radiologists_no_score'].label = "No. of Radiologists"
-       self.fields['radiologists_no_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['radiographer_license_score'].label = "Radiographers Current License"
-       self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['mri_certification_score'].label = "PG Certification in MRI"
-       self.fields['mri_certification_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['metal_screening_device_score'].label = "Metal Screening Device"
-       self.fields['metal_screening_device_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['screening_questionnaire_score'].label = "Screening Questionnaire"
-       self.fields['screening_questionnaire_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['water_supply_score'].label = "Water Supply"
-       self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
-       self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 7)"
-       self.fields['warning_signs_score'].label = "Warning Signs"
-       self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
-       self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['equipment_installation_location_score'].label = "Equipment Installation "
-       self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['processing_unit_score'].label = "Adequacy of Processing Unit"
-       self.fields['processing_unit_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
-       self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
-       self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
-       self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['technical_room_adequacy_score'].label = "Adequacy of Technical Room"
-       self.fields['technical_room_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['mri_total'].label = "Total Score"
-
-    def save(self):
-
-      if not self.request.is_ajax():
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
-          instance.save()
-      else:
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
-
-      return instance
+        self.fields['schedule'].label = ""
+        self.fields['hospital_name'].label = ""
+        self.fields['shielding_score'].label = "Shielding/Faraday Cage"
+        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['room_design_score'].label = "Room Design & Layout"
+        self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['radiographers_no_score'].label = "No. of Radiographers"
+        self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['radiologists_no_score'].label = "No. of Radiologists"
+        self.fields['radiologists_no_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['radiographer_license_score'].label = "Radiographers Current License"
+        self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['mri_certification_score'].label = "PG Certification in MRI"
+        self.fields['mri_certification_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['metal_screening_device_score'].label = "Metal Screening Device"
+        self.fields['metal_screening_device_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['screening_questionnaire_score'].label = "Screening Questionnaire"
+        self.fields['screening_questionnaire_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['water_supply_score'].label = "Water Supply"
+        self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
+        self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 7)"
+        self.fields['warning_signs_score'].label = "Warning Signs"
+        self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
+        self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['equipment_installation_location_score'].label = "Equipment Installation "
+        self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['processing_unit_score'].label = "Adequacy of Processing Unit"
+        self.fields['processing_unit_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
+        self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
+        self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
+        self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['technical_room_adequacy_score'].label = "Adequacy of Technical Room"
+        self.fields['technical_room_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['mri_total'].label = "Total Score"
 
 
-class MamographyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
+    def save(self, commit=True):
+        instance = super().save(commit=False)  # Get instance without saving
+
+        if commit:  # Save only when commit=True
+            instance.save()
+        
+        return instance
+
+    # def save(self):
+
+    #   if not self.request.is_ajax():
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+    #       instance.save()
+    #   else:
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+
+    #   return instance
+
+
+class MamographyModelForm(forms.ModelForm):
 
     class Meta:
         model = Mamography
@@ -727,65 +770,79 @@ class MamographyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelFor
         }
 
     def __init__(self, *args, **kwargs):
-       super(MamographyModelForm, self).__init__(*args, **kwargs)
+        self.request = kwargs.pop("request", None)  # Extract request if provided
+        super().__init__(*args, **kwargs)
+
+
+    # def __init__(self, *args, **kwargs):
+    #    super(MamographyModelForm, self).__init__(*args, **kwargs)
        
-       for name in self.fields.keys():
+        for name in self.fields.keys():
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       self.fields['schedule'].label = ""
-       self.fields['hospital_name'].label = ""
-       self.fields['shielding_score'].label = "Shielding"
-       self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['room_design_score'].label = "Room Design & Layout"
-       self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['radiographers_no_score'].label = "No. of Radiographers"
-       self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['radiologists_no_score'].label = "No. of Radiologists"
-       self.fields['radiologists_no_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['radiographer_license_score'].label = "Radiographers Current License"
-       self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['mammography_certification_score'].label = "Mammography Certification"
-       self.fields['mammography_certification_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['prmd_prpe_score'].label = "PRMD & PRPE"
-       self.fields['prmd_prpe_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['rso_rsa_score'].label = "Radiation Safety Officer"
-       self.fields['rso_rsa_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['water_supply_score'].label = "Water Supply"
-       self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['equipment_certification_score'].label = "Equipment Certification"
-       self.fields['equipment_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
-       self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['warning_lights_score'].label = "Warning Lights"
-       self.fields['warning_lights_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['warning_signs_score'].label = "Warning Signs"
-       self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
-       self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['equipment_installation_location_score'].label = "Equipment Installation "
-       self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['processing_unit_score'].label = "Adequacy of Processing Unit"
-       self.fields['processing_unit_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
-       self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
-       self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
-       self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['mamography_total'].label = "Total Score"
+        self.fields['schedule'].label = ""
+        self.fields['hospital_name'].label = ""
+        self.fields['shielding_score'].label = "Shielding"
+        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['room_design_score'].label = "Room Design & Layout"
+        self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['radiographers_no_score'].label = "No. of Radiographers"
+        self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['radiologists_no_score'].label = "No. of Radiologists"
+        self.fields['radiologists_no_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['radiographer_license_score'].label = "Radiographers Current License"
+        self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['mammography_certification_score'].label = "Mammography Certification"
+        self.fields['mammography_certification_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['prmd_prpe_score'].label = "PRMD & PRPE"
+        self.fields['prmd_prpe_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['rso_rsa_score'].label = "Radiation Safety Officer"
+        self.fields['rso_rsa_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['water_supply_score'].label = "Water Supply"
+        self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['equipment_certification_score'].label = "Equipment Certification"
+        self.fields['equipment_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
+        self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['warning_lights_score'].label = "Warning Lights"
+        self.fields['warning_lights_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['warning_signs_score'].label = "Warning Signs"
+        self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
+        self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['equipment_installation_location_score'].label = "Equipment Installation "
+        self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['processing_unit_score'].label = "Adequacy of Processing Unit"
+        self.fields['processing_unit_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
+        self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
+        self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
+        self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['mamography_total'].label = "Total Score"
 
-    def save(self):
 
-      if not self.request.is_ajax():
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
-          instance.save()
-      else:
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+    def save(self, commit=True):
+        instance = super().save(commit=False)  # Get instance without saving
 
-      return instance
+        if commit:  # Save only when commit=True
+            instance.save()
+        
+        return instance
 
-class DentalXrayModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
+    # def save(self):
+
+    #   if not self.request.is_ajax():
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+    #       instance.save()
+    #   else:
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+
+    #   return instance
+
+class DentalXrayModelForm(forms.ModelForm):
 
     class Meta:
         model = Dentalxray
@@ -815,60 +872,73 @@ class DentalXrayModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelFor
         }
 
     def __init__(self, *args, **kwargs):
-       super(DentalXrayModelForm, self).__init__(*args, **kwargs)
+        self.request = kwargs.pop("request", None)  # Extract request if provided
+        super().__init__(*args, **kwargs)
+
+
+    # def __init__(self, *args, **kwargs):
+    #    super(DentalXrayModelForm, self).__init__(*args, **kwargs)
        
-       for name in self.fields.keys():
+        for name in self.fields.keys():
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
        
-       self.fields['schedule'].label = ""
-       self.fields['hospital_name'].label = ""
-       self.fields['shielding_score'].label = "Shielding"
-       self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
-       self.fields['room_design_score'].label = "Room Design & Layout"
-       self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['radiographers_no_score'].label = "No. of Radiographers"
-       self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['radiologists_no_score'].label = "No. of Radiologists"
-       self.fields['radiologists_no_score'].widget.attrs['placeholder'] = "(Max Score = 1)"
-       self.fields['radiographer_license_score'].label = "Radiographers Current License"
-       self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['prmd_prpe_score'].label = "PRMD & PRPE"
-       self.fields['prmd_prpe_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
-       self.fields['water_supply_score'].label = "Water Supply"
-       self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['equipment_certification_score'].label = "Equipment Certification"
-       self.fields['equipment_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['warning_lights_score'].label = "Warning Lights"
-       self.fields['warning_lights_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['warning_signs_score'].label = "Warning Signs"
-       self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
-       self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['equipment_installation_location_score'].label = "Equipment Installation "
-       self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['processing_unit_score'].label = "Adequacy of Processing Unit"
-       self.fields['processing_unit_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
-       self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
-       self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
-       self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['dentalxray_total'].label = "Total Score"
+        self.fields['schedule'].label = ""
+        self.fields['hospital_name'].label = ""
+        self.fields['shielding_score'].label = "Shielding"
+        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
+        self.fields['room_design_score'].label = "Room Design & Layout"
+        self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['radiographers_no_score'].label = "No. of Radiographers"
+        self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['radiologists_no_score'].label = "No. of Radiologists"
+        self.fields['radiologists_no_score'].widget.attrs['placeholder'] = "(Max Score = 1)"
+        self.fields['radiographer_license_score'].label = "Radiographers Current License"
+        self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['prmd_prpe_score'].label = "PRMD & PRPE"
+        self.fields['prmd_prpe_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
+        self.fields['water_supply_score'].label = "Water Supply"
+        self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['equipment_certification_score'].label = "Equipment Certification"
+        self.fields['equipment_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['warning_lights_score'].label = "Warning Lights"
+        self.fields['warning_lights_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['warning_signs_score'].label = "Warning Signs"
+        self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
+        self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['equipment_installation_location_score'].label = "Equipment Installation "
+        self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['processing_unit_score'].label = "Adequacy of Processing Unit"
+        self.fields['processing_unit_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
+        self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
+        self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
+        self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['dentalxray_total'].label = "Total Score"
 
-    def save(self):
+    def save(self, commit=True):
+        instance = super().save(commit=False)  # Get instance without saving
 
-      if not self.request.is_ajax():
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
-          instance.save()
-      else:
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+        if commit:  # Save only when commit=True
+            instance.save()
+        
+        return instance
 
-      return instance
+    # def save(self):
 
-class EchocardiographyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
+    #   if not self.request.is_ajax():
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+    #       instance.save()
+    #   else:
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+
+    #   return instance
+
+class EchocardiographyModelForm(forms.ModelForm):
 
     class Meta:
         model = Echocardiography
@@ -895,50 +965,62 @@ class EchocardiographyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.Mo
         }  
 
     def __init__(self, *args, **kwargs):
-       super(EchocardiographyModelForm, self).__init__(*args, **kwargs)
+        self.request = kwargs.pop("request", None)  # Extract request if provided
+        super().__init__(*args, **kwargs)
+
+    # def __init__(self, *args, **kwargs):
+    #    super(EchocardiographyModelForm, self).__init__(*args, **kwargs)
        
-       for name in self.fields.keys():
+        for name in self.fields.keys():
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       self.fields['schedule'].label = ""
-       self.fields['hospital_name'].label = ""
-       self.fields['room_design_score'].label = "Room Design & Layout"
-       self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['radiographers_no_score'].label = "No. of Radiographers"
-       self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['radiographer_license_score'].label = "Radiographers Current License"
-       self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['echocardiography_certification_score'].label = "Echocardiography Certification"
-       self.fields['echocardiography_certification_score'].widget.attrs['placeholder'] = "(Max Score = 20"
-       self.fields['water_supply_score'].label = "Water Supply"
-       self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
-       self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
-       self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['equipment_installation_location_score'].label = "Equipment Installation "
-       self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 20)"
-       self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
-       self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
-       self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
-       self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['support_staff_score'].label = "Support Staff/Chaperon"
-       self.fields['support_staff_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['echocardiography_total'].label = "Total Score"
+        self.fields['schedule'].label = ""
+        self.fields['hospital_name'].label = ""
+        self.fields['room_design_score'].label = "Room Design & Layout"
+        self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['radiographers_no_score'].label = "No. of Radiographers"
+        self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['radiographer_license_score'].label = "Radiographers Current License"
+        self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['echocardiography_certification_score'].label = "Echocardiography Certification"
+        self.fields['echocardiography_certification_score'].widget.attrs['placeholder'] = "(Max Score = 20"
+        self.fields['water_supply_score'].label = "Water Supply"
+        self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
+        self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
+        self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['equipment_installation_location_score'].label = "Equipment Installation "
+        self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 20)"
+        self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
+        self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
+        self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
+        self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['support_staff_score'].label = "Support Staff/Chaperon"
+        self.fields['support_staff_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['echocardiography_total'].label = "Total Score"
 
-    def save(self):
-      if not self.request.is_ajax():
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
-          instance.save()
-      else:
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+    def save(self, commit=True):
+        instance = super().save(commit=False)  # Get instance without saving
 
-      return instance
+        if commit:  # Save only when commit=True
+            instance.save()
+        
+        return instance
 
-class AngiographyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
+    # def save(self):
+    #   if not self.request.is_ajax():
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+    #       instance.save()
+    #   else:
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+
+    #   return instance
+
+class AngiographyModelForm(forms.ModelForm):
 
     class Meta:
         model = Angiography
@@ -972,65 +1054,79 @@ class AngiographyModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelFo
         }
 
     def __init__(self, *args, **kwargs):
-       super(AngiographyModelForm, self).__init__(*args, **kwargs)
+        self.request = kwargs.pop("request", None)  # Extract request if provided
+        super().__init__(*args, **kwargs)
+
+
+    # def __init__(self, *args, **kwargs):
+    #    super(AngiographyModelForm, self).__init__(*args, **kwargs)
        
-       for name in self.fields.keys():
+        for name in self.fields.keys():
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
        
-       self.fields['schedule'].label = ""
-       self.fields['hospital_name'].label = ""
-       self.fields['shielding_score'].label = "Shielding"
-       self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
-       self.fields['room_design_score'].label = "Room Design & Layout"
-       self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['radiographers_no_score'].label = "No. of Radiographers"
-       self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['radiologists_no_score'].label = "No. of Radiologists"
-       self.fields['radiologists_no_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['radiographer_license_score'].label = "Radiographers Current License"
-       self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['angiography_certification_score'].label = "Angiography Certification"
-       self.fields['angiography_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['prmd_prpe_score'].label = "PRMD & PRPE"
-       self.fields['prmd_prpe_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['rso_rsa_score'].label = "Radiation Safety Officer"
-       self.fields['rso_rsa_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['water_supply_score'].label = "Water Supply"
-       self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['equipment_certification_score'].label = "Equipment Certification"
-       self.fields['equipment_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
-       self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['warning_lights_score'].label = "Warning Lights"
-       self.fields['warning_lights_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['warning_signs_score'].label = "Warning Signs"
-       self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
-       self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['equipment_installation_location_score'].label = "Equipment Installation "
-       self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
-       self.fields['processing_unit_score'].label = "Adequacy of Processing Unit"
-       self.fields['processing_unit_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
-       self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
-       self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
-       self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['angiography_total'].label = "Total Score"
-
-    def save(self):
-      if not self.request.is_ajax():
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
-          instance.save()
-      else:
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
-      return instance
+        self.fields['schedule'].label = ""
+        self.fields['hospital_name'].label = ""
+        self.fields['shielding_score'].label = "Shielding"
+        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
+        self.fields['room_design_score'].label = "Room Design & Layout"
+        self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['radiographers_no_score'].label = "No. of Radiographers"
+        self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['radiologists_no_score'].label = "No. of Radiologists"
+        self.fields['radiologists_no_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['radiographer_license_score'].label = "Radiographers Current License"
+        self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['angiography_certification_score'].label = "Angiography Certification"
+        self.fields['angiography_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['prmd_prpe_score'].label = "PRMD & PRPE"
+        self.fields['prmd_prpe_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['rso_rsa_score'].label = "Radiation Safety Officer"
+        self.fields['rso_rsa_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['water_supply_score'].label = "Water Supply"
+        self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['equipment_certification_score'].label = "Equipment Certification"
+        self.fields['equipment_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
+        self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['warning_lights_score'].label = "Warning Lights"
+        self.fields['warning_lights_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['warning_signs_score'].label = "Warning Signs"
+        self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
+        self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['equipment_installation_location_score'].label = "Equipment Installation "
+        self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
+        self.fields['processing_unit_score'].label = "Adequacy of Processing Unit"
+        self.fields['processing_unit_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
+        self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
+        self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
+        self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['angiography_total'].label = "Total Score"
 
 
-class CarmModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
+    def save(self, commit=True):
+        instance = super().save(commit=False)  # Get instance without saving
+
+        if commit:  # Save only when commit=True
+            instance.save()
+        
+        return instance
+
+    # def save(self):
+    #   if not self.request.is_ajax():
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+    #       instance.save()
+    #   else:
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+    #   return instance
+
+
+class CarmModelForm(forms.ModelForm):
 
     class Meta:
         model = Carm
@@ -1062,57 +1158,69 @@ class CarmModelForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-       super(CarmModelForm, self).__init__(*args, **kwargs)
+        self.request = kwargs.pop("request", None)  # Extract request if provided
+        super().__init__(*args, **kwargs)
+
+    # def __init__(self, *args, **kwargs):
+    #    super(CarmModelForm, self).__init__(*args, **kwargs)
        
-       for name in self.fields.keys():
+        for name in self.fields.keys():
             self.fields[name].widget.attrs.update({
                 'class': 'form-control',
             })
-       self.fields['schedule'].label = ""
-       self.fields['hospital_name'].label = ""
-       self.fields['shielding_score'].label = "Shielding"
-       self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['room_design_score'].label = "Room Design & Layout"
-       self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['radiographers_no_score'].label = "No. of Radiographers"
-       self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['radiologists_no_score'].label = "No. of Radiologists"
-       self.fields['radiologists_no_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['radiographer_license_score'].label = "Radiographers Current License"
-       self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
-       self.fields['prmd_prpe_score'].label = "PRMD & PRPE"
-       self.fields['prmd_prpe_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
-       self.fields['water_supply_score'].label = "Water Supply"
-       self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
-       self.fields['equipment_certification_score'].label = "Equipment Certification"
-       self.fields['equipment_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
-       self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
-       self.fields['warning_lights_score'].label = "Warning Lights"
-       self.fields['warning_lights_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['warning_signs_score'].label = "Warning Signs"
-       self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
-       self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-       self.fields['equipment_installation_location_score'].label = "Equipment Installation "
-       self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
-       self.fields['processing_unit_score'].label = "Adequacy of Processing Unit"
-       self.fields['processing_unit_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
-       self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
-       self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
-       self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
-       self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
-       self.fields['carm_total'].label = "Total Score"
+        self.fields['schedule'].label = ""
+        self.fields['hospital_name'].label = ""
+        self.fields['shielding_score'].label = "Shielding"
+        self.fields['shielding_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['room_design_score'].label = "Room Design & Layout"
+        self.fields['room_design_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['radiographers_no_score'].label = "No. of Radiographers"
+        self.fields['radiographers_no_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['radiologists_no_score'].label = "No. of Radiologists"
+        self.fields['radiologists_no_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['radiographer_license_score'].label = "Radiographers Current License"
+        self.fields['radiographer_license_score'].widget.attrs['placeholder'] = "(Max Score = 10)"
+        self.fields['prmd_prpe_score'].label = "PRMD & PRPE"
+        self.fields['prmd_prpe_score'].widget.attrs['placeholder'] = "(Max Score = 15)"
+        self.fields['water_supply_score'].label = "Water Supply"
+        self.fields['water_supply_score'].widget.attrs['placeholder'] = "(Max Score = 3)"
+        self.fields['equipment_certification_score'].label = "Equipment Certification"
+        self.fields['equipment_certification_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['accessories_adequacy_score'].label = "Adequacy of Accessories"
+        self.fields['accessories_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
+        self.fields['warning_lights_score'].label = "Warning Lights"
+        self.fields['warning_lights_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['warning_signs_score'].label = "Warning Signs"
+        self.fields['warning_signs_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['C07_form_compliance_score'].label = "Compliance to Form C07"
+        self.fields['C07_form_compliance_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
+        self.fields['equipment_installation_location_score'].label = "Equipment Installation "
+        self.fields['equipment_installation_location_score'].widget.attrs['placeholder'] = "(Max Score = 6)"
+        self.fields['processing_unit_score'].label = "Adequacy of Processing Unit"
+        self.fields['processing_unit_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['toilets_cleanliness_score'].label = "Toilets and Cleanliness"
+        self.fields['toilets_cleanliness_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['waiting_room_score'].label = "Adequacy of Waiting Room"
+        self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
+        self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
+        self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
+        self.fields['carm_total'].label = "Total Score"
 
-    def save(self):
-      if not self.request.is_ajax():
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
-          instance.save()
-      else:
-          instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
-      return instance
+    def save(self, commit=True):
+        instance = super().save(commit=False)  # Get instance without saving
+
+        if commit:  # Save only when commit=True
+            instance.save()
+        
+        return instance
+
+    # def save(self):
+    #   if not self.request.is_ajax():
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=True)
+    #       instance.save()
+    #   else:
+    #       instance = super(CreateUpdateAjaxMixin, self).save(commit=False)
+    #   return instance
 
 
 class InspectionModelForm(forms.ModelForm):

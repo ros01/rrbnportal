@@ -4,6 +4,14 @@ from django.urls import reverse
 
 register = template.Library()
 
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key, None)
+
+
+
+
 @register.filter
 def pluck(queryset, field_name):
     """
