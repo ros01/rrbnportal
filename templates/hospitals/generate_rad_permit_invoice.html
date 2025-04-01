@@ -1,0 +1,184 @@
+{% extends 'hospitals/hospital_base.html'%}
+{% load static %}
+{% load custom_filters %}
+{% load humanize %}
+{% block title%}| Welcome {% endblock %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/hospital_dashboard.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <section class="p-2">
+        <div class="row mt-2">
+            <div class="col text-left ml-2 mb-0">
+                <p class="text-success display-4 paragraph3">Radiography Practice License Application - Payment Invoice</p>
+                <hr>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="col-lg-12">
+            <div class="alert" style="background-color: #f7dedd; font-size:18px">
+                Dear <b>{{ object.hospital_name|upper }}</b>,<br/> 
+                Please find below your application payment invoice.  
+                This includes a registration fee of ₦200,000 and the cost for registering all available modalities. 
+                The first modality attracts a fee of ₦20,000, while additional modalities attract ₦20,000 per modality.
+            </div>
+        </div>
+    </section>
+    
+    <br>
+
+    <div class="row justify-content-center mx-auto">
+        <div class="col-md-7 text-center" style="background:#1ca8dd">
+            <h4 class="justify-content-center" style="font-size:30px; padding:10px; color:#fff"> Invoice </h4>
+        </div>
+
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-lg-7">
+                    <b>{{ object.hospital_name|upper }}</b> <br/>
+                    {% for invoice in invoice %}
+                        {{ invoice.contact_address }} <br/>
+                        {{ invoice.phone_no }}
+                    {% endfor %}
+                    <br/> {{ user.email }} 
+                </div>
+                
+                <div class="col-lg-5">
+                    <b style="color:#888">Application Date:</b> {{ object.date }} <br/><br/>
+                    <b style="color:#888">Application #:</b> {{ object.application_no }}
+                </div>
+            </div> 
+
+            <br/>
+
+            <div class="row" style="background: #efefef; color:#333; padding:8px;">
+                <div class="col-lg-7"> Description </div>
+                <div class="col-lg-5"> Amount (NGN) </div>
+            </div> 
+
+            <br/> 
+
+            <div class="row">
+                <div class="col-lg-7">
+                    <span style="font-size:1.1em">Registration of Practice Application Fee</span> <br/>
+                    <p class="help-block">
+                        <b style="color:#888">Category:</b> {{ object.license_type|upper }} <br/> 
+                        <b style="color:#888">Type:</b> {{ object.application_type|upper }} 
+                    </p>
+                </div>
+
+                <div class="col-lg-5">
+                    <span style="font-size:1.1em">₦200,000.00</span>
+                </div>
+            </div> 
+
+            <!-- Equipment Cost Calculation -->
+            <div class="row">
+                <div class="col-lg-7">
+                    <span style="font-size:1.1em">Cost for Registration of Modalities</span>
+                </div>
+
+                <div class="col-lg-5">
+                <span style="font-size:1.1em">
+                {% if object.equipment_count > 1 %}
+                ₦{{ object.equipment_count|add:"-1"|multiply:"20000"|add:"20000"|intcomma }}.00
+                {% else %}
+                ₦20,000.00
+                {% endif %}
+                </span>
+                </div>
+
+            </div>
+
+            <!-- Total Amount -->
+            <div class="row" style="border-top:1px solid #555; border-bottom: 1px solid #555; padding:8px;">
+                <div class="col-lg-6">
+                    Payment Status: <b style="color:#dc3545">PENDING</b>
+                </div>
+
+                <div class="col-lg-2 text-right">
+                    <b>Total:</b>
+                </div>
+
+            <div class="col-lg-4">
+            <span style="font-size:1.1em">
+            ₦{{ object.equipment_count|add:"-1"|multiply:"20000"|add:"220000"|intcomma }}.00
+            </span>
+            </div>
+            </div> 
+
+            <br/>
+
+<!-- Payment Instructions -->
+<div class="row justify-content-center mx-auto">
+<div class="col-md-12 text-center" style="background:#f7dedd">
+<p class="text-success text-left display-4 paragraph3 mb-0 mt-3">To Pay:</p>
+<p class="ml-2 text-left" style="font-size:14px">
+<strong>
+Log on to <a href="https://www.remita.net" target="_blank">www.remita.net</a>, click "Pay TSA and States", then Federal Government of Nigeria, choose "Radiographers Registration Board of Nigeria", Name of Service/Purpose: Inspection and Registration of Centre Fee.  
+Generate your RRR Number and pay with your credit/debit card or use the generated RRR to pay physically at any commercial bank.
+<br/><br/>
+To redirect to Remita and generate RRR, click  
+<a href="https://login.remita.net/remita/onepage/OAGFCRF/biller.spa" target="_blank" 
+class="py-1 mx-1 mt-6 btn btn-warning">
+<i class="fa fa-check"></i> Pay on Remita
+</a>
+<br/><br/>
+Once payment is complete, click the "Proceed to Payment" button below to upload your payment details.
+<br/><br/>
+<em>NB: You can close the application using the Close button and return later if paying at the bank.</em>
+</strong>
+</p>
+</div>
+</div>
+
+<div class="row mt-1">
+<div class="col-lg-6">
+<img class="img-fluid" src="{% static 'img/remita.png' %}" />
+</div>
+
+<div class="col-lg-6 text-right mt-3"> 
+<a href="{% url 'hospitals:hospitals_dashboard' %}" class="text-dark py-1 mr-1 mt-6 btn btn-outline-danger"><i class="fas fa-times"></i> Close</a>    
+<a href="{% url 'hospitals:payment_processing' object.pk %}" class="py-1 mr-1 mt-6 btn btn-warning"><i class="fa fa-check"></i> Continue to Payment</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<br>
+<br>
+
+<script>
+    let timeout;
+    const initialTimeout = 180000; // 3 minutes
+    const extendTime = 300000; // 5 minutes
+
+    function resetTimeout() {
+        clearTimeout(timeout);
+        timeout = setTimeout(showTimeoutAlert, initialTimeout);
+    }
+
+    function showTimeoutAlert() {
+        let extendSession = confirm("Your session is about to expire due to inactivity. Do you want to extend your session?");
+        if (extendSession) {
+            resetTimeout(); // Extend session by 5 more minutes
+        } else {
+            alert("Session expired. You will be redirected.");
+            window.location.href = "{% url 'hospitals:hospitals_dashboard' %}"; // Redirect on expiration
+        }
+    }
+
+    // Reset timeout on user activity
+    document.addEventListener("mousemove", resetTimeout);
+    document.addEventListener("keypress", resetTimeout);
+    document.addEventListener("click", resetTimeout);
+
+    // Start the initial timeout
+    resetTimeout();
+</script>
+
+
+{% endblock %}

@@ -15,7 +15,7 @@ Start License Renewal
 <span style="float:right; font-size:14px"> 
 <br/> License Number: <b>{{object.license_no}}</b> </span> </p> </div> 
 <hr>
-<div class="alert" style="background-color: #f7dedd; font-size:18px"> Dear <b>{{object.hospital_name|upper}}</b>, <br/>Your Radiography Practice License has expired.  Kindly follow the steps below to renew your license, thank you. </div> 
+<div class="alert" style="background-color: #f7dedd; font-size:18px"> Dear <b>{{object.hospital_name|upper}}</b>, <br/>Your {{ object.hospital.license_type }} has expired.  Kindly follow the steps below to renew your license, thank you. </div> 
 <div class="container">
 <p class="display-4 paragraph3" style="color: #05567b;">Details of License Due for Renewal</p></div>
 <div class="row ml-1 mb-3">

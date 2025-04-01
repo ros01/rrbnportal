@@ -56,19 +56,6 @@
 </td>
 <td>{{object.schedule.inspection_zone}}</td>
 
-<!-- <td>
-    {% if object.inspection_status == 2 or object.inspection_status == 4 or object.appraisal_status == 2 or object.appraisal_status == 4 %}
-        <span class="badge badge-success">Approved</span>
-    {% elif object.inspection_status == 3 or object.appraisal_status == 3 %}
-       <span class="badge badge-danger">Rejected</span>
-    {% elif object.inspection_status == 1 or object.appraisal_status == 1 %}
-        <span class="badge badge-warning">Pending</span>
-    {% else %}
-        <span class="badge badge-danger">Rejected</span>
-    {% endif %}
-</td> -->
-
-
 <td>
     {% if object.inspection_status == 2 or object.inspection_status == 4 or object.appraisal_status == 2 or object.appraisal_status == 4 %}
         <span class="badge badge-success">Approved</span>

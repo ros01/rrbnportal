@@ -50,7 +50,6 @@
 <p class="lead text-secondary m-0">Application Number:</p>
 <p class="lead text-secondary m-0"><strong>{{object.application_no}}</strong></p>  
 <br>
-<br>
 <p class="lead text-secondary m-0 mt-4">Payment Date:</p>
 <p class="lead text-secondary text-capitalize m-0"><strong>{{object.payment.payment_date}}</strong></p>  
 <br> 
@@ -59,8 +58,6 @@
 <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
 <p class="lead text-secondary m-0">Application Category:</p>
 <p class="lead text-secondary m-0"><strong>{{object.hospital.license_type}}</strong></p>
-<br>
-<br>
 <p class="lead text-secondary m-0 mt-4">Inspection Date:</p>
 <p class="lead text-secondary text-capitalize m-0"><strong>{{ object.inspection_date|date:"d M Y" }}</strong></p>  
 <br> 
@@ -68,7 +65,6 @@
 <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
 <p class="lead text-secondary m-0">Facility Address/Location:</p>
 <p class="lead text-secondary m-0"><strong>{{object.hospital.facility_address}}</strong></p>  
-<br>
 <p class="lead text-secondary m-0 mt-4">Inspecting Zonal Office:</p>
 <p class="lead text-secondary text-capitalize m-0"><strong>{{ object.get_inspection_zone_display }}</strong></p>  
 <br>

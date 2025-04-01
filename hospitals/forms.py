@@ -2,7 +2,7 @@ from django import forms
 from django.db.models import Q
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from .models import Document, Payment
-from .choices import STATE_CHOICES, SERVICES, EQUIPMENT, PAYMENT_METHOD
+from .choices import *
 from django.forms.widgets import CheckboxSelectMultiple
 from django.forms import MultipleChoiceField
 from django.forms.models import ModelMultipleChoiceField
@@ -39,6 +39,34 @@ class HospitalProfileModelForm(forms.ModelForm):
        self.fields['rc_number'].label = "RC Number"
        self.fields['rc_number'].widget.attrs['placeholder'] = "Leave blank if no RC Number"
       
+
+
+class HospitalProfileUpdateModelForm(forms.ModelForm):
+    type = forms.ChoiceField(choices = APPLICATION_CATEGORY, widget=forms.Select(), required=True)
+      
+    class Meta:
+         model = Hospital
+         fields = ('hospital_admin', 'type')
+         
+
+         widgets = {
+            # 'contact_address': forms.Textarea(attrs={'rows':2, 'cols':3}),
+            'hospital_admin': forms.HiddenInput(),
+            # 'type': forms.HiddenInput(),
+            # 'dob': DatePickerInput(),
+            
+         }
+
+    def __init__(self, *args, **kwargs):
+       super(HospitalProfileUpdateModelForm, self).__init__(*args, **kwargs)
+       self.fields['hospital_admin'].label = "Hospital Admin"
+       self.fields['type'].label = ""
+       # self.fields['phone_no'].label = "Mobile Telephone Number"
+       # self.fields['state'].label = "State of Location"
+       # self.fields['city'].label = "City of Location"
+       # self.fields['contact_address'].label = "Contact Address"
+       # self.fields['rc_number'].label = "RC Number"
+       # self.fields['rc_number'].widget.attrs['placeholder'] = "Leave blank if no RC Number"
 
 
 class HospitalDetailModelForm(forms.ModelForm):

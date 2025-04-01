@@ -42,6 +42,16 @@ APPLICATION_TYPE = (
         ('Renewal', 'Renewal'),
         )
 
+APPLICATION_CATEGORY = (
+        ('Radiography Practice Permit', 'Radiography Practice Permit'),
+        ('Pri Internship Accreditation', 'Non-Teaching Hospitals Internship Accreditation'),
+        ('Gov Internship Accreditation' , 'Teaching Hospitals Internship Accreditation'),
+        ('Radiography Practice Permit Renewal', 'Radiography Practice Permit Renewal'),
+        ('Pri Internship Accreditation Renewal', 'Non-Teaching Hospitals Internship Accreditation Renewal'),
+        ('Gov Internship Accreditation Renewal', 'Teaching Hospitals Internship Accreditation Renewal'),
+        )
+
+
 SERVICES = (
         ('Diagnostic only', 'Diagnostic only' ),
         ('Therapeutic only', 'Therapeutic only'),
@@ -66,7 +76,7 @@ EQUIPMENT = (
 
 PAYMENT_METHOD = (
         ('Bank', 'Bank'),
-        
+        ('Card', 'Card'),        
         )
 
 

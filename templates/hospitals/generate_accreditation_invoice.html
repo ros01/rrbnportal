@@ -116,7 +116,11 @@
     </span> </div> 
     </div> <!-- buttons --> <br/> 
 
-    <div class="row"> 
+
+
+
+
+    <!-- <div class="row"> 
     <div class="col-lg-6 col-md-4 col-sm-12 hidden-xs"> 
     <img class="img-fluid" src="{% static 'img/remita.png' %}" /> 
     </div> 
@@ -138,12 +142,82 @@
 
     To Redirect to Remita Site to generate RRR and make payment, Click  <a href="https://login.remita.net/remita/onepage/OAGFCRF/biller.spa" target="_blank" class="py-1 mx-1 mt-6 btn btn-warning"><i class="fa fa-check"></i> Pay on Remita</a> </br>
 
-    Once payment is complete, click the Proceed to Payment button above to upload your payment details.</strong></p>
+    Once payment is complete, click the Proceed to Payment button above to upload your payment details.</strong></p> -->
     
+    <!-- If you have ready at this time your remita payment receipt or your payment advise from the bank, Click Proceed to Payment to upload your payment details.</strong></p> -->
+
+    <!-- </div>
+    </div>
+    </br>
+    </div> -->
+
+    <div class="row justify-content-center mx-auto"> 
+
+    <div class="col-md-12 col-md text-center" style="background:#f7dedd"> 
+    <p class="text-success text-left display-4 paragraph3 mb-0 mt-3">To Pay:</p>
+    <p class="ml-2 text-left" style="font-size:14px"><strong>Log on to <a href="https://www.remita.net" target="_blank">www.remita.net</a>, click "Pay TSA and States", then Federal Government of Nigeria, Name of Service/Purpose: Re-Accreditation Fee.  Generate your RRR Number and pay with your credit/debit card or use the generated RRR to pay physically at any commercial bank. </br>
+
+    To redirect to Remita and generate RRR, click  <a href="https://login.remita.net/remita/onepage/OAGFCRF/biller.spa" target="_blank" class="py-1 mx-1 mt-6 btn btn-warning"><i class="fa fa-check"></i> Pay on Remita</a> </br>
+
+    Once payment is complete, click the Proceed to Payment button below to upload your payment details.</br>
+
+    NB: You can close the application by clicking the Close Button below and continue later if you need to pay physically at the bank after generating your RRR at the Remita site</strong></p>
+
     <!-- If you have ready at this time your remita payment receipt or your payment advise from the bank, Click Proceed to Payment to upload your payment details.</strong></p> -->
 
     </div>
     </div>
+
+
+
+
+
+    <div class="row mt-1"> 
+    <div class="col-lg-6"> 
+    <img class="img-fluid" src="{% static 'img/remita.png' %}" /> 
+    </div> 
+        
+    <div class="col-lg-6 text-right mt-3"> 
+    <a href="{% url 'hospitals:hospitals_dashboard' %}" class="text-dark py-1 mr-2 btn btn-outline-danger"><i class="fas fa-times"></i>  Close</a>    
+    <a href="{% url 'hospitals:pay_accreditation_fee' object.pk %}" class="py-1 mr-1 btn btn-warning"><i class="fa fa-check"></i> Continue to Payment</a>
+    </div>
+    </div>
+    </div>
+    </div>
+        
+    <br>
+    
     </br>
     </div>
-    {% endblock %}
+
+
+<script>
+    let timeout;
+    const initialTimeout = 180000; // 3 minutes
+    const extendTime = 300000; // 5 minutes
+
+    function resetTimeout() {
+        clearTimeout(timeout);
+        timeout = setTimeout(showTimeoutAlert, initialTimeout);
+    }
+
+    function showTimeoutAlert() {
+        let extendSession = confirm("Your session is about to expire due to inactivity. Do you want to extend your session?");
+        if (extendSession) {
+            resetTimeout(); // Extend session by 5 more minutes
+        } else {
+            alert("Session expired. You will be redirected.");
+            window.location.href = "{% url 'hospitals:hospitals_dashboard' %}"; // Redirect on expiration
+        }
+    }
+
+    // Reset timeout on user activity
+    document.addEventListener("mousemove", resetTimeout);
+    document.addEventListener("keypress", resetTimeout);
+    document.addEventListener("click", resetTimeout);
+
+    // Start the initial timeout
+    resetTimeout();
+</script>
+
+{% endblock %}

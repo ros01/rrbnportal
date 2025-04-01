@@ -34,6 +34,7 @@
 </div>
 </div>
 
+
 <form method="POST" action="." enctype="multipart/form-data">
 {% csrf_token %}
 {{ form.hospital_name|as_crispy_field }} 
@@ -63,14 +64,10 @@
 <div class="form-group col-md-6 mb-0">
 {{ form.payment_receipt|as_crispy_field }} 
 </div>
-    
-<!-- <div class="form-group col-md-6 mb-0">
-{{ form.payment_receipt|as_crispy_field }} 
-</div> -->
 </div>
 
 <div class="form-group col-md-12 mb-0">
-<input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+<input class="form-check-input" type="checkbox" value="agree" id="invalidCheck" required>
 <label class="form-check-label" for="invalidCheck">I agree that all my details are correct!</label>
 <div class="invalid-feedback">
 You must agree before submitting.
@@ -80,13 +77,6 @@ You must agree before submitting.
 
 <hr>
 <div class="d-flex justify-content-end"> 
-
-
-
-
-
-  
-    
 <a href="{% url 'hospitals:hospitals_dashboard' %}" class="py-1 mr-3 mt-2 mb-4 btn btn-outline-secondary"><i class="fas fa-times"></i> Cancel</a>
 
 <button type="submit" class="btn btn-success py-1 mt-2 mb-4" name="_save"> Proceed &#x21E8;</button>

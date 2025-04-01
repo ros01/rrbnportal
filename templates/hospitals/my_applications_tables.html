@@ -15,10 +15,11 @@
 
 
 <div class="container">
-       <div class="row">
-           <div class="col col-lg-12">
-            
+<div class="row">
+<div class="col col-lg-12 mb-3">
+
 <section class="px-2 pt-3 pb-2">
+    {% include 'partials/_alerts.html' %}
    
     <div class="row mt-3 mb-2">
     <div class="col text-left mb-1">
@@ -40,9 +41,9 @@
 <th class="small-text" style="color: #fff; "width="2%">SN</th>
 <th class="small-text" style="color: #fff; "width="14%">Application No</th>
 <th class="small-text" style="color: #fff; "width="13%">Submitted On</th>
-<th class="small-text" style="color: #fff; "width="18%">Application Category</th>
+<th class="small-text" style="color: #fff; "width="20%">Application Category</th>
 <th class="small-text" style="color: #fff; "width="22%">Application Type</th>
-<th class="small-text" style="color: #fff; "width="16%">Stage</th>
+<th class="small-text" style="color: #fff; "width="14%">Stage</th>
 <th class="small-text" style="color: #fff; "width="15%">Action</th>
 </tr> </thead> 
 
@@ -57,7 +58,7 @@
                 {% else %}
                 {{ object.hospital.date }}
                 {% endif %}</td> 
- <td width="18%">{% if object.model_name == "Document" %}
+ <td width="20%">{% if object.model_name == "Document" %}
                 {{ object.license_type }}
                 {% else %}
                 {{object.hospital.license_type}}
@@ -70,7 +71,7 @@
 
 
 
-<td width="16%">{{ object|get_status_message }}</td>
+<td width="14%">{{ object|get_status_message }}</td>
 
 
 <td width="15%">
@@ -93,6 +94,9 @@
 
 
 
+
+
+
  </tr> 
  {% endfor %}
 
@@ -104,11 +108,11 @@
  <td width="2%">{{forloop.counter}}</td> 
  <td width="14%">Not applicable</td> 
  <td width="13%">{{object.date}}</td> 
- <td width="18%">{{object.type}}</td> 
+ <td width="20%">{% if object.type == 'Pri Internship Accreditation' %} Non-Teaching Hospitals Internship Accreditation {% elif object.type == 'Gov Internship Accreditation' %} Teaching Hospitals Internship Accreditation {% elif object.type == 'Pri Internship Accreditation Renewal' %} Non-Teaching Hospitals Internship Accreditation Renewal {% elif object.type == 'Gov Internship Accreditation Renewal' %} Teaching Hospitals Intership Accreditation Renewal {% else %} {{object.type}} {% endif %}</td> 
  <td width="22%">New Application</td> 
- <td width="16%">Start Application</td> 
+ <td width="14%">Start Application</td> 
 
- <td width="15%">
+ <!-- <td width="15%">
     {% get_hospital_action_url object as action_url %}
     {% if action_url %}
         <a href="{{ action_url }}" class="btn btn-outline-warning btn-sm">
@@ -117,25 +121,36 @@
     {% else %}
         <span>No Action Available</span>
     {% endif %}
+</td> -->
+
+
+
+<td width="15%">
+    {% get_hospital_action_url object as action_url %}
+    {% if action_url %}
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-eye"></i> Start
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="{{ action_url }}">
+                    <i class="fa fa-user-plus text-success"></i> Continue Current Category
+                </a>
+                <a class="dropdown-item" href="{% url 'hospitals:change_application_type' %}">
+                    <i class="fa fa-edit text-success"></i> Change Application Category
+                </a>
+            </div>
+        </div>
+    {% else %}
+        <span>No Action Available</span>
+    {% endif %}
 </td>
 
 
- <!-- <td width="15%">
-    {% if hospital_qs %}
-    <a href="{% url 'hospitals:start_new_radiography_license_application' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Register</a>
-    {% elif hospital_qss %} 
-    <a href="{% url 'hospitals:start_gov_internship_accreditation_application' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Register</a>
-    {% elif hospital_qsss %}
-    <a href="{% url 'hospitals:start_pri_internship_accreditation_application' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Register</a>
-    {% elif hospital_qsr %}
-    <a href="{% url 'hospitals:start_new_practice_permit_renewal' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Register</a>
-    {% elif hospital_qssr %}
-    <a href="{% url 'hospitals:start_new_pri_internship_renewal' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Register</a>
-    {% elif hospital_qgssr %}
-    <a href="{% url 'hospitals:start_new_gov_internship_renewal' object.pk %}" class="btn btn-outline-warning btn-sm"><i class="fa fa-eye text-danger"></i> Register</a>
-    {% endif %}
-</td>  -->
+
 </tr> 
+
+
 {% endfor %}
 {% endif %}
 

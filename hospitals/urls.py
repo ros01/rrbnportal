@@ -4,6 +4,7 @@ from . import views
 
 from .views import (
     StartNewRadApplication,
+    ChangeApplicationType,
     StartGovInternshipApplication,
     StartPriInternshipApplication,
     StartRadiographyLicenseRenewal,
@@ -66,6 +67,7 @@ app_name = 'hospitals'
 urlpatterns = [
     path('', views.hospitals_dashboard, name='hospitals_dashboard'),
     path('application_list/', MyApplicationListView.as_view(), name='application_list'),
+    path('change_application_type/', ChangeApplicationType.as_view(), name='change_application_type'),
     path('start_new_application/', StartNewApplication.as_view(), name='start_new_application'),
     path('<uuid:pk>/hospital_profile_details/', NewHospitalProfileDetails.as_view(), name='hospital_profile_details'),
     path('<uuid:pk>/update_hospital_profile_details/', UpdateHospitalProfileDetails.as_view(), name='update_hospital_profile_details'),

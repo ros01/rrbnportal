@@ -210,10 +210,10 @@ admin.site.register(Appraisal, AppraisalAdmin)
 
 
 class LicenseAdmin(admin.ModelAdmin):
-  list_display = ('application_no', 'hospital_name', 'issue_date', 'expiry_date',)
-  list_display_links = ('application_no', 'hospital_name')
-  list_filter = ('application_no',)
-  search_fields = ('hospital_name', 'issue_date', 'expiry_date',)
+  list_display = ('application_no', 'license_no', 'hospital_name', 'hospital_code', 'issue_date', 'expiry_date',)
+  list_display_links = ('application_no', 'license_no', 'hospital_name')
+  list_filter = ('application_no', 'license_no')
+  search_fields = ('hospital_name', 'license_no', 'issue_date', 'expiry_date',)
   list_per_page = 25
 
 

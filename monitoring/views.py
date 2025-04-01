@@ -73,7 +73,6 @@ class StaffRequiredMixin(object):
             *args, **kwargs)
 
 
-
 class LoginRequiredMixin(object):
     #@classmethod
     #def as_view(cls, **kwargs):
@@ -83,6 +82,8 @@ class LoginRequiredMixin(object):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
+
+
 
 @login_required
 def monitoring_dashboard(request):
@@ -1001,7 +1002,8 @@ def approve(request, id):
             send_mail(subject, contact_message, from_email, to_email, fail_silently=False)
         except Exception as e:
             messages.error(request, f"Error sending email: {e}")
-            return render(request, 'monitoring/verification_failed.html', context)
+            # return render(request, 'monitoring/verification_failed.html', context)
+            return render(request, 'monitoring/verification_successful.html', context)
 
         # Success message and response
         messages.success(request, (
@@ -1566,7 +1568,7 @@ class InspectionCompletedListView4(StaffRequiredMixin, LoginRequiredMixin, ListV
 
 
 
-class InspectionCompletedListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
+class InspectionCompletedListView00(StaffRequiredMixin, LoginRequiredMixin, ListView):
     template_name = 'monitoring/inspections_completed_lists.html'
     context_object_name = 'combined_records'
 
@@ -1600,6 +1602,38 @@ class InspectionCompletedListView(StaffRequiredMixin, LoginRequiredMixin, ListVi
         context["combined_records"] = self.get_queryset()
         return context
 
+
+class InspectionCompletedListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
+    template_name = 'monitoring/inspections_completed_lists.html'
+    context_object_name = 'combined_records'
+
+    def get_queryset(self):
+        # Fetch completed inspections and provide a placeholder for appraisal status
+        inspections = Inspection.objects.filter(vet_status=4).select_related("hospital_name").annotate(
+            appraisal_status_placeholder=Value(None, output_field=IntegerField())  # Placeholder for appraisals
+        )
+
+        # Fetch completed appraisals and provide a placeholder for inspection status
+        appraisals = Appraisal.objects.filter(vet_status=4).select_related("hospital_name").annotate(
+            inspection_status_placeholder=Value(None, output_field=IntegerField())  # Placeholder for inspections
+        )
+
+        # Combine records
+        combined_records = list(chain(inspections, appraisals))
+
+        # Sort by most recent date (inspection_date or appraisal_date)
+        sorted_records = sorted(
+            combined_records,
+            key=lambda obj: getattr(obj, "inspection_date", None) or getattr(obj, "appraisal_date", None) or now(),
+            reverse=True  # Ensures descending order (most recent first)
+        )
+
+        return sorted_records
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["combined_records"] = self.get_queryset()
+        return context
 
 
 
@@ -1994,12 +2028,35 @@ class LicenseDetailView(StaffRequiredMixin, LoginRequiredMixin, InspectionObject
         context = {'object': self.get_object()}
         return render(request, self.template_name, context)
 
-class AccreditationDetailView(StaffRequiredMixin, LoginRequiredMixin, AccreditationObjectMixin, View):
-    template_name = "monitoring/accreditation_detail.html" # DetailView
-    def get(self, request, id=None, *args, **kwargs):
-        # GET method
-        context = {'object': self.get_object()}
-        return render(request, self.template_name, context)
+# class AccreditationDetailView(StaffRequiredMixin, LoginRequiredMixin, AccreditationObjectMixin, View):
+#     template_name = "monitoring/accreditation_detail.html" # DetailView
+#     def get(self, request, id=None, *args, **kwargs):
+#         # GET method
+#         context = {'object': self.get_object()}
+#         return render(request, self.template_name, context)
+
+
+
+class AccreditationDetailView(StaffRequiredMixin, LoginRequiredMixin, DetailView):
+    model = Appraisal
+    template_name = "monitoring/accreditation_detail.html"  # Replace with the path to your template
+    context_object_name = 'object'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        appraisal = self.object
+        context['photos'] = [
+            {'label': 'Main Photo', 'image': appraisal.photo_main} if appraisal.photo_main else None,
+            {'label': 'Photo 1', 'image': appraisal.photo_1} if appraisal.photo_1 else None,
+            {'label': 'Photo 2', 'image': appraisal.photo_2} if appraisal.photo_2 else None,
+            {'label': 'Photo 3', 'image': appraisal.photo_3} if appraisal.photo_3 else None,
+            {'label': 'Photo 4', 'image': appraisal.photo_4} if appraisal.photo_4 else None,
+            {'label': 'Photo 5', 'image': appraisal.photo_5} if appraisal.photo_5 else None,
+            {'label': 'Photo 6', 'image': appraisal.photo_6} if appraisal.photo_6 else None,
+        ]
+        context['photos'] = [photo for photo in context['photos'] if photo is not None]
+
+        return context
 
 
 #class AccreditationDetailView(LoginRequiredMixin, DetailView):

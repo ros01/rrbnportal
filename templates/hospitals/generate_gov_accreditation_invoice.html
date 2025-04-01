@@ -11,7 +11,7 @@
    
     <div class="row mt-2 ">
     <div class="col text-left ml-2 mb-0">
-    <p class="text-success display-4 paragraph3">Government Hospital Internship Application - Payment Invoice</p>
+    <p class="text-success display-4 paragraph3">Teaching/Government Hospitals Internship Application - Payment Invoice</p>
     <hr>
     </div>
     </div>
@@ -40,7 +40,7 @@
     <br/> {{object.hospital_name.phone_no}}
     <br/>{{object.hospital_name.hospital_admin}} </div> 
         
-    <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"> <b style="color:#888">Application Date: </b>{{object.submission_date}} <br/><br/> <b style="color:#888">Application #: </b> {{object.application_no}} 
+    <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12"> <b style="color:#888">Application Date: </b>{{object.date}} <br/><br/> <b style="color:#888">Application #: </b> {{object.application_no}} 
     </div>
     </div> <br/> 
 
@@ -83,11 +83,42 @@
 
     {% endif %}
 
+    <div class="row justify-content-center mx-auto"> 
+    <div class="col-md-12 col-md text-center" style="background:#f7dedd"> 
+    <p class="text-success text-left display-4 paragraph3 mb-0 mt-3">To Pay:</p>
+    <p class="ml-2 text-left" style="font-size:14px"><strong>Log on to <a href="https://www.remita.net" target="_blank">www.remita.net</a>, click "Pay TSA and States", then Federal Government of Nigeria, {% if object.application_type == "Renewal - Government Hospital Internship" %} <b style="color:#dc3545">Name of Service/Purpose: Re-Accreditation Fee</b>. {% else %}  <b style="color:#dc3545">Name of Service/Purpose: Accreditation Fee</b>. {% endif %} Generate your RRR Number and pay with your credit/debit card or use the generated RRR to pay physically at any commercial bank. </br>
+
+    To Redirect to Remita Site to generate RRR and make payment, Click  <a href="https://login.remita.net/remita/onepage/OAGFCRF/biller.spa" target="_blank" class="py-1 mx-1 mt-6 btn btn-warning"><i class="fa fa-check"></i> Pay on Remita</a> </br>
+
+    Once payment is complete, click the Proceed to Payment button below to upload your payment details.</br>
+
+    NB: You can close the application by clicking the Close Button below and continue later if you need to pay physically at the bank after generating your RRR at the Remita site</strong></p>
+    </div>
+    </div>
+
+    <div class="row mt-1"> 
+    <div class="col-lg-6"> 
+    <img class="img-fluid" src="{% static 'img/remita.png' %}" /> 
+    </div> 
+        
+    <div class="col-lg-6 text-right mt-3"> 
+    <a href="{% url 'hospitals:hospitals_dashboard' %}" class="text-dark py-1 mr-2 btn btn-outline-danger"><i class="fas fa-times"></i>  Close</a>    
+    <a href="{% url 'hospitals:pay_accreditation_fee' object.pk %}" class="py-1 mr-1 btn btn-warning"><i class="fa fa-check"></i> Continue to Payment</a>
+    </div>
+    </div>
+    </div>
+    </div>
+        
+    <br>
+    
+    </br>
+    </div>
 
 
 
 
-    <div class="row"> 
+
+    <!-- div class="row"> 
     <div class="col-lg-6 col-md-4 col-sm-12 hidden-xs"> 
     <img class="img-fluid" src="{% static 'img/remita.png' %}" /> 
     </div> 
@@ -98,23 +129,39 @@
     </div>
     </div>
     </div>
-    </div>
-        
+    </div>   
     <br>
-    <div class="row justify-content-center mx-auto"> 
-
-    <div class="col-md-8 col-md text-center" style="background:#f7dedd"> 
-    <p class="text-success text-left display-4 paragraph3 mb-0 mt-3">To Pay:</p>
-    <p class="ml-2 text-left" style="font-size:18px"><strong>Logon to www.remita.net, Click Pay Fed Govt Agency, </br> Choose Radiographers Registration Board of Nigeria from the list and complete the relevant fields, </br> Generate your RRR Number and pay with your credit/debit card or use the generated RRR to pay physically at any commercial bank. </br>
-
-    To Redirect to Remita Site to generate RRR and make payment, Click  <a href="https://login.remita.net/remita/onepage/OAGFCRF/biller.spa" target="_blank" class="py-1 mx-1 mt-6 btn btn-warning"><i class="fa fa-check"></i> Pay on Remita</a> </br>
-
-    Once payment is complete, click the Proceed to Payment button above to upload your payment details.</strong></p>
-
-    <!-- If you have ready at this time your remita payment receipt or your payment advise from the bank, Click Proceed to Payment to upload your payment details.</strong></p> -->
-
-    </div>
-    </div>
     </br>
     </div>
+ -->
+
+<script>
+    let timeout;
+    const initialTimeout = 180000; // 3 minutes
+    const extendTime = 300000; // 5 minutes
+
+    function resetTimeout() {
+        clearTimeout(timeout);
+        timeout = setTimeout(showTimeoutAlert, initialTimeout);
+    }
+
+    function showTimeoutAlert() {
+        let extendSession = confirm("Your session is about to expire due to inactivity. Do you want to extend your session?");
+        if (extendSession) {
+            resetTimeout(); // Extend session by 5 more minutes
+        } else {
+            alert("Session expired. You will be redirected.");
+            window.location.href = "{% url 'hospitals:hospitals_dashboard' %}"; // Redirect on expiration
+        }
+    }
+
+    // Reset timeout on user activity
+    document.addEventListener("mousemove", resetTimeout);
+    document.addEventListener("keypress", resetTimeout);
+    document.addEventListener("click", resetTimeout);
+
+    // Start the initial timeout
+    resetTimeout();
+</script>
+
     {% endblock %}

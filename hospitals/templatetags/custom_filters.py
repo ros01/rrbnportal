@@ -5,6 +5,18 @@ from django.urls import reverse
 register = template.Library()
 
 
+
+@register.filter
+def multiply(value, arg):
+    """Multiplies the given value by the argument."""
+    try:
+        return int(value) * int(arg)
+    except (ValueError, TypeError):
+        return 0  # Return 0 if there's an issue
+
+
+
+
 @register.filter
 def get_item(dictionary, key):
     return dictionary.get(key, None)

@@ -740,35 +740,28 @@ class MyApplicationListView00(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(MyApplicationListView, self).get_context_data(**kwargs)
-
         user_application_nos = Document.objects.filter(hospital_name__hospital_admin=self.request.user).values_list('application_no', flat=True).distinct()
         document_qs = Document.objects.filter(hospital_name__hospital_admin=self.request.user, application_status=1, license_type='Radiography Practice Permit', application_type='New Registration - Radiography Practice Permit', application_no__in=user_application_nos).distinct('application_no')  # Ensure each application_no is unique if needed
         context['document_qs'] = document_qs
-
         user_applications = License.objects.filter(hospital_name__hospital_admin=self.request.user).values_list('application_no', flat=True).distinct()
         license_issue_qs = License.objects.filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit', application_no__in=user_application_nos).distinct('application_no')  # Ensure each application_no is unique if needed
         context['license_issue_qs'] = license_issue_qs
-
-
         application_nos = Document.objects.filter(hospital_name__hospital_admin=self.request.user).values_list('application_no', flat=True) 
         # user_documents = Document.objects.filter(hospital_name__hospital_admin=self.request.user, application_status=1, license_type='Radiography Practice Permit', application_type='New Registration - Radiography Practice Permit')
         # unique_documents = user_documents.order_by('application_no').distinct('application_no')
         # context['document_qs'] = unique_documents
         context['application_nos'] = application_nos
-
         # user_li_docs = License.objects.filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
         # li_unique_docs = user_li_docs.order_by('application_no').distinct('application_no')
         # license_issue_qs = li_unique_docs
         print ("License N Set:", license_issue_qs)
         # context['license_issue_qs'] = li_unique_docs
-
         context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user, type = 'Radiography Practice Permit')
         context['hospital_qss'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user, type = 'Gov Internship Accreditation')
         context['hospital_qsss'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user, type = 'Pri Internship Accreditation')
         context['hospital_qsr'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user, type = 'Radiography Practice Permit Renewal')
         context['hospital_qssr'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user, type = 'Pri Internship Accreditation Renewal')
         context['hospital_qgssr'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user, type = 'Gov Internship Accreditation Renewal')
-
         # context['document_qs'] = Document.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user,  application_status=1, license_type='Radiography Practice Permit', application_type='New Registration - Radiography Practice Permit', application_no__in=application_nos )
         context['document_qs'] = Document.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=1, license_type = 'Radiography Practice Permit', application_type = 'New Registration - Radiography Practice Permit', **({'application_no': application_no} if application_no else {}))
         context['document_qss'] = Document.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=1, license_type = 'Internship Accreditation', application_type = 'New Registration - Government Hospital Internship')
@@ -776,69 +769,50 @@ class MyApplicationListView00(LoginRequiredMixin, ListView):
         context['document_qsr'] = Document.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=1, license_type = 'Radiography Practice Permit', application_type = 'Renewal - Radiography Practice Permit')
         context['document_qssr'] = Document.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=1, license_type = 'Internship Accreditation', application_type = 'Renewal - Private Hospital Internship')
         context['document_qgssr'] = Document.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=1, license_type = 'Internship Accreditation', application_type = 'Renewal - Government Hospital Internship')
-        
         context['payment_qs'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
         context['payment_qss'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
         context['payment_qsss'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
         context['payment_qsr'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
         context['payment_qssr'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
         context['payment_qgssr'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
-        
-
         context['payment_verified_qs'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=3, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
         context['payment_verified_qss'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=3, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
         context['payment_verified_qsss'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=3, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
         context['payment_verified_qsr'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=3, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
         context['payment_verified_qssr'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=3, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
         context['payment_verified_qgssr'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=3, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
-        
-
         context['schedule_qs'] = Schedule.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=4, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
         context['schedule_qss'] = Schedule.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=4, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
         context['schedule_qsss'] = Schedule.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=4, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
         context['schedule_qssr'] = Schedule.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=4, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
         context['schedule_qgssr'] = Schedule.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=4, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
-        
-
         context['inspection_qs'] = Inspection.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=5, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
         context['inspection_qsr'] = Inspection.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=5, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
         context['inspection_approved_qs'] = Inspection.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=6, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
-
         context['accreditation_qss'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=5, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
         context['accreditation_qsss'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=5, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
         context['accreditation_qssr'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=5, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
         context['accreditation_qgssr'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=5, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
-        
         context['accreditation_approved_qss'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=6, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
         context['accreditation_approved_qsss'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=6, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
         context['accreditation_approved_qssr'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=6, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
         context['accreditation_approved_qgssr'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=6, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
-        
-
-
-
         context['registrar_approval_qs'] = Inspection.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=7, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
         context['registrar_approval_qss'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=7, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
         context['registrar_approval_qsss'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=7, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
         context['registrar_approval_qsr'] = Payment.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=7, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
         context['registrar_approval_qssr'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=7, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
         context['registrar_approval_qgssr'] = Appraisal.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=7, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
-        
-
-
         context['license_issue_qs'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit')
         context['license_issue_qss'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Government Hospital Internship')
         context['license_issue_qsss'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'New Registration - Private Hospital Internship')
         context['license_issue_qsr'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
         context['license_issue_qssr'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Private Hospital Internship')
         context['license_issue_qgssr'] = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Internship Accreditation', hospital__application_type = 'Renewal - Government Hospital Internship')
-        
-
         #context['schedule_qsr'] = Schedule.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=4, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
         #context['inspection_approved_qsr'] = Inspection.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=6, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
         #context['registrar_approval_qsr'] = Inspection.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=7, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'Renewal - Radiography Practice Permit')
         # license_issue_qs = License.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user, application_status=8, hospital__license_type = 'Radiography Practice Permit', hospital__application_type = 'New Registration - Radiography Practice Permit', application_no__in=application_nos )
-       
         # print ("License Set:", license_issue_qs)
         # document_qs = Document.objects.select_related("hospital_name").filter(hospital_name__hospital_admin=self.request.user,  application_status=1, license_type='Radiography Practice Permit', application_type='New Registration - Radiography Practice Permit', application_no__in=application_nos )
         # print ("Document Set:", document_qs)
@@ -854,6 +828,50 @@ class HospitalObjectMixin(object):
             obj = get_object_or_404(self.model, id=id)
         return obj 
 
+
+class ChangeApplicationType(LoginRequiredMixin, ListView, UpdateView):
+    template_name = "hospitals/change_application_category.html"
+    context_object_name = 'object_list'  # Ensures queryset is properly named
+    form_class = HospitalProfileUpdateModelForm  # Use form_class for UpdateView
+    model = Hospital  # Required for UpdateView
+
+    def get_queryset(self):
+        """Filter hospitals by the logged-in user."""
+        return Hospital.objects.filter(hospital_admin=self.request.user)
+
+    def get_object(self, queryset=None):
+        """Return a single hospital instance for UpdateView."""
+        return self.get_queryset().first()  # Get the first hospital for the logged-in admin
+
+    def get_context_data(self, **kwargs):
+        """Ensure object_list and form are properly included in the context."""
+        # Manually set self.object before calling super()
+        self.object = self.get_object()  
+        # Now call super() with self.object set
+        context = super().get_context_data(**kwargs)
+        # Explicitly set object_list for ListView functionality
+        context['object_list'] = self.get_queryset()
+        context['hospital_name'] = self.get_queryset()
+        # Ensure hospital object is available for UpdateView
+        context['object'] = self.object
+        # Preserve form state in case of validation errors
+        context['form'] = kwargs.get('form', self.form_class(instance=self.object))
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """Handle form submission."""
+        self.object = self.get_object()
+        form = self.form_class(request.POST, instance=self.object)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Hospital application type updated successfully!")
+            return redirect(reverse("hospitals:application_list"))  # Redirect after success
+        else:
+            # Ensure object_list and object are passed explicitly during re-render
+            return self.render_to_response(self.get_context_data(form=form))
+
+
+
 class StartNewApplication(LoginRequiredMixin, HospitalObjectMixin, ListView):
     template_name = "hospitals/start_new_application.html"
     context_object_name = 'object'
@@ -867,70 +885,6 @@ class StartNewApplication(LoginRequiredMixin, HospitalObjectMixin, ListView):
         obj['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
         
         return obj  
-
-class StartNewRadApplication(LoginRequiredMixin, HospitalObjectMixin, SuccessMessageMixin, CreateView):
-    model = Document
-    template_name = 'hospitals/register_radiography_practice.html'
-    form_class = HospitalDetailModelForm
-    def get_success_url(self):
-        return reverse("hospitals:hospital_details", kwargs={"id": self.object.id})
-    def get_initial(self):
-        return {
-            'hospital_name': self.kwargs["pk"],   
-        }
-    def get_queryset(self):
-        #hospital = Hospital.objects.filter(hospital_admin=self.request.user)
-        return Document.objects.filter(hospital_name__hospital_admin=self.request.user)
-    def get_context_data(self, **kwargs):
-        context = super(StartNewRadApplication, self).get_context_data(**kwargs)
-        context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
-        return context
-    #def get_form_kwargs(self):
-        #self.hospital = Hospital.objects.get(pk=self.kwargs['pk'])
-        #kwargs = super().get_form_kwargs()
-        ##kwargs['initial']['license_type'] = self.hospital.license_type      
-        #return kwargs
-    
-    #def form_invalid(self, form):
-        #form = self.get_form()
-        #context = {}
-        #obj = self.get_object()
-        #if obj is not None: 
-           #context['object'] = obj
-           #context['form'] = form  
-        #return self.render_to_response(context)
-
-    def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data())
-
-class StartNewPracticePermitRenewal(LoginRequiredMixin, HospitalObjectMixin, SuccessMessageMixin, CreateView):
-    model = Document
-    template_name = 'hospitals/renew_radiography_hospital_license.html'
-    form_class = HospitalDetailModelForm
-    def get_success_url(self):
-        return reverse("hospitals:start_radiography_license_renewal_details", kwargs={"id": self.object.id})
-    def get_initial(self):
-        return {
-            'hospital_name': self.kwargs["pk"],
-        }
-    
-    #def get_form_kwargs(self):
-        #self.license = License.objects.get(pk=self.kwargs['pk'])
-        #kwargs = super().get_form_kwargs()
-        #kwargs['initial']['hospital_name'] = self.license.hospital_name
-        #kwargs['initial']['application_no'] = self.license.application_no
-        #return kwargs
-
-    def get_queryset(self):
-        #hospital = Hospital.objects.filter(hospital_admin=self.request.user)
-        return Document.objects.filter(hospital_name__hospital_admin=self.request.user)    
-    def get_context_data(self, **kwargs):
-        context = super(StartNewPracticePermitRenewal, self).get_context_data(**kwargs)
-        context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
-        return context
-    def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data())
-
 
 class StartNewPriInternshipRenewal(LoginRequiredMixin, HospitalObjectMixin, SuccessMessageMixin, CreateView):
     model = Document
@@ -985,82 +939,277 @@ class StartNewGovInternshipRenewal(LoginRequiredMixin, HospitalObjectMixin, Succ
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data())
 
-class StartGovInternshipApplication(LoginRequiredMixin, HospitalObjectMixin, SuccessMessageMixin, CreateView):
+
+class StartGovInternshipApplication(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Document
-    template_name = 'hospitals/register_gov_internship_accreditation.html'
+    template_name = 'hospitals/start_gov_internship_accreditation.html'
     form_class = HospitalDetailModelForm
+
     def get_success_url(self):
         return reverse("hospitals:hospital_details", kwargs={"id": self.object.id})
+
     def get_initial(self):  
+        """Set initial data for the form, ensuring 'pk' exists in kwargs"""
+        initial = super().get_initial()
+        if "pk" in self.kwargs:
+            initial["hospital_name"] = self.kwargs["pk"]
+        return initial
+
+    def get_queryset(self):
+        """Filter documents by hospitals managed by the logged-in user."""
+        return Document.objects.filter(hospital_name__hospital_admin=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        """Add hospital queryset to the context for form selection."""
+        context = super().get_context_data(**kwargs)
+        context["hospital_qs"] = Hospital.objects.filter(hospital_admin=self.request.user)
+        return context
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+
+        errors = []
+
+        # Validate and assign Radiographers (Max 3)
+        for i in range(1, 4):
+            radiographer_key = f'radiographer{i}'
+            license_no_key = f'radiographer{i}_license_no'
+            radiographer = self.request.POST.get(radiographer_key)
+            license_no = self.request.POST.get(license_no_key)
+
+            if radiographer and license_no:
+                setattr(self.object, radiographer_key, radiographer)
+                setattr(self.object, license_no_key, license_no)
+            elif i == 1:
+                errors.append("Radiographer 1 details are required.")
+
+        # Validate and assign Radiographer Licenses (Max 3)
+        for i in range(1, 4):
+            radiographer_license_key = f'radiographer{i}_practice_license'  # ✅ Correct field name
+            radiographer_license = self.request.FILES.get(radiographer_license_key)  # ✅ Retrieve from FILES
+
+            if radiographer_license:
+                setattr(self.object, radiographer_license_key, radiographer_license)
+            elif i == 1:  # Ensure at least the first one is required
+                errors.append("Radiographer 1 Practice License is required.")
+
+
+        # Validate and assign Other Staff (Max 6)
+        for i in range(1, 6):
+            staffname_key = f'staffname{i}'
+            staffdesignation_key = f'staffdesignation{i}'  # Fixed Key
+            staffname = self.request.POST.get(staffname_key)
+            staffdesignation = self.request.POST.get(staffdesignation_key)
+
+            if staffname and staffdesignation:
+                setattr(self.object, staffname_key, staffname)
+                setattr(self.object, staffdesignation_key, staffdesignation)
+            elif i == 1:
+                errors.append("Staff 1 details are required.")
+
+        # If any errors exist, return form invalid with messages
+        if errors:
+            for error in errors:
+                messages.error(self.request, error)
+            return self.form_invalid(form)
+
+        self.object.save()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        """Ensure form errors are properly handled."""
+        return self.render_to_response(self.get_context_data(form=form))
+
+class StartPriInternshipApplication(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    model = Document
+    template_name = 'hospitals/start_pri_internship_accreditation.html'
+    form_class = HospitalDetailModelForm
+
+    def get_success_url(self):
+        return reverse("hospitals:private_hospital_details", kwargs={"id": self.object.id})
+
+    def get_initial(self):  
+        """Set initial data for the form, ensuring 'pk' exists in kwargs"""
+        initial = super().get_initial()
+        if "pk" in self.kwargs:
+            initial["hospital_name"] = self.kwargs["pk"]
+        return initial
+
+    def get_queryset(self):
+        """Filter documents by hospitals managed by the logged-in user."""
+        return Document.objects.filter(hospital_name__hospital_admin=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        """Add hospital queryset to the context for form selection."""
+        context = super().get_context_data(**kwargs)
+        context["hospital_qs"] = Hospital.objects.filter(hospital_admin=self.request.user)
+        return context
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+
+        errors = []
+
+        # Validate and assign Radiographers (Max 3)
+        for i in range(1, 4):
+            radiographer_key = f'radiographer{i}'
+            license_no_key = f'radiographer{i}_license_no'
+            radiographer = self.request.POST.get(radiographer_key)
+            license_no = self.request.POST.get(license_no_key)
+
+            if radiographer and license_no:
+                setattr(self.object, radiographer_key, radiographer)
+                setattr(self.object, license_no_key, license_no)
+            elif i == 1:
+                errors.append("Radiographer 1 details are required.")
+
+        # Validate and assign Radiographer Licenses (Max 3)
+        for i in range(1, 4):
+            radiographer_license_key = f'radiographer{i}_practice_license'  # ✅ Correct field name
+            radiographer_license = self.request.FILES.get(radiographer_license_key)  # ✅ Retrieve from FILES
+
+            if radiographer_license:
+                setattr(self.object, radiographer_license_key, radiographer_license)
+            elif i == 1:  # Ensure at least the first one is required
+                errors.append("Radiographer 1 Practice License is required.")
+
+
+
+        # Validate and assign Other Staff (Max 6)
+        for i in range(1, 6):
+            staffname_key = f'staffname{i}'
+            staffdesignation_key = f'staffdesignation{i}'  # Fixed Key
+            staffname = self.request.POST.get(staffname_key)
+            staffdesignation = self.request.POST.get(staffdesignation_key)
+
+            if staffname and staffdesignation:
+                setattr(self.object, staffname_key, staffname)
+                setattr(self.object, staffdesignation_key, staffdesignation)
+            elif i == 1:
+                errors.append("Staff 1 details are required.")
+
+        # If any errors exist, return form invalid with messages
+        if errors:
+            for error in errors:
+                messages.error(self.request, error)
+            return self.form_invalid(form)
+
+        self.object.save()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        """Ensure form errors are properly handled."""
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class StartNewRadApplication(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    model = Document
+    template_name = 'hospitals/register_radiography_practice.html'
+    form_class = HospitalDetailModelForm
+    
+    def get_success_url(self):
+        return reverse("hospitals:hospital_details", kwargs={"id": self.object.id})
+    
+    def get_initial(self):
         return {
             'hospital_name': self.kwargs["pk"],   
         }
-    def get_queryset(self):
-        #hospital = Hospital.objects.filter(hospital_admin=self.request.user)
-        return Document.objects.filter(hospital_name__hospital_admin=self.request.user) 
-    def get_context_data(self, **kwargs):
-        context = super(StartGovInternshipApplication, self).get_context_data(**kwargs)
-        context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
-        return context
-    #def get_form_kwargs(self):
-        #self.hospital = Hospital.objects.get(pk=self.kwargs['pk'])
-        #kwargs = super().get_form_kwargs()
-        ##kwargs['initial']['license_type'] = self.hospital.license_type    
-        #return kwargs
-    def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data())
-
-
-class StartPriInternshipApplication(LoginRequiredMixin, HospitalObjectMixin, SuccessMessageMixin, CreateView):
-    model = Document
-    template_name = 'hospitals/register_pri_internship_accreditation.html'
-    form_class = HospitalDetailModelForm
-    def get_success_url(self):
-        return reverse("hospitals:private_hospital_details", kwargs={"id": self.object.id})
-    def get_initial(self):
-        return {
-            'hospital_name': self.kwargs["pk"],     
-        }
+    
     def get_queryset(self):
         #hospital = Hospital.objects.filter(hospital_admin=self.request.user)
         return Document.objects.filter(hospital_name__hospital_admin=self.request.user)
+    
     def get_context_data(self, **kwargs):
-        context = super(StartPriInternshipApplication, self).get_context_data(**kwargs)
+        """Add hospital queryset to the context for form selection."""
+        context = super().get_context_data(**kwargs)
+        context["hospital_qs"] = Hospital.objects.filter(hospital_admin=self.request.user)
+        return context
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+
+        errors = []
+
+        # Validate and assign Radiographers (Max 3)
+        for i in range(1, 4):
+            radiographer_key = f'radiographer{i}'
+            license_no_key = f'radiographer{i}_license_no'
+            radiographer = self.request.POST.get(radiographer_key)
+            license_no = self.request.POST.get(license_no_key)
+
+            if radiographer and license_no:
+                setattr(self.object, radiographer_key, radiographer)
+                setattr(self.object, license_no_key, license_no)
+            elif i == 1:
+                errors.append("Radiographer 1 details are required.")
+
+        # Validate and assign Radiographer Licenses (Max 3)
+        for i in range(1, 4):
+            radiographer_license_key = f'radiographer{i}_practice_license'  # ✅ Correct field name
+            radiographer_license = self.request.FILES.get(radiographer_license_key)  # ✅ Retrieve from FILES
+
+            if radiographer_license:
+                setattr(self.object, radiographer_license_key, radiographer_license)
+            elif i == 1:  # Ensure at least the first one is required
+                errors.append("Radiographer 1 Practice License is required.")
+
+
+
+        # Validate and assign Other Staff (Max 6)
+        for i in range(1, 6):
+            staffname_key = f'staffname{i}'
+            staffdesignation_key = f'staffdesignation{i}'  # Fixed Key
+            staffname = self.request.POST.get(staffname_key)
+            staffdesignation = self.request.POST.get(staffdesignation_key)
+
+            if staffname and staffdesignation:
+                setattr(self.object, staffname_key, staffname)
+                setattr(self.object, staffdesignation_key, staffdesignation)
+            elif i == 1:
+                errors.append("Staff 1 details are required.")
+
+        # If any errors exist, return form invalid with messages
+        if errors:
+            for error in errors:
+                messages.error(self.request, error)
+            return self.form_invalid(form)
+
+        self.object.save()
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        """Ensure form errors are properly handled."""
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class StartNewPracticePermitRenewal(LoginRequiredMixin, HospitalObjectMixin, SuccessMessageMixin, CreateView):
+    model = Document
+    template_name = 'hospitals/renew_radiography_hospital_license.html'
+    form_class = HospitalDetailModelForm
+    def get_success_url(self):
+        return reverse("hospitals:start_radiography_license_renewal_details", kwargs={"id": self.object.id})
+    def get_initial(self):
+        return {
+            'hospital_name': self.kwargs["pk"],
+        }
+    
+    #def get_form_kwargs(self):
+        #self.license = License.objects.get(pk=self.kwargs['pk'])
+        #kwargs = super().get_form_kwargs()
+        #kwargs['initial']['hospital_name'] = self.license.hospital_name
+        #kwargs['initial']['application_no'] = self.license.application_no
+        #return kwargs
+
+    def get_queryset(self):
+        #hospital = Hospital.objects.filter(hospital_admin=self.request.user)
+        return Document.objects.filter(hospital_name__hospital_admin=self.request.user)    
+    def get_context_data(self, **kwargs):
+        context = super(StartNewPracticePermitRenewal, self).get_context_data(**kwargs)
         context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
         return context
-    #def get_form_kwargs(self):
-        #self.hospital = Hospital.objects.get(pk=self.kwargs['pk'])
-        #kwargs = super().get_form_kwargs()
-        ##kwargs['initial']['license_type'] = self.hospital.license_type
-        #return kwargs
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data())
 
-class StartGovInternshipRenewal(LoginRequiredMixin, HospitalObjectMixin, SuccessMessageMixin, CreateView):
-    model = Document
-    template_name = 'hospitals/renew_gov_internship_accreditation.html'
-    form_class = HospitalDetailModelForm
-    def get_success_url(self):
-        return reverse("hospitals:hospital_details", kwargs={"id": self.object.id})
-    #def get_initial(self):    
-        #return {
-            #'hospital': self.kwargs["pk"],       
-        #}
-    def get_form_kwargs(self):
-        self.license = License.objects.get(pk=self.kwargs['pk'])
-        kwargs = super().get_form_kwargs()
-        kwargs['initial']['hospital_name'] = self.license.hospital_name
-        #kwargs['initial']['application_no'] = self.license.application_no
-        return kwargs
-    def get_queryset(self):
-        #hospital = Hospital.objects.filter(hospital_admin=self.request.user)
-        return Document.objects.filter(hospital_name__hospital_admin=self.request.user)   
-    def get_context_data(self, **kwargs):
-        context = super(StartGovInternshipRenewal, self).get_context_data(**kwargs)
-        context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
-        return context
-    def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data())
 
 class StartPriInternshipRenewal(LoginRequiredMixin, HospitalObjectMixin, SuccessMessageMixin, CreateView):
     model = Document
@@ -1083,10 +1232,134 @@ class StartPriInternshipRenewal(LoginRequiredMixin, HospitalObjectMixin, Success
         return Document.objects.filter(hospital_name__hospital_admin=self.request.user) 
     def get_context_data(self, **kwargs):
         context = super(StartPriInternshipRenewal, self).get_context_data(**kwargs)
-        context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
+        context["hospital_qs"] = Hospital.objects.filter(hospital_admin=self.request.user)
         return context
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+
+        errors = []
+
+        # Validate and assign Radiographers (Max 3)
+        for i in range(1, 4):
+            radiographer_key = f'radiographer{i}'
+            license_no_key = f'radiographer{i}_license_no'
+            radiographer = self.request.POST.get(radiographer_key)
+            license_no = self.request.POST.get(license_no_key)
+
+            if radiographer and license_no:
+                setattr(self.object, radiographer_key, radiographer)
+                setattr(self.object, license_no_key, license_no)
+            elif i == 1:
+                errors.append("Radiographer 1 details are required.")
+
+        # Validate and assign Radiographer Licenses (Max 3)
+        for i in range(1, 4):
+            radiographer_license_key = f'radiographer{i}_practice_license'  # ✅ Correct field name
+            radiographer_license = self.request.FILES.get(radiographer_license_key)  # ✅ Retrieve from FILES
+
+            if radiographer_license:
+                setattr(self.object, radiographer_license_key, radiographer_license)
+            elif i == 1:  # Ensure at least the first one is required
+                errors.append("Radiographer 1 Practice License is required.")
+
+        # Validate and assign Other Staff (Max 6)
+        for i in range(1, 6):
+            staffname_key = f'staffname{i}'
+            staffdesignation_key = f'staffdesignation{i}'  # Fixed Key
+            staffname = self.request.POST.get(staffname_key)
+            staffdesignation = self.request.POST.get(staffdesignation_key)
+
+            if staffname and staffdesignation:
+                setattr(self.object, staffname_key, staffname)
+                setattr(self.object, staffdesignation_key, staffdesignation)
+            elif i == 1:
+                errors.append("Staff 1 details are required.")
+
+        # If any errors exist, return form invalid with messages
+        if errors:
+            for error in errors:
+                messages.error(self.request, error)
+            return self.form_invalid(form)
+
+        self.object.save()
+        return super().form_valid(form)
+
     def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data())
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class StartGovInternshipRenewal(LoginRequiredMixin, HospitalObjectMixin, SuccessMessageMixin, CreateView):
+    model = Document
+    template_name = 'hospitals/renew_gov_internship_accreditation.html'
+    form_class = HospitalDetailModelForm
+    def get_success_url(self):
+        return reverse("hospitals:hospital_details", kwargs={"id": self.object.id})
+    #def get_initial(self):    
+        #return {
+            #'hospital': self.kwargs["pk"],       
+        #}
+    def get_form_kwargs(self):
+        self.license = License.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.license.hospital_name
+        #kwargs['initial']['application_no'] = self.license.application_no
+        return kwargs
+    def get_queryset(self):
+        #hospital = Hospital.objects.filter(hospital_admin=self.request.user)
+        return Document.objects.filter(hospital_name__hospital_admin=self.request.user)   
+    def get_context_data(self, **kwargs):
+        context = super(StartGovInternshipRenewal, self).get_context_data(**kwargs)
+        context["hospital_qs"] = Hospital.objects.filter(hospital_admin=self.request.user)
+        return context
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        errors = []
+        # Validate and assign Radiographers (Max 3)
+        for i in range(1, 4):
+            radiographer_key = f'radiographer{i}'
+            license_no_key = f'radiographer{i}_license_no'
+            radiographer = self.request.POST.get(radiographer_key)
+            license_no = self.request.POST.get(license_no_key)
+            if radiographer and license_no:
+                setattr(self.object, radiographer_key, radiographer)
+                setattr(self.object, license_no_key, license_no)
+            elif i == 1:
+                errors.append("Radiographer 1 details are required.")
+        # Validate and assign Radiographer Licenses (Max 3)
+        for i in range(1, 4):
+            radiographer_license_key = f'radiographer{i}_practice_license'  # ✅ Correct field name
+            radiographer_license = self.request.FILES.get(radiographer_license_key)  # ✅ Retrieve from FILES
+
+            if radiographer_license:
+                setattr(self.object, radiographer_license_key, radiographer_license)
+            elif i == 1:  # Ensure at least the first one is required
+                errors.append("Radiographer 1 Practice License is required.")
+
+        # Validate and assign Other Staff (Max 6)
+        for i in range(1, 6):
+            staffname_key = f'staffname{i}'
+            staffdesignation_key = f'staffdesignation{i}'  # Fixed Key
+            staffname = self.request.POST.get(staffname_key)
+            staffdesignation = self.request.POST.get(staffdesignation_key)
+
+            if staffname and staffdesignation:
+                setattr(self.object, staffname_key, staffname)
+                setattr(self.object, staffdesignation_key, staffdesignation)
+            elif i == 1:
+                errors.append("Staff 1 details are required.")
+
+        # If any errors exist, return form invalid with messages
+        if errors:
+            for error in errors:
+                messages.error(self.request, error)
+            return self.form_invalid(form)
+        self.object.save()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
 
 class StartRadiographyLicenseRenewal(LoginRequiredMixin, HospitalObjectMixin, SuccessMessageMixin, CreateView):
     model = Document
@@ -1109,10 +1382,59 @@ class StartRadiographyLicenseRenewal(LoginRequiredMixin, HospitalObjectMixin, Su
         return Document.objects.filter(hospital_name__hospital_admin=self.request.user)    
     def get_context_data(self, **kwargs):
         context = super(StartRadiographyLicenseRenewal, self).get_context_data(**kwargs)
-        context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
+        context["hospital_qs"] = Hospital.objects.filter(hospital_admin=self.request.user)
         return context
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+
+        errors = []
+
+        # Validate and assign Radiographers (Max 3)
+        for i in range(1, 4):
+            radiographer_key = f'radiographer{i}'
+            license_no_key = f'radiographer{i}_license_no'
+            radiographer = self.request.POST.get(radiographer_key)
+            license_no = self.request.POST.get(license_no_key)
+
+            if radiographer and license_no:
+                setattr(self.object, radiographer_key, radiographer)
+                setattr(self.object, license_no_key, license_no)
+            elif i == 1:
+                errors.append("Radiographer 1 details are required.")
+
+        # Validate and assign Radiographer Licenses (Max 3)
+        for i in range(1, 4):
+            radiographer_license_key = f'radiographer{i}_practice_license'  # ✅ Correct field name
+            radiographer_license = self.request.FILES.get(radiographer_license_key)  # ✅ Retrieve from FILES
+
+            if radiographer_license:
+                setattr(self.object, radiographer_license_key, radiographer_license)
+            elif i == 1:  # Ensure at least the first one is required
+                errors.append("Radiographer 1 Practice License is required.")
+
+        # Validate and assign Other Staff (Max 6)
+        for i in range(1, 6):
+            staffname_key = f'staffname{i}'
+            staffdesignation_key = f'staffdesignation{i}'  # Fixed Key
+            staffname = self.request.POST.get(staffname_key)
+            staffdesignation = self.request.POST.get(staffdesignation_key)
+
+            if staffname and staffdesignation:
+                setattr(self.object, staffname_key, staffname)
+                setattr(self.object, staffdesignation_key, staffdesignation)
+            elif i == 1:
+                errors.append("Staff 1 details are required.")
+
+        # If any errors exist, return form invalid with messages
+        if errors:
+            for error in errors:
+                messages.error(self.request, error)
+            return self.form_invalid(form)
+
+        self.object.save()
+        return super().form_valid(form)
     def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data())
+        return self.render_to_response(self.get_context_data(form=form))
 
 
 class StartApplication(LoginRequiredMixin, HospitalObjectMixin, SuccessMessageMixin, CreateView):
@@ -1277,7 +1599,7 @@ class FacilityDetailView(LoginRequiredMixin, RegistrationObjectMixin, View):
 
 
 class GenerateInvoiceView(LoginRequiredMixin, DetailView):
-    template_name = "hospitals/generate_invoice.html"
+    template_name = "hospitals/generate_rad_permit_invoice.html"
     model = Document
     
     def get_context_data(self, **kwargs):
@@ -1398,7 +1720,7 @@ class PayAccreditationFee1(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         return self._document
 
 
-class PayAccreditationFee(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+class PayAccreditationFee0(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Payment
     template_name = 'hospitals/pay_accreditation_fee.html'
     form_class = PaymentDetailsModelForm
@@ -1425,6 +1747,44 @@ class PayAccreditationFee(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         return kwargs
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data())
+
+
+
+class PayAccreditationFee(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    model = Payment
+    template_name = 'hospitals/pay_accreditation_fee.html'
+    form_class = PaymentDetailsModelForm
+
+    def get_success_url(self):
+        return reverse("hospitals:payment_details", kwargs={"id": self.object.id})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Safely get the Document object
+        self.document = get_object_or_404(Document, pk=self.kwargs['pk'])
+        # Query relevant hospital details
+        context['document_qs'] = Document.objects.filter(hospital_name=self.document.hospital_name)
+        context['hospital_qs'] = Hospital.objects.filter(hospital_admin=self.request.user)
+        return context
+
+    def get_initial(self):
+        # You could even get the Book model using Book.objects.get here!
+        return {
+            'hospital': self.kwargs["pk"],
+            #'license_type': self.kwargs["pk"]
+        } 
+
+    def get_form_kwargs(self):
+        self.document = Document.objects.get(pk=self.kwargs['pk'])
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['hospital_name'] = self.document.hospital_name
+        kwargs['initial']['application_no'] = self.document.application_no   
+        return kwargs
+
+    def form_invalid(self, form):
+        """Handle invalid form submission gracefully."""
+        return self.render_to_response(self.get_context_data(form=form))
+
 
 class PaymentCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Payment

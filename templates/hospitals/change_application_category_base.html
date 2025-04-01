@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <link rel="stylesheet" type="text/css" href="{% static 'fontawesome-free-5.8.2-web/css/all.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+
+
+            
+            <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
+
+
+            {% block styles %} {% endblock %}
+            <title>RRBN Monitoring Portal {% block title %}{% endblock %}</title>
+          </head>
+
+
+        <body>
+            <header>
+                
+                <section>
+                <div class="container">
+                <div class="row">
+                <div class="col-md-5 my-3 mx-sm-1">
+                <div class="col-md-12">
+                <div class="row">                
+                <img src="{% static 'img/rrbn-logo.png' %}" alt="">
+                </div>    
+                </div>
+                </div>
+                </section>
+
+
+
+  <div class="row gcolor mt-2 px-lg-2 px-md-0">
+  <div class="container pt-2 pb-2">
+  <div class="row justify-content-center align-items-center">
+  <div class="col-md-3  col-sm-12 ml-sm-0 mb-2 ml-2"><i class="fas fa-hospital fa-2x text-white my-1"></i><span
+  class=" ml-1 text-white font-weight-bold size22">{% if applications %}
+  {{ hospital_name.hospital_name }}  {% else %} {% for object in hospital_name %} {{ object.hospital_name }} {% endfor %} {% endif %}</span></div>
+  <div class="col-md-3 col-sm-12 mb-2 push-left offset-md-2"><i class="fas fa-laptop fa-2x text-white my-1"></i><span class=" ml-1 text-white font-weight-bold size22">Hospital Console</span></div>
+  
+  <div class="col-md-4 mr-md-0 col-sm-12 mx-auto px-0">
+  
+  <div class="d-flex justify-content-end mr-4 mr-md-0">
+  
+  <a href="{% url 'hospitals:hospitals_dashboard' %}" class="btn btn-warning text-white mr-3 pt-1"><i class="fas fa-tachometer-alt"></i></i> Dashboard</a>
+
+  <a href="javascript:{document.getElementById('logout').submit()}" onclick="" class="btn btn-danger pb-1 px-2">
+  
+  <form id="logout" method="POST" action="{% url 'accounts:logout' %}"> {% csrf_token %}
+  <input type="hidden" />
+  </form><i class="fa fa-power-off"> </i> Logout</a>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </header>
+
+
+
+  {% block content%} {%endblock%}
+
+
+
+
+  <script src="{% static 'js/jquery-3.3.1.slim.min.js' %}"></script>
+     <script src="{% static 'js/popper.min.js' %}"></script>
+     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+       <footer class="gcolor">
+           <div class="container">
+               <div class="row">
+                   <div class="col-md-3 col-sm-12">
+                       <p class="text-white ft">RRBN</p>
+                       <p class="text-white">
+                           RRBN's key mandate is to regulate the practice of radiography in Nigeria.
+                       </p>
+                       <p class="text-white ft">
+                           RRBN Monitoring and Emforcement portal Automates all processes in RRBN M&E processes.
+                       </p>
+                   </div>
+                   <div class="col-md-3 col-sm-12">
+                       <p class="text-white ft">Home Links</p>
+                       <a class="text-white flink ft" href="index.html">Home</a><br />
+                       <a class="text-white flink ft" href="about-us.html">About</a><br />
+                       <a class="text-white flink ft" href="services.html">Services</a><br />
+                       <a class="text-white flink ft" href="help.html">Help</a><br />
+                   </div>
+                   <div class="col-md-3 col-sm-12">
+                       <p class="text-white ft">External Links</p>
+                       <a class="text-white flink ft" href="#">RRBN</a><br />
+                       <a class="text-white flink ft" href="#">ARN</a><br />
+                       <a class="text-white flink ft" href="#">NJIRT</a><br />
+                       <a class="text-white flink ft" href="#">MINISTRY OF HEALTH</a>
+                   </div>
+                   <div class="col-md-3 col-sm-12">
+                       <p class="text-white ft">Contact Us</p>
+                       <p class="text-white flink ft">
+                           Federal Secretariat Complex, Phase I, Annex III, 4th Floor, <br>Central Area - Abuja, Nigeria.
+                       </p>
+                       <p class="text-white ft">+234 092914928</p>
+                       <p class="text-white ft">info@rrbn.gov.ng</p>
+                       <p class="text-white ft">www.rrbn.gov.ng</p>
+                   </div>
+               </div>
+           </div>
+       </footer>
+       <div class="copyright">
+           <div class="copyright-container">
+               <center>
+                   <p>
+                       &copy All Rights Reserved RRBN 2019</p>
+               </center>
+           </div>
+       </div>
+   </body>
+
+   </html>

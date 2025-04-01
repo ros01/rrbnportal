@@ -83,7 +83,7 @@ You must agree before submitting.
 
 
 
-<a href="{% url 'hospitals:hospitals_dashboard' %}" class="py-1 mr-3 mt-2 mb-4 btn btn-outline-secondary"><i class="fas fa-times"></i> Go Back</a>  
+<a href="{{request.META.HTTP_REFERER}}" class="text-white py-1 mr-3 mt-2 mb-4 btn btn-warning"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Go Back</a>
     
 <a href="{% url 'hospitals:hospitals_dashboard' %}" class="py-1 mr-3 mt-2 mb-4 btn btn-outline-secondary"><i class="fas fa-times"></i> Cancel</a>
 
