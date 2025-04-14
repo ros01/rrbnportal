@@ -1125,58 +1125,93 @@ class StartNewRadApplication(LoginRequiredMixin, SuccessMessageMixin, CreateView
         context["hospital_qs"] = Hospital.objects.filter(hospital_admin=self.request.user)
         return context
 
+    # def form_valid(self, form):
+    #     self.object = form.save(commit=False)
+
+    #     errors = []
+
+    #     # Validate and assign Radiographers (Max 3)
+    #     for i in range(1, 4):
+    #         radiographer_key = f'radiographer{i}'
+    #         license_no_key = f'radiographer{i}_license_no'
+    #         radiographer = self.request.POST.get(radiographer_key)
+    #         license_no = self.request.POST.get(license_no_key)
+
+    #         if radiographer and license_no:
+    #             setattr(self.object, radiographer_key, radiographer)
+    #             setattr(self.object, license_no_key, license_no)
+    #         elif i == 1:
+    #             errors.append("Radiographer 1 details are required.")
+
+    #     # Validate and assign Radiographer Licenses (Max 3)
+    #     for i in range(1, 4):
+    #         radiographer_license_key = f'radiographer{i}_practice_license'  # ✅ Correct field name
+    #         radiographer_license = self.request.FILES.get(radiographer_license_key)  # ✅ Retrieve from FILES
+
+    #         if radiographer_license:
+    #             setattr(self.object, radiographer_license_key, radiographer_license)
+    #         elif i == 1:  # Ensure at least the first one is required
+    #             errors.append("Radiographer 1 Practice License is required.")
+
+
+
+    #     # Validate and assign Other Staff (Max 6)
+    #     for i in range(1, 6):
+    #         staffname_key = f'staffname{i}'
+    #         staffdesignation_key = f'staffdesignation{i}'  # Fixed Key
+    #         staffname = self.request.POST.get(staffname_key)
+    #         staffdesignation = self.request.POST.get(staffdesignation_key)
+
+    #         if staffname and staffdesignation:
+    #             setattr(self.object, staffname_key, staffname)
+    #             setattr(self.object, staffdesignation_key, staffdesignation)
+    #         elif i == 1:
+    #             errors.append("Staff 1 details are required.")
+
+    #     # If any errors exist, return form invalid with messages
+    #     if errors:
+    #         for error in errors:
+    #             messages.error(self.request, error)
+    #         return self.form_invalid(form)
+
+    #     self.object.save()
+    #     return super().form_valid(form)
+    
     def form_valid(self, form):
         self.object = form.save(commit=False)
 
-        errors = []
-
-        # Validate and assign Radiographers (Max 3)
+        # Assign Radiographers (Max 3, all optional)
         for i in range(1, 4):
             radiographer_key = f'radiographer{i}'
             license_no_key = f'radiographer{i}_license_no'
+            license_file_key = f'radiographer{i}_practice_license'
+
             radiographer = self.request.POST.get(radiographer_key)
             license_no = self.request.POST.get(license_no_key)
+            license_file = self.request.FILES.get(license_file_key)
 
             if radiographer and license_no:
                 setattr(self.object, radiographer_key, radiographer)
                 setattr(self.object, license_no_key, license_no)
-            elif i == 1:
-                errors.append("Radiographer 1 details are required.")
+            # Even if the names/numbers aren't set, allow uploading the license file
+            if license_file:
+                setattr(self.object, license_file_key, license_file)
 
-        # Validate and assign Radiographer Licenses (Max 3)
-        for i in range(1, 4):
-            radiographer_license_key = f'radiographer{i}_practice_license'  # ✅ Correct field name
-            radiographer_license = self.request.FILES.get(radiographer_license_key)  # ✅ Retrieve from FILES
-
-            if radiographer_license:
-                setattr(self.object, radiographer_license_key, radiographer_license)
-            elif i == 1:  # Ensure at least the first one is required
-                errors.append("Radiographer 1 Practice License is required.")
-
-
-
-        # Validate and assign Other Staff (Max 6)
-        for i in range(1, 6):
+        # Assign Other Staff (Max 6, all optional)
+        for i in range(1, 7):
             staffname_key = f'staffname{i}'
-            staffdesignation_key = f'staffdesignation{i}'  # Fixed Key
+            staffdesignation_key = f'staffdesignation{i}'
+
             staffname = self.request.POST.get(staffname_key)
             staffdesignation = self.request.POST.get(staffdesignation_key)
 
             if staffname and staffdesignation:
                 setattr(self.object, staffname_key, staffname)
                 setattr(self.object, staffdesignation_key, staffdesignation)
-            elif i == 1:
-                errors.append("Staff 1 details are required.")
-
-        # If any errors exist, return form invalid with messages
-        if errors:
-            for error in errors:
-                messages.error(self.request, error)
-            return self.form_invalid(form)
 
         self.object.save()
         return super().form_valid(form)
-    
+
     def form_invalid(self, form):
         """Ensure form errors are properly handled."""
         return self.render_to_response(self.get_context_data(form=form))
