@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'nh1-@s'
+SECRET_KEY = 'jnh1-@s'
 
 # SECURITY WARNING: don't  run with debug turned on in production!
 DEBUG = True
@@ -130,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
 #SESSION_SAVE_EVERY_REQUEST = True
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 600 
+SESSION_COOKIE_AGE = 1800 
 SESSION_SAVE_EVERY_REQUEST = True
 LOGIN_URL = '/accounts/signin'
 
