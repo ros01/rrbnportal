@@ -13,8 +13,15 @@ from django.conf import settings
 from datetime import datetime
 from datetime import date
 from django.utils.timezone import now
+from django.core.exceptions import ValidationError
+import os
 
 
+def validate_image_file_extension(value):
+    ext = os.path.splitext(value.name)[1].lower()
+    valid_extensions = ['.jpg', '.jpeg', '.png']
+    if ext not in valid_extensions:
+        raise ValidationError('Unsupported file type. Please upload an image (JPG or PNG).')
 
 def increment_application_no():
     last_application_no = Document.objects.all().order_by('application_no').last()
@@ -143,7 +150,15 @@ class Document(models.Model):
     staffdesignation3 = models.CharField(max_length=100, blank=True, null =True)
     staffdesignation4 = models.CharField(max_length=100, blank=True, null =True)
     staffdesignation5 = models.CharField(max_length=100, blank=True, null =True)
-    radiographer_in_charge_passport = models.FileField(upload_to='%Y/%m/%d/', blank=True)
+    # radiographer_in_charge_passport = models.FileField(upload_to='%Y/%m/%d/', blank=True)
+    radiographer_in_charge_passport = models.FileField(
+        upload_to='%Y/%m/%d/',
+        validators=[validate_image_file_extension],
+        blank=True,
+        null=True,
+    )
+
+
     radiographer_in_charge_nysc = models.FileField(upload_to='%Y/%m/%d/', blank=True)
     radiographer_in_charge_practice_license = models.FileField(upload_to='%Y/%m/%d/', blank=True)
     radiographer1_practice_license = models.FileField(upload_to='%Y/%m/%d/', blank=True)

@@ -56,6 +56,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from datetime import date
 from django.core.paginator import Paginator
 from django.utils.timezone import now
+from PIL import Image
+from PIL import UnidentifiedImageError
 
 User = get_user_model()
 
@@ -2673,8 +2675,21 @@ def download_rad_practice_permit(request, id):
 
     p.roundRect(355, 555, 110, 115, 4, stroke=1, fill=0)
 
+    passport_path = object.hospital.radiographer_in_charge_passport.path
+    try:
+        # Try opening it to confirm it's a valid image
+        with Image.open(passport_path) as img:
+            img.verify()
+        p.drawImage(passport_path, 356, 556, width=108, height=114)
+    except (UnidentifiedImageError, OSError):
+        # Optionally, draw a placeholder or skip it
+        p.setFont("Helvetica", 10)
+        p.drawString(360, 600, "Invalid passport image file.")
 
-    p.drawImage((object.hospital.radiographer_in_charge_passport.path), 356, 556, width=108, height=114)
+
+
+
+    # p.drawImage((object.hospital.radiographer_in_charge_passport.path), 356, 556, width=108, height=114)
 
 
     p.setFont("Helvetica", 7, leading=None)

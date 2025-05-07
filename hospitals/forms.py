@@ -146,7 +146,7 @@ class HospitalDetailModelForm(forms.ModelForm):
        self.fields['radiographer2_license_no'].widget.attrs['placeholder'] = "Radiographer 2 License No (Optional)"
        self.fields['radiographer3_license_no'].label = "Radiographer 3 License No"
        self.fields['radiographer3_license_no'].widget.attrs['placeholder'] = "Radiographer 3 License No (Optional)"
-       self.fields['radiographer_in_charge_passport'].label = "R.I.C Passport* (Required)"
+       self.fields['radiographer_in_charge_passport'].label = "R.I.C Passport* (Required) - .jpg,.jpeg,.png"
        self.fields['radiographer_in_charge_passport'].widget.attrs['placeholder'] = "Upload Passport of Radiographer In Charge"
        self.fields['radiographer_in_charge_nysc'].label = "R.I.C NYSC Certificate (Optional)"
        self.fields['radiographer_in_charge_nysc'].widget.attrs['placeholder'] = "Upload NYSC Certificate of Radiographer In Charge"
