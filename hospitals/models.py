@@ -782,6 +782,7 @@ class Inspection(models.Model):
     photo_4 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     photo_5 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     photo_6 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
+    inspection_report = models.FileField(upload_to='%Y/%m/%d/', blank=True)
 
     class Meta:
         unique_together = ('application_no','hospital_name')
@@ -893,6 +894,7 @@ class Appraisal(models.Model):
     photo_4 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     photo_5 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
     photo_6 = models.ImageField(upload_to='%Y/%m/%d/', blank=True)
+    inspection_report = models.FileField(upload_to='%Y/%m/%d/', blank=True)
 
     class Meta:
         unique_together = ('application_no','hospital_name')
