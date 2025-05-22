@@ -1227,7 +1227,7 @@ class InspectionModelForm(forms.ModelForm):
 
     class Meta:
         model = Inspection
-        fields = ('application_no', 'hospital_name', 'hospital', 'payment', 'schedule', 'inspection_comments', 'photo_main', 'photo_1', 'photo_2', 'photo_3', 'photo_4', 'photo_5', 'photo_6',)
+        fields = ('application_no', 'hospital_name', 'hospital', 'payment', 'schedule', 'inspection_comments', 'photo_main', 'photo_1', 'photo_2', 'photo_3', 'photo_4', 'photo_5', 'photo_6', 'inspection_report',)
             
         
         widgets = {
@@ -1248,6 +1248,7 @@ class InspectionModelForm(forms.ModelForm):
        #self.fields['inspection_zone'].label = False
        #self.fields['inspection_total'].label = "Total Score"
        self.fields['inspection_comments'].label = "Enter Observations and Comments"
+       self.fields['inspection_report'].label = "Inspection Report - PDF(Optional)"
 
 
 class InternshipModelForm(forms.ModelForm):

@@ -370,7 +370,7 @@ Ultrasound
       </div>
 
     
-        <div class="row px-4">
+        <div class="row px-2">
         <div class="col-md-3">
         <div class="form-group">
         {{ form.photo_1|as_crispy_field }}
@@ -396,29 +396,35 @@ Ultrasound
         {{ form.photo_5|as_crispy_field }}
         </div>
         </div>
+        
         <div class="col-md-3">
         <div class="form-group">
         {{ form.photo_6|as_crispy_field }}
         </div>
         </div>
+        
+        <div class="col-md-3">
+        <div class="form-group">
+        {{ form.inspection_report|as_crispy_field }}       
+        </div>
+        </div>
+        </div>
+        </div>
         </div>
 
 
-
-
-
-      <hr>
-      <div class="d-flex justify-content-end">
+        <hr>
+        <div class="d-flex justify-content-end">
         <a href="{% url 'zonal_offices:zonal_offices_dashboard' %}" class="btn btn-outline-dark px-3">
-          <i class="fa fa-window-close text-danger"></i> Return to Dashboard
+        <i class="fa fa-window-close text-danger"></i> Return to Dashboard
         </a>
         <button type="submit" class="btn btn btn-success ml-4 pt-2 pb-1 pr-2">
-          <i class="fa fa-podcast text-white"></i> Post Inspection Report
+        <i class="fa fa-podcast text-white"></i> Post Inspection Report
         </button>
-      </div>
-    </form>
-  </div>
-</main>
+        </div>
+        </form>
+        </div>
+        </main>
 
 
 

@@ -276,6 +276,16 @@
 </tr>
 {% endif %}
 {% endfor %}
+
+{% if object.inspection_report %}
+<tr> <td width="50%" scope="col">Inspection Report:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.inspection_report.url}}"
+target="_blank"> View Inspection Report</a></td>  
+</tr>
+{% endif %}
+
+
 </tbody>
 </table>
 </div>

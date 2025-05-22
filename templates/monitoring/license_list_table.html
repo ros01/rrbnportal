@@ -56,7 +56,7 @@
  <td>{{object.hospital.license_type}}</td>
  <td>{{object.schedule.inspection_date}}</td>
  <td>{{object.schedule.inspection_zone}}</td>
- <td><a href="{% url 'monitoring:license_detail' id=object.id %}" class="btn btn-outline-warning btn-sm"> <i class="fa fa-eye text-danger"></i> View</a></td>
+ <td><a href="{% url 'monitoring:license_detail' pk=object.pk %}" class="btn btn-outline-warning btn-sm"> <i class="fa fa-eye text-danger"></i> View</a></td>
  </tr>
  {% endfor %}
 {% endif %}

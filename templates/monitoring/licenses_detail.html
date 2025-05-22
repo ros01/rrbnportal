@@ -216,14 +216,26 @@
 
 
 <div class="col-md-5 mt-0">
+
 <p class="text-success lead">Inspection Score</p>
+<span><strong><mark>{{ object.inspection_total|default:"-" }}</mark></strong></span>
+<br>
+<br>
+<p class="text-success lead">Inspection Comments/Observations</p>
+<span><mark>{{ object.inspection_comments|default:"No Comments Provided" }}</mark></span>
+<br>
+<br>
+
+
+<!-- <p class="text-success lead">Inspection Score</p>
 <span><strong><mark>{{object.inspection_total}}</mark></strong></span>
 <br>
 <br>
 <p class="text-success lead">Inspection Comments/Observations</p>
 <span><mark>{{object.inspection_comments}}</mark></span>
 <br>
-<br>
+<br> -->
+
 <p class="text-success lead">Facility Inspection Details</p>
 
 <div class="row py-0">
@@ -236,13 +248,54 @@
 </thead>
 
 
-<tbody>
 <tr> <td width="50%" scope="col">Inspection Area Office:</td> <td width="50%" scope="col">{{object.schedule.inspection_zone}}</td> </tr> 
 <tr> <td width="50%" scope="col">Inspection Date:</td> <td width="50%" scope="col">{{object.schedule.inspection_date}} </td> </tr> 
                        
- </tbody>
-  </table>
- </div>
+</tbody>
+</table>
+</div>
+
+
+<p class="text-success lead">Facility Uploads</p>
+
+<div class="row py-0">
+<table class="table table-hover">
+<thead style="background-color: #bfe3f8;">
+<tr>
+<th scope="col lead" style="color: #05567b;">Parameter</th>
+<th scope="col lead" style="color: #05567b;">Value</th>
+</tr>
+</thead>
+<tbody>
+
+
+{% for photo in photos %}
+{% if photo %}
+<tr>
+<td>{{ photo.label }}</td>
+<td>
+<a class="text-danger" href="{{ photo.image.url }}" target="_blank">
+<i class="fa fa-eye text-dark"></i> View
+</a>
+</td>
+</tr>
+{% endif %}
+{% endfor %}
+
+{% if object.inspection_report %}
+<tr> <td width="50%" scope="col">Inspection Report:</td> 
+<td width="50%" scope="col"><i class="fa fa-eye text-dark"></i>
+<a class="text-danger" href="{{object.inspection_report.url}}"
+target="_blank"> View Inspection Report</a></td>  
+</tr>
+{% endif %}
+
+</tbody>
+</table>
+</div>
+
+
+
 
                 
  </div>

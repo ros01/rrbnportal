@@ -2023,7 +2023,7 @@ class PermitRenewalDetails(StaffRequiredMixin, LoginRequiredMixin, PaymentObject
         context = {'object': self.get_object()}
         return render(request, self.template_name, context)   
 
-class LicenseDetailView(StaffRequiredMixin, LoginRequiredMixin, InspectionObjectMixin, View):
+class LicenseDetailView1(StaffRequiredMixin, LoginRequiredMixin, InspectionObjectMixin, View):
     template_name = "monitoring/licenses_detail.html" # DetailView
     def get(self, request, id=None, *args, **kwargs):
         # GET method
@@ -2037,6 +2037,33 @@ class LicenseDetailView(StaffRequiredMixin, LoginRequiredMixin, InspectionObject
 #         context = {'object': self.get_object()}
 #         return render(request, self.template_name, context)
 
+
+class LicenseDetailView(StaffRequiredMixin, LoginRequiredMixin, DetailView):
+    model = Inspection
+    template_name = "monitoring/licenses_detail.html" # DetailView
+    context_object_name = 'object'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        inspection = self.object
+        context['photos'] = [
+            {'label': 'Main Photo', 'image': inspection.photo_main} if inspection.photo_main else None,
+            {'label': 'Photo 1', 'image': inspection.photo_1} if inspection.photo_1 else None,
+            {'label': 'Photo 2', 'image': inspection.photo_2} if inspection.photo_2 else None,
+            {'label': 'Photo 3', 'image': inspection.photo_3} if inspection.photo_3 else None,
+            {'label': 'Photo 4', 'image': inspection.photo_4} if inspection.photo_4 else None,
+            {'label': 'Photo 5', 'image': inspection.photo_5} if inspection.photo_5 else None,
+            {'label': 'Photo 6', 'image': inspection.photo_6} if inspection.photo_6 else None,
+        ]
+        context['photos'] = [photo for photo in context['photos'] if photo is not None]
+
+        return context
+
+
+    # def get(self, request, id=None, *args, **kwargs):
+    #     # GET method
+    #     context = {'object': self.get_object()}
+    #     return render(request, self.template_name, context)
 
 
 class AccreditationDetailView(StaffRequiredMixin, LoginRequiredMixin, DetailView):
