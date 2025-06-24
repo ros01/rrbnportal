@@ -93,7 +93,7 @@ def get_modality_update_url_name(modality):
 def get_status_message(object):
     status_messages = {
         ("Hospital", 1): "Start Registration",
-        ("Document", 1): "Payment Processing",
+        ("Document", 1): "Make Payment",
         ("Payment", 2): "Payment Verification",
         ("Payment", 3): "Verifications Completed",
         ("Schedule", 4): "Inspection Scheduled",

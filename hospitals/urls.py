@@ -4,6 +4,8 @@ from . import views
 
 from .views import (
     StartNewRadApplication,
+    ApplicationUpdateDetails,
+    UpdateRadApplication,
     ChangeApplicationType,
     StartGovInternshipApplication,
     StartPriInternshipApplication,
@@ -72,6 +74,7 @@ urlpatterns = [
     path('<uuid:pk>/hospital_profile_details/', NewHospitalProfileDetails.as_view(), name='hospital_profile_details'),
     path('<uuid:pk>/update_hospital_profile_details/', UpdateHospitalProfileDetails.as_view(), name='update_hospital_profile_details'),
     path('<uuid:pk>/start_new_radiography_license_application/', StartNewRadApplication.as_view(), name='start_new_radiography_license_application'),
+    path('<uuid:pk>/update_radiography_application/', UpdateRadApplication.as_view(), name='update_radiography_application'),
     path('<uuid:pk>/start_gov_internship_accreditation_application/', StartGovInternshipApplication.as_view(), name='start_gov_internship_accreditation_application'),
     path('<uuid:pk>/start_pri_internship_accreditation_application/', StartPriInternshipApplication.as_view(), name='start_pri_internship_accreditation_application'),
     path('<uuid:pk>/start_new_practice_permit_renewal/', StartNewPracticePermitRenewal.as_view(), name='start_new_practice_permit_renewal'),
@@ -82,6 +85,7 @@ urlpatterns = [
     path('<uuid:pk>/start_new_gov_internship_renewal/', StartNewGovInternshipRenewal.as_view(), name='start_new_gov_internship_renewal'),
     path('<uuid:pk>/start_application/', StartApplication.as_view(), name='start_application'),
     path('<uuid:id>/hospital_details/', HospitalDetailView.as_view(), name='hospital_details'),
+    path('<uuid:pk>/application_update_details/', ApplicationUpdateDetails.as_view(), name='application_update_details'),
     path('<uuid:id>/private_hospital_details/', PrivateHospitalDetailView.as_view(), name='private_hospital_details'),
     path('<uuid:id>/start_radiography_license_renewal_details/', StartRadiographyLicenseRenewalDetails.as_view(), name='start_radiography_license_renewal_details'),
     path('<uuid:id>/facility_details/', FacilityDetailView.as_view(), name='facility_details'),

@@ -43,8 +43,8 @@
 <th class="small-text" style="color: #fff; "width="13%">Submitted On</th>
 <th class="small-text" style="color: #fff; "width="20%">Application Category</th>
 <th class="small-text" style="color: #fff; "width="22%">Application Type</th>
-<th class="small-text" style="color: #fff; "width="14%">Stage</th>
-<th class="small-text" style="color: #fff; "width="15%">Action</th>
+<th class="small-text" style="color: #fff; "width="16%">Stage</th>
+<th class="small-text" style="color: #fff; "width="13%">Action</th>
 </tr> </thead> 
 
 {% if applications %}
@@ -68,13 +68,8 @@
                 {% else %}
                 {{object.hospital.application_type }}
                 {% endif %}</td> 
-
-
-
-<td width="14%">{{ object|get_status_message }}</td>
-
-
-<td width="15%">
+<td width="16%">{{ object|get_status_message }}</td>
+<td width="13%">
     {% with object|get_action_url as action_url %}
         {% if action_url %}
             {% if object.model_name == "Document" %}
@@ -110,7 +105,7 @@
  <td width="13%">{{object.date}}</td> 
  <td width="20%">{% if object.type == 'Pri Internship Accreditation' %} Non-Teaching Hospitals Internship Accreditation {% elif object.type == 'Gov Internship Accreditation' %} Teaching Hospitals Internship Accreditation {% elif object.type == 'Pri Internship Accreditation Renewal' %} Non-Teaching Hospitals Internship Accreditation Renewal {% elif object.type == 'Gov Internship Accreditation Renewal' %} Teaching Hospitals Intership Accreditation Renewal {% else %} {{object.type}} {% endif %}</td> 
  <td width="22%">New Application</td> 
- <td width="14%">Start Application</td> 
+ <td width="16%">Start Application</td> 
 
  <!-- <td width="15%">
     {% get_hospital_action_url object as action_url %}
@@ -125,7 +120,7 @@
 
 
 
-<td width="15%">
+<td width="13%">
     {% get_hospital_action_url object as action_url %}
     {% if action_url %}
         <div class="btn-group">

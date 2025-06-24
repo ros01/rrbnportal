@@ -985,6 +985,7 @@ def approve(request, id):
         payment.application_status = 3
         payment.vetting_officer = request.user
         payment.vet_date = date.today()
+        payment.rejection_reason = None
         payment.save()
 
         # Prepare context for the email and rendering

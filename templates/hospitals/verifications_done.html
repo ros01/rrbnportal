@@ -5,6 +5,61 @@
 
 {% block styles %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/hospital_dashboard.css' %}">
+
+<style>
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(40, 167, 69, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(40, 167, 69, 0.6);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(40, 167, 69, 0.4);
+  }
+}
+
+.btn-animated {
+  animation: pulse 2s infinite;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-animated:hover {
+  transform: scale(1.1);
+  background-color: #28a745;
+  color: white !important;
+}
+</style>
+
+<style>
+@keyframes flash {
+  0%, 100% {
+    border-color: #28a745;
+    box-shadow: 0 0 0 rgba(40, 167, 69, 0.5);
+  }
+  50% {
+    border-color: #ffffff;
+    box-shadow: 0 0 12px 3px rgba(40, 167, 69, 0.9);
+  }
+}
+
+.btn-flash {
+  animation: flash 1s infinite;
+  border: 2px solid #28a745;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-flash:hover {
+  background-color: #28a745;
+  color: white !important;
+  transform: scale(1.05);
+}
+</style>
+
+
 {% endblock %}
 
 {% block content %}
@@ -119,6 +174,8 @@
 <p class="text-success lead pt-4 pl-4"><strong>Application Summary</strong></p>
 </div>
 </div>
+
+
 <div class="row mx-2 py-0 my-0">
 <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-0">
 <p class="lead text-secondary m-0">Application Number:</p>
@@ -155,24 +212,43 @@
 <p class="lead text-secondary text-capitalize m-0"><strong>{{object.vet_date}}</strong></p>
 </div>
 
+{% if object.rejection_reason %}
 <div class="col-lg-3 col-md-6 col-sm-10 m-sm-0 mx-auto mb-2">
 <p class="lead text-secondary m-0">Rejection Reason:</p>
 <p class="lead text-secondary m-0 text-danger"><strong>{{object.rejection_reason}}</strong></p> 
 <br>
 </div>
+{% endif %}
 
 
 </div>
     
 <hr>
 
+{% if object.vet_status == 3 %}
+
 <div class="d-flex justify-content-end mb-3">   
 
 <a href="{% url 'hospitals:hospitals_dashboard' %}" class="btn btn-outline-success py-0 mr-3 mt-1 mb-3"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Dashboard</a>  
 
+<!-- <a href="#" class="btn btn-outline-info py-0 mt-1 mb-3 btn-animated">
+  <i class="fa fa-toggle-on" aria-hidden="true"></i> Update Application
+</a> -->
 
-<a href="#" class="btn btn-outline-success py-0 mt-1 mb-3"><i class="fa fa-toggle-on" aria-hidden="true"></i> Update Application </a>  
+<a href="{% url 'hospitals:update_radiography_application' document.pk %}" class="btn btn-warning text-white py-0 mt-1 mb-3 btn-flash">
+  <i class="fa fa-toggle-on" aria-hidden="true"></i> Update Application
+</a>
+
+
 </div>
+
+{% else %}
+<div class="d-flex justify-content-end mb-3">   
+
+<a href="{% url 'hospitals:hospitals_dashboard' %}" class="btn btn-outline-success py-0 mr-3 mt-1 mb-3"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Dashboard</a>  
+</div>
+
+{% endif %}
 
 </div>  
     

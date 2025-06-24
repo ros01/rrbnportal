@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, render, redirect, get_list_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
@@ -24,13 +24,13 @@ from django.views.generic import (
      DeleteView,
      TemplateView
 )
-from django.views.generic.edit import ModelFormMixin, FormMixin
-from accounts.models import User, Hospital
-from django.shortcuts import get_list_or_404
 
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import ModelFormMixin, FormMixin
 from django.contrib.auth import get_user_model
 from django.conf import settings
-from accounts.models import Hospital
+from accounts.models import User, Hospital
 from .models import Document, Payment, Inspection, License, Schedule, Appraisal
 from django.db.models import Q  
 from xhtml2pdf import pisa
@@ -1195,58 +1195,6 @@ class StartNewRadApplication(LoginRequiredMixin, SuccessMessageMixin, CreateView
         context = super().get_context_data(**kwargs)
         context["hospital_qs"] = Hospital.objects.filter(hospital_admin=self.request.user)
         return context
-
-    # def form_valid(self, form):
-    #     self.object = form.save(commit=False)
-
-    #     errors = []
-
-    #     # Validate and assign Radiographers (Max 3)
-    #     for i in range(1, 4):
-    #         radiographer_key = f'radiographer{i}'
-    #         license_no_key = f'radiographer{i}_license_no'
-    #         radiographer = self.request.POST.get(radiographer_key)
-    #         license_no = self.request.POST.get(license_no_key)
-
-    #         if radiographer and license_no:
-    #             setattr(self.object, radiographer_key, radiographer)
-    #             setattr(self.object, license_no_key, license_no)
-    #         elif i == 1:
-    #             errors.append("Radiographer 1 details are required.")
-
-    #     # Validate and assign Radiographer Licenses (Max 3)
-    #     for i in range(1, 4):
-    #         radiographer_license_key = f'radiographer{i}_practice_license'  # ✅ Correct field name
-    #         radiographer_license = self.request.FILES.get(radiographer_license_key)  # ✅ Retrieve from FILES
-
-    #         if radiographer_license:
-    #             setattr(self.object, radiographer_license_key, radiographer_license)
-    #         elif i == 1:  # Ensure at least the first one is required
-    #             errors.append("Radiographer 1 Practice License is required.")
-
-
-
-    #     # Validate and assign Other Staff (Max 6)
-    #     for i in range(1, 6):
-    #         staffname_key = f'staffname{i}'
-    #         staffdesignation_key = f'staffdesignation{i}'  # Fixed Key
-    #         staffname = self.request.POST.get(staffname_key)
-    #         staffdesignation = self.request.POST.get(staffdesignation_key)
-
-    #         if staffname and staffdesignation:
-    #             setattr(self.object, staffname_key, staffname)
-    #             setattr(self.object, staffdesignation_key, staffdesignation)
-    #         elif i == 1:
-    #             errors.append("Staff 1 details are required.")
-
-    #     # If any errors exist, return form invalid with messages
-    #     if errors:
-    #         for error in errors:
-    #             messages.error(self.request, error)
-    #         return self.form_invalid(form)
-
-    #     self.object.save()
-    #     return super().form_valid(form)
     
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -1285,6 +1233,98 @@ class StartNewRadApplication(LoginRequiredMixin, SuccessMessageMixin, CreateView
 
     def form_invalid(self, form):
         """Ensure form errors are properly handled."""
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+
+class UpdateRadApplication(LoginRequiredMixin, UpdateView):
+    model = Document
+    template_name = 'hospitals/register_radiography_practice.html'
+    form_class = HospitalDetailModelForm
+    pk_url_kwarg = 'pk'  # Match URL kwarg used in reverse() and get_success_url
+
+    def get_queryset(self):
+        return Document.objects.filter(hospital_name__hospital_admin=self.request.user)
+
+    def get_success_url(self):
+        messages.success(self.request, "Application successfully updated.")
+        return reverse("hospitals:application_update_details", kwargs={"pk": self.object.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["hospital_qs"] = Hospital.objects.filter(hospital_admin=self.request.user)
+        context["is_update"] = True  # You can use this in your template to toggle buttons/titles
+        return context
+
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+
+        # Handle Radiographers (max 3)
+        for i in range(1, 4):
+            radiographer_key = f'radiographer{i}'
+            license_no_key = f'radiographer{i}_license_no'
+            license_file_key = f'radiographer{i}_practice_license'
+
+            radiographer = self.request.POST.get(radiographer_key)
+            license_no = self.request.POST.get(license_no_key)
+            license_file = self.request.FILES.get(license_file_key)
+
+            setattr(self.object, radiographer_key, radiographer or '')
+            setattr(self.object, license_no_key, license_no or '')
+            if license_file:
+                setattr(self.object, license_file_key, license_file)
+
+        # Handle Other Staff (max 6)
+        for i in range(1, 7):
+            staffname_key = f'staffname{i}'
+            staffdesignation_key = f'staffdesignation{i}'
+
+            staffname = self.request.POST.get(staffname_key)
+            staffdesignation = self.request.POST.get(staffdesignation_key)
+
+            setattr(self.object, staffname_key, staffname or '')
+            setattr(self.object, staffdesignation_key, staffdesignation or '')
+
+        self.object.save()
+        Payment.objects.filter(hospital=self.object).update(vet_status=1)
+
+        return super().form_valid(form)
+
+    # def form_valid(self, form):
+    #     self.object = form.save(commit=False)
+
+    #     # Handle Radiographers (max 3)
+    #     for i in range(1, 4):
+    #         radiographer_key = f'radiographer{i}'
+    #         license_no_key = f'radiographer{i}_license_no'
+    #         license_file_key = f'radiographer{i}_practice_license'
+
+    #         radiographer = self.request.POST.get(radiographer_key)
+    #         license_no = self.request.POST.get(license_no_key)
+    #         license_file = self.request.FILES.get(license_file_key)
+
+    #         setattr(self.object, radiographer_key, radiographer or '')
+    #         setattr(self.object, license_no_key, license_no or '')
+
+    #         if license_file:
+    #             setattr(self.object, license_file_key, license_file)
+
+    #     # Handle Other Staff (max 6)
+    #     for i in range(1, 7):
+    #         staffname_key = f'staffname{i}'
+    #         staffdesignation_key = f'staffdesignation{i}'
+
+    #         staffname = self.request.POST.get(staffname_key)
+    #         staffdesignation = self.request.POST.get(staffdesignation_key)
+
+    #         setattr(self.object, staffname_key, staffname or '')
+    #         setattr(self.object, staffdesignation_key, staffdesignation or '')
+
+    #     self.object.save()
+    #     return super().form_valid(form)
+
+    def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form))
 
 
@@ -1708,6 +1748,15 @@ class HospitalDetailView(LoginRequiredMixin, RegistrationObjectMixin, View):
                      to_email, fail_silently=True)
 
         return render(request, self.template_name, context)
+
+
+
+class ApplicationUpdateDetails(LoginRequiredMixin, DetailView):
+    template_name = "hospitals/application_update_details.html"
+    model = Document
+
+
+
 
 class PrivateHospitalDetailView(LoginRequiredMixin, RegistrationObjectMixin, View):
     template_name = 'hospitals/private_hospital_details.html' 
@@ -2173,6 +2222,7 @@ class VerificationsCompleted(LoginRequiredMixin, DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['document'] = self.object.hospital
         context['application'] = Document.objects.filter(hospital_name__hospital_admin=self.request.user)
         context['hospital'] = Hospital.objects.filter(hospital_name=self.object)
         context['hospital_qs'] = Hospital.objects.select_related("hospital_admin").filter(hospital_admin=self.request.user)
