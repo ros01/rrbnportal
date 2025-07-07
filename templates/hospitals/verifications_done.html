@@ -70,7 +70,7 @@
 <div class="container">
 <div class="row mt-2 ml-2">
 <div class="col text-left mb-2">
-<p class="text-success display-4 paragraph3">Radiography Practice License Verification Details</p>
+<p class="text-success display-4 paragraph3">Application Verification Details</p>
 <hr>
 </div>
 </div>
@@ -157,7 +157,7 @@
 <div class="row rounded ml-3 pl-2 justify-content-center align-items-center" style="background-color: #bfe3f8;">
 <div class="col-md-12 pt-2 pb-0">
 <p class="lead" style="color: #05567b;">
-<strong>{{object.hospital_name}}</strong> Radiography Practice License Application verifications failed. See brief details below </p>           
+<strong>{{object.hospital_name}}</strong> Application verifications failed. See brief details below </p>           
 </div>
 </div>
 </div>
@@ -225,15 +225,13 @@
     
 <hr>
 
-{% if object.vet_status == 3 %}
+
+{% if object.vet_status == 3 and document.license_type == "Radiography Practice Permmit" %}
 
 <div class="d-flex justify-content-end mb-3">   
 
 <a href="{% url 'hospitals:hospitals_dashboard' %}" class="btn btn-outline-success py-0 mr-3 mt-1 mb-3"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Dashboard</a>  
 
-<!-- <a href="#" class="btn btn-outline-info py-0 mt-1 mb-3 btn-animated">
-  <i class="fa fa-toggle-on" aria-hidden="true"></i> Update Application
-</a> -->
 
 <a href="{% url 'hospitals:update_radiography_application' document.pk %}" class="btn btn-warning text-white py-0 mt-1 mb-3 btn-flash">
   <i class="fa fa-toggle-on" aria-hidden="true"></i> Update Application
@@ -241,6 +239,21 @@
 
 
 </div>
+
+{% elif object.vet_status == 3 and document.license_type == "Internship Accreditation" %}
+
+<div class="d-flex justify-content-end mb-3">   
+
+<a href="{% url 'hospitals:hospitals_dashboard' %}" class="btn btn-outline-success py-0 mr-3 mt-1 mb-3"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Dashboard</a>  
+
+
+<a href="{% url 'hospitals:update_internship_application' document.pk %}" class="btn btn-warning text-white py-0 mt-1 mb-3 btn-flash">
+  <i class="fa fa-toggle-on" aria-hidden="true"></i> Update Application
+</a>
+
+
+</div>
+
 
 {% else %}
 <div class="d-flex justify-content-end mb-3">   

@@ -10,68 +10,69 @@
 
 {% block content %}
 <div class="container">
-    <div class="row my-2">
-        <div class="col-lg-7 col-md-9 col-sm-12 col-12 m-auto border border-secondary p-3">
-            
-            <div class="container">
-                <div class="row mt-2 pt-2">
-                    <div class="col text-left p-0 m-0">
-                        <p class="text-success display-4 paragraph2">Hospital Details Submission</p>
-                        <hr>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="container">
-                <div class="row mt-0 pl-1 mb-3 bg-light border border-secondary">
-                    <i class="fas fa-info fa-2x py-2 pl-3"></i>      
-                    <p class="lead ml-3 pl-3 py-2 my-auto">Fill the form below. Fields marked Optional may be left blank</p>
-                </div>
-            </div>
+<div class="row my-2">
+<div class="col-lg-7 col-md-9 col-sm-12 col-12 m-auto border border-secondary p-3">
 
-            <form method="POST" action="." enctype="multipart/form-data">
-                {% csrf_token %}
+<div class="container">
+<div class="row mt-2 pt-2">
+<div class="col text-left p-0 m-0">
+<p class="text-success display-4 paragraph2">Hospital Details Submission</p>
+<hr>
+{% include 'partials/_alerts.html' %}
+</div>
+</div>
+</div>
 
-                <input type="hidden" name="application_type" class="form-control" value="New Registration - Government Hospital Internship" required id="id_application_type">
-                <input type="hidden" name="license_type" class="form-control" value="Internship Accreditation" required id="id_license_type">
+<div class="container">
+<div class="row mt-0 pl-1 mb-3 bg-light border border-secondary">
+<i class="fas fa-info fa-2x py-2 pl-3"></i>      
+<p class="lead ml-3 pl-3 py-2 my-auto">Fill the form below. Fields marked Optional may be left blank</p>
+</div>
+</div>
 
-                {{ form.hospital_name |as_crispy_field }}                  
+<form method="POST" action="." enctype="multipart/form-data">
+{% csrf_token %}
 
-                <div class="form-row">
-                    <div class="form-group col-md-6 mb-0">
-                        {{ form.hospital_type|as_crispy_field }}
-                    </div>    
-                    <div class="form-group col-md-6 mb-0">
-                        {{ form.facility_address |as_crispy_field }}
-                    </div>                       
-                </div>
+<input type="hidden" name="application_type" class="form-control" value="New Registration - Government Hospital Internship" required id="id_application_type">
+<input type="hidden" name="license_type" class="form-control" value="Internship Accreditation" required id="id_license_type">
 
-                <div class="form-row">
-                    <div class="form-group col-md-6 mb-0">
-                        {{ form.facility_state_of_location|as_crispy_field }}
-                    </div>    
-                    <div class="form-group col-md-6 mb-0">
-                        {{ form.equipment |as_crispy_field }}
-                    </div>                       
-                </div>
+{{ form.hospital_name |as_crispy_field }}                  
 
-                <div class="form-row">
-    <div class="form-group col-md-6 mb-0">
-        {{ form.radiographer_in_charge|as_crispy_field }}
-    </div>
-    <div class="form-group col-md-6 mb-0">
-        {{ form.radiographer_in_charge_license_no|as_crispy_field }}
-    </div>             
+<div class="form-row">
+<div class="form-group col-md-6 mb-0">
+{{ form.hospital_type|as_crispy_field }}
+</div>    
+<div class="form-group col-md-6 mb-0">
+{{ form.facility_address |as_crispy_field }}
+</div>                       
+</div>
+
+<div class="form-row">
+<div class="form-group col-md-6 mb-0">
+{{ form.facility_state_of_location|as_crispy_field }}
+</div>    
+<div class="form-group col-md-6 mb-0">
+{{ form.equipment |as_crispy_field }}
+</div>                       
+</div>
+
+<div class="form-row">
+<div class="form-group col-md-6 mb-0">
+{{ form.radiographer_in_charge|as_crispy_field }}
+</div>
+<div class="form-group col-md-6 mb-0">
+{{ form.radiographer_in_charge_license_no|as_crispy_field }}
+</div>             
 </div>
 
 <!-- Radiographers Section -->
 <div id="radiographers-container">
-    
+
 </div>
 
 <!-- Add More Button -->
 <div class="text-right my-2">
-    <button type="button" id="add-radiographer" class="btn btn-sm btn-primary">+ Add More Radiographers</button>
+<button type="button" id="add-radiographer" class="btn btn-sm btn-primary">+ Add More Radiographers</button>
 
 </div>
 
@@ -91,7 +92,7 @@
 </div>
 
 <div id="staff-details-container">
-    
+
 </div>
 
 <div class="text-right my-2">
@@ -150,9 +151,9 @@ You must agree before submitting.
 
 <button type="submit" class="btn btn-success py-1 mt-2 mb-4" name="_save"> Proceed &#x21E8;</button>
 </div>
-            </form>
-        </div>
-    </div>
+</form>
+</div>
+</div>
 </div>
 
 
@@ -160,120 +161,120 @@ You must agree before submitting.
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const addButton = document.getElementById("add-radiographer");
-    const container = document.getElementById("radiographers-container");
+const addButton = document.getElementById("add-radiographer");
+const container = document.getElementById("radiographers-container");
 
-    addButton.addEventListener("click", function () {
-        // Count existing radiographers using the .radiographer-group class
-        const radiographerCount = container.querySelectorAll('.radiographer-group').length;
+addButton.addEventListener("click", function () {
+// Count existing radiographers using the .radiographer-group class
+const radiographerCount = container.querySelectorAll('.radiographer-group').length;
 
-        if (radiographerCount >= 3) {
-            alert("You can only add a maximum of three radiographers.");
-            return;
-        }
+if (radiographerCount >= 3) {
+alert("You can only add a maximum of three radiographers.");
+return;
+}
 
-        const newRadiographerCount = radiographerCount + 1; // Ensure correct numbering
+const newRadiographerCount = radiographerCount + 1; // Ensure correct numbering
 
-        // Create new radiographer input fields with labels and placeholders
-        const newRadiographerRow = `
-            <div class="form-row radiographer-group">
-                <div class="form-group col-md-6 mb-0">
-                    <label for="radiographer${newRadiographerCount}">Radiographer ${newRadiographerCount} Name</label>
-                    <input type="text" name="radiographer${newRadiographerCount}" class="form-control" 
-                        id="radiographer${newRadiographerCount}" 
-                        placeholder="Radiographer ${newRadiographerCount} Name (optional)">
-                </div>
-                <div class="form-group col-md-5 mb-0">
-                    <label for="radiographer${newRadiographerCount}_license_no">Radiographer ${newRadiographerCount} License No</label>
-                    <input type="text" name="radiographer${newRadiographerCount}_license_no" class="form-control" 
-                        id="radiographer${newRadiographerCount}_license_no" 
-                        placeholder="Radiographer ${newRadiographerCount} License No (optional)">
-                </div>
-                <div class="form-group col-md-1 mb-0 d-flex align-items-end">
-                    <button type="button" class="btn btn-danger btn-sm remove-radiographer">X</button>
-                </div>
-            </div>
-        `;
+// Create new radiographer input fields with labels and placeholders
+const newRadiographerRow = `
+<div class="form-row radiographer-group">
+<div class="form-group col-md-6 mb-0">
+<label for="radiographer${newRadiographerCount}">Radiographer ${newRadiographerCount} Name</label>
+<input type="text" name="radiographer${newRadiographerCount}" class="form-control" 
+id="radiographer${newRadiographerCount}" 
+placeholder="Radiographer ${newRadiographerCount} Name (optional)">
+</div>
+<div class="form-group col-md-5 mb-0">
+<label for="radiographer${newRadiographerCount}_license_no">Radiographer ${newRadiographerCount} License No</label>
+<input type="text" name="radiographer${newRadiographerCount}_license_no" class="form-control" 
+id="radiographer${newRadiographerCount}_license_no" 
+placeholder="Radiographer ${newRadiographerCount} License No (optional)">
+</div>
+<div class="form-group col-md-1 mb-0 d-flex align-items-end">
+<button type="button" class="btn btn-danger btn-sm remove-radiographer">X</button>
+</div>
+</div>
+`;
 
-        container.insertAdjacentHTML("beforeend", newRadiographerRow);
+container.insertAdjacentHTML("beforeend", newRadiographerRow);
 
-        if (newRadiographerCount === 3) {
-            setTimeout(() => alert("You have reached the maximum of three radiographers."), 0);
-            addButton.disabled = true;
-        }
-    });
+if (newRadiographerCount === 3) {
+setTimeout(() => alert("You have reached the maximum of three radiographers."), 0);
+addButton.disabled = true;
+}
+});
 
-    // Remove radiographer row when clicking "X"
-    container.addEventListener("click", function (event) {
-        if (event.target.classList.contains("remove-radiographer")) {
-            event.target.closest(".radiographer-group").remove();
+// Remove radiographer row when clicking "X"
+container.addEventListener("click", function (event) {
+if (event.target.classList.contains("remove-radiographer")) {
+event.target.closest(".radiographer-group").remove();
 
-            // Re-enable the button if count is below 3
-            if (container.querySelectorAll('.radiographer-group').length < 3) {
-                addButton.disabled = false;
-            }
-        }
-    });
+// Re-enable the button if count is below 3
+if (container.querySelectorAll('.radiographer-group').length < 3) {
+addButton.disabled = false;
+}
+}
+});
 });
 </script>
 
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const addButton = document.getElementById("add-staff-details"); // Button to add staff details
-    const container = document.getElementById("staff-details-container"); // Container to hold staff details
+const addButton = document.getElementById("add-staff-details"); // Button to add staff details
+const container = document.getElementById("staff-details-container"); // Container to hold staff details
 
-    addButton.addEventListener("click", function () {
-        // Count existing staff groups
-        const staffCount = container.querySelectorAll('.staff-group').length;
+addButton.addEventListener("click", function () {
+// Count existing staff groups
+const staffCount = container.querySelectorAll('.staff-group').length;
 
-        if (staffCount >= 5) {
-            alert("You can only add a maximum of five staff members.");
-            return;
-        }
+if (staffCount >= 5) {
+alert("You can only add a maximum of five staff members.");
+return;
+}
 
-        const newStaffCount = staffCount + 1;
+const newStaffCount = staffCount + 1;
 
-        // Create new staff details row
-        const newStaffRow = `
-            <div class="form-row staff-group">
-                <div class="form-group col-md-6 mb-0">
-                    <label for="staffname${newStaffCount}">Staff ${newStaffCount} Name</label>
-                    <input type="text" name="staffname${newStaffCount}" class="form-control" 
-                        id="staffname${newStaffCount}" 
-                        placeholder="Staff ${newStaffCount} Name (optional)">
-                </div>
-                <div class="form-group col-md-5 mb-0">
-                    <label for="staffdesignation${newStaffCount}">Staff ${newStaffCount} Designation</label>
-                    <input type="text" name="staffdesignation${newStaffCount}" class="form-control" 
-                        id="staffdesignation${newStaffCount}" 
-                        placeholder="Staff ${newStaffCount} Designation (optional)">
-                </div>
-                <div class="form-group col-md-1 mb-0 d-flex align-items-end">
-                    <button type="button" class="btn btn-danger btn-sm remove-staff">X</button>
-                </div>
-            </div>
-        `;
+// Create new staff details row
+const newStaffRow = `
+<div class="form-row staff-group">
+<div class="form-group col-md-6 mb-0">
+<label for="staffname${newStaffCount}">Staff ${newStaffCount} Name</label>
+<input type="text" name="staffname${newStaffCount}" class="form-control" 
+id="staffname${newStaffCount}" 
+placeholder="Staff ${newStaffCount} Name (optional)">
+</div>
+<div class="form-group col-md-5 mb-0">
+<label for="staffdesignation${newStaffCount}">Staff ${newStaffCount} Designation</label>
+<input type="text" name="staffdesignation${newStaffCount}" class="form-control" 
+id="staffdesignation${newStaffCount}" 
+placeholder="Staff ${newStaffCount} Designation (optional)">
+</div>
+<div class="form-group col-md-1 mb-0 d-flex align-items-end">
+<button type="button" class="btn btn-danger btn-sm remove-staff">X</button>
+</div>
+</div>
+`;
 
-        container.insertAdjacentHTML("beforeend", newStaffRow);
+container.insertAdjacentHTML("beforeend", newStaffRow);
 
-        if (newStaffCount === 5) {
-            setTimeout(() => alert("You have reached the maximum of five staff members."), 0);
-            addButton.disabled = true;
-        }
-    });
+if (newStaffCount === 5) {
+setTimeout(() => alert("You have reached the maximum of five staff members."), 0);
+addButton.disabled = true;
+}
+});
 
-    // Remove staff row when clicking "X"
-    container.addEventListener("click", function (event) {
-        if (event.target.classList.contains("remove-staff")) {
-            event.target.closest(".staff-group").remove();
+// Remove staff row when clicking "X"
+container.addEventListener("click", function (event) {
+if (event.target.classList.contains("remove-staff")) {
+event.target.closest(".staff-group").remove();
 
-            // Re-enable the button if count is below 6
-            if (container.querySelectorAll('.staff-group').length < 6) {
-                addButton.disabled = false;
-            }
-        }
-    });
+// Re-enable the button if count is below 6
+if (container.querySelectorAll('.staff-group').length < 6) {
+addButton.disabled = false;
+}
+}
+});
 });
 
 
