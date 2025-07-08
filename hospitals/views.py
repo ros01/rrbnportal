@@ -1239,8 +1239,8 @@ class StartNewRadApplication(LoginRequiredMixin, SuccessMessageMixin, CreateView
 
 class UpdateRadApplication(LoginRequiredMixin, UpdateView):
     model = Document
-    template_name = 'hospitals/register_radiography_practice.html'
-    form_class = HospitalDetailModelForm
+    template_name = 'hospitals/update_radiography_practice.html'
+    form_class = HospitalUpdateModelForm
     pk_url_kwarg = 'pk'  # Match URL kwarg used in reverse() and get_success_url
 
     def get_queryset(self):
