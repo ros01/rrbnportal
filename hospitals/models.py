@@ -921,7 +921,7 @@ class License(models.Model):
     hospital_code = models.CharField(max_length=500, null=True, blank=True, 
         default=increment_hospital_code)
     application_status = models.IntegerField(default=8)
-    license_no = models.CharField(max_length=500, unique=True, null=True, blank=True)
+    license_no = models.CharField(max_length=500, null=True, blank=True)
     issue_date = models.DateField(default=date.today)
     expiry_date = models.DateField(default=date.today)
     license_status = models.CharField(max_length=10)
