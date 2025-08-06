@@ -47,11 +47,11 @@ def increment_hospital_code():
 class Document(models.Model):
 
     EQUIPMENT = (
-        ('Ultrasound', 'Ultrasound' ),
+        ('Ultrasound', 'Ultrasound'),
         ('Conventional X-ray', 'Conventional X-ray'),
-        ('Conventional X-ray with Fluoroscopy', 'Conventional X-ray with Fluoroscopy' ),
-        ('CT Scan', 'CT Scan' ),
-        ('C-Arm/O-ARM', 'C-Arm/O-ARM' ),
+        ('Fluoroscopy', 'Fluoroscopy'),
+        ('CT Scan', 'CT Scan'),
+        ('C-Arm/O-ARM', 'C-Arm/O-ARM'),
         ('MRI', 'MRI'),
         ('Mamography', 'Mamography' ),
         ('Angiography', 'Angiography'),
@@ -131,7 +131,7 @@ class Document(models.Model):
     hospital_type = models.CharField(max_length=100, choices = HOSPITAL_TYPE)
     facility_address = models.TextField(blank=True)
     facility_state_of_location = models.CharField(max_length=100, choices = STATE_CHOICES)
-    equipment = MultiSelectField(choices = EQUIPMENT)
+    equipment = MultiSelectField(choices = EQUIPMENT, max_length=512)
     radiographer_in_charge = models.CharField(max_length=100)
     radiographer1 = models.CharField(max_length=100, blank=True, null =True)
     radiographer2 = models.CharField(max_length=100, blank=True, null =True)
@@ -286,7 +286,7 @@ class Schedule(models.Model):
     ultrasound_total = models.IntegerField(blank=True, null=True)
     ctscan_total = models.IntegerField(blank=True, null=True)
     xray_total = models.IntegerField(blank=True, null=True)
-    flouroscopy_total = models.IntegerField(blank=True, null=True)
+    fluoroscopy_total = models.IntegerField(blank=True, null=True)
     mamography_total = models.IntegerField(blank=True, null=True)
     echocardiography_total = models.IntegerField(blank=True, null=True)
     dentalxray_total = models.IntegerField(blank=True, null=True)
@@ -540,7 +540,7 @@ class Xray(models.Model):
         self.schedule.save()
 
     
-class Flouroscopy(models.Model):
+class Fluoroscopy(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     application_no = models.CharField(max_length=100)
     hospital_name = models.ForeignKey(Hospital, null=True, related_name='hospital_9', on_delete=models.CASCADE)
@@ -563,7 +563,7 @@ class Flouroscopy(models.Model):
     toilets_cleanliness_score = models.IntegerField()
     waiting_room_score = models.IntegerField()
     offices_adequacy_score = models.IntegerField()
-    flouroscopy_total = models.IntegerField()
+    fluoroscopy_total = models.IntegerField()
 
     class Meta:
         unique_together = ('application_no','hospital_name')
@@ -573,8 +573,8 @@ class Flouroscopy(models.Model):
         return str(self.hospital_name)
 
     def save(self, *args, **kwargs):
-        super(Flouroscopy, self).save(*args, **kwargs)
-        self.schedule.flouroscopy_total = self.flouroscopy_total
+        super(Fluoroscopy, self).save(*args, **kwargs)
+        self.schedule.fluoroscopy_total = self.fluoroscopy_total
         self.schedule.save()
 
 class Mamography(models.Model):
@@ -813,8 +813,8 @@ class Inspection(models.Model):
         if self.schedule.xray_total != None:
             score.insert(0, self.schedule.xray_total)
 
-        if self.schedule.flouroscopy_total != None:
-            score.insert(0, self.schedule.flouroscopy_total)
+        if self.schedule.fluoroscopy_total != None:
+            score.insert(0, self.schedule.fluoroscopy_total)
 
         if self.schedule.mamography_total != None:
             score.insert(0, self.schedule.mamography_total)
@@ -978,7 +978,7 @@ class Records(models.Model):
     city = models.CharField(max_length=100)
     address = models.CharField(max_length=200)
     practice_category = models.CharField(max_length=100, choices = SERVICES)
-    equipment = MultiSelectField(choices = EQUIPMENT)
+    equipment = MultiSelectField(choices = EQUIPMENT, max_length=512)
     radiographers = models.TextField(blank=True, null=
         True)
     radiologists = models.TextField(blank=True, null=

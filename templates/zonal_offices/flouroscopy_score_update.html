@@ -4,7 +4,7 @@
   {% csrf_token %}
 
  <div class="modal-header">
-    <h5 class="modal-title text-success">Update Conventional X-ray with Flouroscopy Scores</h5>
+    <h5 class="modal-title text-success">Update Fluoroscopy Scores</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -29,7 +29,7 @@
 
   <div class="modal-footer">
     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-    <button type="button" class="submit-btn btn btn-success ml-2 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Update Flouroscopy Scores</button>
+    <button type="button" class="submit-btn btn btn-success ml-2 pt-2 pb-1 pr-2"><i class="fa fa-podcast text-white"></i>  Update Fluoroscopy Scores</button>
 
   </div>
 </form>
@@ -340,7 +340,7 @@ $(function () {
 </script>
 
 <script>
-  $('#id_shielding_score, #id_room_design_score, #id_radiographers_no_score, #id_radiologists_no_score, #id_radiographer_license_score, #id_prmd_prpe_score, #id_rso_rsa_score, #id_water_supply_score, #id_equipment_certification_score, #id_accessories_adequacy_score,  #id_warning_lights_score,  #id_warning_signs_score, #id_C07_form_compliance_score, #id_equipment_installation_location_score, #id_processing_unit_score, #id_toilets_cleanliness_score, #id_waiting_room_score, #id_offices_adequacy_score').on('input',function(e){$('#id_flouroscopy_total').val(parseInt($('#id_shielding_score').val()) + parseInt($('#id_room_design_score').val()) + parseInt($('#id_radiographers_no_score').val()) + parseInt($('#id_radiologists_no_score').val()) + parseInt($('#id_radiographer_license_score').val()) + parseInt($('#id_prmd_prpe_score').val()) + parseInt($('#id_rso_rsa_score').val()) + parseInt($('#id_water_supply_score').val()) + parseInt($('#id_equipment_certification_score').val()) + parseInt($('#id_accessories_adequacy_score').val()) + parseInt($('#id_warning_lights_score').val()) + parseInt($('#id_warning_signs_score').val()) + parseInt($('#id_C07_form_compliance_score').val()) + parseInt($('#id_equipment_installation_location_score').val()) + parseInt($('#id_processing_unit_score').val()) + parseInt($('#id_toilets_cleanliness_score').val()) + parseInt($('#id_waiting_room_score').val()) + parseInt($('#id_offices_adequacy_score').val()));
+  $('#id_shielding_score, #id_room_design_score, #id_radiographers_no_score, #id_radiologists_no_score, #id_radiographer_license_score, #id_prmd_prpe_score, #id_rso_rsa_score, #id_water_supply_score, #id_equipment_certification_score, #id_accessories_adequacy_score,  #id_warning_lights_score,  #id_warning_signs_score, #id_C07_form_compliance_score, #id_equipment_installation_location_score, #id_processing_unit_score, #id_toilets_cleanliness_score, #id_waiting_room_score, #id_offices_adequacy_score').on('input',function(e){$('#id_fluoroscopy_total').val(parseInt($('#id_shielding_score').val()) + parseInt($('#id_room_design_score').val()) + parseInt($('#id_radiographers_no_score').val()) + parseInt($('#id_radiologists_no_score').val()) + parseInt($('#id_radiographer_license_score').val()) + parseInt($('#id_prmd_prpe_score').val()) + parseInt($('#id_rso_rsa_score').val()) + parseInt($('#id_water_supply_score').val()) + parseInt($('#id_equipment_certification_score').val()) + parseInt($('#id_accessories_adequacy_score').val()) + parseInt($('#id_warning_lights_score').val()) + parseInt($('#id_warning_signs_score').val()) + parseInt($('#id_C07_form_compliance_score').val()) + parseInt($('#id_equipment_installation_location_score').val()) + parseInt($('#id_processing_unit_score').val()) + parseInt($('#id_toilets_cleanliness_score').val()) + parseInt($('#id_waiting_room_score').val()) + parseInt($('#id_offices_adequacy_score').val()));
         });
 
   

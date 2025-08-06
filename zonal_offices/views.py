@@ -4,7 +4,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test
 from accounts.decorators import zonaloffices_required
 from accounts.models import Hospital
-from hospitals.models import Schedule, Inspection, License, Records, Ultrasound, Xray, Nuclearmedicine, Radiotherapy, Mri, Ctscan, Xray, Flouroscopy, Mamography, Dentalxray, Echocardiography, Angiography, Carm, Appraisal
+from hospitals.models import *
 from django.views import View
 from django.views.generic import (
      CreateView,
@@ -693,6 +693,7 @@ class InspectionReportView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         modalities = [
             "Ultrasound",
             "Conventional X-ray",
+            "Fluoroscopy",
             "CT Scan",
             "MRI",
             "Radiotherapy",
@@ -706,6 +707,7 @@ class InspectionReportView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         context['modality_url_names'] = {
             "Ultrasound": "zonal_offices:ultrasound_score",
             "Conventional X-ray": "zonal_offices:xray_score",
+            "Fluoroscopy": "zonal_offices:fluoroscopy_score",
             "CT Scan": "zonal_offices:ctscan_score",
             "MRI": "zonal_offices:mri_score",
             "Radiotherapy": "zonal_offices:radiotherapy_score",
@@ -958,9 +960,9 @@ class InspectionReportUpdateView(LoginRequiredMixin, SuccessMessageMixin, Update
             xray = None
 
         try:
-            flouroscopy = Flouroscopy.objects.get(schedule=inspection.schedule)
-        except Flouroscopy.DoesNotExist:
-            flouroscopy = None
+            fluoroscopy = Fluoroscopy.objects.get(schedule=inspection.schedule)
+        except Fluoroscopy.DoesNotExist:
+            fluoroscopy = None
 
         try:
             mamography = Mamography.objects.get(schedule=inspection.schedule)
@@ -991,6 +993,7 @@ class InspectionReportUpdateView(LoginRequiredMixin, SuccessMessageMixin, Update
         context["modalities"] = [
             "Ultrasound",
             "Conventional X-ray",
+            "Fluoroscopy",
             "CT Scan",
             "MRI",
             "Radiotherapy",
@@ -1009,6 +1012,10 @@ class InspectionReportUpdateView(LoginRequiredMixin, SuccessMessageMixin, Update
             "Conventional X-ray": reverse(
                 "zonal_offices:xray_update", kwargs={"id": xray.id}
             ) if xray else None,
+
+            "Fluoroscopy": reverse(
+                "zonal_offices:fluoroscopy_update", kwargs={"id": xray.id}
+            ) if fluoroscopy else None,
 
 
             "CT Scan": reverse(
@@ -1175,12 +1182,28 @@ class UltrasoundScore(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         kwargs['initial']['application_no'] = self.schedule.application_no
         return kwargs
 
+
     def form_invalid(self, form):
         messages.error(self.request, "There was an error submitting the form. Please check the details.")
         error_list = [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
         for error in error_list:
             messages.error(self.request, error)
         return self.render_to_response(self.get_context_data(form=form))
+
+
+    def dispatch(self, request, *args, **kwargs):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+
+        if Ultrasound.objects.filter(schedule=self.schedule).exists():
+            return render(
+                request,
+                "zonal_offices/already_submitted.html",
+                {"schedule": self.schedule},  # context
+                status=200  # optional; use 400 if you want to log it as an error
+            )
+
+        return super().dispatch(request, *args, **kwargs)
+
 
 
 
@@ -1281,6 +1304,19 @@ class NuclearMedicineScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestM
             messages.error(self.request, error)
         return self.render_to_response(self.get_context_data(form=form))
 
+    def dispatch(self, request, *args, **kwargs):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+
+        if Nuclearmedicine.objects.filter(schedule=self.schedule).exists():
+            return render(
+                request,
+                "zonal_offices/already_submitted.html",
+                {"schedule": self.schedule},  # context
+                status=200  # optional; use 400 if you want to log it as an error
+            )
+
+        return super().dispatch(request, *args, **kwargs)
+
 
 
 class NuclearMedicineScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
@@ -1379,6 +1415,19 @@ class RadiotherapyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixi
         for error in error_list:
             messages.error(self.request, error)
         return self.render_to_response(self.get_context_data(form=form))
+
+    def dispatch(self, request, *args, **kwargs):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+
+        if Radiotherapy.objects.filter(schedule=self.schedule).exists():
+            return render(
+                request,
+                "zonal_offices/already_submitted.html",
+                {"schedule": self.schedule},  # context
+                status=200  # optional; use 400 if you want to log it as an error
+            )
+
+        return super().dispatch(request, *args, **kwargs)
 
 
 
@@ -1479,6 +1528,19 @@ class MriScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Succes
             messages.error(self.request, error)
         return self.render_to_response(self.get_context_data(form=form))
 
+    def dispatch(self, request, *args, **kwargs):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+
+        if Mri.objects.filter(schedule=self.schedule).exists():
+            return render(
+                request,
+                "zonal_offices/already_submitted.html",
+                {"schedule": self.schedule},  # context
+                status=200  # optional; use 400 if you want to log it as an error
+            )
+
+        return super().dispatch(request, *args, **kwargs)
+
 
 
 class MriScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
@@ -1578,6 +1640,19 @@ class CtscanScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Suc
             messages.error(self.request, error)
         return self.render_to_response(self.get_context_data(form=form))
 
+    def dispatch(self, request, *args, **kwargs):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+
+        if Ctscan.objects.filter(schedule=self.schedule).exists():
+            return render(
+                request,
+                "zonal_offices/already_submitted.html",
+                {"schedule": self.schedule},  # context
+                status=200  # optional; use 400 if you want to log it as an error
+            )
+
+        return super().dispatch(request, *args, **kwargs)
+
 
 
 class CtscanScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
@@ -1676,6 +1751,19 @@ class XrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Succe
             messages.error(self.request, error)
         return self.render_to_response(self.get_context_data(form=form))
 
+    def dispatch(self, request, *args, **kwargs):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+
+        if Xray.objects.filter(schedule=self.schedule).exists():
+            return render(
+                request,
+                "zonal_offices/already_submitted.html",
+                {"schedule": self.schedule},  # context
+                status=200  # optional; use 400 if you want to log it as an error
+            )
+
+        return super().dispatch(request, *args, **kwargs)
+
 
 
 class XrayScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
@@ -1725,10 +1813,10 @@ class XrayScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin,
         return self.render_to_response(self.get_context_data(form=form))
 
 
-class FlouroscopyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+class FluoroscopyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/flouroscopy_score.html'
-    form_class = FlouroscopyModelForm
-    success_message = 'Flouroscopy Score Entered Successfully'
+    form_class = FluoroscopyModelForm
+    success_message = 'Fluoroscopy Score Entered Successfully'
     
     def get_success_url(self):
         if hasattr(self.object, 'schedule') and self.object.schedule:
@@ -1746,9 +1834,9 @@ class FlouroscopyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin
         context['schedule_qs'] = schedule_qs
         
         # Ensure ultrasound object exists
-        flouroscopy = Flouroscopy.objects.filter(schedule=self.schedule).first()
-        if flouroscopy:
-            context["flouroscopy"] = flouroscopy
+        fluoroscopy = Fluoroscopy.objects.filter(schedule=self.schedule).first()
+        if fluoroscopy:
+            context["fluoroscopy"] = fluoroscopy
         return context
 
     def get_initial(self):
@@ -1775,18 +1863,31 @@ class FlouroscopyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin
             messages.error(self.request, error)
         return self.render_to_response(self.get_context_data(form=form))
 
+    def dispatch(self, request, *args, **kwargs):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+
+        if Fluoroscopy.objects.filter(schedule=self.schedule).exists():
+            return render(
+                request,
+                "zonal_offices/already_submitted.html",
+                {"schedule": self.schedule},  # context
+                status=200  # optional; use 400 if you want to log it as an error
+            )
+
+        return super().dispatch(request, *args, **kwargs)
 
 
-class FlouroscopyScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
-    model = Flouroscopy
+
+class FluoroscopyScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
+    model = Fluoroscopy
     template_name = "zonal_offices/flouroscopy_score_update.html" 
     # template_name = "zonal_offices/ultrasound_update.html"
-    form_class = FlouroscopyModelForm
-    success_message = "Flouroscopy details updated successfully!"
+    form_class = FluoroscopyModelForm
+    success_message = "Fluoroscopy details updated successfully!"
 
     def get_object(self, queryset=None):
         # Get the ultrasound object based on its ID
-        return get_object_or_404(Flouroscopy, id=self.kwargs["id"])
+        return get_object_or_404(Fluoroscopy, id=self.kwargs["id"])
 
     def get_success_url(self):
         if hasattr(self.object, 'schedule') and self.object.schedule:
@@ -1808,11 +1909,11 @@ class FlouroscopyScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessag
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        flouroscopy = self.get_object()
-        schedule_qs = Schedule.objects.filter(pk=flouroscopy.schedule.pk)
+        fluoroscopy = self.get_object()
+        schedule_qs = Schedule.objects.filter(pk=fluoroscopy.schedule.pk)
 
         context["schedule_qs"] = schedule_qs
-        context["flouroscopy"] = flouroscopy
+        context["fluoroscopy"] = fluoroscopy
         return context
 
     def form_invalid(self, form):
@@ -1873,6 +1974,19 @@ class MamographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin,
         for error in error_list:
             messages.error(self.request, error)
         return self.render_to_response(self.get_context_data(form=form))
+
+    def dispatch(self, request, *args, **kwargs):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+
+        if Mamography.objects.filter(schedule=self.schedule).exists():
+            return render(
+                request,
+                "zonal_offices/already_submitted.html",
+                {"schedule": self.schedule},  # context
+                status=200  # optional; use 400 if you want to log it as an error
+            )
+
+        return super().dispatch(request, *args, **kwargs)
 
 
 
@@ -1973,6 +2087,19 @@ class DentalXrayScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin,
             messages.error(self.request, error)
         return self.render_to_response(self.get_context_data(form=form))
 
+    def dispatch(self, request, *args, **kwargs):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+
+        if Dentalxray.objects.filter(schedule=self.schedule).exists():
+            return render(
+                request,
+                "zonal_offices/already_submitted.html",
+                {"schedule": self.schedule},  # context
+                status=200  # optional; use 400 if you want to log it as an error
+            )
+
+        return super().dispatch(request, *args, **kwargs)
+
 
 
 class DentalXrayScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
@@ -2071,6 +2198,19 @@ class EchocardiographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequest
         for error in error_list:
             messages.error(self.request, error)
         return self.render_to_response(self.get_context_data(form=form))
+
+    def dispatch(self, request, *args, **kwargs):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+
+        if Echocardiography.objects.filter(schedule=self.schedule).exists():
+            return render(
+                request,
+                "zonal_offices/already_submitted.html",
+                {"schedule": self.schedule},  # context
+                status=200  # optional; use 400 if you want to log it as an error
+            )
+
+        return super().dispatch(request, *args, **kwargs)
 
 
 
@@ -2171,6 +2311,19 @@ class AngiographyScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin
             messages.error(self.request, error)
         return self.render_to_response(self.get_context_data(form=form))
 
+    def dispatch(self, request, *args, **kwargs):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+
+        if Angiography.objects.filter(schedule=self.schedule).exists():
+            return render(
+                request,
+                "zonal_offices/already_submitted.html",
+                {"schedule": self.schedule},  # context
+                status=200  # optional; use 400 if you want to log it as an error
+            )
+
+        return super().dispatch(request, *args, **kwargs)
+
 
 
 class AngiographyScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessageMixin, UpdateView):
@@ -2218,6 +2371,9 @@ class AngiographyScoreUpdate(LoginRequiredMixin, PassRequestMixin, SuccessMessag
         for error in error_list:
             messages.error(self.request, error)
         return self.render_to_response(self.get_context_data(form=form))
+
+
+
 
 
 class CarmScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
@@ -2269,6 +2425,21 @@ class CarmScore(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Succe
         for error in error_list:
             messages.error(self.request, error)
         return self.render_to_response(self.get_context_data(form=form))
+
+
+
+    def dispatch(self, request, *args, **kwargs):
+        self.schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+
+        if Carm.objects.filter(schedule=self.schedule).exists():
+            return render(
+                request,
+                "zonal_offices/already_submitted.html",
+                {"schedule": self.schedule},  # context
+                status=200  # optional; use 400 if you want to log it as an error
+            )
+
+        return super().dispatch(request, *args, **kwargs)
 
 
 
@@ -2590,10 +2761,10 @@ class XrayScore1(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, Succ
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data())
 
-class FlouroscopyScore1(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
+class FluoroscopyScore1(LoginRequiredMixin, ScheduleObjectMixin, PassRequestMixin, SuccessMessageMixin, CreateView):
     template_name = 'zonal_offices/flouroscopy_score.html'
-    form_class = FlouroscopyModelForm
-    success_message = 'Flouroscopy Score Entered Successfully'
+    form_class = FluoroscopyModelForm
+    success_message = 'Fluoroscopy Score Entered Successfully'
      
     def get_success_url(self):
         return reverse("zonal_offices:inspection_report", kwargs={"pk": self.object.schedule.pk})
@@ -3103,8 +3274,8 @@ class XrayScoreUpdate1(XrayObjectMixin, View):
         #return reverse("zonal_offices:inspection_report", kwargs={"id": self.object.practice_manager.schedule.id})
 
 
-class FlouroscopyObjectMixin(object):
-    model = Flouroscopy
+class FluoroscopyObjectMixin(object):
+    model = Fluoroscopy
     def get_object(self):
         id = self.kwargs.get('id')
         obj = None
@@ -3112,7 +3283,7 @@ class FlouroscopyObjectMixin(object):
             obj = get_object_or_404(self.model, id=id)
         return obj 
 
-class FlouroscopyScoreDetail(FlouroscopyObjectMixin, View):
+class FluoroscopyScoreDetail(FluoroscopyObjectMixin, View):
     template_name = "zonal_offices/flouroscopy_score_details.html"
 
     def get(self, request, id=None, *args, **kwargs):
@@ -3120,7 +3291,7 @@ class FlouroscopyScoreDetail(FlouroscopyObjectMixin, View):
         return render(request, self.template_name, context)
 
  
-class FlouroscopyScoreUpdate1(FlouroscopyObjectMixin, View):
+class FluoroscopyScoreUpdate1(FluoroscopyObjectMixin, View):
     template_name = "zonal_offices/flouroscopy_score_update.html" 
     template_name1 = "zonal_offices/flouroscopy_score_details.html" 
     success_message = 'Flouroscopy Score Updated Successfully.'
@@ -3130,7 +3301,7 @@ class FlouroscopyScoreUpdate1(FlouroscopyObjectMixin, View):
         context = {}
         obj = self.get_object()
         if obj is not None:
-            form = FlouroscopyModelForm(instance=obj)
+            form = FluoroscopyModelForm(instance=obj)
             context['object'] = obj
             context['form'] = form
         return render(request, self.template_name, context)
@@ -3140,7 +3311,7 @@ class FlouroscopyScoreUpdate1(FlouroscopyObjectMixin, View):
         context = {}
         obj = self.get_object()
         if obj is not None:
-            form = FlouroscopyModelForm(request.POST or None, instance=obj)
+            form = FluoroscopyModelForm(request.POST or None, instance=obj)
             if form.is_valid():
                 form.save()
             context['object'] = obj

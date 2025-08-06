@@ -118,15 +118,15 @@ class CtscanAdmin(admin.ModelAdmin):
 
 admin.site.register(Ctscan, CtscanAdmin)
 
-class FlouroscopyAdmin(admin.ModelAdmin):
-  list_display = ('hospital_name', 'application_no', 'flouroscopy_total')
-  list_display_links = ('hospital_name', 'application_no', 'flouroscopy_total')
-  list_filter = ('hospital_name', 'application_no', 'flouroscopy_total')
-  search_fields = ('hospital_name', 'application_no', 'flouroscopy_total')
+class FluoroscopyAdmin(admin.ModelAdmin):
+  list_display = ('hospital_name', 'application_no', 'fluoroscopy_total')
+  list_display_links = ('hospital_name', 'application_no', 'fluoroscopy_total')
+  list_filter = ('hospital_name', 'application_no', 'fluoroscopy_total')
+  search_fields = ('hospital_name', 'application_no', 'fluoroscopy_total')
   list_per_page = 25
 
 
-admin.site.register(Flouroscopy, FlouroscopyAdmin)
+admin.site.register(Fluoroscopy, FluoroscopyAdmin)
 
 
 

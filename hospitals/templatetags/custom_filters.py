@@ -55,6 +55,7 @@ def get_modality_url_name(modality):
     url_map = {
         "Ultrasound": "zonal_offices:ultrasound_score",
         "Conventional X-ray": "zonal_offices:xray_score",
+        "Fluoroscopy": "zonal_offices:fluoroscopy_score",
         "CT Scan": "zonal_offices:ctscan_score",
         "MRI": "zonal_offices:mri_score",
         "Radiotherapy": "zonal_offices:radiotherapy_score",
@@ -76,6 +77,7 @@ def get_modality_update_url_name(modality):
     url_map = {
         "Ultrasound": "zonal_offices:ultrasound_update",
         "Conventional X-ray": "zonal_offices:xray_update",
+        "Fluoroscopy": "zonal_offices:fluoroscopy_update",
         "CT Scan": "zonal_offices:ctscan_update",
         "MRI": "zonal_offices:mri_update",
         "Radiotherapy": "zonal_offices:radiotherapy_update",

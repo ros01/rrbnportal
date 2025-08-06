@@ -1,0 +1,20 @@
+<style>
+@keyframes flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.flash-text {
+  animation: flash 1s infinite;
+  color: red; /* Optional: emphasize the alert */
+}
+</style>
+
+
+
+<div class="alert alert-danger mt-4">
+    <h3 class="flash-text">Score Already Submitted</h3>
+    <p>Score for this modality is already submitted. You cannot submit another one. Proceed with scoring for other modalities, then comments/observations and uploads. When done click "Post Inspection Report" to submit</p>
+    <a href="{{request.META.HTTP_REFERER}}" class="btn btn-success">Go Back</a>
+</div>
+

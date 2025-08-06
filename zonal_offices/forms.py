@@ -1,6 +1,6 @@
 from django import forms
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from hospitals.models import Inspection, Records, Appraisal, Ultrasound, Mri, Xray, Ctscan, Flouroscopy, Radiotherapy, Nuclearmedicine, Mamography, Dentalxray, Echocardiography, Angiography, Carm
+from hospitals.models import *
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field
 from django.utils import timezone
@@ -8,6 +8,8 @@ from tempus_dominus.widgets import DatePicker
 from hospitals.choices import INSPECTION_ZONE, LICENSE_STATUS, STATE_CHOICES, SERVICES, EQUIPMENT
 from bootstrap_modal_forms.forms import BSModalModelForm
 from bootstrap_modal_forms.mixins import PassRequestMixin, PopRequestMixin, CreateUpdateAjaxMixin
+from django.core.exceptions import ValidationError
+
 
 
 
@@ -83,6 +85,15 @@ class UltrasoundModelForm(forms.ModelForm):
         self.fields['support_staff_score'].label = "Support Staff (Chaperon)"
         self.fields['support_staff_score'].widget.attrs['placeholder'] = "(Max Score = 2)"
         self.fields['ultrasound_total'].label = "Total Score"
+
+    def clean(self):
+        cleaned_data = super().clean()
+        application_no = cleaned_data.get("application_no")
+        hospital_name = cleaned_data.get("hospital_name")
+
+        if Ultrasound.objects.filter(application_no=application_no, hospital_name=hospital_name).exists():
+            raise ValidationError("An Ultrasound score for this application and hospital already exists.")
+        return cleaned_data
 
     def save(self, commit=True):
         instance = super().save(commit=False)  # Get instance without saving
@@ -433,11 +444,11 @@ class XrayModelForm(forms.ModelForm):
     #   return instance
 
 
-class FlouroscopyModelForm(forms.ModelForm):
+class FluoroscopyModelForm(forms.ModelForm):
 
     class Meta:
-        model = Flouroscopy
-        fields = ('application_no', 'hospital_name', 'schedule', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'prmd_prpe_score', 'rso_rsa_score', 'water_supply_score', 'equipment_installation_location_score', 'equipment_certification_score', 'accessories_adequacy_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'flouroscopy_total')
+        model = Fluoroscopy
+        fields = ('application_no', 'hospital_name', 'schedule', 'shielding_score', 'room_design_score', 'radiographers_no_score', 'radiologists_no_score', 'radiographer_license_score', 'prmd_prpe_score', 'rso_rsa_score', 'water_supply_score', 'equipment_installation_location_score', 'equipment_certification_score', 'accessories_adequacy_score', 'warning_lights_score', 'warning_signs_score', 'C07_form_compliance_score', 'processing_unit_score', 'toilets_cleanliness_score', 'waiting_room_score', 'offices_adequacy_score', 'fluoroscopy_total')
 
           
         widgets = {
@@ -513,7 +524,7 @@ class FlouroscopyModelForm(forms.ModelForm):
         self.fields['waiting_room_score'].widget.attrs['placeholder'] = "(Max Score = 5)"
         self.fields['offices_adequacy_score'].label = "Adequacy of Offices"
         self.fields['offices_adequacy_score'].widget.attrs['placeholder'] = "(Max Score = 4)"
-        self.fields['flouroscopy_total'].label = "Total Score"
+        self.fields['fluoroscopy_total'].label = "Total Score"
 
     def save(self, commit=True):
         instance = super().save(commit=False)  # Get instance without saving

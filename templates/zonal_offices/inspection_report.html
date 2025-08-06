@@ -21,6 +21,21 @@
 
 {% include "_modal.html" %}
 
+<style>
+.scrollable-modalities {
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+</style>
+
+
 
 <!-- <main class="container">
 <div class="row">
@@ -71,7 +86,7 @@ Ultrasound
  {% endif %}
  {% if "Conventional X-ray with Fluoroscopy" in object.hospital.equipment %}
  <div class="form-check mr-3">
- <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-flouroscopy" data-form-url="{% url 'zonal_offices:flouroscopy_score' object.pk %}">
+ <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-flouroscopy" data-form-url="{% url 'zonal_offices:fluoroscopy_score' object.pk %}">
  <label class="form-check-label" for="exampleRadios3">
  Conventional X-ray with Flouroscopy
  </label>
@@ -311,29 +326,56 @@ Ultrasound
       {% csrf_token %}
       <input type="hidden" name="inspection_zone" {% if user.is_authenticated %} value="{{ user.module_name }}" {% endif %} required id="id_inspection_zone">
 
-      <div class="form-group">
-        <fieldset class="the-fieldset">
-          <legend class="the-legend text-info">Registered Modalities in License Application</legend>
+<!-- <div class="form-group">
+<fieldset class="the-fieldset">
+<legend class="the-legend text-info">Registered Modalities in License Application</legend>
 
-        {% for object in schedule_qs %}
-        {% for modality in modalities %}
-        {% if modality in object.hospital.equipment %}
-        {% with modality_url_names|dict_lookup:modality as url_name %}
-        {% if url_name %}
-        <div class="col d-flex">
-        <div class="form-check mr-3">
-        <input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-{{ modality|slugify }}"
-             data-form-url="{% url url_name object.pk %}">
-        <label class="form-check-label" for="score-{{ modality|slugify }}">{{ modality }}</label>
-        </div>
-        {% endif %}
-        {% endwith %}
-        {% endif %}
-        {% endfor %}
-        {% endfor %}
-        </div>
-        </fieldset>
-      </div>
+{% for object in schedule_qs %}
+{% for modality in modalities %}
+{% if modality in object.hospital.equipment %}
+{% with modality_url_names|dict_lookup:modality as url_name %}
+{% if url_name %}
+<div class="col d-flex">
+<div class="form-check mr-3">
+<input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-{{ modality|slugify }}"
+data-form-url="{% url url_name object.pk %}">
+<label class="form-check-label" for="score-{{ modality|slugify }}">{{ modality }}</label>
+</div>
+{% endif %}
+{% endwith %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+</div>
+</fieldset>
+</div> -->
+
+<div class="form-group">
+<fieldset class="the-fieldset">
+<legend class="the-legend text-info">Registered Modalities in License Application</legend>
+
+<div class="scrollable-modalities">
+{% for object in schedule_qs %}
+{% for modality in modalities %}
+{% if modality in object.hospital.equipment %}
+{% with modality_url_names|dict_lookup:modality as url_name %}
+{% if url_name %}
+<div class="form-check mr-3">
+<input class="bs-modal form-check-input" type="radio" name="exampleRadios" id="score-{{ modality|slugify }}"
+data-form-url="{% url url_name object.pk %}">
+<label class="form-check-label" for="score-{{ modality|slugify }}">{{ modality }}</label>
+</div>
+{% endif %}
+{% endwith %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+</div>
+</fieldset>
+</div>
+
+
+
 
       <div class="row ml-2">
         <p class="col-12 text-success lead">Hospital Details</p>
@@ -427,6 +469,7 @@ Ultrasound
         </main>
 
 
+fieldset overflows if more than six modalities are present
 
 <!--Jquery plugin-->
   <script src="{% static 'js/jquery.js' %}"></script>

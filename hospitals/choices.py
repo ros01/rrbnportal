@@ -62,7 +62,7 @@ SERVICES = (
 EQUIPMENT = (
         ('Ultrasound', 'Ultrasound' ),
         ('Conventional X-ray', 'Conventional X-ray'),
-        ('Conventional X-ray with Fluoroscopy', 'Conventional X-ray with Fluoroscopy' ),
+        ('Fluoroscopy', 'Fluoroscopy' ),
         ('CT Scan', 'CT Scan' ),
         ('C-Arm/O-ARM', 'C-Arm/O-ARM' ),
         ('MRI', 'MRI'),
