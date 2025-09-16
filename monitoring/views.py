@@ -48,6 +48,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import mm, inch
 from reportlab.lib.pagesizes import letter, A4
 from reportlab.lib.pagesizes import landscape, portrait
+from reportlab.lib.enums import TA_CENTER
 import io, csv
 from django.contrib.auth.hashers import make_password
 from django.http import FileResponse
@@ -58,6 +59,8 @@ from django.core.paginator import Paginator
 from django.utils.timezone import now
 from PIL import Image
 from PIL import UnidentifiedImageError
+
+
 
 User = get_user_model()
 
@@ -2664,6 +2667,12 @@ def download_rad_cert_reg(request, id):
 
  
 
+
+
+
+
+
+
 @login_required
 def download_rad_practice_permit(request, id):
     # Create a file-like buffer to receive PDF data.
@@ -2730,8 +2739,31 @@ def download_rad_practice_permit(request, id):
     p.drawCentredString(300, 425, str(object.hospital_name))
 
 
-    p.setFont("Helvetica", 16, leading=None)
-    p.drawCentredString(300, 370, 'Located at ' + str(object.hospital.facility_address))
+    # p.setFont("Helvetica", 16, leading=None)
+    # p.drawCentredString(300, 370, 'Located at ' + str(object.hospital.facility_address))
+
+    styles = getSampleStyleSheet()
+    address_style = ParagraphStyle(
+        name="AddressStyle",
+        parent=styles["Normal"],
+        fontName="Helvetica",
+        fontSize=16,
+        alignment=TA_CENTER,   # center align like your original
+        leading=20,
+    )
+
+    address_text = "Located at " + str(object.hospital.facility_address)
+
+    # Create a Paragraph so long text wraps automatically
+    paragraph = Paragraph(address_text, style=address_style)
+
+    # Wrap within page margins (say 570 width to fit inside A4 width=595 with padding)
+    width, height = A4
+    w, h = paragraph.wrapOn(p, 500, height)
+
+    # Draw starting at (x, y) — adjust y to match your previous position (370)
+    paragraph.drawOn(p, (width - w) / 2, 370)
+
 
     p.setFont("Helvetica", 16, leading=None)
     p.drawCentredString(300, 305, 'In partial fullfillment of the conditions as a')
@@ -2773,6 +2805,7 @@ def download_rad_practice_permit(request, id):
     # present the option to save the file.
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=False, filename='registration_of_practice_permit.pdf')   
+
 
 
 @login_required
