@@ -26,6 +26,9 @@ SECRET_KEY = 'jnh1-@s'
 # SECURITY WARNING: don't  run with debug turned on in production!
 DEBUG = True
 
+MAINTENANCE_MODE = True
+
+
 ALLOWED_HOSTS = []
 
 

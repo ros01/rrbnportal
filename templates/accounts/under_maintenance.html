@@ -1,0 +1,84 @@
+{% extends "base-reg.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+  body {
+      background: linear-gradient(135deg, #28a745, #e8f9f1) !important;
+  }
+
+  .maintenance-wrapper {
+      min-height: 80vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 0;
+  }
+
+  .card-maintenance {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      border-radius: 15px;
+      max-width: 600px;
+      width: 90%;
+      color: white;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      animation: fadeIn 1s ease-in-out;
+  }
+
+  h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+  }
+
+  p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+  }
+
+  .loader {
+      margin: 25px auto;
+      border: 4px solid rgba(255,255,255,0.2);
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s infinite linear;
+  }
+
+  @keyframes spin {
+      to { transform: rotate(360deg); }
+  }
+
+  @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+  }
+
+  .footer-text {
+      margin-top: 20px;
+      opacity: 0.7;
+      font-size: 0.9rem;
+  }
+</style>
+
+<div class="maintenance-wrapper">
+    <div class="card-maintenance">
+        <h1>🔧 We're Performing Scheduled Maintenance</h1>
+        <p>
+            Our system is temporarily unavailable as we carry out important upgrades.<br>
+            We’ll be back online shortly — thank you for your patience!
+        </p>
+
+        <div class="loader"></div>
+
+        <p class="footer-text">
+            © {{ year }} Radiographers Registration Board of Nigeria
+        </p>
+    </div>
+</div>
+
+{% endblock %}

@@ -502,7 +502,52 @@ class RenewalTemplateView(TemplateView):
     
 
 
+
 def login(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+
+        user = auth.authenticate(email=email, password=password)
+        if user is not None:
+            auth_login(request, user)
+
+            # 🔥 If maintenance is enabled, redirect everyone
+            if settings.MAINTENANCE_MODE:
+                return redirect('accounts:under_maintenance')
+
+            # Normal routing
+            if user.hospital:
+                return redirect('hospitals:hospitals_dashboard')
+            if user.role == 'Monitoring':
+                return redirect('monitoring:monitoring_dashboard')
+            if user.role == 'Registrar':
+                return redirect('registrars_office:registrar_dashboard')
+            if user.role == 'Zonal Offices':
+                return redirect('zonal_offices:zonal_offices_dashboard')
+            if user.role == 'Finance':
+                return redirect('finance:finance_dashboard')
+
+            messages.error(request, 'Invalid login details.')
+            return redirect('accounts:signin')
+
+        messages.error(request, 'Invalid login details.')
+        return redirect('accounts:signin')
+
+    return redirect('accounts:signin')
+
+
+
+def under_maintenance2(request):
+    return render(request, "accounts/under_maintenance.html")
+
+
+def under_maintenance(request):
+    from datetime import datetime
+    return render(request, "accounts/under_maintenance.html", {"year": datetime.now().year})
+
+
+def loginmain(request):
   if request.method == 'POST':
     email = request.POST['email']
     password = request.POST['password']

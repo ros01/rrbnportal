@@ -8,6 +8,16 @@ from monitoring.models import *
 def index(request):
     return render(request, 'pages/index.html')
 
+
+def under_maintenance(request):
+    from datetime import datetime
+    return render(request, "pages/under_maintenance.html", {"year": datetime.now().year})
+
+
+def under_maintenance2(request):
+    return render(request, 'pages/under_maintenance.html')
+
+
 def verify_practice(request):
     return render(request, 'pages/verify_practice.html')
 

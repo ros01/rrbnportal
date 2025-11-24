@@ -50,6 +50,7 @@ urlpatterns = [
     path('renewal/', views.renewal, name='renewal'),
     path('<int:id>/update_profile/', ProfileUpdateView.as_view(), name='update_profile'),
     path('login', views.login, name='login'),
+    path('under-maintenance/', views.under_maintenance, name='under_maintenance'),
     path('activate/<slug:uidb64>/<slug:token>/', ActivateAccount.as_view(), name='activate'),
     path('logout', views.logout, name='logout'),
     path('password-change/', views.PasswordChangeView.as_view(), name='password-change'),
